@@ -1,0 +1,7 @@
+name: steel shield
+slot: !ruby/symbol shand
+bonus:
+  !ruby/symbol blk: 44
+  !ruby/symbol dur: 30
+stats:
+  !ruby/symbol con: 200

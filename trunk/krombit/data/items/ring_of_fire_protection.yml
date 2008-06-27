@@ -1,0 +1,9 @@
+name: ring of fire protection
+slot: !ruby/symbol accessory
+bonus:
+  !ruby/symbol dex: 10
+dmg_exprs:
+  !ruby/symbol pierce: 2.d(6) + str/10
+  !ruby/symbol fire: 2.d(6)
+notifications:
+  HIT: reduce :fire, 10

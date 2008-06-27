@@ -1,0 +1,7 @@
+name: wooden shield
+slot: !ruby/symbol shand
+bonus:
+  !ruby/symbol blk: 34
+  !ruby/symbol dur: 22
+stats:
+  !ruby/symbol con: 100
