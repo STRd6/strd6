@@ -3,47 +3,65 @@ require 'open-uri'
 require 'hpricot'
 require 'cgi'
 
+UTOR_PATH = "C:\\Program Files\\uTorrent\\uTorrent.exe"
+TOR_DIR = File.expand_path(File.dirname(__FILE__)) + "/tor/"
+
 def get_doc(url)
   response = ''
   
-  # open-uri RDoc: http://stdlib.rubyonrails.org/libdoc/open-uri/rdoc/index.html
   open(url, "User-Agent" => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0") do |f|
-      puts "Fetched document: #{f.base_uri}"
-      puts "\t Content Type: #{f.content_type}\n"
-      puts "\t Charset: #{f.charset}\n"
-      puts "\t Content-Encoding: #{f.content_encoding}\n"
-      puts "\t Last Modified: #{f.last_modified}\n\n"
-   
-      # Save the response body
-      response = f.read
+    puts "Fetched document: #{f.base_uri}"
+    puts "\t Content Type: #{f.content_type}\n"
+    puts "\t Charset: #{f.charset}\n"
+    puts "\t Content-Encoding: #{f.content_encoding}\n"
+    puts "\t Last Modified: #{f.last_modified}\n\n"
+    
+    response = f.read
   end
 
   return response
 end
 
+def download_torrent(url)
+  response = ''
+  
+  open(url, "User-Agent" => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9) Gecko/2008052906 Firefox/3.0") do |f|
+    puts "Fetched document: #{f.base_uri}"
+    if f.content_type == 'application/x-bittorrent'
+      # Save the response body
+      response = f.read
+    else
+      response = false
+    end
+  end
+
+  return response
+end
 
 def get_tor_from_page(url, title)
-  #Rdoc: http://code.whytheluckystiff.net/hpricot/
   doc = Hpricot get_doc(url)
   
   elements = doc/'/html/body/div[4]/dl/dt/a'
   
   elements.each do |element|
     href = element['href']
+    
     case href
     when /mininova/
       puts href
       tor_url = href.gsub('tor', 'get')
-      tor = get_doc(tor_url)
       
-      #TODO Validate
-      
-      File.open("#{title}.torrent", 'wb') do |f|
-        f << tor
+      if torrent = download_torrent(tor_url)
+        File.open("#{TOR_DIR}#{title}", 'wb') do |f|
+          f << torrent
+        end
+        return true
       end
-      return true
     end
+    
   end
+  
+  return false
 end
 
 def get_search_results(query)
@@ -58,7 +76,7 @@ def get_search_results(query)
   title_zone = (first/'dt/a').first
   puts title_zone
   
-  title = title_zone.inner_text.gsub(/( )+/, '_')
+  title = title_zone.inner_text.gsub(/( )+/, '_') + ".torrent"
   href = title_zone['href']
   
   age = (first/'dd/span.a').inner_text
@@ -77,11 +95,18 @@ def get_search_results(query)
   puts "href='#{href}'"
   
   get_tor_from_page "http://www.torrentz.com#{href}", title
+  return title
 end
 
+def run_utor(title)
+  command = "\"#{UTOR_PATH}\" \"#{TOR_DIR}#{title}\""
+  puts command
+  `#{command}`
+end
 
 #get_tor_from_page 'http://www.torrentz.com/b212d595df25d950d9b007619ccd134e1ad49cfa'
 
 if $PROGRAM_NAME == __FILE__
-  get_search_results ARGV.join(' ')
+  title = get_search_results ARGV.join(' ')
+  run_utor(title)
 end
