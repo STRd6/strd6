@@ -1,6 +1,6 @@
 class Cell
-  attr_reader :contents
-  attr_accessor :north, :south, :east, :west
+  attr_reader :contents, :x, :y
+  attr_accessor :north, :south, :east, :west, :selected
   @@image = nil
   
   def initialize(x, y)
@@ -15,8 +15,13 @@ class Cell
   end
   
   def draw
-    @image.draw(x_pos, y_pos, 0)
+    image.draw(x_pos, y_pos, 0)
     @contents.each {|e| e.draw(x_pos, y_pos)}
+  end
+  
+  def image
+    return @@selected if selected
+    @@image
   end
   
   def x_pos
@@ -37,7 +42,8 @@ class Cell
   
   def self.image
     return @@image if @@image
-    @@image = ImageLoader.instance.load_a(ImageMaker.blank(16, 16))
+    @@selected = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'yellow'))
+    @@image = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'brown'))
     return @@image
   end
 end

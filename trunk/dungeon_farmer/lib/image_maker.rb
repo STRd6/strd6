@@ -2,6 +2,7 @@ require 'RMagick'
 
 module ImageMaker
   include Magick
+  QuantumRange = MaxRGB
   
   def self.create(rows, cols, arrays)
     image = Image.new(cols, rows)
@@ -10,7 +11,7 @@ module ImageMaker
     
     rows.times do |row|
       cols.times do |col|
-        colors = (yield arrays[row][col]).map { |f| f*65535 }
+        colors = (yield arrays[row][col]).map { |f| f*QuantumRange }
         pixel_town.push Pixel.new(*colors)
       end
     end
@@ -19,8 +20,10 @@ module ImageMaker
     return image
   end
   
-  def self.blank(width, height)
-    Image.new(width, height)
+  def self.blank(width, height, bg_color='white')
+    Magick::Image.new(width, height) {
+      self.background_color = bg_color
+    }
   end
   
   def self.cloud_color(f)

@@ -19,7 +19,7 @@ class Area
       @cells[i].west = @cells[row*width + (col - 1)%width]
     end
     
-    @player = Player.new("X", self)
+    @player = Player.new("X")
     @player.move(@cells[500])
   end
   
