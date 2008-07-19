@@ -1,14 +1,14 @@
 class Player
   include Graphical
   attr_reader :name, :location
+  attr_accessor  :target
   
-  def initialize(name, window)
+  def initialize(name)
     @name = name
     @items = []
     @image = il 'farmer.png'
-    @x = 216
-    @y = 216
     @cell = nil
+    @age = 0
   end
   
   def pick_up(item)
@@ -50,6 +50,32 @@ class Player
   end
   
   def update
+    @age += 1
     
+    if @age % 6 == 0
+      if target
+        if target.x < @cell.x
+          west
+        elsif target.x > @cell.x
+          east
+        else
+          in_x = true
+        end
+        
+        if target.y < @cell.y
+          north
+        elsif target.y > @cell.y
+          south
+        else
+          in_y = true
+        end
+        
+        if in_x and in_y
+          plant
+          self.target = nil
+        end
+        
+      end
+    end
   end
 end

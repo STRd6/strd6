@@ -12,6 +12,8 @@ class GameWindow < Gosu::Window
     @cells = @area.cells
     @player = @area.player
     @time = 0
+    @target_cell = nil
+    @cursor = ImageLoader.instance.load_a(ImageMaker.blank(4, 4, 'red'))
   end
 
   def update
@@ -31,10 +33,23 @@ class GameWindow < Gosu::Window
       @player.north
     when Gosu::Button::KbDown
       @player.south
+    when Gosu::Button::MsLeft
+      @target_cell.selected = false if @target_cell
+      @target_cell = cell_under_mouse
+      @target_cell.selected = true if @target_cell
+      @player.target = @target_cell
     end
+  end
+  
+  def cell_under_mouse
+    row = mouse_y.to_i/16
+    col =  mouse_x.to_i/16
+    @cells[row*32 + col]
   end
 
   def draw
     @cells.each { |cell| cell.draw }
+    @cursor.draw(mouse_x, mouse_y, 10000)
+    #@image.draw(0,0, 1)
   end
 end
