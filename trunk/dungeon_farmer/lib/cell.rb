@@ -1,6 +1,6 @@
 class Cell
-  attr_reader :contents, :x, :y
-  attr_accessor :north, :south, :east, :west, :selected
+  attr_reader :x, :y
+  attr_accessor :north, :south, :east, :west, :contents, :selected
   @@image = nil
   
   def initialize(x, y)
@@ -12,6 +12,10 @@ class Cell
   
   def update
     @contents.each { |c| c.update }
+  end
+  
+  def blocked?
+    @contents.any? { |c| c.obstructs? }
   end
   
   def draw

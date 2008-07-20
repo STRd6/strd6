@@ -1,6 +1,6 @@
 class Player
   include Graphical
-  attr_reader :name, :location
+  attr_reader :name, :location, :seeds
   attr_accessor  :target
   
   def initialize(name)
@@ -9,6 +9,7 @@ class Player
     @image = il 'farmer.png'
     @cell = nil
     @age = 0
+    @seeds = 12
   end
   
   def pick_up(item)
@@ -26,27 +27,36 @@ class Player
   def move(cell)
     @cell.delete(self) if @cell
     @cell = cell
+    
+    seeds = @cell.contents.select { |item| item.can_pick_up? }
+    @cell.contents -= seeds
+    
+    @seeds += seeds.size
+    
     @cell << self
   end
   
   def north
-    move @cell.north
+    move @cell.north unless @cell.north.blocked?
   end
   
   def south
-    move @cell.south
+    move @cell.south unless @cell.south.blocked?
   end
   
   def east
-    move @cell.east
+    move @cell.east unless @cell.east.blocked?
   end
   
   def west
-    move @cell.west
+    move @cell.west unless @cell.west.blocked?
   end
   
   def plant
-    @cell << Plant.new
+    if @seeds > 0
+      @cell << Plant.new 
+      @seeds -= 1
+    end
   end
   
   def update
@@ -55,15 +65,15 @@ class Player
     if @age % 6 == 0
       if target
         if target.x < @cell.x
-          west
+          west 
         elsif target.x > @cell.x
-          east
+          east 
         else
           in_x = true
         end
         
         if target.y < @cell.y
-          north
+          north 
         elsif target.y > @cell.y
           south
         else

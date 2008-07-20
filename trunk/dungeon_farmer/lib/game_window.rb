@@ -1,19 +1,21 @@
 class GameWindow < Gosu::Window
   def initialize
     super(512, 512, false)
-    self.caption = "Gosu Tutorial Game"
+    self.caption = "Dungeon Farmer"
     
     ImageLoader.instance.set_window(self)
     #arrays = DiamondSquare.go(9)
     #@image = Gosu::Image.new(self, ImageMaker.create(512, 512, arrays) {|f| ImageMaker.cloud_color f}, false)
     #@image3 = Gosu::Image.new(self, ImageMaker.create(512, 512, arrays) {|f| ImageMaker.land_color f}, false)
+    @font = Gosu::Font.new(self, Gosu::default_font_name, 12)
 
     @area = Area.new(32, 32)
     @cells = @area.cells
     @player = @area.player
     @time = 0
     @target_cell = nil
-    @cursor = ImageLoader.instance.load_a(ImageMaker.blank(4, 4, 'red'))
+    @cursor = ImageLoader.instance.load('cursor.png')
+    @cursor_act = ImageLoader.instance.load('seedbag.png')
   end
 
   def update
@@ -50,6 +52,8 @@ class GameWindow < Gosu::Window
   def draw
     @cells.each { |cell| cell.draw }
     @cursor.draw(mouse_x, mouse_y, 10000)
+    @cursor_act.draw(mouse_x, mouse_y, 10000)
+    @font.draw("Seeds #{@player.seeds}", 0, 0, 20000)
     #@image.draw(0,0, 1)
   end
 end
