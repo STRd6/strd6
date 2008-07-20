@@ -1,7 +1,7 @@
 require 'gosu'
 
 lib = File.dirname(__FILE__) + '/'
-files = %w[ graphical plant area player cell diamond_square image_maker image_loader game_window]
+files = %w[ graphical seed plant area player cell diamond_square image_maker image_loader game_window]
 files.each {|f| require lib+"#{f}.rb" }
 
 
