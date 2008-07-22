@@ -1,7 +1,6 @@
-class Player
-  include Graphical
+class Player 
+  include Creature
   attr_reader :name, :location, :seeds
-  attr_accessor  :target
   
   def initialize(name)
     @name = name
@@ -9,7 +8,8 @@ class Player
     @image = il 'farmer.png'
     @cell = nil
     @age = 0
-    @seeds = 12
+    @seeds = 3
+    @path = nil
   end
   
   def pick_up(item)
@@ -36,25 +36,11 @@ class Player
     @cell << self
   end
   
-  def north
-    move @cell.north unless @cell.north.blocked?
-  end
-  
-  def south
-    move @cell.south unless @cell.south.blocked?
-  end
-  
-  def east
-    move @cell.east unless @cell.east.blocked?
-  end
-  
-  def west
-    move @cell.west unless @cell.west.blocked?
-  end
-  
   def plant
     if @seeds > 0
-      @cell << Plant.new 
+      plant = Plant.new(@cell)
+      plant.area = @area
+      @area.add_entity(plant, @cell)
       @seeds -= 1
     end
   end
@@ -62,30 +48,42 @@ class Player
   def update
     @age += 1
     
-    if @age % 6 == 0
+    if @age % 2 == 0
+      if path
+        self.target = path.slice! 0
+      end
+      
       if target
-        if target.x < @cell.x
-          west 
-        elsif target.x > @cell.x
-          east 
-        else
-          in_x = true
-        end
-        
-        if target.y < @cell.y
-          north 
-        elsif target.y > @cell.y
-          south
-        else
-          in_y = true
-        end
-        
-        if in_x and in_y
+        move(target)
+        if path == []
           plant
           self.target = nil
         end
-        
       end
     end
+  end
+  
+  def move_simple(target)
+    if target.x < @cell.x
+      west 
+    elsif target.x > @cell.x
+      east 
+    else
+      in_x = true
+    end
+
+    if target.y < @cell.y
+      north 
+    elsif target.y > @cell.y
+      south
+    else
+      in_y = true
+    end
+    
+    return in_x && in_y
+  end
+  
+  def obstructs?
+    true
   end
 end

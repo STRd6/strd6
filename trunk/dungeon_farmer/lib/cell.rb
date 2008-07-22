@@ -44,6 +44,10 @@ class Cell
     @contents.delete(c)
   end
   
+  def to_s
+    "[#{x}, #{y}]"
+  end
+  
   def self.image
     return @@image if @@image
     @@selected = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'yellow'))
