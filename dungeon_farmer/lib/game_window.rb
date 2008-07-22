@@ -39,7 +39,7 @@ class GameWindow < Gosu::Window
       @target_cell.selected = false if @target_cell
       @target_cell = cell_under_mouse
       @target_cell.selected = true if @target_cell
-      @player.target = @target_cell
+      @player.path = @area.path(@player.cell, @target_cell)
     end
   end
   
