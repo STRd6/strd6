@@ -1,11 +1,14 @@
-class Goblin
-  include Creature
+class Goblin < Creature
   
   def initialize
+    super 'goblin.png'
     @cell = nil
     @seeds = 0
-    @image = il 'goblin.png'
     @age = 0
+  end
+  
+  def to_s
+    'Goblin'
   end
   
   def move(cell)
@@ -20,18 +23,19 @@ class Goblin
     @cell << self
   end
   
-  def update
-    @age += 1
+  def find_path
+    return if path && !path.empty?
     
-    if @age % 2 == 0
-      if path
-        self.target = path.slice! 0
-      end
-      
-      if target
-        move(target)
-      else
-        move([@cell.north, @cell.south, @cell.east, @cell.west].random) 
+    max = @area.cells.size
+    n = @age*2
+    
+    ((n-4)..n).each do |i|
+      cell = @area.cells[i%max]
+      if cell.contents.size > 0
+        print "#{self} finding path to cell #{cell}, contents: #{cell.contents} ... "
+        self.path = @area.path @cell, cell
+        puts "done!"
+        return
       end
     end
   end

@@ -1,15 +1,14 @@
-class Player 
-  include Creature
-  attr_reader :name, :location, :seeds
+class Player < Creature
+  attr_reader :name, :location
   
   def initialize(name)
+    super 'farmer.png'
     @name = name
     @items = []
-    @image = il 'farmer.png'
     @cell = nil
     @age = 0
     @seeds = 3
-    @path = nil
+    @path = []
   end
   
   def pick_up(item)
@@ -42,6 +41,7 @@ class Player
       plant.area = @area
       @area.add_entity(plant, @cell)
       @seeds -= 1
+      notify(:plant, @cell)
     end
   end
   
@@ -49,7 +49,9 @@ class Player
     @age += 1
     
     if @age % 2 == 0
-      if path
+      if path.empty?
+        notify(:no_path, self)
+      else
         self.target = path.slice! 0
       end
       
@@ -61,26 +63,6 @@ class Player
         end
       end
     end
-  end
-  
-  def move_simple(target)
-    if target.x < @cell.x
-      west 
-    elsif target.x > @cell.x
-      east 
-    else
-      in_x = true
-    end
-
-    if target.y < @cell.y
-      north 
-    elsif target.y > @cell.y
-      south
-    else
-      in_y = true
-    end
-    
-    return in_x && in_y
   end
   
   def obstructs?

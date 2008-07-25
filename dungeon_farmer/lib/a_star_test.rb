@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'gratr'
 require 'gratr/import'
+require 'profiler'
+
 
 class AStarTest
   def initialize
@@ -79,10 +81,12 @@ class AStarTest
                 :finish_vertex    => fv,
                 :edge_relaxed     => er,
                 :edge_not_relaxed => enr }
-                      
-    result = romania.astar('Arad', 'Bucharest', h, options)
+    
+    Profiler__::start_profile
+    100.times { romania.astar('Arad', 'Bucharest', h, {}) }
+    Profiler__::print_profile($>)
 
-    puts result
+#    puts result
     # This isn't the greatest test since the exact ordering is not
     # not specified by the algorithm. If someone has a better idea, please fix
 #    assert_equal ["ev Arad",
@@ -120,7 +124,7 @@ class AStarTest
 #     "enr (Craiova=Pitesti '138')",
 #     "fv Pitesti",
 #     "ev Bucharest"], 
-     puts list
+#     puts list
   end
 end
 
