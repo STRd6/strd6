@@ -11,9 +11,16 @@ class GameWindow < Gosu::Window
 
     @area = Area.new(32, 32)
     @cells = @area.cells
-    @player = @area.player
-    @time = 0
     @target_cell = nil
+    @to_plant = []
+    
+    @player = @area.player
+    @player.add_listener(:plant, self)
+    @player.add_listener(:no_path, self)
+    @goblin = @area.goblin
+    
+    @time = 0
+
     @cursor = ImageLoader.instance.load('cursor.png')
     @cursor_act = ImageLoader.instance.load('seedbag.png')
   end
@@ -36,10 +43,45 @@ class GameWindow < Gosu::Window
     when Gosu::Button::KbDown
       @player.south
     when Gosu::Button::MsLeft
-      @target_cell.selected = false if @target_cell
-      @target_cell = cell_under_mouse
-      @target_cell.selected = true if @target_cell
-      @player.path = @area.path(@player.cell, @target_cell)
+      mouse_downed
+    end
+  end
+  
+  def button_up(id)
+    case id
+    when Gosu::Button::MsLeft
+      mouse_released
+    end
+  end
+  
+  def mouse_downed
+    @c1 = cell_under_mouse
+  end
+  
+  def mouse_released
+    @c2 = cell_under_mouse
+    
+    if @c1 && @c2
+      x1 = [@c1.x, @c2.x].min
+      x2 = [@c1.x, @c2.x].max
+      y1 = [@c1.y, @c2.y].min
+      y2 = [@c1.y, @c2.y].max
+      
+      @area.cells_in(x1, x2, y1, y2).each do |cell|
+        cell.selected = true
+        @to_plant.push cell unless @to_plant.include?(cell)
+      end
+    end
+  end
+  
+  def plant(cell)
+    cell.selected = false
+    @to_plant.delete(cell)
+  end
+  
+  def no_path(player)
+    unless @to_plant.empty?
+      player.path = @area.path(player.cell, @to_plant.slice(0))
     end
   end
   
@@ -53,7 +95,7 @@ class GameWindow < Gosu::Window
     @cells.each { |cell| cell.draw }
     @cursor.draw(mouse_x, mouse_y, 10000)
     @cursor_act.draw(mouse_x, mouse_y, 10000)
-    @font.draw("Seeds #{@player.seeds}", 0, 0, 20000)
+    @font.draw("Seeds\nP: #{@player.seeds}\nG: #{@goblin.seeds}", 0, 0, 20000)
     #@image.draw(0,0, 1)
   end
 end

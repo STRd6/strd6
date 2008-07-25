@@ -9,10 +9,10 @@ class DiamondSquare
     ratio = 1
     
     times.times do
-      arrays = insert_arrays(arrays)
       arrays.map! do |array|
         insert_nils(array)
       end
+      arrays = insert_arrays(arrays)
       compute_from_diagonals(arrays) {|a, b, c, d| (a + b + c + d)/4 + rando*ratio} #puts "%1.3f, %1.3f, %1.3f, %1.3f" % [a,b,c,d]; 
       compute_from_adjacents(arrays) {|a, b, c, d| (a + b + c + d)/4 + rando*ratio}
       ratio *= 0.5
@@ -78,5 +78,8 @@ class DiamondSquare
 end
 
 if __FILE__ == $0
+  require 'profiler'
+  Profiler__::start_profile
   DiamondSquare.print_arrays(DiamondSquare.go(5))
+  Profiler__::print_profile($>)
 end

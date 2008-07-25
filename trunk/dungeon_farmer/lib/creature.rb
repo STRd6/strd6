@@ -1,7 +1,13 @@
-module Creature
-  include Graphical
-  attr_reader :cell
+class Creature
+  include Graphical, Observable
+  attr_reader :cell, :seeds
   attr_accessor  :target, :path, :area
+  
+  def initialize(img)
+    @image = il img if img
+    
+    @listeners = {}
+  end
   
   def move(cell)
     @cell.delete(self) if @cell
@@ -29,8 +35,32 @@ module Creature
     true
   end
   
-  def update
+  def find_path
     
+  end
+  
+  def update
+    @age += 1
+    
+    if @age % 2 == 0
+      find_path
+      
+      if path
+        self.target = path.slice! 0
+      end
+      
+      if target
+        if target.blocked?
+          self.path = nil
+          self.target = nil
+        else
+          move(target)
+        end
+      else
+        cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
+        move(cell) unless cell.blocked?
+      end
+    end
   end
   
   def can_pick_up?
