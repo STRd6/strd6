@@ -1,11 +1,13 @@
 class Creature
   include Graphical, Observable
   attr_reader :cell, :seeds
-  attr_accessor  :target, :path, :area
+  attr_accessor  :target, :path, :area, :task, :next_task
   
   def initialize(img)
     @image = il img if img
-    
+    @seeds = 0
+    @cell = nil
+    @age = 0
     @listeners = {}
   end
   
@@ -32,7 +34,7 @@ class Creature
   end
   
   def obstructs?
-    true
+    false
   end
   
   def find_path
@@ -61,6 +63,13 @@ class Creature
         move(cell) unless cell.blocked?
       end
     end
+  end
+  
+  def pick_up
+    seeds = @cell.contents.select { |item| item.can_pick_up? }
+    @cell.contents -= seeds
+    @seeds += seeds.size
+    notify(:pick_up, self, @cell)
   end
   
   def can_pick_up?

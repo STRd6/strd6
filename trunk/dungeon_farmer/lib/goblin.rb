@@ -14,12 +14,6 @@ class Goblin < Creature
   def move(cell)
     @cell.delete(self) if @cell
     @cell = cell
-    
-    seeds = @cell.contents.select { |item| item.can_pick_up? }
-    @cell.contents -= seeds
-    
-    @seeds += seeds.size
-    
     @cell << self
   end
   
