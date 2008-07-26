@@ -3,26 +3,48 @@ class GameWindow < Gosu::Window
     super(512, 512, false)
     self.caption = "Dungeon Farmer"
     
+    @actions = [:plant, :dig, :get]
+    @action_index = 0
+   
+    @height = @width = 32
+    
     ImageLoader.instance.set_window(self)
-    #arrays = DiamondSquare.go(9)
-    #@image = Gosu::Image.new(self, ImageMaker.create(512, 512, arrays) {|f| ImageMaker.cloud_color f}, false)
-    #@image3 = Gosu::Image.new(self, ImageMaker.create(512, 512, arrays) {|f| ImageMaker.land_color f}, false)
+    
     @font = Gosu::Font.new(self, Gosu::default_font_name, 12)
 
-    @area = Area.new(32, 32)
+    @area = Area.new(@width, @height)
     @cells = @area.cells
     @target_cell = nil
-    @to_plant = []
+    
+    @task_cells = {}
+    @actions.each { |action| @task_cells[action] = [] }
+    @task_cells[:get] = @cells.select {|c| c.has_resource? }
     
     @player = @area.player
     @player.add_listener(:plant, self)
     @player.add_listener(:no_path, self)
+    @player.add_listener(:pick_up, self)
+    @player.add_listener(:dig, self)
+    
     @goblin = @area.goblin
+    @goblin.add_listener(:pick_up, self)
     
     @time = 0
 
     @cursor = ImageLoader.instance.load('cursor.png')
-    @cursor_act = ImageLoader.instance.load('seedbag.png')
+    @cursors = load_cursors
+  end
+  
+  def load_cursors
+    seed_bag = ImageLoader.instance.load('seedbag.png')
+    pick = ImageLoader.instance.load('pickrock.png')
+    hand = ImageLoader.instance.load('handpick.png')
+    
+    {:plant => seed_bag, :dig => pick, :get => hand}
+  end
+  
+  def action
+    @actions[@action_index % @actions.size]
   end
 
   def update
@@ -44,6 +66,12 @@ class GameWindow < Gosu::Window
       @player.south
     when Gosu::Button::MsLeft
       mouse_downed
+    when Gosu::Button::MsWheelUp, Gosu::Button::MsRight
+      puts "Wheel Up!"
+      @action_index += 1
+    when Gosu::Button::MsWheelDown
+      puts "Wheel Down!"
+      @action_index -= 1
     end
   end
   
@@ -69,33 +97,81 @@ class GameWindow < Gosu::Window
       
       @area.cells_in(x1, x2, y1, y2).each do |cell|
         cell.selected = true
-        @to_plant.push cell unless @to_plant.include?(cell)
+        @task_cells[action].push cell unless cell.blocked? || @task_cells[action].include?(cell)
+      end
+      
+      @player.next_task = action
+    end
+  end
+  
+  def plant(cell, plant)
+    cell.selected = false
+    @task_cells[:plant].delete(cell)
+    plant.add_listener(:seed, self)
+  end
+  
+  def no_path(player)
+    priorities = []
+    
+    if player.seeds > 0
+      case player.task
+      when :get
+        priorities << {:task => :get, :array => @task_cells[:get]}
+        priorities << {:task => :plant, :array => @task_cells[:plant]}
+      else
+        priorities << {:task => :plant, :array => @task_cells[:plant]}
+      end
+    end
+    
+    priorities << {:task => :get, :array => @task_cells[:get]}
+    priorities << {:task => :dig, :array => @task_cells[:dig]}
+    
+    path_from_priority(player, priorities)
+  end
+  
+  def path_from_priority(creature, priorities)
+    priorities.each do |priority|
+      cell = rotate(priority[:array])
+      if cell
+        creature.task = priority[:task]
+        creature.path = @area.path(creature.cell, cell)
+        return
       end
     end
   end
   
-  def plant(cell)
-    cell.selected = false
-    @to_plant.delete(cell)
+  def pick_up(creature, cell)
+    puts "#{creature} picked stuff up!"
+    @task_cells[:get].delete(cell)
   end
   
-  def no_path(player)
-    unless @to_plant.empty?
-      player.path = @area.path(player.cell, @to_plant.slice(0))
-    end
+  def seed(cell)
+    @task_cells[:get] << cell unless @task_cells[:get].include?(cell)
+  end
+  
+  def dig(cell)
+    cell.dig
+    @task_cells[:dig].delete(cell)
+    cell.selected = false
+  end
+  
+  def rotate(array)
+    return nil if array.empty?
+    cell = array.slice!(0)
+    array << cell
+    return cell
   end
   
   def cell_under_mouse
     row = mouse_y.to_i/16
     col =  mouse_x.to_i/16
-    @cells[row*32 + col]
+    @cells[row*@width + col]
   end
 
   def draw
     @cells.each { |cell| cell.draw }
     @cursor.draw(mouse_x, mouse_y, 10000)
-    @cursor_act.draw(mouse_x, mouse_y, 10000)
+    @cursors[action].draw(mouse_x, mouse_y, 10000)
     @font.draw("Seeds\nP: #{@player.seeds}\nG: #{@goblin.seeds}", 0, 0, 20000)
-    #@image.draw(0,0, 1)
   end
 end

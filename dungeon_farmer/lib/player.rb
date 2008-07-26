@@ -4,34 +4,19 @@ class Player < Creature
   def initialize(name)
     super 'farmer.png'
     @name = name
-    @items = []
     @cell = nil
     @age = 0
     @seeds = 3
     @path = []
   end
   
-  def pick_up(item)
-    @items << item
-  end
-  
-  def able_to_pick_up?(item)
-    return true
-  end
-  
-  def has_item?(item)
-    @items.include? item
+  def to_s
+    name
   end
   
   def move(cell)
     @cell.delete(self) if @cell
     @cell = cell
-    
-    seeds = @cell.contents.select { |item| item.can_pick_up? }
-    @cell.contents -= seeds
-    
-    @seeds += seeds.size
-    
     @cell << self
   end
   
@@ -40,9 +25,17 @@ class Player < Creature
       plant = Plant.new(@cell)
       plant.area = @area
       @area.add_entity(plant, @cell)
+      notify(:plant, @cell, plant)
+      
       @seeds -= 1
-      notify(:plant, @cell)
+      if @seeds == 0
+        @task = :none
+      end
     end
+  end
+  
+  def dig
+    notify(:dig, @cell)
   end
   
   def update
@@ -58,8 +51,20 @@ class Player < Creature
       if target
         move(target)
         if path == []
-          plant
           self.target = nil
+          
+          case task
+          when :plant
+            plant
+          when :get
+            pick_up
+          when :dig
+            dig
+          end
+          
+          @task = @next_task if @next_task
+          @next_task = nil
+          
         end
       end
     end

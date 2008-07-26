@@ -10,13 +10,15 @@ class Area
     @cells = []
     @entities = []
     
+    heights = DiamondSquare.go(5)
+    
     @width = width
     @height = height
     
     height.times do |row|
       @cells << []
       width.times do |col|
-        @cells[row] << Cell.new(col, row)
+        @cells[row] << Cell.new(col, row, heights[row][col])
       end
     end
     
@@ -33,32 +35,46 @@ class Area
       cell.east = cells[row*width + (col + 1)%width]
       cell.west = cells[row*width + (col - 1)%width]
       
-      #Set up graph
-      @graph.add_edge!(cell, cell.north, 1)
-      @graph.add_edge!(cell, cell.south, 1)
-      @graph.add_edge!(cell, cell.east, 1)
-      @graph.add_edge!(cell, cell.west, 1)
+      unless cell.blocked?
+        #Set up graph
+        @graph.add_edge!(cell, cell.north, 1) unless cell.north.blocked?
+        @graph.add_edge!(cell, cell.south, 1) unless cell.south.blocked?
+        @graph.add_edge!(cell, cell.east, 1) unless cell.east.blocked?
+        @graph.add_edge!(cell, cell.west, 1) unless cell.west.blocked?
+      end
       
       #Place Seeds
-      cell << Seed.new if rand(90) == 0
+      cell << Seed.new if !cell.blocked? && rand(90) == 0
     end
     
-    @player = Player.new("X")
-    @player.move(cells[500])
+    @player = Player.new("Alfonso Fonzarelli")
+    @player.move(random_open)
     @player.area = self
     
     @goblin = Goblin.new
-    @goblin.move(cells[rand(64)])
+    @goblin.move(random_open)
     @goblin.area = self
     
-    @dog = Dog.new
-    @dog.move(cells[rand(64) + 512])
+    dog = Creature.new('dog.png')
+    dog.move(random_open)
+    
+    raccoon = Creature.new('raccoon.png')
+    raccoon.move(random_open)
+    
+    chip = Creature.new('chipmunk.png')
+    chip.move(random_open)
     
     @entities << @player
     @entities << @goblin
-    @entities << @dog
-    
-    puts path(cells[100], cells[200])
+    @entities << dog
+    @entities << raccoon
+    @entities << chip
+  end
+  
+  def random_open
+    cell = cells.random
+    cell = cells.random until !cell.blocked?
+    return cell
   end
   
   def cells
@@ -91,11 +107,19 @@ class Area
     
     examined = 0
     
-    ev  = Proc.new {|v| examined += 1 }
+    ev = Proc.new do |v|
+      examined += 1
+      if examined > 100
+        puts "Too many!"
+        @task = :none
+        return []
+      end
+    end
     
     path = @graph.astar(cell1, cell2, h, {:examine_vertex => ev})
     
     puts "#{examined} examined ... "
+    return [] if path.nil?
     return path.slice(1, path.size)
   end
   

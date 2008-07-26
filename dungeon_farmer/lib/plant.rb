@@ -1,11 +1,12 @@
 class Plant
-  include Graphical
+  include Graphical, Observable
   attr_reader :age
   attr_accessor :area
   
   def initialize(cell)
     @cell = cell
     @age = 0
+    @listeners = {}
     @@images ||= ['seed.png', 'sprout.png', 'plant1.png', 'plant2.png', 'plant3.png'].map do
       |file| il(file)
     end
@@ -16,7 +17,9 @@ class Plant
     
     if dead?
       rand(3).times do
-        @area.add_entity(Seed.new, [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random)
+        seed_cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
+        notify(:seed, seed_cell)
+        @area.add_entity(Seed.new, seed_cell)
         @cell.delete self
         @area.remove_entity self
       end
@@ -28,7 +31,7 @@ class Plant
   end
   
   def obstructs?
-    return mature?
+    false
   end
   
   def dead?

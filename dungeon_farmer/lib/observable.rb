@@ -8,6 +8,13 @@ module Observable
     end
   end
   
+  def remove_listener(method, listener)
+    to_notify = @listeners[method]
+    if to_notify
+      to_notify.delete(listener)
+    end
+  end
+  
   def notify(*args)
     puts "notifying: [#{args.join(', ')}]"
     method = args.slice!(0)
