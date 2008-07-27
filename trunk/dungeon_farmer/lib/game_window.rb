@@ -16,18 +16,22 @@ class GameWindow < Gosu::Window
     @cells = @area.cells
     @target_cell = nil
     
+    @target_cells = {}
     @task_cells = {}
-    @actions.each { |action| @task_cells[action] = [] }
+    @actions.each { |action| @task_cells[action] = []; @target_cells[action] = [] }
     @task_cells[:get] = @cells.select {|c| c.has_resource? }
+    
     
     @player = @area.player
     @player.add_listener(:plant, self)
     @player.add_listener(:no_path, self)
     @player.add_listener(:pick_up, self)
     @player.add_listener(:dig, self)
+    @player.add_listener(:clear_target, self)
     
-    @goblin = @area.goblin
-    @goblin.add_listener(:pick_up, self)
+    @chip = @area.chip
+    @chip.add_listener(:pick_up, self)
+    @chip.add_listener(:no_path_s, self)
     
     @time = 0
 
@@ -67,9 +71,9 @@ class GameWindow < Gosu::Window
     when Gosu::Button::MsLeft
       mouse_downed
     when Gosu::Button::MsWheelUp, Gosu::Button::MsRight
-      puts "Wheel Up!"
+      puts "Next Action"
       @action_index += 1
-    when Gosu::Button::MsWheelDown
+    when Gosu::Button::MsWheelDown, Gosu::Button::MsMiddle
       puts "Wheel Down!"
       @action_index -= 1
     end
@@ -98,6 +102,12 @@ class GameWindow < Gosu::Window
       @area.cells_in(x1, x2, y1, y2).each do |cell|
         cell.selected = true
         @task_cells[action].push cell unless cell.blocked? || @task_cells[action].include?(cell)
+        if action == :dig
+          cell.to_dig = true
+          [cell.north, cell.south, cell.east, cell.west].each do |t_cell|
+            @target_cells[action].push t_cell unless @target_cells[action].include?(t_cell)
+          end
+        end
       end
       
       @player.next_task = action
@@ -124,18 +134,33 @@ class GameWindow < Gosu::Window
     end
     
     priorities << {:task => :get, :array => @task_cells[:get]}
-    priorities << {:task => :dig, :array => @task_cells[:dig]}
+    priorities << {:task => :dig, :array => @target_cells[:dig]}
     
     path_from_priority(player, priorities)
+  end
+  
+  def no_path_s(chip)
+    priorities = []
+    
+    case chip.task
+    when :get
+      priorities << {:task => :get, :array => @task_cells[:get]}
+    end
+    
+    path_from_priority(chip, priorities)
   end
   
   def path_from_priority(creature, priorities)
     priorities.each do |priority|
       cell = rotate(priority[:array])
       if cell
-        creature.task = priority[:task]
-        creature.path = @area.path(creature.cell, cell)
-        return
+        path = @area.path(creature.cell, cell)
+        
+        unless path.empty?
+          creature.task = priority[:task]
+          creature.path = path
+          return
+        end
       end
     end
   end
@@ -149,10 +174,17 @@ class GameWindow < Gosu::Window
     @task_cells[:get] << cell unless @task_cells[:get].include?(cell)
   end
   
-  def dig(cell)
-    cell.dig
-    @task_cells[:dig].delete(cell)
-    cell.selected = false
+  def dig(standing, task_cell)
+    task_cell.dig
+    @area.connect task_cell
+    @task_cells[:dig].delete(task_cell)
+    @area.uncover_goblin(task_cell) if rand(77) == 0
+    task_cell.selected = false
+    @target_cells[:dig].delete(standing)
+  end
+  
+  def clear_target(task, cell)
+    @target_cells[task].delete(cell)
   end
   
   def rotate(array)
@@ -172,6 +204,6 @@ class GameWindow < Gosu::Window
     @cells.each { |cell| cell.draw }
     @cursor.draw(mouse_x, mouse_y, 10000)
     @cursors[action].draw(mouse_x, mouse_y, 10000)
-    @font.draw("Seeds\nP: #{@player.seeds}\nG: #{@goblin.seeds}", 0, 0, 20000)
+    @font.draw("Seeds: #{@player.seeds}", 0, 0, 20000)
   end
 end

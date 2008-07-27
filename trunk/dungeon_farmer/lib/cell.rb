@@ -1,6 +1,6 @@
 class Cell
   attr_reader :x, :y
-  attr_accessor :north, :south, :east, :west, :contents, :selected
+  attr_accessor :north, :south, :east, :west, :contents, :selected, :to_dig
   @@land = nil
   
   def initialize(x, y, h=0.5)
@@ -28,6 +28,7 @@ class Cell
   end
   
   def dig
+    @to_dig = false
     @blocked = false
     @image = @@land
   end
@@ -68,6 +69,10 @@ class Cell
   
   def to_s
     "[#{x}, #{y}]"
+  end
+  
+  def neighbours
+    [north, east, south, west]
   end
   
   def self.image
