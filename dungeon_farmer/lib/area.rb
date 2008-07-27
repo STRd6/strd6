@@ -3,7 +3,7 @@ require 'gratr'
 require 'gratr/import'
 
 class Area
-  attr_reader :cells, :player, :goblin
+  attr_reader :cells, :player, :goblin, :chip
   
   def initialize(width, height)
     @graph = UndirectedGraph.new
@@ -51,24 +51,71 @@ class Area
     @player.move(random_open)
     @player.area = self
     
-    @goblin = Goblin.new
-    @goblin.move(random_open)
-    @goblin.area = self
-    
     dog = Creature.new('dog.png')
     dog.move(random_open)
     
     raccoon = Creature.new('raccoon.png')
     raccoon.move(random_open)
     
-    chip = Creature.new('chipmunk.png')
-    chip.move(random_open)
+    @chip = Creature.new('chipmunk.png') do
+      @age += 1
+      
+      if @age % 17 == 0
+        @task = :get
+      end
+      
+      if @age % 2 == 0
+        
+        if @path.empty?
+          if @task == :get
+            notify(:no_path_s, self)
+          end
+          
+          if @path.empty?
+            @task = :none
+          end
+        else
+          @target = path.slice! 0
+        end
+
+        if @target
+          move(@target)
+          if path == []
+
+            case @task
+            when :get
+              pick_up
+            end
+
+            @task = :none
+          end
+        else
+          cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
+          move(cell) unless cell.blocked?
+        end
+      end
+    end
+    @chip.move(random_open)
     
     @entities << @player
-    @entities << @goblin
     @entities << dog
     @entities << raccoon
-    @entities << chip
+    @entities << @chip
+  end
+  
+  def uncover_goblin(cell)
+    goblin = Goblin.new
+    goblin.move(cell)
+    goblin.area = self
+    @entities << goblin
+  end
+  
+  def connect(cell)
+    unless cell.blocked?
+      cell.neighbours.each do |n|
+        @graph.add_edge!(cell, n, 1) unless n.blocked?
+      end
+    end
   end
   
   def random_open
@@ -116,7 +163,11 @@ class Area
       end
     end
     
-    path = @graph.astar(cell1, cell2, h, {:examine_vertex => ev})
+    begin #TODO: Find out why GRATR throws exception, possibly trapped path or disconnected.
+      path = @graph.astar(cell1, cell2, h, {:examine_vertex => ev})
+    rescue
+      path = []
+    end
     
     puts "#{examined} examined ... "
     return [] if path.nil?

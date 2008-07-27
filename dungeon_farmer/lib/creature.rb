@@ -3,12 +3,18 @@ class Creature
   attr_reader :cell, :seeds
   attr_accessor  :target, :path, :area, :task, :next_task
   
-  def initialize(img)
+  def initialize(img, &block)
     @image = il img if img
     @seeds = 0
     @cell = nil
     @age = 0
     @listeners = {}
+    @path = []
+    
+    
+    if block_given?
+      @update_block = block
+    end
   end
   
   def move(cell)
@@ -42,6 +48,10 @@ class Creature
   end
   
   def update
+    if @update_block
+      return instance_eval(&@update_block)
+    end
+    
     @age += 1
     
     if @age % 2 == 0
@@ -59,8 +69,7 @@ class Creature
           move(target)
         end
       else
-        cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
-        move(cell) unless cell.blocked?
+        random_move
       end
     end
   end
@@ -70,6 +79,11 @@ class Creature
     @cell.contents -= seeds
     @seeds += seeds.size
     notify(:pick_up, self, @cell)
+  end
+  
+  def random_move
+    cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
+    move(cell) unless cell.blocked?
   end
   
   def can_pick_up?

@@ -7,7 +7,6 @@ class Player < Creature
     @cell = nil
     @age = 0
     @seeds = 3
-    @path = []
   end
   
   def to_s
@@ -34,8 +33,9 @@ class Player < Creature
     end
   end
   
-  def dig
-    notify(:dig, @cell)
+  def dig(cell)
+    puts "#{self} is digging at #{cell}"
+    notify(:dig, @cell, cell)
   end
   
   def update
@@ -59,7 +59,13 @@ class Player < Creature
           when :get
             pick_up
           when :dig
-            dig
+            @cell.neighbours.each do |c|
+              if c.to_dig
+                dig c
+                break
+              end
+            end
+            notify(:clear_target, :dig, @cell)
           end
           
           @task = @next_task if @next_task
