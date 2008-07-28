@@ -5,7 +5,7 @@ module Graphical
     return ImageLoader.instance.load(item)
   end
   
-  def draw(x=nil, y=nil)
-    image.draw(x||@x, y||@y, 0)
+  def draw(x=nil, y=nil, z=0)
+    image.draw(x||@x, y||@y, z)
   end
 end

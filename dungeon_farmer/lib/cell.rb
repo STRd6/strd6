@@ -1,6 +1,6 @@
 class Cell
   attr_reader :x, :y
-  attr_accessor :north, :south, :east, :west, :contents, :selected, :to_dig
+  attr_accessor :north, :south, :east, :west, :contents, :selected, :to_dig, :seeds
   @@land = nil
   
   def initialize(x, y, h=0.5)
@@ -10,16 +10,17 @@ class Cell
     @x = x
     @y = y
     @height = h
+    @seeds = 0
     
-    if @height < 0.0
+    if @height < 0.2
       @blocked = true
       @image = @@water
-    elsif @height < 0.4
+    elsif @height < 0.7
       @blocked = false
-      @image = @@land
+      @image = @@land.random
     else
       @blocked = true
-      @image = @@mountain
+      @image = @@mountain.random
     end
   end
   
@@ -30,7 +31,7 @@ class Cell
   def dig
     @to_dig = false
     @blocked = false
-    @image = @@land
+    @image = @@land.random
   end
   
   def blocked?
@@ -38,16 +39,17 @@ class Cell
   end
   
   def has_resource?
-    @contents.any? {|c| c.can_pick_up? }
+    @seeds > 0 || @contents.any? {|c| c.can_pick_up? }
   end
   
   def draw
     image.draw(x_pos, y_pos, 0)
     @contents.each {|e| e.draw(x_pos, y_pos)}
+    @@seed.draw(x_pos, y_pos, 0) if @seeds > 0
+    @@selected.draw(x_pos, y_pos, 1) if selected
   end
   
   def image
-    return @@selected if selected
     @image
   end
   
@@ -76,11 +78,11 @@ class Cell
   end
   
   def self.image
-    return @@land if @@land
-    @@selected = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'yellow'))
-    @@water = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'blue'))
-    @@land = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'brown'))
-    @@mountain = ImageLoader.instance.load_a(ImageMaker.blank(16, 16, 'gray'))
-    return @@land
+    return if @@land
+    @@selected = ImageLoader.instance.load('highlight.png')
+    @@seed = ImageLoader.instance.load('seed.png')
+    @@water = ImageLoader.instance.load('water1.png')
+    @@land = %w[ground1.png ground2.png ground3.png].map { |g| ImageLoader.instance.load(g) }
+    @@mountain = %w[mountain1.png mountain2.png mountain3.png].map { |g| ImageLoader.instance.load(g) }
   end
 end

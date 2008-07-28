@@ -3,7 +3,7 @@ require 'gratr'
 require 'gratr/import'
 
 class Area
-  attr_reader :cells, :player, :goblin, :chip
+  attr_reader :cells, :player, :goblin, :chips
   
   def initialize(width, height)
     @graph = UndirectedGraph.new
@@ -44,7 +44,7 @@ class Area
       end
       
       #Place Seeds
-      cell << Seed.new if !cell.blocked? && rand(90) == 0
+      cell.seeds += 1 if !cell.blocked? && rand(90) == 0
     end
     
     @player = Player.new("Alfonso Fonzarelli")
@@ -57,50 +57,67 @@ class Area
     raccoon = Creature.new('raccoon.png')
     raccoon.move(random_open)
     
-    @chip = Creature.new('chipmunk.png') do
-      @age += 1
-      
-      if @age % 17 == 0
-        @task = :get
-      end
-      
-      if @age % 2 == 0
-        
-        if @path.empty?
-          if @task == :get
-            notify(:no_path_s, self)
-          end
-          
-          if @path.empty?
-            @task = :none
-          end
-        else
-          @target = path.slice! 0
+    @chips = []
+    
+    (rand(3) + 1).times do
+      chip = Creature.new('chipmunk.png') do
+        @age += 1
+
+        if @seeds > 0
+          @task = :plant
         end
 
-        if @target
-          move(@target)
-          if path == []
+        if @age % 17 == 0
+          @task = :get
+        end
 
+        if @age % 2 == 0
+          if @path.empty?
             case @task
             when :get
-              pick_up
+              notify(:no_path_s, self)
+            when :plant
+              @plant_cell = @area.random_open
+              @path = @area.path(@cell, @plant_cell)
             end
 
-            @task = :none
+            if @path.empty?
+              @task = :none
+            end
+          else
+            @target = path.slice! 0
           end
-        else
-          cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
-          move(cell) unless cell.blocked?
+
+          if @target
+            move(@target)
+            if path == []
+
+              case @task
+              when :get
+                pick_up
+                @seeds = [@seeds-1, 0].max if rand(3) == 0
+              when :plant
+                plant
+              end
+
+              @task = :none
+            end
+          else
+            c = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
+            move(c) unless c.blocked?
+          end
         end
       end
+      chip.area = self
+      chip.seeds = rand(3)
+      chip.move(random_open)
+      @entities << chip
+      @chips << chip
     end
-    @chip.move(random_open)
     
     @entities << @player
     @entities << dog
     @entities << raccoon
-    @entities << @chip
   end
   
   def uncover_goblin(cell)
@@ -108,6 +125,8 @@ class Area
     goblin.move(cell)
     goblin.area = self
     @entities << goblin
+    
+    return goblin
   end
   
   def connect(cell)

@@ -15,6 +15,7 @@ class Goblin < Creature
     @cell.delete(self) if @cell
     @cell = cell
     @cell << self
+    notify(:accost, self, cell) if rand(2) == 0
   end
   
   def find_path
@@ -34,4 +35,8 @@ class Goblin < Creature
     end
   end
   
+  def remove
+    @cell.delete self
+    @area.remove_entity self
+  end
 end
