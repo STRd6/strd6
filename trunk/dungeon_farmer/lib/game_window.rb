@@ -66,16 +66,6 @@ class GameWindow < Gosu::Window
   
   def button_down(id)
     case id
-    when 112
-      @player.plant
-    when Gosu::Button::KbLeft
-      @player.west
-    when Gosu::Button::KbRight
-      @player.east
-    when Gosu::Button::KbUp
-      @player.north
-    when Gosu::Button::KbDown
-      @player.south
     when Gosu::Button::MsLeft
       mouse_downed
     when Gosu::Button::MsWheelUp, Gosu::Button::MsRight

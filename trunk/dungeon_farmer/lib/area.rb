@@ -1,7 +1,3 @@
-require 'rubygems'
-require 'gratr'
-require 'gratr/import'
-
 class Area
   attr_reader :cells, :player, :goblin, :chips
   
