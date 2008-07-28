@@ -11,6 +11,7 @@ class GameWindow < Gosu::Window
     ImageLoader.instance.set_window(self)
     
     @font = Gosu::Font.new(self, Gosu::default_font_name, 12)
+    @big_font = Gosu::Font.new(self, Gosu::default_font_name, 42)
 
     @area = Area.new(@width, @height)
     @cells = @area.cells
@@ -28,10 +29,15 @@ class GameWindow < Gosu::Window
     @player.add_listener(:pick_up, self)
     @player.add_listener(:dig, self)
     @player.add_listener(:clear_target, self)
+    @player.add_listener(:game_over, self)
+    @inventory = @player.inventory
     
-    @chip = @area.chip
-    @chip.add_listener(:pick_up, self)
-    @chip.add_listener(:no_path_s, self)
+    
+    @area.chips.each do |chip|
+      chip.add_listener(:plant, self)
+      chip.add_listener(:pick_up, self)
+      chip.add_listener(:no_path_s, self)
+    end
     
     @time = 0
 
@@ -53,7 +59,9 @@ class GameWindow < Gosu::Window
 
   def update
     @time += 1
-    @area.update if @time % 10 == 0
+    unless @game_over
+      @area.update if @time % 10 == 0
+    end
   end
   
   def button_down(id)
@@ -125,6 +133,8 @@ class GameWindow < Gosu::Window
     
     if player.seeds > 0
       case player.task
+      when :dig
+        priorities << {:task => :dig, :array => @target_cells[:dig]}
       when :get
         priorities << {:task => :get, :array => @task_cells[:get]}
         priorities << {:task => :plant, :array => @task_cells[:plant]}
@@ -156,7 +166,9 @@ class GameWindow < Gosu::Window
       if cell
         path = @area.path(creature.cell, cell)
         
-        unless path.empty?
+        if path.empty?
+          priority[:array].delete(cell)
+        else
           creature.task = priority[:task]
           creature.path = path
           return
@@ -167,6 +179,7 @@ class GameWindow < Gosu::Window
   
   def pick_up(creature, cell)
     puts "#{creature} picked stuff up!"
+    cell.selected = false
     @task_cells[:get].delete(cell)
   end
   
@@ -178,13 +191,33 @@ class GameWindow < Gosu::Window
     task_cell.dig
     @area.connect task_cell
     @task_cells[:dig].delete(task_cell)
-    @area.uncover_goblin(task_cell) if rand(77) == 0
+    
+    if rand(57) == 0
+      goblin = @area.uncover_goblin(task_cell) 
+      goblin.add_listener(:accost, self)
+    end
+    
+    if rand(8) == 0
+      task_cell << Prize.new
+      @task_cells[:get] << task_cell unless @task_cells[:get].include?(task_cell)
+    end
+    
     task_cell.selected = false
     @target_cells[:dig].delete(standing)
   end
   
+  def accost(creature, cell)
+    cell.contents.each do |content|
+      content.remove unless content == creature
+    end
+  end
+  
   def clear_target(task, cell)
     @target_cells[task].delete(cell)
+  end
+  
+  def game_over
+    @game_over = true
   end
   
   def rotate(array)
@@ -202,8 +235,15 @@ class GameWindow < Gosu::Window
 
   def draw
     @cells.each { |cell| cell.draw }
+    @inventory.draw(450, 5)
     @cursor.draw(mouse_x, mouse_y, 10000)
     @cursors[action].draw(mouse_x, mouse_y, 10000)
     @font.draw("Seeds: #{@player.seeds}", 0, 0, 20000)
+    @font.draw("Food: #{@player.food}", 0, 16, 20000)
+    
+    if @game_over
+      @big_font.draw("Game Over", 180, 200, 20000)
+      @font.draw("Score: #{@player.score}", 240, 265, 20000)
+    end
   end
 end

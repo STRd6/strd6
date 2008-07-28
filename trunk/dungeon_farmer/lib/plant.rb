@@ -15,19 +15,31 @@ class Plant
   def update
     @age += 1
     
-    if dead?
-      rand(3).times do
-        seed_cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
-        notify(:seed, seed_cell)
-        @area.add_entity(Seed.new, seed_cell)
-        @cell.delete self
-        @area.remove_entity self
+    if @age % 2 == 0 && mature?
+      if rand(73) == 0
+        fruit_cell = [@cell, @cell, @cell, @cell.north, @cell.south, @cell.east, @cell.west].random
+        fruit_cell << Fruit.new
+        notify(:seed, fruit_cell)
       end
+    end
+    
+    if dead?
+      rand(4).times do
+        seed_cell = [@cell.north, @cell.south, @cell.east, @cell.west].random
+        seed_cell.seeds += 1
+        notify(:seed, seed_cell)
+      end
+      remove
     end
   end
   
+  def remove
+    @cell.delete self
+    @area.remove_entity self
+  end
+  
   def mature?
-    age > 99
+    age > 199
   end
   
   def obstructs?

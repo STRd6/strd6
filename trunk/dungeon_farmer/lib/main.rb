@@ -1,7 +1,7 @@
 require 'gosu'
 
 lib = File.dirname(__FILE__) + '/'
-files = %w[graphical observable seed plant area creature dog player goblin cell diamond_square image_maker image_loader game_window ../../gutil/lib/random]
+files = %w[graphical observable item prize seed fruit plant area creature dog player goblin cell diamond_square image_maker image_loader game_window random]
 files.each {|f| require lib+"#{f}.rb" }
 
 class Array

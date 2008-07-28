@@ -1,7 +1,7 @@
 class Creature
   include Graphical, Observable
-  attr_reader :cell, :seeds
-  attr_accessor  :target, :path, :area, :task, :next_task
+  attr_reader :cell
+  attr_accessor  :target, :path, :area, :task, :next_task, :seeds
   
   def initialize(img, &block)
     @image = il img if img
@@ -74,16 +74,34 @@ class Creature
     end
   end
   
+  def plant
+    if @seeds > 0
+      plant = Plant.new(@cell)
+      plant.area = @area
+      @area.add_entity(plant, @cell)
+      notify(:plant, @cell, plant)
+      
+      @seeds -= 1
+      if @seeds == 0
+        @task = :none
+      end
+    end
+  end
+  
   def pick_up
-    seeds = @cell.contents.select { |item| item.can_pick_up? }
-    @cell.contents -= seeds
-    @seeds += seeds.size
+    seeds = @cell.seeds
+    @cell.seeds -= seeds
+    @seeds += seeds
     notify(:pick_up, self, @cell)
   end
   
   def random_move
     cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
     move(cell) unless cell.blocked?
+  end
+  
+  def remove
+    
   end
   
   def can_pick_up?
