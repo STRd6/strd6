@@ -1,7 +1,0 @@
-name: pike
-slot: !ruby/symbol phand
-bonus:
-  !ruby/symbol str: 60
-  !ruby/symbol dex: -20
-dmg_exprs:
-  !ruby/symbol blunt: 4.d(6) - 4 + str/10
