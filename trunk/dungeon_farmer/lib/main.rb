@@ -1,6 +1,8 @@
+require 'rubygems'
+require 'RMagick'
 require 'gosu'
 
-$LOAD_PATH.push '../gratr-0.4.3/lib/'
+#$LOAD_PATH.push '../gratr-0.4.3/lib/'
 require File.dirname(__FILE__) + '/../gratr-0.4.3/lib/gratr.rb'
 require File.dirname(__FILE__) + '/../gratr-0.4.3/lib/gratr/import'
 
