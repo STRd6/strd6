@@ -1,5 +1,3 @@
-require 'RMagick'
-
 module ImageMaker
   include Magick
   QuantumRange = MaxRGB
