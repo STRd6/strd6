@@ -1,6 +1,13 @@
 == DungeonFarmer
 
 v0.0 Release for RubyWeekend #2
+
+Requires Gosu and RMagick.
+
+Install PriorityQueue for added performance.
+  sudo gem install PriorityQueue
+
+Run with ./run
  
 This game is still +very+ crude.
 
