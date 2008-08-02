@@ -19,7 +19,7 @@ class Goblin < Creature
   end
   
   def find_path
-    return if path && !path.empty?
+    return @path unless @path.empty?
     
     max = @area.cells.size
     n = @age*2
@@ -28,11 +28,13 @@ class Goblin < Creature
       cell = @area.cells[i%max]
       if cell.contents.size > 0
         print "#{self} finding path to cell #{cell}, contents: #{cell.contents} ... "
-        self.path = @area.path @cell, cell
+        path = @area.path @cell, cell
         puts "done!"
-        return
+        return path
       end
     end
+    
+    return []
   end
   
   def remove

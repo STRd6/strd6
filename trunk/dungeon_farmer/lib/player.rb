@@ -4,8 +4,6 @@ class Player < Creature
   def initialize(name)
     super 'farmer.png'
     @name = name
-    @cell = nil
-    @age = 0
     @seeds = 5
     init_inventory
     
@@ -33,70 +31,53 @@ class Player < Creature
     name
   end
   
-  def move(cell)
-    @cell.delete(self) if @cell
-    @cell = cell
-    @cell << self
-  end
-  
-  def dig(cell)
-    puts "#{self} is digging at #{cell}"
-    notify(:dig, @cell, cell)
-  end
-  
   def update
     @age += 1
     
     if @age % 2 == 0
-      if path.empty?
-        notify(:no_path, self)
+      if @path.empty?
+        @path = find_path
+      
+        if @act_cell == @cell
+          target = @act_cell
+          @act_cell = nil
+        end
       else
-        self.target = path.slice! 0
-      end
+        target = @path.slice! 0
+      end      
       
       if target
         move(target)
-        if path == []
-          self.target = nil
-          
-          case task
+        if @current_task && @current_task.perform_cells.include?(@cell)
+          case @current_task.activity
           when :plant
             plant
           when :get
             pick_up
           when :dig
-            @cell.neighbours.each do |c|
-              if c.to_dig
-                dig c
-                break
-              end
-            end
-            notify(:clear_target, :dig, @cell)
+            dig
           end
           
-          @task = @next_task if @next_task
-          @next_task = nil
-          
+          @managers[@current_task.activity].accomplish @current_task
+          @current_task = nil
+          @path = []
         end
-      else
-        @task = @next_task if @next_task
-        @next_task = nil
       end
       
     end
     
-    if @age % 64 == 0
-      @food -= 1
-      if @food < 7
-        3.times do
-          eat
-        end
-      end
-      
-      if @food <= 0
-        notify(:game_over)
-      end
-    end
+#    if @age % 64 == 0
+#      @food -= 1
+#      if @food < 7
+#        3.times do
+#          eat
+#        end
+#      end
+#      
+#      if @food <= 0
+#        notify(:game_over)
+#      end
+#    end
   end
   
   def pick_up
@@ -111,8 +92,8 @@ class Player < Creature
     notify(:pick_up, self, @cell)
   end
   
-  def obstructs?
-    true
+  def add_task(task)
+    @managers[task.activity].add_task(task)
   end
   
   def remove

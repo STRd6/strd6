@@ -1,9 +1,7 @@
-class Plant
-  include Graphical, Observable
-  attr_reader :age
-  attr_accessor :area
+class Plant < GameEntity
   
   def initialize(cell)
+    super()
     @cell = cell
     @age = 0
     @listeners = {}
@@ -39,7 +37,7 @@ class Plant
   end
   
   def mature?
-    age > 199
+    @age > 199
   end
   
   def obstructs?
@@ -47,7 +45,7 @@ class Plant
   end
   
   def dead?
-    age > 349
+    @age > 349
   end
   
   def image

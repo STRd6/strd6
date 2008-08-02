@@ -1,6 +1,6 @@
 class Cell
   attr_reader :x, :y
-  attr_accessor :north, :south, :east, :west, :contents, :selected, :to_dig, :seeds
+  attr_accessor :north, :south, :east, :west, :contents, :to_dig, :seeds
   @@land = nil
   
   def initialize(x, y, h=0.5)
@@ -11,6 +11,7 @@ class Cell
     @y = y
     @height = h
     @seeds = 0
+    @tasks = 0
     
     if @height < 0.2
       @blocked = true
@@ -22,6 +23,14 @@ class Cell
       @blocked = true
       @image = @@mountain.random
     end
+  end
+  
+  def add_task
+    @tasks += 1
+  end
+  
+  def remove_task
+    @tasks -= 1
   end
   
   def update
@@ -46,7 +55,7 @@ class Cell
     image.draw(x_pos, y_pos, 0)
     @contents.each {|e| e.draw(x_pos, y_pos)}
     @@seed.draw(x_pos, y_pos, 0) if @seeds > 0
-    @@selected.draw(x_pos, y_pos, 1) if selected
+    @@selected.draw(x_pos, y_pos, 1) if @tasks > 0
   end
   
   def image
@@ -74,7 +83,7 @@ class Cell
   end
   
   def neighbours
-    [north, east, south, west]
+    return @neighbours ||= [north, east, south, west]
   end
   
   def self.image
