@@ -10,37 +10,34 @@ class Area
     
     @width = width
     @height = height
-    
-    height.times do |row|
+
+    #Initialize Cells
+    @height.times do |row|
       @cells << []
-      width.times do |col|
+      @width.times do |col|
         @cells[row] << Cell.new(col, row, heights[row][col])
       end
     end
     
-    cells = self.cells
-    cells.each_index do |i|
-      cell = cells[i]
-      
-      #Set up neighbours
-      row = i / width
-      col = i % width
-      
-      cell.north = cells[((row - 1)%height)*width + col]
-      cell.south = cells[((row + 1)%height)*width + col]
-      cell.east = cells[row*width + (col + 1)%width]
-      cell.west = cells[row*width + (col - 1)%width]
-      
-      unless cell.blocked?
+    @height.times do |row|
+      @cells << []
+      @width.times do |col|
+        #Set up neighbours
+        cell = @cells[row][col]
+        cell.north = @cells[(row-1)%@height][col]
+        cell.south = @cells[(row+1)%@height][col]
+        cell.east = @cells[row][(col+1)%@width]
+        cell.west = @cells[row][(col-1)%@width]
+        
         #Set up graph
-        @graph.add_edge!(cell, cell.north, 1) unless cell.north.blocked?
-        @graph.add_edge!(cell, cell.south, 1) unless cell.south.blocked?
-        @graph.add_edge!(cell, cell.east, 1) unless cell.east.blocked?
-        @graph.add_edge!(cell, cell.west, 1) unless cell.west.blocked?
+        unless cell.blocked?
+          cell.neighbours.each do |n|
+            @graph.add_edge!(cell, n, 1) unless n.blocked?
+          end
+        end
+        
+        cell.seeds += 1 if !cell.blocked? && rand(90) == 0
       end
-      
-      #Place Seeds
-      cell.seeds += 1 if !cell.blocked? && rand(90) == 0
     end
     
     @player = Player.new("Alfonso Fonzarelli")
@@ -57,52 +54,7 @@ class Area
     
     (rand(3) + 1).times do
       chip = Creature.new('chipmunk.png') do
-        @age += 1
-
-        if @seeds > 0
-          @task = :plant
-        end
-
-        if @age % 17 == 0
-          @task = :get
-        end
-
-        if @age % 2 == 0
-          if @path.empty?
-            case @task
-            when :get
-              notify(:no_path_s, self)
-            when :plant
-              @plant_cell = @area.random_open
-              @path = @area.path(@cell, @plant_cell)
-            end
-
-            if @path.empty?
-              @task = :none
-            end
-          else
-            @target = path.slice! 0
-          end
-
-          if @target
-            move(@target)
-            if path == []
-
-              case @task
-              when :get
-                pick_up
-                @seeds = [@seeds-1, 0].max if rand(3) == 0
-              when :plant
-                plant
-              end
-
-              @task = :none
-            end
-          else
-            c = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
-            move(c) unless c.blocked?
-          end
-        end
+        
       end
       chip.area = self
       chip.seeds = rand(3)
@@ -186,7 +138,7 @@ class Area
     
     puts "#{examined} examined ... "
     return [] if path.nil?
-    return path.slice(1, path.size)
+    return path.slice(1, path.size) || []
   end
   
   def cells_in(x1, x2, y1, y2)

@@ -1,42 +1,28 @@
-class Creature
-  include Graphical, Observable
-  attr_reader :cell
-  attr_accessor  :target, :path, :area, :task, :next_task, :seeds
+class Creature < GameEntity
+  
+  attr_accessor  :path, :task, :next_task, :seeds, :activity
+  
+  def self.actions
+    [:dig, :get, :plant]
+  end
   
   def initialize(img, &block)
+    super()
     @image = il img if img
     @seeds = 0
-    @cell = nil
-    @age = 0
     @listeners = {}
     @path = []
     
+    @managers = self.class.actions.inject({}) do |hash,action|
+      hash[action] = Manager.new
+      hash
+    end
+    @current_task = nil
+    @activity = :none
     
     if block_given?
       @update_block = block
     end
-  end
-  
-  def move(cell)
-    @cell.delete(self) if @cell
-    @cell = cell
-    @cell << self
-  end
-  
-  def north
-    move @cell.north unless @cell.north.blocked?
-  end
-  
-  def south
-    move @cell.south unless @cell.south.blocked?
-  end
-  
-  def east
-    move @cell.east unless @cell.east.blocked?
-  end
-  
-  def west
-    move @cell.west unless @cell.west.blocked?
   end
   
   def obstructs?
@@ -44,21 +30,38 @@ class Creature
   end
   
   def find_path
+    manager = @managers[@activity]
+    return [] unless manager
     
+    while t = manager.get_task
+      #puts t
+      if t.unblocked_cells.empty?
+        manager.deactivate_task
+        t = nil
+      else
+        break
+      end
+    end
+    
+    if t
+      @act_cell = t.unblocked_cells.random
+      path = @area.path(@cell, @act_cell)
+      #puts path
+      @current_task = t
+      return path
+    else
+      return []
+    end
   end
   
   def update
-    if @update_block
-      return instance_eval(&@update_block)
-    end
-    
     @age += 1
     
     if @age % 2 == 0
-      find_path
+      @path = find_path
       
       if path
-        self.target = path.slice! 0
+        target = path.slice! 0
       end
       
       if target
@@ -86,6 +89,15 @@ class Creature
         @task = :none
       end
     end
+  end
+  
+  def dig
+    cell = @current_task.target_cell
+    
+    puts "#{self} is digging at #{cell}"
+    notify(:dig, @cell, cell)
+
+    @managers[:dig].activate_tasks cell
   end
   
   def pick_up
