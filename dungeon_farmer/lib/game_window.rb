@@ -17,28 +17,12 @@ class GameWindow < Gosu::Window
     @cells = @area.cells
     @target_cell = nil
     
-    @target_cells = {}
-    @task_cells = {}
-    @actions.each { |action| @task_cells[action] = []; @target_cells[action] = [] }
-    @task_cells[:get] = @cells.select {|c| c.has_resource? }
-    
-    
     @player = @area.player
-    @player.add_listener(:plant, self)
-    @player.add_listener(:no_path, self)
-    @player.add_listener(:pick_up, self)
-    @player.add_listener(:dig, self)
     @player.add_listener(:game_over, self)
     @inventory = @player.inventory
     
-    
-    @area.chips.each do |chip|
-      chip.add_listener(:plant, self)
-      chip.add_listener(:pick_up, self)
-      chip.add_listener(:no_path_s, self)
-    end
-    
     @time = 0
+    @paused = false
 
     @cursor = ImageLoader.instance.load('cursor.png')
     @cursors = load_cursors
@@ -57,14 +41,16 @@ class GameWindow < Gosu::Window
   end
 
   def update
-    @time += 1
-    unless @game_over
+    unless @paused || @game_over
+      @time += 1
       @area.update if @time % 10 == 0
     end
   end
   
   def button_down(id)
     case id
+    when Gosu::Button::KbSpace
+      @paused = !@paused
     when Gosu::Button::MsLeft
       mouse_downed
     when Gosu::Button::MsWheelUp, Gosu::Button::MsRight
@@ -112,95 +98,6 @@ class GameWindow < Gosu::Window
     end
   end
   
-  def plant(cell, plant)
-    @task_cells[:plant].delete(cell)
-    plant.add_listener(:seed, self)
-  end
-  
-  def no_path(player)
-    
-    
-#    priorities = []
-#    
-#    if player.seeds > 0
-#      case player.task
-#      when :dig
-#        priorities << {:task => :dig, :array => @target_cells[:dig]}
-#      when :get
-#        priorities << {:task => :get, :array => @task_cells[:get]}
-#        priorities << {:task => :plant, :array => @task_cells[:plant]}
-#      else
-#        priorities << {:task => :plant, :array => @task_cells[:plant]}
-#      end
-#    end
-#    
-#    priorities << {:task => :get, :array => @task_cells[:get]}
-#    priorities << {:task => :dig, :array => @target_cells[:dig]}
-#    
-#    path_from_priority(player, priorities)
-  end
-  
-  def no_path_s(chip)
-    priorities = []
-    
-    case chip.task
-    when :get
-      priorities << {:task => :get, :array => @task_cells[:get]}
-    end
-    
-    path_from_priority(chip, priorities)
-  end
-  
-  def path_from_priority(creature, priorities)
-    priorities.each do |priority|
-      cell = rotate(priority[:array])
-      if cell
-        path = @area.path(creature.cell, cell)
-        
-        if path.empty?
-          priority[:array].delete(cell)
-        else
-          creature.task = priority[:task]
-          creature.path = path
-          return
-        end
-      end
-    end
-  end
-  
-  def pick_up(creature, cell)
-    puts "#{creature} picked stuff up!"
-    @task_cells[:get].delete(cell)
-  end
-  
-  def seed(cell)
-    @task_cells[:get] << cell unless @task_cells[:get].include?(cell)
-  end
-  
-  def dig(standing, task_cell)
-    task_cell.dig
-    @area.connect task_cell
-    @task_cells[:dig].delete(task_cell)
-    
-    if rand(5) == 0
-      goblin = @area.uncover_goblin(task_cell) 
-      goblin.add_listener(:accost, self)
-    end
-    
-    if rand(8) == 0
-      task_cell << Prize.new
-      @task_cells[:get] << task_cell unless @task_cells[:get].include?(task_cell)
-    end
-    
-    @target_cells[:dig].delete(standing)
-  end
-  
-  def accost(creature, cell)
-    cell.contents.each do |content|
-      content.remove unless content == creature
-    end
-  end
-  
   def game_over
     @game_over = true
   end
@@ -229,6 +126,8 @@ class GameWindow < Gosu::Window
     if @game_over
       @big_font.draw("Game Over", 180, 200, 20000)
       @font.draw("Score: #{@player.score}", 240, 265, 20000)
+    elsif @paused
+      @big_font.draw("=PAUSED=", 180, 200, 20000)
     end
   end
 end

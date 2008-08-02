@@ -32,39 +32,7 @@ class Player < Creature
   end
   
   def update
-    @age += 1
-    
-    if @age % 2 == 0
-      if @path.empty?
-        @path = find_path
-      
-        if @act_cell == @cell
-          target = @act_cell
-          @act_cell = nil
-        end
-      else
-        target = @path.slice! 0
-      end      
-      
-      if target
-        move(target)
-        if @current_task && @current_task.perform_cells.include?(@cell)
-          case @current_task.activity
-          when :plant
-            plant
-          when :get
-            pick_up
-          when :dig
-            dig
-          end
-          
-          @managers[@current_task.activity].accomplish @current_task
-          @current_task = nil
-          @path = []
-        end
-      end
-      
-    end
+    super
     
 #    if @age % 64 == 0
 #      @food -= 1
@@ -80,7 +48,11 @@ class Player < Creature
 #    end
   end
   
-  def pick_up
+  def no_target
+
+  end
+  
+  def get
     seeds = @cell.seeds
     @cell.seeds -= seeds
     @seeds += seeds
@@ -89,11 +61,6 @@ class Player < Creature
     @cell.contents -= items
     @inventory.items.push(*items)
     @score_valid = false
-    notify(:pick_up, self, @cell)
-  end
-  
-  def add_task(task)
-    @managers[task.activity].add_task(task)
   end
   
   def remove

@@ -19,4 +19,16 @@ class GameEntity
   def update
     @age += 1
   end
+  
+  def obstructs?
+    false
+  end
+  
+  def remove
+    
+  end
+  
+  def can_pick_up?
+    false
+  end
 end

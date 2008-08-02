@@ -42,39 +42,45 @@ class Area
     
     @player = Player.new("Alfonso Fonzarelli")
     @player.move(random_open)
-    @player.area = self
+    @player.add_listener(:plant, self)
+    @player.add_listener(:dig, self)
     
     dog = Creature.new('dog.png')
     dog.move(random_open)
     
-    raccoon = Creature.new('raccoon.png')
-    raccoon.move(random_open)
+    @raccoon = Raccoon.new
+    @raccoon.move(random_open)
     
     @chips = []
     
-    (rand(3) + 1).times do
-      chip = Creature.new('chipmunk.png') do
-        
-      end
-      chip.area = self
+    3.times do
+      chip = Chipmunk.new
       chip.seeds = rand(3)
       chip.move(random_open)
-      @entities << chip
+      
+      chip.add_listener(:plant, self)
+      chip.activity = :get
+      
+      add_entity chip
       @chips << chip
     end
+   
+    cells.each do |cell|
+      if cell.has_resource?
+        @chips.random.add_task(Task.new(cell, [cell], :get))
+      end
+    end
     
-    @entities << @player
-    @entities << dog
-    @entities << raccoon
+    add_entity @player
+    add_entity dog
+    add_entity @raccoon
   end
   
   def uncover_goblin(cell)
     goblin = Goblin.new
     goblin.move(cell)
-    goblin.area = self
-    @entities << goblin
-    
-    return goblin
+    goblin.add_listener(:accost, self)
+    add_entity goblin
   end
   
   def connect(cell)
@@ -95,9 +101,9 @@ class Area
     @cells.flatten
   end
   
-  def add_entity(entity, cell)
-    cell << entity
+  def add_entity(entity)
     @entities << entity
+    entity.area = self
   end
   
   def remove_entity(entity)
@@ -154,5 +160,42 @@ class Area
   def update
     #@cells.each {|c| c.update }
     @entities.each {|c| c.update }
+  end
+  
+  
+  #### Callbacks ####
+  def seed(cell)
+    @chips.random.add_task(Task.new(cell, [cell], :get))
+  end
+  
+  def fruit(cell)
+    @raccoon.add_task(Task.new(cell, [cell], :get)) #if rand(3) == 0
+    @raccoon.activity = :get
+  end
+  
+  def plant(cell)
+    plant = Plant.new(cell)
+    plant.add_listener(:seed, self)
+    plant.add_listener(:fruit, self)
+    add_entity(plant)
+  end
+  
+  def dig(standing, task_cell)
+    task_cell.dig
+    connect task_cell
+    
+    if false && rand(5) == 0
+      uncover_goblin(task_cell) 
+    end
+    
+    if rand(8) == 0
+      task_cell << Prize.new
+    end
+  end
+  
+  def accost(creature, cell)
+    cell.contents.each do |content|
+      content.remove unless content == creature
+    end
   end
 end

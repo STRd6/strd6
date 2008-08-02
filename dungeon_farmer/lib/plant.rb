@@ -2,7 +2,7 @@ class Plant < GameEntity
   
   def initialize(cell)
     super()
-    @cell = cell
+    move cell
     @age = 0
     @listeners = {}
     @@images ||= ['seed.png', 'sprout.png', 'plant1.png', 'plant2.png', 'plant3.png'].map do
@@ -17,13 +17,13 @@ class Plant < GameEntity
       if rand(73) == 0
         fruit_cell = [@cell, @cell, @cell, @cell.north, @cell.south, @cell.east, @cell.west].random
         fruit_cell << Fruit.new
-        notify(:seed, fruit_cell)
+        notify(:fruit, fruit_cell)
       end
     end
     
     if dead?
       rand(4).times do
-        seed_cell = [@cell.north, @cell.south, @cell.east, @cell.west].random
+        seed_cell = @cell.neighbours.random
         seed_cell.seeds += 1
         notify(:seed, seed_cell)
       end
