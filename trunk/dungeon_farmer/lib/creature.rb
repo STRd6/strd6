@@ -6,7 +6,7 @@ class Creature < GameEntity
     [:dig, :get, :plant]
   end
   
-  def initialize(img, &block)
+  def initialize(img)
     super()
     @image = il img if img
     @seeds = 0
@@ -19,16 +19,15 @@ class Creature < GameEntity
     end
     @current_task = nil
     @activity = :none
-    
-    if block_given?
-      @update_block = block
-    end
   end
   
-  def obstructs?
-    false
+  def add_task(task)
+    @managers[task.activity].add_task(task)
   end
   
+  # Selects an action from the manager for the current activity
+  # Returns the path to a cell at which the action can be performed or
+  # [] if no path found.
   def find_path
     manager = @managers[@activity]
     return [] unless manager
@@ -44,11 +43,22 @@ class Creature < GameEntity
     end
     
     if t
-      @act_cell = t.unblocked_cells.random
-      path = @area.path(@cell, @act_cell)
-      #puts path
       @current_task = t
-      return path
+      @act_cell = t.unblocked_cells.random
+      
+      if @cell == @act_cell
+        return []
+      else
+        path = @area.path(@cell, @act_cell)
+        
+        if path.empty?
+          # Deactivate if inaccessable
+#          @current_task = nil
+#          manager.deactivate_task
+        end
+        
+        return path
+      end      
     else
       return []
     end
@@ -58,35 +68,43 @@ class Creature < GameEntity
     @age += 1
     
     if @age % 2 == 0
-      @path = find_path
-      
-      if path
-        target = path.slice! 0
-      end
-      
-      if target
-        if target.blocked?
-          self.path = nil
-          self.target = nil
-        else
-          move(target)
+      # If Creature has a task and the task can be performed from the current cell
+      if @current_task && @current_task.perform_cells.include?(@cell)
+        # Perform
+        send @current_task.activity
+        
+        @managers[@current_task.activity].accomplish @current_task
+        @current_task = nil
+        @act_cell = nil
+        @path = []
+      else # Find the next place to move
+        if @path.empty?
+          @path = find_path
         end
-      else
-        random_move
+        
+        target = @path.shift
+
+        if target
+          move(target)
+        else
+          no_target
+        end
       end
+        
     end
+  end
+  
+  def no_target
+    random_move
   end
   
   def plant
     if @seeds > 0
-      plant = Plant.new(@cell)
-      plant.area = @area
-      @area.add_entity(plant, @cell)
-      notify(:plant, @cell, plant)
+      notify(:plant, @cell)
       
       @seeds -= 1
       if @seeds == 0
-        @task = :none
+        @activity = :none
       end
     end
   end
@@ -100,23 +118,15 @@ class Creature < GameEntity
     @managers[:dig].activate_tasks cell
   end
   
-  def pick_up
+  def get
+    puts "#{self} picked stuff up!"
     seeds = @cell.seeds
     @cell.seeds -= seeds
     @seeds += seeds
-    notify(:pick_up, self, @cell)
   end
   
   def random_move
     cell = [@cell.north, @cell.south, @cell.east, @cell.west, @cell].random
     move(cell) unless cell.blocked?
-  end
-  
-  def remove
-    
-  end
-  
-  def can_pick_up?
-    false
   end
 end

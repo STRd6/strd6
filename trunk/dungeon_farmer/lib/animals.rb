@@ -1,56 +1,44 @@
 class Chipmunk < Creature
   def initialize
+    super 'chipmunk.png'
     
+    @age += rand 32
   end
   
-  def update
-    @age += 1
-
-    if @seeds > 0
-      @activity = :plant
-    end
-
-    if @age % 17 == 0
-      @activity = :get
-    end
-
-    if @age % 2 == 0
-      if @path.empty?
-        case @activity
-        when :get
-          notify(:no_path_s, self)
-        when :plant
-          @plant_cell = @area.random_open
-          @path = @area.path(@cell, @plant_cell)
-        end
-
-        if @path.empty?
-          @activity = :none
-        end
+  def find_path
+    if @age % 32 == 0
+      if rand(@seeds) >= 1
+        cell = @area.random_open
+        add_task Task.new(cell, [cell], :plant)
+        @activity = :plant
       else
-        @target = path.slice! 0
+        @activity = :get
       end
-
-      if @target
-        move(@target)
-        if path == []
-
-          case @activity
-          when :get
-            pick_up
-            @seeds = [@seeds-1, 0].max if rand(3) == 0
-          when :plant
-            plant
-          when :none
-            random_move
-          end
-
-          @activity = :none
-        end
-      end
-      
+    else
+      @activity = :none
     end
     
+    super
   end
   
+end
+
+class Dog < Creature
+  
+  def initialize
+    super 'dog.png'
+  end
+end
+
+class Raccoon < Creature
+  
+  def initialize
+    super 'raccoon.png'
+  end
+  
+  def get
+    puts "#{self} picked stuff up!"
+    items = @cell.contents.select { |item| item.can_pick_up? }
+    @cell.contents -= items
+  end
 end
