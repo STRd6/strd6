@@ -6,7 +6,7 @@ class DiamondSquare
   def self.go(times)
     arrays = [[0.5]]
     
-    ratio = 1
+    ratio = 2
     
     times.times do
       arrays.map! do |array|
