@@ -1,5 +1,5 @@
 #summary Dungeon Farmer is a real-time fantasy strategy/simulation game. Plant, harvest and build in an interactive environment.
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 
 = DungeonFarmer =
 
