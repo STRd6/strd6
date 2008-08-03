@@ -1,7 +1,0 @@
-name: fire sword
-slot: !ruby/symbol phand
-bonus:
-  !ruby/symbol str: 40
-dmg_exprs:
-  !ruby/symbol pierce: 2.d(6) + str/10
-  !ruby/symbol fire: 2.d(6)
