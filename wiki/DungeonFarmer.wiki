@@ -1,9 +1,10 @@
 #summary Dungeon Farmer is a real-time fantasy strategy/simulation game. Plant, harvest and build in an interactive environment.
+#labels Phase-Deploy
 
 = DungeonFarmer =
 
 ==Version==
-v0.0.2
+[http://strd6.googlecode.com/files/dungeon_farmer-0.0.2.tar.gz v0.0.2]
 
 ==Requirements==
 Requires Gosu. Find out more here: http://code.google.com/p/gosu/ 
