@@ -3,8 +3,10 @@ require 'singleton'
 class ImageLoader
   include Singleton
   
+  @@dir = File.dirname(__FILE__) + '/../images'
+  
   def load(name, hard_borders=false)
-    Gosu::Image.new(@window, "images/#{name}", hard_borders)
+    Gosu::Image.new(@window, "#{@@dir}/#{name}", hard_borders)
   end
   
   def load_a(name, hard_borders=false)
