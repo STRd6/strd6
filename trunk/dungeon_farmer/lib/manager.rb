@@ -5,7 +5,11 @@ class Manager
   end
   
   def add_task(task)
-    @active_tasks.push task
+    if @active_tasks.any? { |t| t.target_cell == task.target_cell }
+      task.cancel
+    else
+      @active_tasks.push task 
+    end
   end
   
   def add_inactive_task(task)

@@ -38,7 +38,22 @@ class Raccoon < Creature
   
   def get
     puts "#{self} picked stuff up!"
+    seeds = @cell.seeds
+    @cell.seeds -= seeds
+    @seeds += seeds
+    
     items = @cell.contents.select { |item| item.can_pick_up? }
     @cell.contents -= items
+  end
+  
+  def move(to_cell)
+    super to_cell
+    
+    @cell.neighbours.each do |cell|
+      if cell.has_resource?
+        add_task(Task.new(cell, [cell], :get))
+        @activity = :get
+      end
+    end
   end
 end

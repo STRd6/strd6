@@ -34,18 +34,18 @@ class Player < Creature
   def update
     super
     
-#    if @age % 64 == 0
-#      @food -= 1
-#      if @food < 7
-#        3.times do
-#          eat
-#        end
-#      end
-#      
-#      if @food <= 0
-#        notify(:game_over)
-#      end
-#    end
+    if @age % 64 == 0
+      @food -= 1
+      if @food < 7
+        3.times do
+          eat
+        end
+      end
+      
+      if @food <= 0
+        notify(:game_over)
+      end
+    end
   end
   
   def no_target

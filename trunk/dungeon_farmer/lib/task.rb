@@ -19,4 +19,8 @@ class Task
   def accomplish
     @target_cell.remove_task
   end
+  
+  def cancel
+    @target_cell.remove_task
+  end
 end
