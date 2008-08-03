@@ -1,5 +1,5 @@
 class Area
-  attr_reader :cells, :player, :goblin, :chips
+  attr_reader :cells, :player
   
   def initialize(width, height)
     @graph = UndirectedGraph.new
@@ -169,8 +169,10 @@ class Area
   end
   
   def fruit(cell)
-    @raccoon.add_task(Task.new(cell, [cell], :get)) #if rand(3) == 0
-    @raccoon.activity = :get
+    if rand(3) == 0
+      @raccoon.add_task(Task.new(cell, [cell], :get))
+      @raccoon.activity = :get
+    end
   end
   
   def plant(cell)
@@ -184,12 +186,16 @@ class Area
     task_cell.dig
     connect task_cell
     
-    if false && rand(5) == 0
+    if rand(32) == 0
       uncover_goblin(task_cell) 
     end
     
     if rand(8) == 0
       task_cell << Prize.new
+      if rand(3) == 0
+        @raccoon.add_task(Task.new(task_cell, [task_cell], :get)) 
+        @raccoon.activity = :get
+      end
     end
   end
   
