@@ -2,7 +2,7 @@
 #labels Phase-Deploy,Featured
 
 = DungeonFarmer =
-
+[http://strd6.googlecode.com/files/df-0.0.2.png]
 ==Version==
 [http://strd6.googlecode.com/files/dungeon_farmer-0.0.2.tar.gz v0.0.2]
 
