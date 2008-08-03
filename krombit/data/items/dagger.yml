@@ -1,7 +1,0 @@
-name: dagger
-slot: !ruby/symbol phand
-bonus:
-  !ruby/symbol str: 15
-  !ruby/symbol dex: 10
-dmg_exprs:
-  !ruby/symbol pierce: 1.d(4) + dex/10
