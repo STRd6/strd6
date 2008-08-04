@@ -25,8 +25,23 @@ end
 
 class Dog < Creature
   
-  def initialize
+  def initialize(owner)
     super 'dog.png'
+    @owner = owner
+    @managers[:follow] = Manager.new
+  end
+  
+  def find_path
+    if @activity == :none && @age % 32 == 0
+      add_task Task.new(@owner.cell, [@owner.cell], :follow)
+      @activity = :follow
+    end
+    
+    super
+  end
+  
+  def follow
+    @activity = :none
   end
 end
 
