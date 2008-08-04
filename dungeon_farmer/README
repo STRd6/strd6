@@ -1,96 +1,70 @@
-== DungeonFarmer
+= DungeonFarmer =
 
-v0.0 Release for RubyWeekend #2
+==Version==
+v0.0.2b
 
-Requires Gosu and RMagick.
+==Requires==
+  Gosu - http://code.google.com/p/gosu/ 
+  ----- OR -----
+  RubyGame 2.3.0 - http://rubygame.sourceforge.net/
 
-Install PriorityQueue for added performance.
+==Instructions==
+[OPTIONAL] Install PriorityQueue for added performance.
   sudo gem install PriorityQueue
 
-Run with ./run
- 
-This game is still +very+ crude.
+Run with: 
+  Default gfx is gosu, use mode=rubygame to run in rubygame.
+  ruby lib/main.rb [mode=rubygame]
 
-Creatures:
-  -Farmer: He's the guy you give directions to. Keep him fed so he won't die.
-  -Squirrel (Chipmunk): This guy likes to run off with seeds and interfere!
-  -Goblin: Goblins live in the ground and will accost you and your plants.
-  -Dog: The dog will one day defend you, not today though.
-  -Raccoon: The raccoon peacefully wanders.
+This game is still very crude. FPS is 50% when running in RubyGame mode. Also
+some font transparancy issues in RubyGame mode.
 
-Actions: 
-  -Plant (looks like a little bag)
+===Creatures:===
+  * Farmer: He's the guy you give directions to. Keep him fed so he won't die.
+  * Squirrel (Chipmunk): These like to run off with seeds.
+  * Goblin: Goblins live in the ground and will accost you and your plants.
+  * Dog: The dog will one day defend you, not today though.
+  * Raccoon: The raccoon gathers fruit and shiny objects.
+
+===Actions: ===
+  * Plant (looks like a little bag)
     The farmer will plant seeds in the selected area.
-  -Dig (looks like a pick and rocks)
-    The farmer will dig in the selected area. Digging makes impassable squares 
-  passable as well as uncovers gems and goblins.
-  -Get (looks like hand with fruit)
+  * Dig (looks like a pick and rocks)
+    The farmer will dig in the selected area. Digging makes impassable squares passable as well as uncovers gems and goblins.
+  * Get (looks like hand with fruit)
     The farmer will get any items in the area designated.
   
-Controls:
-  Right-Click: Change action selection
-  Left-Click (+ drag): Designate current action over an area
+===Controls:===
+  * Right-Click: Change action selection
+  * Left-Click (+ drag): Designate current action over an area
 
-Items:
-  Seeds: These grow into plants when planted.
-  Plants: These create seeds and fruit.
-  Fruit: Eat this to survive.
-  Gold & Gems: Collect these for points.
+===Items:===
+  * Seeds: These grow into plants when planted.
+  * Plants: These create seeds and fruit.
+  * Fruit: Eat this to survive.
+  * Gold & Gems: Collect these for points.
 
-Winning:
-  Dig up gems for points. Plant crops so as not to die.
+===Winning:===
+  * Dig up gems for points.
+  * Plant crops so as not to die.
 
-Losing:
-  Game over if you run out of food.  
-
-
-
-== Included Dependencies
-
-This distribution includes GRATR graph library and binary distribution of Gosu.
+===Losing:===
+  * Game over if you run out of food.
 
 
-== Licenses
+== Included Dependencies ==
 
-  -- Dungeon Farmer
+This distribution includes the GRATR graph library.
+
+== Licenses ==
+
+===Dungeon Farmer===
 
 Copyright (C) 2008 Daniel Moore, Lana Kennedy
 
 Dungeon Farmer is released under the GPL. See COPYING.txt.
 
-  -- Gosu
-
-Copyright (C) 2004-2007 Julian Raschke, Jan Lücker and all contributors.
-
-Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-
-Julian Raschke julian@raschke.de
-Jan Lücker jan.luecker@gmx.de
-http://code.google.com/p/gosu/
-
-***
-
-Does NOT apply to fmod.dll shipped with the Windows version of Gosu,
-or the bytecode of FMOD contained in Gosu.framework and gosu.bundle on OS X.
-FMOD is a property of Firelight Technologies Pty, Ltd., see www.fmod.org.
-
-  -- GRATR
+===GRATR===
 
 Copyright (c) 2006 Shawn Patrick Garbett
 

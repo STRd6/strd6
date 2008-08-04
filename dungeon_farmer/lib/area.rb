@@ -45,7 +45,7 @@ class Area
     @player.add_listener(:plant, self)
     @player.add_listener(:dig, self)
     
-    dog = Creature.new('dog.png')
+    dog = Dog.new(@player)
     dog.move(random_open)
     
     @raccoon = Raccoon.new
