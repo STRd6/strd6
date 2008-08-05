@@ -17,7 +17,7 @@ module Observable
   
   def notify(*args)
     puts "notifying: [#{args.join(', ')}]"
-    method = args.slice!(0)
+    method = args.shift
     to_notify = @listeners[method]
     if to_notify
       to_notify.each do |listener|

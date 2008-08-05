@@ -23,8 +23,19 @@ end
 view_files = %w[graphical image_loader game_window]
 view_files.each {|f| require "#{lib}#{f}.rb" }
 
-files = %w[observable item prize seed fruit game_entity plant area creature animals player goblin cell diamond_square random task manager]
-files.each {|f| require "#{lib}#{f}.rb" }
+app_files = %w[task manager random observable]
+app_files.each {|f| require "#{lib}#{f}.rb" }
+
+entity_files = %w[game_entity plant creature animals player goblin]
+entity_files.each {|f| require "#{lib}#{f}.rb" }
+
+map_files = %w[area cell diamond_square]
+map_files.each {|f| require "#{lib}#{f}.rb" }
+
+item_files = %w[item prize seed fruit]
+item_files.each {|f| require "#{lib}#{f}.rb" }
+
+
 
 if __FILE__ == $0
   window = GameWindow.new

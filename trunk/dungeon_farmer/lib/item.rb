@@ -1,21 +1,11 @@
-module Item
-  include Graphical
-  
+class Item < GameEntity
   attr_reader :value
   
-  def update
-    
-  end
-  
-  def obstructs?
-    false
+  def initialize(img)
+    super(img)
   end
   
   def can_pick_up?
     true
-  end
-  
-  def remove
-    
   end
 end

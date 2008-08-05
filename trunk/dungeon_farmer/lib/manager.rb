@@ -44,6 +44,11 @@ class Manager
     @active_tasks.delete(task)
   end
   
+  def cancel(task)
+    task.accomplish
+    @active_tasks.delete(task)
+  end
+  
   def num_active
     @active_tasks.size
   end
