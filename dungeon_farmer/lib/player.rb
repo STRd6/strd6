@@ -31,6 +31,10 @@ class Player < Creature
     name
   end
   
+  def scary?
+    true
+  end
+  
   def update
     super
     

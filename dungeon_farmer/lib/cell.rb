@@ -1,6 +1,6 @@
 class Cell
   attr_reader :x, :y
-  attr_accessor :north, :south, :east, :west, :contents, :to_dig, :seeds
+  attr_accessor :north, :south, :east, :west, :contents, :to_dig, :seeds, :zone
   @@land = nil
   
   def initialize(x, y, h=0.5)

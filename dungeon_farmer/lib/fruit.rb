@@ -1,6 +1,4 @@
-class Fruit
-  include Item
-  
+class Fruit < Item
   def initialize
     @image = il 'fruit.png'
     @value = 2

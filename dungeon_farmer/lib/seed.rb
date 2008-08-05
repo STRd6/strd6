@@ -1,8 +1,5 @@
-class Seed
-  include Item
-  
+class Seed < Item
   def initialize
-    @image = il 'seed.png'
+    super('seed.png')
   end
-
 end

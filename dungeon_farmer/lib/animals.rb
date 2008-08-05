@@ -43,12 +43,24 @@ class Dog < Creature
   def follow
     @activity = :none
   end
+  
+  def scary?
+    true
+  end
 end
 
 class Raccoon < Creature
   
   def initialize
     super 'raccoon.png'
+  end
+  
+  def update
+    super
+    
+    if @activity == :flee && rand(16) == 0
+      @activity = :get
+    end
   end
   
   def get
@@ -65,9 +77,17 @@ class Raccoon < Creature
     super to_cell
     
     @cell.neighbours.each do |cell|
-      if cell.has_resource?
+      if cell.contents.any? {|c| c.scary? }
+        puts "#{self} is scared!"
+        @managers[:get].cancel(@current_task) if @current_task
+        @current_task = nil
+        @path = []
+        @activity = :flee
+        break
+      elsif @activity !=:flee && cell.has_resource?
         add_task(Task.new(cell, [cell], :get))
         @activity = :get
+        break
       end
     end
   end

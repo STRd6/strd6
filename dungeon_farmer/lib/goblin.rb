@@ -41,4 +41,8 @@ class Goblin < Creature
     @cell.delete self
     @area.remove_entity self
   end
+  
+  def scary?
+    true
+  end
 end

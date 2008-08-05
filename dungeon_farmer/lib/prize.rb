@@ -1,5 +1,4 @@
-class Prize
-  include Item
+class Prize < Item
   
   @@imgs = nil
   

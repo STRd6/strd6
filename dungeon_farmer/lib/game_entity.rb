@@ -4,7 +4,8 @@ class GameEntity
   attr_reader :cell
   attr_accessor :area
   
-  def initialize
+  def initialize(img=nil)
+    @image = il img if img
     @cell = nil
     @area = nil
     @age = 0
@@ -29,6 +30,10 @@ class GameEntity
   end
   
   def can_pick_up?
+    false
+  end
+  
+  def scary?
     false
   end
 end

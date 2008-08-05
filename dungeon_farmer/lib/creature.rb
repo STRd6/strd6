@@ -7,8 +7,7 @@ class Creature < GameEntity
   end
   
   def initialize(img)
-    super()
-    @image = il img if img
+    super(img)
     @seeds = 0
     @listeners = {}
     @path = []
@@ -85,7 +84,11 @@ class Creature < GameEntity
         target = @path.shift
 
         if target
-          move(target)
+          if target.blocked?
+            @path = []
+          else
+            move(target)
+          end
         else
           no_target
         end
