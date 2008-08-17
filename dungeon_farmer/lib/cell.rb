@@ -25,12 +25,23 @@ class Cell
     end
   end
   
+  def debug
+    s = "#{to_s} #{@seeds} seeds, #{@tasks} tasks\n"
+    
+    @contents.each do |c|
+      s << c.debug
+    end
+    
+    return s
+  end
+  
   def add_task
     @tasks += 1
   end
   
   def remove_task
     @tasks -= 1
+    raise "Negative number of tasks" if @tasks < 0
   end
   
   def update
