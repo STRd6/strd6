@@ -6,6 +6,15 @@ class Creature < GameEntity
     [:dig, :get, :plant]
   end
   
+  def debug
+    s = "#{to_s}\n"
+    @managers.each_value do |m|
+      s << "  #{m.debug}\n"
+    end
+    
+    return s
+  end
+  
   def initialize(img)
     super(img)
     @seeds = 0
@@ -20,6 +29,7 @@ class Creature < GameEntity
     @activity = :none
   end
   
+  # Returns true if the task was added to this creature, false otherwise
   def add_task(task)
     @managers[task.activity].add_task(task)
   end
@@ -33,7 +43,10 @@ class Creature < GameEntity
     
     while t = manager.get_task
       #puts t
-      if t.unblocked_cells.empty?
+      if t.over
+        manager.cancel t
+        t = nil
+      elsif t.unblocked_cells.empty?
         manager.deactivate_task
         t = nil
       else
