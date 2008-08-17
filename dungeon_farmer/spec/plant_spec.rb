@@ -1,14 +1,15 @@
 require File.dirname(__FILE__) + '/test_helper'
 
+ImageLoader.any_instance.stubs(:load).returns(:image)
+Area.any_instance.stubs(:remove_entity).returns(true)
+
 describe Plant do
   before(:each) do
-    @plant = Plant.new
+    cell = Cell.new(0,0)
+    cell.north = cell.south = cell.east = cell.west = cell
+    @plant = Plant.new(cell)
   end
 
-  it "should begin at age zero" do
-    @plant.age.should == 0
-  end
-  
   it "should be living to begin with" do
     @plant.should_not be_dead
   end
@@ -17,18 +18,12 @@ describe Plant do
     @plant.should_not be_mature
   end
   
-  it "should age with time" do
-    first = @plant.age
-    @plant.update
-    @plant.age.should > first
-  end
-  
   it "should require water to survive" do
     
   end
   
   it "should mature after a time" do
-    a_time = 100
+    a_time = 200
     
     a_time.times do
       @plant.update
