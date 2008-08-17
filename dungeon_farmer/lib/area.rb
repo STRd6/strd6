@@ -165,7 +165,14 @@ class Area
   
   #### Callbacks ####
   def seed(cell)
-    @chips.random.add_task(Task.new(cell, [cell], :get))
+    task = Task.new(cell, [cell], :get)
+    added = false
+    
+    @chips.each do |chip|
+      added ||= chip.add_task(task)
+    end
+    
+    task.cancel unless added
   end
   
   def fruit(cell)
