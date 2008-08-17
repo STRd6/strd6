@@ -21,6 +21,16 @@ class Chipmunk < Creature
     super
   end
   
+  def add_task(task)
+    activity = task.activity
+    if rand(5) > @managers[activity].num_active
+      @managers[activity].add_task(task) 
+      return true
+    else
+      return false
+    end
+  end
+  
 end
 
 class Dog < Creature
