@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/ruby-project/1">
             <name>DungeonFarmer</name>
             <source-roots>
+                <root id="src.dungeon_farmer.dir"/>
                 <root id="src.images.dir"/>
                 <root id="src.dir"/>
             </source-roots>
