@@ -1,7 +1,11 @@
 class GameWindow
+  DEBUG = true
   
   def set_up
     @actions = [:plant, :dig, :get]
+    
+    @actions << :inspect if DEBUG
+    
     @action_index = 0
    
     @height = @width = 32
@@ -28,8 +32,9 @@ class GameWindow
     seed_bag = ImageLoader.instance.load('seedbag.png')
     pick = ImageLoader.instance.load('pickrock.png')
     hand = ImageLoader.instance.load('handpick.png')
+    gem = ImageLoader.instance.load('bluegem.png')
     
-    {:plant => seed_bag, :dig => pick, :get => hand}
+    {:plant => seed_bag, :dig => pick, :get => hand, :inspect => gem}
   end
   
   def action
@@ -50,7 +55,10 @@ class GameWindow
       y2 = [@c1.y, @c2.y].max
       
       @area.cells_in(x1, x2, y1, y2).each do |cell|
-        if action == :dig
+        case action
+        when :inspect
+          puts cell.debug
+        when :dig
           if cell.blocked?
             @player.add_task(Task.new(cell, cell.neighbours, :dig))
           end
