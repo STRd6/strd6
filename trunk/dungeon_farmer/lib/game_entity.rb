@@ -11,6 +11,10 @@ class GameEntity
     @age = 0
   end
   
+  def debug
+    "#{to_s}\n"
+  end
+  
   def move(cell)
     @cell.delete(self) if @cell
     @cell = cell
