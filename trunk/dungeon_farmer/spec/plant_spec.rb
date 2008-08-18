@@ -7,7 +7,7 @@ describe Plant do
   before(:each) do
     cell = Cell.new(0,0)
     cell.north = cell.south = cell.east = cell.west = cell
-    @plant = Plant.new(cell)
+    @plant = Bush.new(cell)
   end
 
   it "should be living to begin with" do

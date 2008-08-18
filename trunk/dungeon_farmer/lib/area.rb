@@ -36,7 +36,19 @@ class Area
           end
         end
         
-        cell.seeds += 1 if !cell.blocked? && rand(90) == 0
+        if !cell.blocked?
+          case rand(100)
+          when 0..2
+            cell.seeds += 1
+          when 6..10
+            tree = Tree.new(cell)
+            tree.instance_eval do
+              @age = rand 500
+            end
+            add_entity(tree)
+          end
+          
+        end
       end
     end
     
@@ -67,7 +79,8 @@ class Area
    
     cells.each do |cell|
       if cell.has_resource?
-        @chips.random.add_task(Task.new(cell, [cell], :get))
+        task = Task.new(cell, [cell], :get)
+        task.cancel unless @chips.random.add_task(task)
       end
     end
     
@@ -183,7 +196,7 @@ class Area
   end
   
   def plant(cell)
-    plant = Plant.new(cell)
+    plant = Bush.new(cell)
     plant.add_listener(:seed, self)
     plant.add_listener(:fruit, self)
     add_entity(plant)

@@ -1,30 +1,33 @@
 class Plant < GameEntity
   
-  def initialize(cell)
+  def initialize(cell, options={})
     super()
-    move cell
-    @age = 0
-    @listeners = {}
-    @@images ||= ['seed.png', 'sprout.png', 'plant1.png', 'plant2.png', 'plant3.png'].map do
-      |file| il(file)
-    end
     
-    @maturity_age = 200
-    @death_age = 350
+    options = {
+      :age_rate => 50, 
+      :maturity_age => 200, 
+      :death_age => 350,
+      :images => [default_image],
+    }.merge options
+    
+    move cell
     @dead = false
+    
+    @age_rate = options[:age_rate]
+    @maturity_age = options[:maturity_age]
+    @death_age = options[:death_age]
+    @images = options[:images]
+  end
+  
+  def default_image
+    il("plant1.png")
   end
     
   def update
     @age += 1
     
     unless @dead
-      if @age % 2 == 0 && mature?
-        if rand(73) == 0
-          fruit_cell = [@cell, @cell, @cell, @cell.north, @cell.south, @cell.east, @cell.west].random
-          fruit_cell << Fruit.new
-          notify(:fruit, fruit_cell)
-        end
-      end
+      on_update
 
       if @age >= @death_age
         die
@@ -52,13 +55,36 @@ class Plant < GameEntity
   end
   
   def image
-    @@images[@age/50] || @@images.last
+    @images[@age/@age_rate] || @images.last
   end
   
   def can_pick_up?
     false
   end
+
+protected  
+  def die
+  end
   
+  def on_update
+  end
+end
+
+class Bush < Plant
+  
+  def initialize(cell)
+    @@images ||= %w[seed sprout plant1 plant2 plant3].map do
+      |file| il("#{file}.png")
+    end
+    
+    super(cell, 
+      :images => @@images, 
+      :age_rate => 50, 
+      :maturity_age => 200, 
+      :death_age => 400)
+  end
+
+protected  
   def die
     unless @dead
       rand(4).times do
@@ -66,9 +92,48 @@ class Plant < GameEntity
         seed_cell.seeds += 1
         notify(:seed, seed_cell)
       end
+    end
+
+    remove
+    @dead = true
+  end
+  
+  def on_update
+    if @age % 2 == 0 && mature?
+      if rand(73) == 0
+        fruit_cell = [@cell, @cell, @cell, @cell.north, @cell.south, @cell.east, @cell.west].random
+        fruit_cell << Fruit.new
+        notify(:fruit, fruit_cell)
+      end
+    end
+  end
+end
+
+class Tree < Plant
+  
+  def initialize(cell)
+    @@images ||= %w[tree_seed tree0 tree1 tree2 tree3].map do
+      |file| il("plants/#{file}.png")
+    end
+    
+    super(cell, 
+      :images => @@images, 
+      :age_rate => 100, 
+      :maturity_age => 400, 
+      :death_age => 5000)
+    
+  end
+    
+protected  
+  def die
+    unless @dead
       remove
     end
     
     @dead = true
+  end
+  
+  def on_update
+    
   end
 end
