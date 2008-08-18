@@ -18,7 +18,6 @@ class Creature < GameEntity
   def initialize(img)
     super(img)
     @seeds = 0
-    @listeners = {}
     @path = []
     
     @managers = self.class.actions.inject({}) do |hash,action|
