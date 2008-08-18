@@ -6,6 +6,8 @@ class GameEntity
   
   def initialize(img=nil)
     @image = il img if img
+    @listeners = {}
+    
     @cell = nil
     @area = nil
     @age = 0
