@@ -66,6 +66,10 @@ class Manager
     @target_cells.delete(task.target_cell)
   end
   
+  def all_tasks
+    @active_tasks + @inactive_tasks
+  end
+  
   def num_active
     @active_tasks.size
   end

@@ -11,7 +11,6 @@ class Cell
     @y = y
     @height = h
     @seeds = 0
-    @tasks = 0
     
     if @height < 0.2
       @blocked = true
@@ -26,22 +25,13 @@ class Cell
   end
   
   def debug
-    s = "#{to_s} #{@seeds} seeds, #{@tasks} tasks\n"
+    s = "#{to_s} #{@seeds} seeds\n"
     
     @contents.each do |c|
       s << c.debug
     end
     
     return s
-  end
-  
-  def add_task
-    @tasks += 1
-  end
-  
-  def remove_task
-    @tasks -= 1
-    raise "Negative number of tasks" if @tasks < 0
   end
   
   def update
@@ -66,7 +56,6 @@ class Cell
     image.draw(x_pos, y_pos, 0)
     @contents.each {|e| e.draw(x_pos, y_pos)}
     @@seed.draw(x_pos, y_pos, 0) if @seeds > 0
-    @@selected.draw(x_pos, y_pos, 1) if @tasks > 0
   end
   
   def image
@@ -99,7 +88,6 @@ class Cell
   
   def self.image
     return if @@land
-    @@selected = ImageLoader.instance.load('highlight.png')
     @@seed = ImageLoader.instance.load('seed.png')
     @@water = ImageLoader.instance.load('water1.png')
     @@land = %w[ground1.png ground2.png ground3.png].map { |g| ImageLoader.instance.load(g) }
