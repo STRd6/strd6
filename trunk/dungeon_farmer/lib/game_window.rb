@@ -21,22 +21,48 @@ class GameWindow
     @time = 0
     @paused = false
 
-    @cursor = ImageLoader.instance.load('cursor.png')
-    @cursors = load_cursors
+    load_cursors
+    
+    load_highlights
     
     @font = ImageLoader.instance.font(12)
     @big_font = ImageLoader.instance.font(42)
   end
   
-  def load_cursors
-    seed_bag = ImageLoader.instance.load('seedbag.png')
-    pick = ImageLoader.instance.load('pickrock.png')
-    hand = ImageLoader.instance.load('handpick.png')
-    gem = ImageLoader.instance.load('bluegem.png')
-    
-    {:plant => seed_bag, :dig => pick, :get => hand, :inspect => gem}
+  # Loads image named: "#{image}.png"
+  def il(image)
+    ImageLoader.instance.load("#{image}.png")
   end
   
+  # Sets @cursor and @cursors
+  def load_cursors
+    @cursor = il('cursor')
+    
+    seed_bag = il('seedbag')
+    pick = il('pickrock')
+    hand = il('handpick')
+    gem = il('bluegem')
+    
+    @cursors = {:plant => seed_bag, :dig => pick, :get => hand, :inspect => gem}
+  end
+  
+  def load_highlights
+    highlight_images = %w[yellow cyan green orange purple red blue magenta brown white black].map do |w|
+      il "highlights/#{w}"
+    end
+    
+    @highlights = {}
+    
+    i = 0
+    @actions.each do |action|
+      @highlights[action] = highlight_images[i % highlight_images.size]
+      i += 1
+    end
+    
+    @highlights[:default] = highlight_images[i % highlight_images.size]
+  end
+  
+  # Returns the currently selected player action
   def action
     @actions[@action_index % @actions.size]
   end
@@ -77,13 +103,7 @@ class GameWindow
     @game_over = true
   end
   
-  def rotate(array)
-    return nil if array.empty?
-    cell = array.slice!(0)
-    array << cell
-    return cell
-  end
-  
+  # Returns the cell currently under the mouse
   def cell_under_mouse
     row = mouse_y.to_i/16
     col =  mouse_x.to_i/16
@@ -92,9 +112,18 @@ class GameWindow
   
   def draw
     @cells.each { |cell| cell.draw }
+    @area.all_tasks.each do |task|
+      x = task.target_cell.x_pos
+      y = task.target_cell.y_pos
+      
+      (@highlights[task.activity] || @highlights[:default]).draw(x, y, 10)
+    end
+    
     @inventory.draw(450, 5)
+    
     @cursor.draw(mouse_x, mouse_y, 10000)
     @cursors[action].draw(mouse_x, mouse_y, 10000)
+    
     @font.draw("Seeds: #{@player.seeds}", 0, 0, 20000)
     @font.draw("Food: #{@player.food}", 0, 16, 20000)
     
@@ -105,6 +134,7 @@ class GameWindow
       @big_font.draw("=PAUSED=", 180, 200, 20000)
     end
   end
+  
 if $RUBYGAME
   include Rubygame
   Rubygame.init
@@ -243,5 +273,5 @@ else
       mouse_released
     end
   end
-end  
+end
 end

@@ -57,8 +57,8 @@ class Area
     @player.add_listener(:plant, self)
     @player.add_listener(:dig, self)
     
-    dog = Dog.new(@player)
-    dog.move(random_open)
+    @dog = Dog.new(@player)
+    @dog.move(random_open)
     
     @raccoon = Raccoon.new
     @raccoon.move(random_open)
@@ -85,8 +85,18 @@ class Area
     end
     
     add_entity @player
-    add_entity dog
+    add_entity @dog
     add_entity @raccoon
+  end
+  
+  def all_tasks
+    tasks = @player.all_tasks + @raccoon.all_tasks + @dog.all_tasks
+    
+    @chips.each do |chip|
+        tasks += chip.all_tasks
+    end
+    
+    return tasks
   end
   
   def uncover_goblin(cell)

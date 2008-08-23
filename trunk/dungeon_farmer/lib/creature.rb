@@ -6,6 +6,7 @@ class Creature < GameEntity
     [:dig, :get, :plant]
   end
   
+  # Return a helpful information string for debugging
   def debug
     s = "#{to_s}\n"
     @managers.each_value do |m|
@@ -26,6 +27,17 @@ class Creature < GameEntity
     end
     @current_task = nil
     @activity = :none
+  end
+  
+  # Return a set of all tasks
+  def all_tasks
+    tasks = Set.new
+    
+    @managers.each_value do |m|
+      tasks.merge m.all_tasks
+    end
+    
+    return tasks
   end
   
   # Returns true if the task was added to this creature, false otherwise

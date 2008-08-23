@@ -5,8 +5,6 @@ class Task
     @perform_cells = perform_cells
     @activity = activity
     
-    @target_cell.add_task
-    
     @over = false
   end
   
@@ -23,12 +21,10 @@ class Task
   end
   
   def accomplish
-    @target_cell.remove_task unless @over
     @over = true
   end
   
   def cancel
-    @target_cell.remove_task unless @over
     @over = true
   end
 end
