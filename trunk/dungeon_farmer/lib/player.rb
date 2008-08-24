@@ -7,7 +7,7 @@ class Player < Creature
     @seeds = 5
     init_inventory
     
-    @inventory.items << Fruit.new
+    @inventory.items << Item.new("fruit.png", :value => 2, :edible => true)
     @food = 9
     
     @score = 0
@@ -74,7 +74,7 @@ class Player < Creature
   private
   
   def eat
-    food = @inventory.items.find {|item| item.instance_of?(Fruit)}
+    food = @inventory.items.find {|item| item.edible? }
     
     if food
       @inventory.items.delete(food)

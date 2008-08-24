@@ -4,7 +4,8 @@ class GameEntity
   attr_reader :cell
   attr_accessor :area
   
-  def initialize(img=nil)
+  def initialize(img=nil, options={})
+    instance_options! options
     @image = il img if img
     @listeners = {}
     
@@ -41,5 +42,11 @@ class GameEntity
   
   def scary?
     false
+  end
+  
+  def instance_options!(options)
+    options.each do |sym, value|
+      instance_variable_set "@#{sym}", value
+    end
   end
 end

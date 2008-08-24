@@ -1,20 +1,23 @@
-class Prize < Item
+class Prize
   
   @@imgs = nil
   
-  def initialize
-    Prize.image
-    
+  def self.generate
+    image
     gem = @@choice.random
-    @image = @@imgs[gem]
-    @value = @@values[gem]
+    Item.new(@@imgs[gem], :value => @@values[gem])
   end
   
   def self.image
     return if @@imgs
     @@choice = [0,0,0,0,0,1,1,1,2,2,3]
     @@values = [10, 25, 75, 250]
-    @@imgs = %w[goldnugget.png greengem.png bluegem.png redgem.png].map { |g| ImageLoader.instance.load(g) }
+    @@imgs = %w[goldnugget greengem bluegem redgem].map { |g| "items/#{g}.png" }
     return
+  end
+  
+private
+  def initialize
+
   end
 end

@@ -1,8 +1,6 @@
 class Plant < GameEntity
   
   def initialize(cell, options={})
-    super()
-    
     options = {
       :age_rate => 50, 
       :maturity_age => 200, 
@@ -10,13 +8,10 @@ class Plant < GameEntity
       :images => [default_image],
     }.merge options
     
+    super(nil, options)
+    
     move cell
     @dead = false
-    
-    @age_rate = options[:age_rate]
-    @maturity_age = options[:maturity_age]
-    @death_age = options[:death_age]
-    @images = options[:images]
   end
   
   def default_image
@@ -102,7 +97,7 @@ protected
     if @age % 2 == 0 && mature?
       if rand(73) == 0
         fruit_cell = [@cell, @cell, @cell, @cell.north, @cell.south, @cell.east, @cell.west].random
-        fruit_cell << Fruit.new
+        fruit_cell << Item.new("fruit.png", :value => 2, :edible => true)
         notify(:fruit, fruit_cell)
       end
     end
