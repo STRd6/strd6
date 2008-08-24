@@ -4,7 +4,7 @@ class GameWindow
   def set_up
     @actions = [:plant, :dig, :get]
     
-    @actions.push :inspect, :flood if DEBUG
+    @actions.push :question, :flood if DEBUG
     
     @action_index = 0
    
@@ -41,10 +41,10 @@ class GameWindow
     seed_bag = il('seedbag')
     pick = il('pickrock')
     hand = il('handpick')
-    gem = il('bluegem')
+    question = il('question')
     flood = il('water1')
     
-    @cursors = {:plant => seed_bag, :dig => pick, :get => hand, :inspect => gem, :flood => flood}
+    @cursors = {:plant => seed_bag, :dig => pick, :get => hand, :question => question, :flood => flood}
   end
   
   def load_highlights
@@ -83,7 +83,7 @@ class GameWindow
       
       @area.cells_in(x1, x2, y1, y2).each do |cell|
         case action
-        when :inspect
+        when :question
           puts cell.debug
         when :flood
           @area.flood(cell)

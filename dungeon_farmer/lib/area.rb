@@ -228,7 +228,7 @@ class Area
     end
     
     if rand(8) == 0
-      task_cell << Prize.new
+      task_cell << Prize.generate
       if rand(3) == 0
         @raccoon.add_task(Task.new(task_cell, [task_cell], :get)) 
         @raccoon.activity = :get

@@ -32,7 +32,7 @@ entity_files.each {|f| require "#{lib}#{f}.rb" }
 map_files = %w[area cell diamond_square]
 map_files.each {|f| require "#{lib}#{f}.rb" }
 
-item_files = %w[item prize seed fruit]
+item_files = %w[item prize seed]
 item_files.each {|f| require "#{lib}#{f}.rb" }
 
 
