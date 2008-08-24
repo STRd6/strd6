@@ -1,28 +1,33 @@
 class Cell
+  include Graphical
+  
   attr_reader :x, :y
   attr_accessor :north, :south, :east, :west, :contents, :to_dig, :seeds, :zone
   
-  @@land = nil
+  @@water = ['water1.png']
+  @@land = %w[ground1 ground2 ground3].map { |g| "#{g}.png" }
+  @@mountain = %w[mountain1 mountain2 mountain3].map { |g| "#{g}.png" }
   
   def initialize(x, y, h=0.5)
-    Cell.image
-    
     @contents = []
     @x = x
     @y = y
     @height = h
     @seeds = 0
     
-    if @height < 0.2
+    if @height < 0.25
       @blocked = true
-      @image = @@water
-    elsif @height < 0.7
+      img = @@water.random
+    elsif @height < 0.75
       @blocked = false
-      @image = @@land.random
+      img = @@land.random
     else
       @blocked = true
-      @image = @@mountain.random
+      img = @@mountain.random
     end
+    
+    @seed_img = il 'seed.png'
+    @image = il img
   end
   
   def debug
@@ -42,7 +47,7 @@ class Cell
   def dig
     @to_dig = false
     @blocked = false
-    @image = @@land.random
+    @image = il @@land.random
   end
   
   def blocked?
@@ -56,11 +61,11 @@ class Cell
   def draw
     image.draw(x_pos, y_pos, 0)
     @contents.each {|e| e.draw(x_pos, y_pos)}
-    @@seed.draw(x_pos, y_pos, 0) if @seeds > 0
+    @seed_img.draw(x_pos, y_pos, 0) if @seeds > 0
   end
   
   def flood
-    @image = @@water
+    @image = il @@water.random
     @blocked = true
   end
   
@@ -90,13 +95,5 @@ class Cell
   
   def neighbours
     return @neighbours ||= [north, east, south, west]
-  end
-  
-  def self.image
-    return if @@land
-    @@seed = ImageLoader.instance.load('seed.png')
-    @@water = ImageLoader.instance.load('water1.png')
-    @@land = %w[ground1 ground2 ground3].map { |g| ImageLoader.instance.load("#{g}.png") }
-    @@mountain = %w[mountain1 mountain2 mountain3].map { |g| ImageLoader.instance.load("#{g}.png") }
   end
 end
