@@ -4,7 +4,7 @@ class GameWindow
   def set_up
     @actions = [:plant, :dig, :get]
     
-    @actions << :inspect if DEBUG
+    @actions.push :inspect, :flood if DEBUG
     
     @action_index = 0
    
@@ -42,8 +42,9 @@ class GameWindow
     pick = il('pickrock')
     hand = il('handpick')
     gem = il('bluegem')
+    flood = il('water1')
     
-    @cursors = {:plant => seed_bag, :dig => pick, :get => hand, :inspect => gem}
+    @cursors = {:plant => seed_bag, :dig => pick, :get => hand, :inspect => gem, :flood => flood}
   end
   
   def load_highlights
@@ -84,6 +85,8 @@ class GameWindow
         case action
         when :inspect
           puts cell.debug
+        when :flood
+          @area.flood(cell)
         when :dig
           if cell.blocked?
             @player.add_task(Task.new(cell, cell.neighbours, :dig))

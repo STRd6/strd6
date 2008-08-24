@@ -30,11 +30,7 @@ class Area
         cell.west = @cells[row][(col-1)%@width]
         
         #Set up graph
-        unless cell.blocked?
-          cell.neighbours.each do |n|
-            @graph.add_edge!(cell, n, 1) unless n.blocked?
-          end
-        end
+        connect cell
         
         if !cell.blocked?
           case rand(100)
@@ -106,6 +102,7 @@ class Area
     add_entity goblin
   end
   
+  # Connect this cell to the graph
   def connect(cell)
     unless cell.blocked?
       cell.neighbours.each do |n|
@@ -114,6 +111,16 @@ class Area
     end
   end
   
+  # Disconnect this cell from the graph
+  def disconnect(cell)
+    if cell.blocked?
+      cell.neighbours.each do |n|
+        @graph.remove_edge!(cell, n) unless n.blocked?
+      end
+    end
+  end
+  
+  # Returns an unblocked cell at random, hangs if no unblocked cells
   def random_open
     cell = cells.random
     cell = cells.random until !cell.blocked?
@@ -227,6 +234,11 @@ class Area
         @raccoon.activity = :get
       end
     end
+  end
+  
+  def flood(cell)
+    cell.flood
+    disconnect cell
   end
   
   def accost(creature, cell)
