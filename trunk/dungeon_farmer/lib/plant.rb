@@ -15,7 +15,7 @@ class Plant < GameEntity
   end
   
   def default_image
-    il("plant1.png")
+    il("question.png")
   end
     
   def update
@@ -68,8 +68,8 @@ end
 class Bush < Plant
   
   def initialize(cell)
-    @@images ||= %w[seed sprout plant1 plant2 plant3].map do
-      |file| il("#{file}.png")
+    @@images ||= %w[bush_seed bush0 bush1 bush2 bush3].map do
+      |file| il("plants/#{file}.png")
     end
     
     super(cell, 
