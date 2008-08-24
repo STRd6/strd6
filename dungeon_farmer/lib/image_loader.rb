@@ -3,13 +3,13 @@ require 'singleton'
 class ImageLoader
   include Singleton
   
-  @@dir = File.dirname(__FILE__) + '/../images'
-  
   def load(name, hard_borders=false)
+    return @cache[name] if @cache[name]
+    
     if $RUBYGAME
-      ImageAdapter.new(name)
+      @cache[name] = ImageAdapter.new(name)
     else
-      Gosu::Image.new(@window, "#{@@dir}/#{name}", hard_borders)
+      @cache[name] = Gosu::Image.new(@window, "#{@dir}/#{name}", hard_borders)
     end
   end
   
@@ -27,5 +27,7 @@ class ImageLoader
   
   def set_window(window)
     @window = window
+    @cache = {}
+    @dir = File.dirname(__FILE__) + '/../images'
   end
 end
