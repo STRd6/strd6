@@ -66,6 +66,8 @@ class Raccoon < Creature
   end
   
   def update
+    return if rand(3) == 0
+    
     super
     
     if @activity == :flee && rand(16) == 0

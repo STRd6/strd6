@@ -1,6 +1,7 @@
 class Cell
   attr_reader :x, :y
   attr_accessor :north, :south, :east, :west, :contents, :to_dig, :seeds, :zone
+  
   @@land = nil
   
   def initialize(x, y, h=0.5)
@@ -58,6 +59,11 @@ class Cell
     @@seed.draw(x_pos, y_pos, 0) if @seeds > 0
   end
   
+  def flood
+    @image = @@water
+    @blocked = true
+  end
+  
   def image
     @image
   end
@@ -90,7 +96,7 @@ class Cell
     return if @@land
     @@seed = ImageLoader.instance.load('seed.png')
     @@water = ImageLoader.instance.load('water1.png')
-    @@land = %w[ground1.png ground2.png ground3.png].map { |g| ImageLoader.instance.load(g) }
-    @@mountain = %w[mountain1.png mountain2.png mountain3.png].map { |g| ImageLoader.instance.load(g) }
+    @@land = %w[ground1 ground2 ground3].map { |g| ImageLoader.instance.load("#{g}.png") }
+    @@mountain = %w[mountain1 mountain2 mountain3].map { |g| ImageLoader.instance.load("#{g}.png") }
   end
 end
