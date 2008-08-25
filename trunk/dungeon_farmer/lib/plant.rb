@@ -1,4 +1,7 @@
 class Plant < GameEntity
+  def self.seed_img
+    "plants/#{name.downcase}_seed.png"
+  end
   
   def initialize(cell, options={})
     options = {
@@ -84,7 +87,7 @@ protected
     unless @dead
       rand(4).times do
         seed_cell = @cell.neighbours.random
-        seed_cell.seeds += 1
+        seed_cell << Seed.new(self.class)
         notify(:seed, seed_cell)
       end
     end

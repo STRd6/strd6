@@ -2,7 +2,7 @@ class Cell
   include Graphical
   
   attr_reader :x, :y
-  attr_accessor :north, :south, :east, :west, :contents, :to_dig, :seeds, :zone
+  attr_accessor :north, :south, :east, :west, :contents, :to_dig, :zone
   
   @@water = ['water1.png']
   @@land = %w[ground1 ground2 ground3].map { |g| "#{g}.png" }
@@ -13,7 +13,6 @@ class Cell
     @x = x
     @y = y
     @height = h
-    @seeds = 0
     
     if @height < 0.25
       @blocked = true
@@ -26,12 +25,11 @@ class Cell
       img = @@mountain.random
     end
     
-    @seed_img = il 'seed.png'
     @image = il img
   end
   
   def debug
-    s = "#{to_s} #{@seeds} seeds\n"
+    s = "#{to_s} \n"
     
     @contents.each do |c|
       s << c.debug
@@ -55,13 +53,12 @@ class Cell
   end
   
   def has_resource?
-    @seeds > 0 || @contents.any? {|c| c.can_pick_up? }
+    @contents.any? {|c| c.can_pick_up? }
   end
   
   def draw
     image.draw(x_pos, y_pos, 0)
     @contents.each {|e| e.draw(x_pos, y_pos)}
-    @seed_img.draw(x_pos, y_pos, 0) if @seeds > 0
   end
   
   def flood

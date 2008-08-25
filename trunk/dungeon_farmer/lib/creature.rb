@@ -1,9 +1,24 @@
 class Creature < GameEntity
   
-  attr_accessor  :path, :task, :next_task, :seeds, :activity
+  attr_accessor  :path, :task, :next_task, :activity, :items
   
   def self.actions
     [:dig, :get, :plant]
+  end
+  
+  def initialize(img)
+    super(img)
+    @seeds = 0
+    @path = []
+    
+    @items = []
+    
+    @managers = self.class.actions.inject({}) do |hash,action|
+      hash[action] = Manager.new
+      hash
+    end
+    @current_task = nil
+    @activity = :none
   end
   
   # Return a helpful information string for debugging
@@ -14,19 +29,6 @@ class Creature < GameEntity
     end
     
     return s
-  end
-  
-  def initialize(img)
-    super(img)
-    @seeds = 0
-    @path = []
-    
-    @managers = self.class.actions.inject({}) do |hash,action|
-      hash[action] = Manager.new
-      hash
-    end
-    @current_task = nil
-    @activity = :none
   end
   
   # Return a set of all tasks
@@ -126,13 +128,17 @@ class Creature < GameEntity
   end
   
   def plant
-    if @seeds > 0
-      notify(:plant, @cell)
+    seed = @items.detect {|item| item.plant }
+    
+    if seed
+      @items.delete(seed)
+      notify(:plant, @cell, seed)
       
-      @seeds -= 1
-      if @seeds == 0
+      unless @items.detect {|item| item.plant }
         @activity = :none
       end
+    else
+      
     end
   end
   
@@ -147,9 +153,10 @@ class Creature < GameEntity
   
   def get
     puts "#{self} picked stuff up!"
-    seeds = @cell.seeds
-    @cell.seeds -= seeds
-    @seeds += seeds
+    # TODO seperate out creatures from items, choose proper method names
+    seeds = @cell.contents.select {|item| item.plantable? }
+    @cell.contents -= seeds
+    @items.push(*seeds)
   end
   
   def random_move

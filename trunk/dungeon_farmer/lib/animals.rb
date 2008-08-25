@@ -7,7 +7,7 @@ class Chipmunk < Creature
   
   def find_path
     if @age % 32 == 0
-      if rand(@seeds) >= 1
+      if @items.size >= 1
         cell = @area.random_open
         add_task Task.new(cell, [cell], :plant)
         @activity = :plant
@@ -76,10 +76,7 @@ class Raccoon < Creature
   end
   
   def get
-    puts "#{self} picked stuff up!"
-    seeds = @cell.seeds
-    @cell.seeds -= seeds
-    @seeds += seeds
+    "Raccoon is stealing!"
     
     items = @cell.contents.select { |item| item.can_pick_up? }
     @cell.contents -= items
