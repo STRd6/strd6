@@ -48,7 +48,7 @@ class GameWindow
   end
   
   def load_highlights
-    highlight_images = %w[yellow cyan green orange purple red blue magenta brown white black].map do |w|
+    @highlight_images = %w[yellow cyan green orange purple red blue magenta brown white black].map do |w|
       il "highlights/#{w}"
     end
     
@@ -56,11 +56,11 @@ class GameWindow
     
     i = 0
     @actions.each do |action|
-      @highlights[action] = highlight_images[i % highlight_images.size]
+      @highlights[action] = @highlight_images[i % @highlight_images.size]
       i += 1
     end
     
-    @highlights[:default] = highlight_images[i % highlight_images.size]
+    @highlights[:default] = @highlight_images[i % @highlight_images.size]
   end
   
   # Returns the currently selected player action
@@ -121,6 +121,8 @@ class GameWindow
       
       (@highlights[task.activity] || @highlights[:default]).draw(x, y, 10)
     end
+    
+    @player.path.each {|cell| @highlight_images[9].draw(cell.x_pos, cell.y_pos, 10)}
     
     @inventory.draw(450, 5)
     
