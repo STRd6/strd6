@@ -40,6 +40,10 @@ class GameEntity
     false
   end
   
+  def plantable?
+    false
+  end
+  
   def scary?
     false
   end

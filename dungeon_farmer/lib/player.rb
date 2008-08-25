@@ -4,10 +4,12 @@ class Player < Creature
   def initialize(name)
     super 'farmer.png'
     @name = name
-    @seeds = 5
+
     init_inventory
     
-    @inventory.items << Item.new("fruit.png", :value => 2, :edible => true)
+    @items << Item.new("fruit.png", :value => 2, :edible => true)
+    3.times { @items << Seed.new(Tree) }
+    5.times { @items << Seed.new(Bush) }
     @food = 9
     
     @score = 0
@@ -17,7 +19,7 @@ class Player < Creature
   def food
     s = ''
     @food.times {s += '#'}
-    return s      
+    return s
   end
   
   def score
@@ -57,10 +59,6 @@ class Player < Creature
   end
   
   def get
-    seeds = @cell.seeds
-    @cell.seeds -= seeds
-    @seeds += seeds
-    
     items = @cell.contents.select { |item| item.can_pick_up? }
     @cell.contents -= items
     @inventory.items.push(*items)
@@ -87,13 +85,18 @@ class Player < Creature
     @inventory = Object.new
     
     @inventory.instance_eval do
-      @items = []
       @font = ImageLoader.instance.font
     end
     
     def @inventory.items
       @items
     end
+    
+    def @inventory.items=(items)
+      @items = items
+    end
+    
+    @inventory.items = @items
     
     def @inventory.draw(x, y)
       @font.draw("Inventory", x, y, 20000)

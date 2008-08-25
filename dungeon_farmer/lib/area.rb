@@ -35,7 +35,7 @@ class Area
         if !cell.blocked?
           case rand(100)
           when 0..2
-            cell.seeds += 1
+            cell << Seed.new(Bush)
           when 6..10
             tree = Tree.new(cell)
             tree.instance_eval do
@@ -63,7 +63,8 @@ class Area
     
     3.times do
       chip = Chipmunk.new
-      chip.seeds = rand(3)
+      # TODO Seeds
+      rand(4).times { chip.items << Seed.new(Bush) }
       chip.move(random_open)
       
       chip.add_listener(:plant, self)
@@ -212,8 +213,8 @@ class Area
     end
   end
   
-  def plant(cell)
-    plant = Bush.new(cell)
+  def plant(cell, seed)
+    plant = seed.plant.new(cell)
     plant.add_listener(:seed, self)
     plant.add_listener(:fruit, self)
     add_entity(plant)

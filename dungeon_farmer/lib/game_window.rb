@@ -127,7 +127,6 @@ class GameWindow
     @cursor.draw(mouse_x, mouse_y, 10000)
     @cursors[action].draw(mouse_x, mouse_y, 10000)
     
-    @font.draw("Seeds: #{@player.seeds}", 0, 0, 20000)
     @font.draw("Food: #{@player.food}", 0, 16, 20000)
     
     if @game_over
