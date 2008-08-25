@@ -136,6 +136,7 @@ class GameWindow
       @font.draw("Score: #{@player.score}", 240, 265, 20000)
     elsif @paused
       @big_font.draw("=PAUSED=", 180, 200, 20000)
+      @font.draw("Score: #{@player.score}", 240, 265, 20000)
     end
   end
   
