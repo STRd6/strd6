@@ -27,4 +27,12 @@ class Task
   def cancel
     @over = true
   end
+  
+  def x
+    @target_cell.x
+  end
+  
+  def y
+    @target_cell.y
+  end
 end

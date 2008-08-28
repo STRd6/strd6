@@ -53,4 +53,12 @@ class GameEntity
       instance_variable_set "@#{sym}", value
     end
   end
+  
+  def x
+    @cell.x if @cell
+  end
+  
+  def y
+    @cell.y if @cell
+  end
 end

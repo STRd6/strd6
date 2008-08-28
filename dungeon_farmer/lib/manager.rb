@@ -35,9 +35,11 @@ class Manager
     return @active_tasks.last
   end
   
-  def deactivate_task
-    return false unless @active_tasks.size > 0
-    @inactive_tasks.push @active_tasks.pop
+  def deactivate_task(task)
+    if @active_tasks.include? task
+      @active_tasks.delete task
+      @inactive_tasks.push task
+    end    
   end
   
   def activate_tasks(uncovered_cell)
@@ -76,5 +78,38 @@ class Manager
   
   def num_inactive
     @inactive_tasks.size
+  end
+end
+
+class MetricManager < Manager
+  def initialize(owner)
+    super()
+    @owner = owner
+    
+    #TODO Define height and width more accurately, or even off-load metric
+    @height = @width = 32
+    
+  end
+  
+  def get_task
+    return @active_tasks.inject(nil) {|min, task| closest(min, task) }
+  end
+  
+private
+  def closest(t1, t2)
+    return t2 unless t1 
+    return t1 unless t2
+    
+    d1 = m_distance(@owner.x, @owner.y, t1.x, t1.y)
+    d2 = m_distance(@owner.x, @owner.y, t2.x, t2.y)
+    
+    return t1 if d1 < d2
+    return t2
+  end
+  
+  def m_distance(x1, y1, x2, y2)
+    x = (x1 - x2).abs
+    y = (y1 - y2).abs
+    [x, @width - x].min + [y, @height - y].min
   end
 end
