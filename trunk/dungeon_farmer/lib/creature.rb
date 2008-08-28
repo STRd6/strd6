@@ -14,7 +14,7 @@ class Creature < GameEntity
     @items = []
     
     @managers = self.class.actions.inject({}) do |hash,action|
-      hash[action] = Manager.new
+      hash[action] = MetricManager.new(self)
       hash
     end
     @current_task = nil
@@ -60,7 +60,7 @@ class Creature < GameEntity
         manager.cancel t
         t = nil
       elsif t.unblocked_cells.empty?
-        manager.deactivate_task
+        manager.deactivate_task(t)
         t = nil
       else
         break
