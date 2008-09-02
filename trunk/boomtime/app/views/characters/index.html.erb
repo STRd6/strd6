@@ -1,0 +1,8 @@
+<% @characters.each do |character| %>
+  <div class="character">
+    <p><%= character.name %></p>
+    <% character.stat_keys.each do |key| %>
+      <p><%= "#{key} : #{character.stats[key]}" %></p>
+    <% end %>
+  </div>
+<% end %>

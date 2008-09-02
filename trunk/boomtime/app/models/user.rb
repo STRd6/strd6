@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   # anything else you want your user to change should be added here.
   attr_accessible :login, :email, :name, :password, :password_confirmation
   
-  has_many :characters
+  has_many :characters, :foreign_key => 'owner_id'
 
   # Activates the user in the database.
   def activate!
