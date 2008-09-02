@@ -7,10 +7,14 @@ class Character < ActiveRecord::Base
   before_create :roll_stats
 
   def roll_stats
-    str = 2 + rand(6)
-    dex = 2 + rand(6)
-    pow = 2 + rand(6)
+    str = 3 + rand(5)
+    dex = 3 + rand(5)
+    pow = 3 + rand(5)
     
     self.stats = {:str => str, :dex => dex, :pow => pow}
+  end
+  
+  def stat_keys
+    [:str, :dex, :pow]
   end
 end
