@@ -3,12 +3,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Character do
   before(:each) do
     @valid_attributes = {
-      :name => "value for name",
-      :stats => "value for stats"
+      :name => "World's Greatest Name!"
     }
   end
 
   it "should create a new instance given valid attributes" do
     Character.create!(@valid_attributes)
+  end
+  
+  it "should have some stats" do
+    c = Character.create(@valid_attributes)
+    
+    c.stats[:str].should_not be_nil
+    c.stats[:dex].should_not be_nil
   end
 end
