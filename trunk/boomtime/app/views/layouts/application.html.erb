@@ -29,6 +29,11 @@
         <h1><%= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase %></h1>
         <%= yield %>
       </div>
+
+      <div id="footer">
+        <%= link_to "Home", :controller => "welcome" %> | 
+        <%= link_to "Characters", :controller => "characters" %>
+      </div>
     </div>
   </body>
 </html>

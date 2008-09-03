@@ -1,8 +1,7 @@
-<% @characters.each do |character| %>
-  <div class="character">
-    <p><%= character.name %></p>
-    <% character.stat_keys.each do |key| %>
-      <p><%= "#{key} : #{character.stats[key]}" %></p>
-    <% end %>
-  </div>
+<% for character in @characters %>
+  <%= render :partial => 'character', :locals => {:character => character} %>
 <% end %>
+
+<br />
+
+<%= link_to 'New character', new_character_path %>
