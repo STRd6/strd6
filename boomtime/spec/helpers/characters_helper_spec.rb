@@ -7,5 +7,5 @@ describe CharactersHelper do
     included_modules = (class << helper; self; end).send :included_modules
     included_modules.should include(CharactersHelper)
   end
-
+  
 end
