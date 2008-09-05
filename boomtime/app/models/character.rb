@@ -1,5 +1,7 @@
 class Character < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
+  belongs_to :faction
+  
   serialize :stats
   
   validates_length_of :name, :within => 4..32, :too_long => "pick a shorter name", :too_short => "pick a longer name"

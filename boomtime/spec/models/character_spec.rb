@@ -17,4 +17,10 @@ describe Character do
     c.stats[:str].should_not be_nil
     c.stats[:dex].should_not be_nil
   end
+  
+  it "should be able to choose a faction" do
+    c = Character.new(@valid_attributes)
+    c.faction = Faction.new
+    c.save.should == true
+  end
 end
