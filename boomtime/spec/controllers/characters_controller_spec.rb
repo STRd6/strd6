@@ -23,18 +23,18 @@ describe CharactersController do
       assigns[:characters].should == [mock_character]
     end
 
-    describe "with mime type of xml" do
-  
-      it "should render all characters as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
-        characters.should_receive(:to_xml).and_return("generated XML")
-        
-        get :index
-        response.body.should == "generated XML"
-      end
-    
-    end
+#    describe "with mime type of xml" do
+#  
+#      it "should render all characters as xml" do
+#        request.env["HTTP_ACCEPT"] = "application/xml"
+#        mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
+#        characters.should_receive(:to_xml).and_return("generated XML")
+#        
+#        get :index
+#        response.body.should == "generated XML"
+#      end
+#    
+#    end
 
   end
 
@@ -48,26 +48,28 @@ describe CharactersController do
       assigns[:character].should equal(mock_character)
     end
     
-    describe "with mime type of xml" do
-
-      it "should render the requested character as xml" do
-        request.env["HTTP_ACCEPT"] = "application/xml"
-        mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
-        characters.should_receive(:find).with("37").and_return(mock_character)        
-        mock_character.should_receive(:to_xml).and_return("generated XML")
-        
-        get :show, :id => "37"
-        response.body.should == "generated XML"
-      end
-
-    end
+#    describe "with mime type of xml" do
+#
+#      it "should render the requested character as xml" do
+#        request.env["HTTP_ACCEPT"] = "application/xml"
+#        mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
+#        characters.should_receive(:find).with("37").and_return(mock_character)        
+#        mock_character.should_receive(:to_xml).and_return("generated XML")
+#        
+#        get :show, :id => "37"
+#        response.body.should == "generated XML"
+#      end
+#
+#    end
     
   end
 
   describe "responding to GET new" do
   
     it "should expose a new character as @character" do
-      Character.should_receive(:new).and_return(mock_character)
+      mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
+      characters.should_receive(:new).and_return(mock_character)
+      
       get :new
       assigns[:character].should equal(mock_character)
     end
@@ -197,7 +199,7 @@ describe CharactersController do
     it "should destroy the requested character" do
       mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
       characters.should_receive(:find).with("37").and_return(mock_character)
-      mock_character.should_receive(:destroy)
+      mock_character.should_receive(:destroy).and_return(true)
       
       delete :destroy, :id => "37"
     end
