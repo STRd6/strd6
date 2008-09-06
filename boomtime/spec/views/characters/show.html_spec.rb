@@ -8,7 +8,7 @@ describe "/characters/show.html.erb" do
   end
 
   it "should render attributes in <p>" do
-    render "/characters/show.html.erb"
+    render "/characters/show"
   end
 end
 

@@ -11,7 +11,7 @@ describe "/characters/index.html.erb" do
   end
 
   it "should render list of characters" do
-    render "/characters/index.html.erb"
+    render "/characters/index"
   end
 end
 

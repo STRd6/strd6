@@ -1,0 +1,7 @@
+.character
+  %p
+    = character.name
+
+  - character.stat_keys.each do |key| 
+    %p
+      = "#{key} : #{character.stats[key]}"

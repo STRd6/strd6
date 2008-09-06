@@ -10,7 +10,7 @@ describe "/characters/edit.html.erb" do
   end
 
   it "should render edit form" do
-    render "/characters/edit.html.erb"
+    render "/characters/edit"
     
     response.should have_tag("form[action=#{character_path(@character)}][method=post]") do
     end
