@@ -10,7 +10,7 @@ describe "/characters/new.html.erb" do
   end
 
   it "should render new form" do
-    render "/characters/new.html.erb"
+    render "/characters/new"
     
     response.should have_tag("form[action=?][method=post]", characters_path) do
     end

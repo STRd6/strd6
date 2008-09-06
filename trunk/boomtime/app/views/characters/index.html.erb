@@ -1,7 +1,0 @@
-<% for character in @characters %>
-  <%= render :partial => 'character', :locals => {:character => character} %>
-<% end %>
-
-<br />
-
-<%= link_to 'New character', new_character_path %>
