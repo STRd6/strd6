@@ -1,0 +1,41 @@
+/* Main css file for Boomstick.
+  Copyright StrD6 2008
+
+// Constants
+!main_color = #1084CE
+!light_gray = #cfcfcf
+!dark_gray = #333
+
+// Main markup
+body
+  font-family: Verdana, Helvetica, Arial, sans-serif
+  :background-color = !light_gray
+
+h1
+  font-size: 20px
+  :color = !main_color
+
+#header, #content 
+  position: relative
+  margin: 20px
+  width: 100%
+
+#header div 
+  float: left
+  clear: none
+  margin-right: 20px
+  
+  a
+    font-size: 12px
+    color: black
+    text-decoration: underline
+    &:hover
+      text-decoration: none
+
+#content form
+  label 
+    font-size: 12px
+    padding-bottom: 5px
+  input 
+    font-size: 16px
+    :color = !dark_gray

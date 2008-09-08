@@ -1,43 +1,34 @@
 /* Main css file for Boomstick.
  * Copyright StrD6 2008
- */
-
+ * //
+ * // Constants */
 body {
-	font-family: Verdana, Helvetica, Arial, sans-serif;
-	color: silver;
-	background-color: #003;
-}
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  background-color: #cfcfcf; }
 
 h1 {
-	font-size: 20px;
-}
+  font-size: 20px;
+  color: #1084ce; }
 
 #header, #content {
-	position: relative;
-	margin: 20px;
-	width: 100%;
-}
+  position: relative;
+  margin: 20px;
+  width: 100%; }
 
 #header div {
-	float: left;
-	clear: none;
-	margin-right: 20px;
-}
-
-#header div a {
-	font-size: 12px;
-	color: #666;
-	text-decoration: underline;
-}
-
-#header div a:hover { text-decoration: none; }
+  float: left;
+  clear: none;
+  margin-right: 20px; }
+  #header div a {
+    font-size: 12px;
+    color: black;
+    text-decoration: underline; }
+    #header div a:hover {
+      text-decoration: none; }
 
 #content form label {
-	font-size: 12px;
-	padding-bottom: 5px;
-}
-
+  font-size: 12px;
+  padding-bottom: 5px; }
 #content form input {
-	font-size: 16px;
-	color: #333;
-}
+  font-size: 16px;
+  color: #333333; }
