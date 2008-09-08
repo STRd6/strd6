@@ -10,6 +10,9 @@ RAILS_GEM_VERSION = '2.1.1' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+# Load secret email settings
+require "#{RAILS_ROOT}/config/email.rb"
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -67,3 +70,13 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   config.active_record.observers = :user_observer
 end
+
+ActionMailer::Base.smtp_settings = {
+  :tls => true,
+  :address => "smtp.gmail.com",
+  :port => "587",
+  :domain => "strd6.com",
+  :authentication => :plain,
+  :user_name => SMTP_USER_NAME,
+  :password => SMTP_PASSWORD
+}
