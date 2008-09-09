@@ -20,3 +20,16 @@ config.action_view.cache_template_loading            = true
 
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
+
+# Load secret email settings
+require "/u/apps/boomtime/email.rb"
+
+ActionMailer::Base.smtp_settings = {
+  :tls => true,
+  :address => "smtp.gmail.com",
+  :port => "587",
+  :domain => "strd6.com",
+  :authentication => :plain,
+  :user_name => SMTP_USER_NAME,
+  :password => SMTP_PASSWORD
+}
