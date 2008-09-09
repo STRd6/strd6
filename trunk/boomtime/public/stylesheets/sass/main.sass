@@ -2,17 +2,19 @@
   Copyright StrD6 2008
 
 // Constants
-!p1         = #1020ce
-!p2         = #0d1aa8
-!p3         = #0a1482
+!p1         = #00aa00
+!p2         = #00dd00
+!p3         = #cccccc
 
-!s1         = #8c92cf
-!s2         = #7277a8
-!s3         = #585c82
+!s1         = #0066ff
+!s2         = #ffffcc
+!s3         = #ffffff
 
 !main_color = #1084CE
-!light_gray = #cfcfcf
+!light_gray = #00ff99
 !dark_gray  = #303030
+
+!error_color = #660000
 
 // Main markup
 body
@@ -49,17 +51,21 @@ h1
     :color = !dark_gray
 
 // TODO: Good these up, embetter and embiggen
+.notification
+  :padding 4px
+  :border-style groove double
+  :margin-bottom 8px
+  :width 70%
+
 #notice
-  color: green
-  border-style: groove double
-  :border-color = !dark_gray
+  :color = !p1
+  :border-color = !main_color
+  :background-color = !s2
 
 #error
-  color: tan
-  border-style: groove double
-  :border-color = !dark_gray
+  :color = !error_color
+  :border-color = !error_color
   :background-color = !s2
-  :padding 4px
 
 #errorExplanation, .errorExplanation
-  color: tan
+  :color = !error_color

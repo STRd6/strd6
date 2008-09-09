@@ -4,11 +4,11 @@
  * // Constants */
 body {
   font-family: Verdana, Helvetica, Arial, sans-serif;
-  background-color: #585c82; }
+  background-color: #ffffff; }
 
 h1 {
   font-size: 20px;
-  color: #8c92cf; }
+  color: #0066ff; }
 
 #header, #content {
   position: relative;
@@ -33,17 +33,21 @@ h1 {
   font-size: 16px;
   color: #303030; }
 
-#notice {
-  color: green;
+.notification {
+  padding: 4px;
   border-style: groove double;
-  border-color: #303030; }
+  margin-bottom: 8px;
+  width: 70%; }
+
+#notice {
+  color: #00aa00;
+  border-color: #1084ce;
+  background-color: #ffffcc; }
 
 #error {
-  color: tan;
-  border-style: groove double;
-  border-color: #303030;
-  background-color: #7277a8;
-  padding: 4px; }
+  color: #660000;
+  border-color: #660000;
+  background-color: #ffffcc; }
 
 #errorExplanation, .errorExplanation {
-  color: tan; }
+  color: #660000; }

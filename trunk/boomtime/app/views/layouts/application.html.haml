@@ -26,9 +26,9 @@
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
         
         -if flash[:notice]
-          #notice= flash[:notice]
+          #notice.notification= flash[:notice]
         -if flash[:error]
-          #error= flash[:error]
+          #error.notification= flash[:error]
 
         = yield
 
