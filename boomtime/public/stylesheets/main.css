@@ -4,11 +4,11 @@
  * // Constants */
 body {
   font-family: Verdana, Helvetica, Arial, sans-serif;
-  background-color: #cfcfcf; }
+  background-color: #585c82; }
 
 h1 {
   font-size: 20px;
-  color: #1084ce; }
+  color: #8c92cf; }
 
 #header, #content {
   position: relative;
@@ -31,4 +31,19 @@ h1 {
   padding-bottom: 5px; }
 #content form input {
   font-size: 16px;
-  color: #333333; }
+  color: #303030; }
+
+#notice {
+  color: green;
+  border-style: groove double;
+  border-color: #303030; }
+
+#error {
+  color: tan;
+  border-style: groove double;
+  border-color: #303030;
+  background-color: #7277a8;
+  padding: 4px; }
+
+#errorExplanation, .errorExplanation {
+  color: tan; }
