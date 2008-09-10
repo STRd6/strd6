@@ -10,4 +10,9 @@ describe Faction do
   it "should create a new instance given valid attributes" do
     Faction.create!(@valid_attributes)
   end
+  
+  it "should have many characters" do
+    f = Faction.create!(@valid_attributes)
+    f.characters.should_not be_nil    
+  end
 end
