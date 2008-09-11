@@ -11,16 +11,18 @@
     #page
       #header
         - if logged_in?
-          #user-greeting== Logged in as #{link_to_current_user :content_method => :login}
-          #user-action== (#{link_to "Log out", logout_path, { :title => "Log out" }})
+          %p
+            = image_tag "logo-header.png", { :title => "Str d6", :align => "middle"}
+            == Logged in as #{link_to_current_user :content_method => :login}
+            == (#{link_to "Log out", logout_path, { :title => "Log out" }})
+            
         -else
-          #user-greeting= link_to_login_with_IP 'Not logged in'
-          #user-action
+          %p
+            = link_to_login_with_IP 'Not logged in'
+            
             = link_to "Log in",  login_path,  { :title => "Log in" }
             == /
             = link_to "Sign up", signup_path, { :title => "Create an account" }
-        %br
-
       
       #content
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
@@ -32,10 +34,11 @@
 
         = yield
 
+      / Move between #header and #content (or into the top of #content)
       #footer
         = link_to "Home", :controller => "welcome"
         = "|" 
         = link_to "Characters", :controller => "characters"
 
-      #bottom
-        = image_tag "strd6Logo-small.png"
+      /#bottom
+      /  = image_tag "strd6Logo-small.png"
