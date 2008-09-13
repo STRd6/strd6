@@ -1,26 +1,20 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Character do
-  before(:each) do
-    @valid_attributes = {
-      :name => "World's Greatest Name!"
-    }
-  end
-
-  it "should create a new instance given valid attributes" do
-    Character.create!(@valid_attributes)
+  it "should create a new instance" do
+    Factory(:character)
   end
   
   it "should have some stats" do
-    c = Character.create(@valid_attributes)
+    c = Factory(:character)
     
     c.stats[:str].should_not be_nil
     c.stats[:dex].should_not be_nil
   end
   
   it "should be able to choose a faction" do
-    c = Character.new(@valid_attributes)
-    c.faction = Faction.new
+    c = Factory(:character)
+    c.faction = Factory(:faction)
     c.save.should == true
   end
   
