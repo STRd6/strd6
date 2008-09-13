@@ -18,6 +18,9 @@ config.action_mailer.raise_delivery_errors = false
 
 # Load secret email settings
 require "#{RAILS_ROOT}/config/email.rb"
+require "#{RAILS_ROOT}/config/site_keys.rb"
+
+CONF[:host] = '127.0.0.1:3000'
 
 ActionMailer::Base.smtp_settings = {
   :tls => true,
