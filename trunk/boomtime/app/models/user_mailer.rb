@@ -1,16 +1,18 @@
 class UserMailer < ActionMailer::Base
+  include ActionController::UrlWriter
+  
   def signup_notification(user)
     setup_email(user)
     @subject    += 'Please activate your new account'
   
-    @body[:url]  = "http://#{site}/activate/#{user.activation_code}"
+    @body[:url]  = activate_url :activation_code => user.activation_code
   
   end
   
   def activation(user)
     setup_email(user)
     @subject    += 'Your account has been activated!'
-    @body[:url]  = "http://#{site}/"
+    @body[:url]  = home_url
   end
   
   protected
@@ -20,9 +22,5 @@ class UserMailer < ActionMailer::Base
       @subject     = "[STRd6] "
       @sent_on     = Time.now
       @body[:user] = user
-    end
-    
-    def site
-      "67.207.139.110"
     end
 end
