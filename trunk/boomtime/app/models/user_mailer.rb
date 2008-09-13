@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
   include ActionController::UrlWriter
+  default_url_options[:host] = CONF[:host]
   
   def signup_notification(user)
     setup_email(user)

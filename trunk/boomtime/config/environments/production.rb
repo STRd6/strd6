@@ -21,8 +21,13 @@ config.action_view.cache_template_loading            = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 
+CONF[:host] = '67.207.139.110'
+
+# Load secret security settings
+require "/u/apps/boomtime/config/site_keys.rb"
+
 # Load secret email settings
-require "/u/apps/boomtime/email.rb"
+require "/u/apps/boomtime/config/email.rb"
 
 ActionMailer::Base.smtp_settings = {
   :tls => true,
