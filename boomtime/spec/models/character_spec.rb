@@ -23,4 +23,20 @@ describe Character do
     c.faction = Faction.new
     c.save.should == true
   end
+  
+  it "should have an inventory" do
+    
+  end
+  
+  it "should have equipped items" do
+    
+  end
+  
+  it "should be in an area" do
+    
+  end
+  
+  it "should be able to gather resources" do
+    
+  end
 end
