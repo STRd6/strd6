@@ -27,7 +27,9 @@ describe Character do
   end
   
   it "should be in an area" do
-    
+    c = Factory(:character, :area => Factory(:area))
+    c.area.should_not be_nil
+    assert c.area.characters.include?(c)
   end
   
   it "should be able to gather resources" do
