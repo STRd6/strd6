@@ -10,6 +10,14 @@ describe Area do
     area.adjacent_areas.should_not be_nil
   end
   
+  it "should contain characters" do
+    area = Factory(:area, :characters => [Factory(:character), Factory(:character)])
+    assert_equal 2, area.characters.size
+    area.characters.each do |c|
+      assert c.area == area
+    end
+  end
+  
   it "should have terrain features" do
     
   end

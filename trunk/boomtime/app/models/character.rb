@@ -1,6 +1,7 @@
 class Character < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
   belongs_to :faction
+  belongs_to :area
   
   serialize :stats
   
