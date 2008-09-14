@@ -3,4 +3,5 @@ class Area < ActiveRecord::Base
   has_many :adjacent_areas, :through => :adjacencies
   
   has_many :characters
+  has_many :features
 end
