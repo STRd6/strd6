@@ -13,7 +13,7 @@ Factory.sequence :area_name do |n|
 end
 
 Factory.define :area do |a|
-  a.name { Factory.next(:area_name) }
+  a.name { Factory.next :area_name }
 end
 
 Factory.define :feature do |f|
@@ -21,6 +21,14 @@ Factory.define :feature do |f|
 end
 
 Factory.define :adjacency do |a|
-  a.area { Factory(:area) }
-  a.adjacent_area { Factory(:area) }
+  a.area { Factory :area }
+  a.adjacent_area { Factory :area }
+end
+
+Factory.sequence :item_name do |n|
+  " Item 5#{n}"
+end
+
+Factory.define :item do |i|
+  i.name { Factory.next :item_name }
 end
