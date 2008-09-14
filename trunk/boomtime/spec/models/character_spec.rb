@@ -19,7 +19,8 @@ describe Character do
   end
   
   it "should have an inventory" do
-    
+    c = Factory(:character)
+    c.inventory.should == []
   end
   
   it "should have equipped items" do

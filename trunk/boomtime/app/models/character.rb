@@ -3,9 +3,11 @@ class Character < ActiveRecord::Base
   belongs_to :faction
   belongs_to :area
   
-  serialize :stats
+  has_many :inventory_items, :as => :owner, :class_name => 'Item'
   
-  validates_length_of :name, :within => 4..32, :too_long => "pick a shorter name", :too_short => "pick a longer name"
+  validates_length_of :name, :within => 2..32, :too_long => "pick a shorter name", :too_short => "pick a longer name"
+  
+  serialize :stats
   
   before_create :roll_stats
 
@@ -19,5 +21,9 @@ class Character < ActiveRecord::Base
   
   def stat_keys
     [:str, :dex, :pow]
+  end
+  
+  def inventory
+    return self.inventory_items
   end
 end
