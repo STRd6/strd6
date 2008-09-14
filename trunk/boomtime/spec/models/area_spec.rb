@@ -7,7 +7,7 @@ describe Area do
   
   it "should know what areas it is connected to" do
     area = Factory(:area)
-    area.adjacent_areas.should_not be_nil
+    area.adjacent_areas.should == []
   end
   
   it "should contain characters" do
@@ -20,7 +20,7 @@ describe Area do
   
   it "should have terrain features" do
     area = Factory(:area)
-    area.features.should_not be_nil
+    area.features.should == []
   end
   
   it "should be able to be blocked by building a wall" do
