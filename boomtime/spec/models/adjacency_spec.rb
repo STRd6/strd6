@@ -1,13 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Adjacency do
-  before(:each) do
-    @valid_attributes = {
-
-    }
-  end
-
-  it "should create a new instance given valid attributes" do
-    Adjacency.create!(@valid_attributes)
+  it "should create a new instance" do
+    a = Factory(:adjacency)
+    a.area.should_not be_nil
+    a.adjacent_area.should_not be_nil
   end
 end

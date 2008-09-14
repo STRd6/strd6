@@ -19,7 +19,8 @@ describe Area do
   end
   
   it "should have terrain features" do
-    
+    area = Factory(:area)
+    area.features.should_not be_nil
   end
   
   it "should be able to be blocked by building a wall" do
