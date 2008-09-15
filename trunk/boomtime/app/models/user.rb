@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :name, :password, :password_confirmation
   
   has_many :characters, :foreign_key => 'owner_id'
+  
+  def to_s
+    login
+  end
 
   # Activates the user in the database.
   def activate!

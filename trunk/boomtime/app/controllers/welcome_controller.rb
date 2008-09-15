@@ -11,4 +11,15 @@ class WelcomeController < ApplicationController
     @user = User.first
     @user.errors.add "A really uncool error"
   end
+  
+  def chat
+  end
+  
+  def send_data
+    render :juggernaut do |page|
+      page.insert_html :top, 'chat_data', "<li><b>#{current_user}:</b> #{h params[:chat_input]}</li>"
+    end
+    render :nothing => true
+  end
+
 end
