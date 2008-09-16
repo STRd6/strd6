@@ -3,8 +3,7 @@
   %head
     %meta{'http-equiv' => "Content-type", 'content' => "text/html; charset=utf-8"}
     %title= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
-    = javascript_include_tag 'prototype'
-    = javascript_include_tag 'effects' 
+    = javascript_include_tag 'prototype', 'effects', :juggernaut
     = stylesheet_link_tag "main"
 
   %body
@@ -28,6 +27,8 @@
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
         
         = render :partial => 'components/notices'
+
+        = render :partial => 'components/chat'
 
         = yield
 
