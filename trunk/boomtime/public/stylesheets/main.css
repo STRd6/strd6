@@ -46,6 +46,20 @@ h1 {
     font-size: 16px;
     color: #303030; }
 
+#chat {
+  float: right;
+  margin-right: 150px; }
+
+.chat_text {
+  height: 120px;
+  border-style: double;
+  border-color: black;
+  background-color: #cccccc;
+  overflow: auto; }
+  .chat_text ul {
+    padding: 0;
+    margin: 0; }
+
 .notification {
   padding: 4px;
   border-style: groove double;
