@@ -1,0 +1,3 @@
+- if current_user && current_user.active_character
+  #active_character
+    = render :partial => 'characters/character', :locals => { :character => current_user.active_character }

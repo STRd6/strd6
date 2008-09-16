@@ -32,3 +32,10 @@ end
 Factory.define :item do |i|
   i.name { Factory.next :item_name }
 end
+
+Factory.define :user do |u|
+  u.login 'quire'
+  u.email 'quire@example.com'
+  u.password 'quire69'
+  u.password_confirmation 'quire69'
+end
