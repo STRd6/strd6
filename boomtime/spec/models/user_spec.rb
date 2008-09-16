@@ -27,6 +27,19 @@ describe User do
       @user.activation_code.should_not be_nil
     end
   end
+  
+  it "should have no active character at first" do
+    user = Factory(:user)
+    assert_equal nil, user.active_character
+  end
+  
+  it "should have an active character sometimes" do
+    character = Factory(:character)
+    user = Factory(:user, :active_character => character)
+    
+    user = User.find user
+    assert_equal character, user.active_character
+  end
 
   #
   # Validations

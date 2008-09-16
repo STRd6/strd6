@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :name, :password, :password_confirmation
   
   has_many :characters, :foreign_key => 'owner_id'
+  belongs_to :active_character, :class_name => 'Character'
   
   def to_s
     login

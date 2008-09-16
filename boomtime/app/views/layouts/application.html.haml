@@ -27,12 +27,11 @@
       #content
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
         
-        -if flash[:notice]
-          #notice.notification= flash[:notice]
-        -if flash[:error]
-          #error.notification= flash[:error]
+        = render :partial => 'components/notices'
 
         = yield
+
+        = render :partial => 'components/active_character'
 
       / Move between #header and #content (or into the top of #content)
       #footer
