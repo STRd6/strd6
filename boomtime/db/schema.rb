@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080914054737) do
+ActiveRecord::Schema.define(:version => 20080916051154) do
 
   create_table "adjacencies", :force => true do |t|
     t.integer  "area_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20080914054737) do
     t.datetime "remember_token_expires_at"
     t.string   "activation_code",           :limit => 40
     t.datetime "activated_at"
+    t.integer  "active_character_id"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
