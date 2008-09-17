@@ -58,7 +58,8 @@ h1 {
   overflow: auto; }
   .chat_text ul {
     padding: 0;
-    margin: 0; }
+    margin: 0;
+    list-style: none; }
 
 .notification {
   padding: 4px;
