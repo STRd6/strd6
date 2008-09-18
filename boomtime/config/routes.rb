@@ -10,8 +10,12 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :session
   
-  map.resources :characters
+  map.resources :characters do |characters|
+    characters.resources :items, :name_prefix => "character"
+  end
+  
   map.resources :areas
+  map.resources :items
 
   # The priority is based upon order of creation: first created -> highest priority.
 
