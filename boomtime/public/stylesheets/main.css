@@ -9,8 +9,11 @@ body {
   padding: 0; }
 
 h1 {
-  font-size: 20px;
+  font-size: 22px;
   color: #004f82; }
+
+h2 {
+  font-size: 18px; }
 
 #header {
   position: relative;
@@ -86,19 +89,23 @@ h1 {
     padding: 2px; }
 
 #chat {
-  float: right;
-  margin-right: 150px; }
-
-.chat_text {
-  height: 120px;
-  border-style: double;
-  border-color: black;
-  background-color: #cccccc;
-  overflow: auto; }
-  .chat_text ul {
-    padding: 0;
-    margin: 0;
-    list-style: none; }
+  float: right; }
+  #chat input#chat_input {
+    width: 245px; }
+  #chat .chat_text {
+    height: 120px;
+    width: 300px;
+    border-style: double;
+    border-color: black;
+    background-color: #cccccc;
+    padding: 5px;
+    overflow: auto; }
+    #chat .chat_text ul {
+      padding: 0;
+      margin: 0;
+      list-style: none; }
+      #chat .chat_text ul li {
+        font-size: 12px; }
 
 .notification {
   padding: 4px;
