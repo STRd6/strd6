@@ -1,2 +1,5 @@
-.area
-  %p= @area.name
+%div[area]
+  %p= area.name
+  %ul
+    - area.characters.each do |c|
+      %li= c.name
