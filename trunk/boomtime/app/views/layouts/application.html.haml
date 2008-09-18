@@ -9,16 +9,18 @@
   %body
     #page
       #header
-        - if logged_in?
-          %p
-            = image_tag "logo-header.png", { :title => "Str d6", :align => "middle"}
+        %p.left
+          = image_tag "logo-header.png", { :title => "Str d6", :align => "middle"}
+          = link_to "Home", {:controller => "welcome"}, {:class => "button"}
+          = link_to "Characters", { :controller => "characters" }, { :class => "button" }
+        
+        %p.right
+          - if logged_in?
             == Logged in as #{link_to_current_user :content_method => :login}
             == (#{link_to "Log out", logout_path, { :title => "Log out" }})
-            
-        -else
-          %p
-            = link_to_login_with_IP 'Not logged in'
-            
+          
+          -else
+            = link_to_login_with_IP 'Not logged in'            
             = link_to "Log in",  login_path,  { :title => "Log in" }
             == /
             = link_to "Sign up", signup_path, { :title => "Create an account" }
@@ -31,14 +33,6 @@
         = render :partial => 'components/chat'
 
         = yield
-
-        = render :partial => 'components/active_character'
-
-      / Move between #header and #content (or into the top of #content)
-      #footer
-        = link_to "Home", :controller => "welcome"
-        = "|" 
-        = link_to "Characters", :controller => "characters"
 
       /#bottom
       /  = image_tag "strd6Logo-small.png"
