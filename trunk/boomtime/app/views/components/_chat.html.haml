@@ -5,5 +5,5 @@
     %ul#chat_data
 
   - form_remote_tag :url => { :controller => :welcome, :action => :send_data }, :complete => "$('chat_input').value = ''" do
-    = text_field_tag 'chat_input', '', { :size => 20, :id => 'chat_input'}
+    = text_field_tag 'chat_input', '', { :id => 'chat_input'}
     = submit_tag "Add"
