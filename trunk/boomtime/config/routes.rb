@@ -10,9 +10,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resource :session
   
-  map.resources :characters do |characters|
-    characters.resources :items, :name_prefix => "character"
-  end
+  map.resources :characters
   
   map.resources :areas
   map.resources :items

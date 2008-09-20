@@ -19,3 +19,20 @@ ssh_options[:port] = 2112
 role :app, "67.207.139.110"
 role :web, "67.207.139.110"
 role :db,  "67.207.139.110", :primary => true
+
+namespace :juggernaut do
+  desc "Stop the juggernaut push server"
+  task :stop , :roles => :app do
+    run "cd #{current_path} && rake juggernaut:stop RAILS_ENV=production"
+  end
+
+  desc "Start the juggernaut push server" 
+  task :start, :roles => :app do
+    run "cd #{current_path} && rake juggernaut:start RAILS_ENV=production"
+  end
+
+  desc "Restart the juggernaut push server"
+  task :restart, :roles => :app do
+    run "cd #{current_path} && rake juggernaut:restart RAILS_ENV=production"
+  end
+end
