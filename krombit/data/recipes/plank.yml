@@ -1,5 +1,0 @@
-ingredients:
-  !ruby/symbol wood: 1
-
-products:
-  !ruby/symbol plank: 1
