@@ -1,8 +1,0 @@
-- form_for(@character) do |f|
-  = f.error_messages
-  
-  = p_label 'name', f.text_field(:name, { :class => "text" })  
-
-  = p_label '', f.submit('Create')
-
-= link_to 'Back', characters_path

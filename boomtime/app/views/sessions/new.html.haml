@@ -1,9 +1,0 @@
-- form_tag session_path do
-  = p_label 'login', text_field_tag('login', @login, { :class => "text" })
-
-  = p_label 'password', password_field_tag('password', nil, { :class => "text" })
-
-  = p_label 'remember_me', check_box_tag('remember_me', '1', @remember_me, { :class => "checkbox" })
-  
-
-  = p_label '', submit_tag('Log in')

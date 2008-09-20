@@ -1,7 +1,0 @@
-name: club
-slot: !ruby/symbol phand
-bonus:
-  !ruby/symbol str: 25
-  !ruby/symbol dex: 10
-dmg_exprs:
-  !ruby/symbol blunt: 1.d(6) + str/10
