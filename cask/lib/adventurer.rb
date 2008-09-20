@@ -37,6 +37,8 @@ class Adventurer
       if @help_count % 3 == 0
         help
       end
+      
+      print "> "
     end
   end
 
@@ -70,6 +72,7 @@ class Adventurer
       puts "You are starving."
     when 18
       puts "You have starved to death."
+      gets
       exit
     end
 
