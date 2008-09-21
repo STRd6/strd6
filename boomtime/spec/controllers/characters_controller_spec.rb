@@ -212,5 +212,36 @@ describe CharactersController do
     end
 
   end
+  
+  describe "responding to activate_character" do
+    it "should activate the given character if the current user owns the character" do
+      user = Factory(:user, :characters => [Factory(:character)], :active_character => nil)
+      
+      controller.stub!(:current_user).and_return user
+      
+      get :activate, :id => user.characters.first.id
+      response.should redirect_to(characters_url)
+
+      # The character should be activated
+      user.reload
+      user.active_character.should == user.characters.first
+    end
+    
+    it "should not activate the given character if the current user does not own the character" do
+      user = Factory(:user, :characters => [Factory(:character)], :active_character => nil)
+      
+      controller.stub!(:current_user).and_return user
+      
+      previously_active_character = user.active_character
+      
+      get :activate, :id => 0
+      response.should redirect_to(characters_url)
+      
+      #The previously active character should remain
+      user.reload
+      user.active_character.should == previously_active_character
+    end
+    
+  end
 
 end
