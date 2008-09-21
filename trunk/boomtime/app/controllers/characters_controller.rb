@@ -12,5 +12,22 @@ class CharactersController < ResourceController::Base
   def build_object
     @object ||= current_user.characters.new object_params
   end
-
+  
+  def activate
+    begin
+      @character = current_user.characters.find(params[:id])
+      current_user.active_character = @character
+      
+      if current_user.save
+        flash[:notice] = "#{@character.name} activated!"
+      else
+        flash[:error] = "#{@character.name} NOT activated!"
+      end
+    rescue ActiveRecord::RecordNotFound
+      flash[:error] = "NOT activated!"
+    end
+    
+    redirect_to :action => 'index'
+  end
+  
 end
