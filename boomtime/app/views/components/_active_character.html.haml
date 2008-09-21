@@ -1,3 +1,4 @@
 - if current_user && current_user.active_character
-  #active_character
+  #active_character.border
     = render :partial => 'characters/character', :locals => { :character => current_user.active_character }
+  = draggable_element 'active_character'

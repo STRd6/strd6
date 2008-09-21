@@ -73,6 +73,20 @@ div.item {
     padding: 0.5em;
     background-color: white; }
 
+div.area {
+  border-color: black;
+  border-style: dashed;
+  padding: 1em;
+  margin-bottom: 1em; }
+  div.area p {
+    margin-top: 0px; }
+  div.area div.characters {
+    padding-left: 1em;
+    font-size: 12px; }
+  div.area div.signs {
+    padding-left: 1em;
+    font-size: 12px; }
+
 div.clear {
   clear: both; }
 
@@ -125,6 +139,15 @@ div.clear {
       list-style: none; }
       #chat .chat_text ul li {
         font-size: 12px; }
+
+#active_character {
+  background-color: #e0a570;
+  padding: 1em;
+  width: 240px; }
+
+.border {
+  border-color: black;
+  border-style: solid; }
 
 .notification {
   padding: 4px;

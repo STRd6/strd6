@@ -1,5 +1,20 @@
 %div[area]
+  
   %p= area.name
-  %ul
-    - area.characters.each do |c|
-      %li= c.name
+  
+  - if area.characters.size > 0
+    .characters
+      %p Characters
+      %ul
+        - area.characters.each do |c|
+          %li= c.name
+
+  - if area.signs.size > 0
+    .signs
+      %p Signs
+      %ul
+        - area.signs.each do |s|
+          %li= s.text
+
+  .actions
+    = link_to "Go Here"
