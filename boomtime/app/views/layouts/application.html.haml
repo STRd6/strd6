@@ -24,14 +24,10 @@
             = link_to "Log in",  login_path,  { :title => "Log in" }
             == /
             = link_to "Sign up", signup_path, { :title => "Create an account" }
-      
+
       #content
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
-        
         = render :partial => 'components/notices'
-
-        = render :partial => 'components/chat'
-
         = yield
 
       /#bottom
