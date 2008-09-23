@@ -1,6 +1,6 @@
 - if current_user && current_user.active_character
-  #active_character.border
-    #active_character_handel.title_bar 
+  #active_character.window 
+    #active_character_handel.title_bar Active Character
     .content
       = render :partial => 'characters/character', :locals => { :character => current_user.active_character }
-  = draggable_element 'active_character', :on_end => 'end_drag', :handle => '"active_character_handel"'
+  = draggable_element 'active_character', :snap => '[10,10]', :on_end => 'end_drag', :handle => '"active_character_handel"'
