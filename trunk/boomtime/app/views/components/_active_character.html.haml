@@ -3,4 +3,4 @@
     #active_character_handel.title_bar Active Character
     .content
       = render :partial => 'characters/character', :locals => { :character => current_user.active_character }
-  = draggable_element 'active_character', :snap => '[10,10]', :on_end => 'end_drag', :handle => '"active_character_handel"'
+  = draggable_element 'active_character', :snap => '[10,10]', :onEnd => 'function() { store_position($("active_character")); }', :handle => '"active_character_handel"'

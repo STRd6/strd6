@@ -4,4 +4,7 @@ module ApplicationHelper
     "<p>#{label_tag label} #{data}</p>"
   end
   
+  def end_drag
+    'function(element, mouse_event) { end_drag(element, mouse_event); }'
+  end
 end

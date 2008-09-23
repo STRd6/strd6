@@ -35,4 +35,8 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
     end
   end
+  
+  def store_position
+    render :nothing => true
+  end
 end
