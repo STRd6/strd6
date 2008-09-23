@@ -124,11 +124,12 @@ div.clear {
 
 #chat {
   float: right; }
-  #chat input#chat_input {
+  #chat input {
+    margin: 5px; }
+  #chat #chat_input {
     width: 245px; }
   #chat .chat_text {
     height: 120px;
-    width: 300px;
     border-style: double;
     border-color: black;
     background-color: #cccccc;
@@ -142,12 +143,19 @@ div.clear {
         font-size: 12px; }
 
 #active_character {
-  background-color: #e0a570;
   width: 240px; }
 
 .title_bar {
-  background-color: #ba795d;
-  height: 1em; }
+  background-color: #004f82;
+  color: white;
+  padding: 0.2em;
+  margin: 0px; }
+
+.window {
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  border-width: 1px; }
 
 .border {
   border-color: black;

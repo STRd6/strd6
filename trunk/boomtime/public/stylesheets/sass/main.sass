@@ -167,12 +167,13 @@ div.clear
 #chat
   float: right
 
-  input#chat_input
+  input
+    margin: 4px
+  #chat_input
     width: 245px
   
   .chat_text
     height: 120px
-    width: 300px
     border-style: double
     border-color: black
     background-color= !light_gray
@@ -188,13 +189,20 @@ div.clear
         font-size: 12px
 
 #active_character
-  background-color= !secondary_color_light
   width: 240px
-  
 
 .title_bar
-  background-color= !secondary_color
-  height: 1em
+  background-color= !main_color_dark
+  color: white
+  padding: 0.2em
+  margin: 0px
+  font-weight: bold
+
+.window
+  background-color: white
+  border-color: black
+  border-style: solid
+  border-width: 1px
 
 .border
   border-color: black
