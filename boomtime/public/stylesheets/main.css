@@ -125,7 +125,7 @@ div.clear {
 #chat {
   float: right; }
   #chat input {
-    margin: 5px; }
+    margin: 4px; }
   #chat #chat_input {
     width: 245px; }
   #chat .chat_text {
@@ -145,11 +145,16 @@ div.clear {
 #active_character {
   width: 240px; }
 
+.character {
+  margin: 0px;
+  padding: 0.2em; }
+
 .title_bar {
   background-color: #004f82;
   color: white;
   padding: 0.2em;
-  margin: 0px; }
+  margin: 0px;
+  font-weight: bold; }
 
 .window {
   background-color: white;
