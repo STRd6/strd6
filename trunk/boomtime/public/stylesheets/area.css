@@ -1,0 +1,14 @@
+/* Area stylesheet */
+div.area {
+  border-color: black;
+  border-style: dashed;
+  padding: 1em;
+  margin-bottom: 1em; }
+  div.area p {
+    margin-top: 0px; }
+  div.area div.characters {
+    padding-left: 1em;
+    font-size: 12px; }
+  div.area div.signs {
+    padding-left: 1em;
+    font-size: 12px; }

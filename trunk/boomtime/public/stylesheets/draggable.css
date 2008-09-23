@@ -1,0 +1,16 @@
+.title_bar {
+  background-color: #1084ce;
+  color: white;
+  padding: 0.4em;
+  margin: 0px;
+  font-weight: bold; }
+
+.window {
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  border-width: 1px; }
+
+.border {
+  border-color: black;
+  border-style: solid; }
