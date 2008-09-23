@@ -4,7 +4,7 @@
     %meta{'http-equiv' => "Content-type", 'content' => "text/html; charset=utf-8"}
     %title= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
     = javascript_include_tag 'prototype', 'effects', 'dragdrop', 'application', :juggernaut
-    = stylesheet_link_tag "main"
+    = stylesheet_link_tag :all
 
   %body
     #page

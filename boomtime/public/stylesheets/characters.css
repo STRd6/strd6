@@ -1,0 +1,7 @@
+/* Characters stylesheet */
+#active_character {
+  width: 240px; }
+
+.character {
+  margin: 0px;
+  padding: 0.2em; }

@@ -1,0 +1,25 @@
+/* Chatbox stylesheet */
+#chat {
+  float: right;
+  background-color: #cccccc; }
+  #chat input#chat_input {
+    margin: 4px;
+    margin-bottom: 0;
+    padding: 2px;
+    border: 2px solid;
+    border-color: black;
+    width: 245px;
+    font-size: 12px; }
+  #chat .chat_text {
+    height: 120px;
+    border-style: double;
+    border-color: black;
+    background-color: #ffffff;
+    padding: 5px;
+    overflow: auto; }
+    #chat .chat_text ul {
+      padding: 0;
+      margin: 0;
+      list-style: none; }
+      #chat .chat_text ul li {
+        font-size: 12px; }
