@@ -1,10 +1,9 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-function end_drag(element, mouse_event) {
-  alert(element);
-  alert(mouse_event);
-  //store_position(element.up('.window'));
+function end_drag(element) {
+  raise(element);
+  store_position(element);
 }
 
 function store_position(element) {
@@ -19,4 +18,8 @@ function store_position(element) {
   });
   
   return false;
+}
+
+function raise(element) {
+  
 }

@@ -1,6 +1,6 @@
 - if current_user && current_user.active_character
-  #active_character.window 
+  #active_character.window{:style => window_style('active_character')}
     #active_character_handel.title_bar Active Character
     .content
       = render :partial => 'characters/character', :locals => { :character => current_user.active_character }
-  = draggable_element 'active_character', :snap => '[10,10]', :onEnd => 'function() { store_position($("active_character")); }', :handle => '"active_character_handel"'
+  = draggable_element 'active_character', hash_for_draggable('active_character')

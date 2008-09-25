@@ -1,12 +1,11 @@
-#chat.window
-  = juggernaut
+- if current_user
+  #chat.window{:style => window_style('chat')}
+    #chat_handle.title_bar Chat
 
-  #chat_handle.title_bar Chat
+    .chat_text
+      %ul#chat_data
 
-  .chat_text
-    %ul#chat_data
-
-  - form_remote_tag :url => { :controller => :welcome, :action => :send_data }, :complete => "$('chat_input').value = ''" do
-    = text_field_tag 'chat_input', '', { :id => 'chat_input'}
-    = submit_tag "Add"
-= draggable_element 'chat', :snap => '[10,10]', :handle => "'chat_handle'"
+    - form_remote_tag :url => { :controller => :welcome, :action => :send_data }, :complete => "$('chat_input').value = ''" do
+      = text_field_tag 'chat_input', '', { :id => 'chat_input'}
+      = submit_tag "Add"
+  = draggable_element 'chat', hash_for_draggable('chat')

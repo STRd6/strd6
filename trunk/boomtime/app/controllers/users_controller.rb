@@ -37,6 +37,11 @@ class UsersController < ApplicationController
   end
   
   def store_position
+    if(window_position = WindowPosition.find :first, :conditions => {:user_id => current_user.id, :window => params[:element]})
+      window_position.update_attributes :top => params[:top], :left => params[:left]
+    else
+      WindowPosition.create! :user => current_user, :window => params[:element], :top => params[:top], :left => params[:left]
+    end
     render :nothing => true
   end
 end
