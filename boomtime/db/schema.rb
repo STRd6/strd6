@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080921163554) do
+ActiveRecord::Schema.define(:version => 20080924054604) do
 
   create_table "adjacencies", :force => true do |t|
     t.integer  "area_id"
@@ -81,5 +81,17 @@ ActiveRecord::Schema.define(:version => 20080921163554) do
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
+
+  create_table "window_positions", :force => true do |t|
+    t.string   "window"
+    t.integer  "top"
+    t.integer  "left"
+    t.integer  "z"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "window_positions", ["window", "user_id"], :name => "index_window_positions_on_window_and_user_id", :unique => true
 
 end
