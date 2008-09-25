@@ -7,10 +7,14 @@
     = stylesheet_link_tag :all
 
   %body
+    = juggernaut
     #page
+      = render :partial => 'components/active_character'
+      = render :partial => 'components/chat'
+
       #header
         %p.left
-          = image_tag "logo-header.png", { :title => "Str d6", :align => "middle"}
+          = image_tag "logo-header.png", { :title => "STRd6", :align => "middle"}
           = link_to "Home", {:controller => "welcome"}, {:class => "button"}
           = link_to "Characters", { :controller => "characters" }, { :class => "button" }
         
@@ -29,8 +33,6 @@
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
         = render :partial => 'components/notices'
         = yield
-      = render :partial => 'components/active_character'
-      = render :partial => 'components/chat'
 
       /#bottom
       /  = image_tag "strd6Logo-small.png"
