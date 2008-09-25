@@ -15,15 +15,4 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
   
-  before_filter :get_windows
-  
-private  
-  def get_windows
-    if current_user
-      c = WindowPosition.first :conditions => {:user_id => current_user.id, :window => 'chat'}
-      
-      @chat = {:top => c.top, :left => c.left}
-      
-    end
-  end
 end
