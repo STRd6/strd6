@@ -7,7 +7,7 @@ describe WindowPosition do
       :top => "1",
       :left => "1",
       :z => "1",
-      :user => nil
+      :user => Factory(:user)
     }
   end
 
