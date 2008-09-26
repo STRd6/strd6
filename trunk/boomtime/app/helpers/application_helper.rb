@@ -16,14 +16,7 @@ module ApplicationHelper
      :handle => "'#{id}_handel'"}
   end
   
-  def window_style(id)
-    return "" unless current_user
-    
-    w = WindowPosition.first :conditions => {:user_id => current_user.id, :window => id}
-
-    return "" unless w
-    
-    "top: #{w.top}px; left: #{w.left}px;"
+  def window(id)
+    {:layout => 'components/window', :locals => {:name => id}}
   end
-  
 end

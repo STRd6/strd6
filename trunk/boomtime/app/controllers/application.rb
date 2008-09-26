@@ -3,6 +3,7 @@
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
+  include WindowPimp
   
   helper :all # include all helpers, all the time
   
@@ -14,5 +15,17 @@ class ApplicationController < ActionController::Base
   # Uncomment this to filter the contents of submitted sensitive data parameters
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
+  
+#  def window_style(window)
+#    return "" unless current_user
+#    
+#    w = WindowPosition.style_for(current_user.id, window)
+#
+#    return "" unless w
+#    
+#    "top: #{w.top}px; left: #{w.left}px;"
+#  end
+#  
+#  helper_method :window_style
   
 end

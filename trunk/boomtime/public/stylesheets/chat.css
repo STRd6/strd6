@@ -3,13 +3,13 @@
   float: right;
   background-color: #cccccc; }
   #chat input#chat_input {
-    margin: 4px;
-    margin-bottom: 0;
     padding: 2px;
     border: 2px solid;
     border-color: black;
     width: 245px;
     font-size: 12px; }
+  #chat input {
+    margin: 4px; }
   #chat .chat_text {
     height: 120px;
     border-style: double;
