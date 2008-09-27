@@ -23,6 +23,10 @@ class Character < ActiveRecord::Base
     [:str, :dex, :pow]
   end
   
+  def bonus
+    {:str => 2, :dex => -1, :pow => 0}
+  end
+  
   def inventory
     return self.inventory_items
   end

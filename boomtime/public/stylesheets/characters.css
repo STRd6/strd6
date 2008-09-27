@@ -5,3 +5,16 @@
 .character {
   margin: 0px;
   padding: 0.2em; }
+  .character span {
+    margin: 0.2em;
+    font-weight: bold; }
+  .character span.total {
+    font-size: 1.2em;
+    border: 1px solid;
+    padding: 0.05em 0.4em; }
+  .character span.base {
+    color: gray; }
+  .character span.bonus {
+    color: blue; }
+  .character span.penalty {
+    color: red; }
