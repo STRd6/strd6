@@ -4,4 +4,5 @@
 
   - character.stat_keys.each do |key| 
     %p
-      = "#{icon_for(key)} : #{character.stats[key]}"
+      = icon_for key 
+      == : #{stats_text(character, key)}

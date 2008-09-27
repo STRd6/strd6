@@ -18,12 +18,12 @@
           = image_tag "logo-header.png", { :title => "STRd6", :align => "middle"}
           = link_to "Home", {:controller => "welcome"}, {:class => "button"}
           = link_to "Characters", { :controller => "characters" }, { :class => "button" }
-        
+
         %p.right
           - if logged_in?
             == Logged in as #{link_to_current_user :content_method => :login}
             == (#{link_to "Log out", logout_path, { :title => "Log out" }})
-          
+
           -else
             = link_to_login_with_IP 'Not logged in'            
             = link_to "Log in",  login_path,  { :title => "Log in" }
