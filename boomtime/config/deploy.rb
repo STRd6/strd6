@@ -3,6 +3,8 @@ require 'mongrel_cluster/recipes'
 set :application, "boomtime"
 set :repository,  "http://strd6.googlecode.com/svn/trunk/#{application}"
 
+set :deploy_via, :remote_cache
+
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
