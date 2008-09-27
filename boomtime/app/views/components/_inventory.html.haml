@@ -1,0 +1,14 @@
+- if current_user
+  - render(window 'inventory') do
+    .inventory_body
+      - 8.times do |i|
+        .inventory_slot{:id => "inventory_slot#{i}"}
+          = i
+          - if i == 1
+            %span#item1.item
+              = item_image 'default'
+            = draggable_element 'item1', :revert => true
+        = drop_receiving_element "inventory_slot#{i}", :accept => 'item', :hoverclass => 'hover', :onDrop => "function(item, drop, event) { item_dropped(item, drop); }"
+
+
+

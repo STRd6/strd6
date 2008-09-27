@@ -3,6 +3,7 @@
 body {
   font-family: Verdana, Helvetica, Arial, sans-serif;
   background-color: #d7f0ff;
+  background-image: url(/images/bg.png);
   margin: 0;
   padding: 0; }
 
