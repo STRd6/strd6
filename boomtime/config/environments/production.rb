@@ -30,11 +30,7 @@ require "/u/apps/boomtime/config/site_keys.rb"
 require "/u/apps/boomtime/config/email.rb"
 
 ActionMailer::Base.smtp_settings = {
-  :tls => true,
-  :address => "smtp.gmail.com",
-  :port => "587",
-  :domain => "strd6.com",
-  :authentication => :plain,
-  :user_name => SMTP_USER_NAME,
-  :password => SMTP_PASSWORD
+  :address => "localhost",
+  :port => "25",
+  :domain => "strd6.com"
 }
