@@ -1,4 +1,6 @@
 class WelcomeController < ApplicationController
+  before_filter :login_required, :only => [:game]
+  
   def index
     
   end
@@ -20,6 +22,11 @@ class WelcomeController < ApplicationController
       page.insert_html :bottom, 'chat_data', "<li><b>#{current_user}:</b> #{h params[:chat_input]}</li>"
     end
     render :nothing => true
+  end
+  
+  def game
+    @active_character = current_user.active_character
+    @area = @active_character.area
   end
 
 end
