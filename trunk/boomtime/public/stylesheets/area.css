@@ -12,3 +12,22 @@ div.area {
   div.area div.signs {
     padding-left: 1em;
     font-size: 12px; }
+
+#game {
+  margin: auto;
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px;
+  padding: 0;
+  width: 640px;
+  height: 480px;
+  position: relative; }
+  #game .feature {
+    position: absolute;
+    background-repeat: no-repeat;
+    width: 16px;
+    height: 16px; }
+
+#game.hover {
+  border-color: green;
+  border-style: dashed; }

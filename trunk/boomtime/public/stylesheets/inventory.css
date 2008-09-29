@@ -10,7 +10,7 @@
   float: left;
   border: 1px solid black; }
 
-.hover {
+.inventory_slot.hover {
   border-color: green;
   border-width: 3px;
   margin: 0px; }
