@@ -45,7 +45,7 @@ function item_dropped(item, drop) {
 }
 
 function feature_dropped(feature, drop) {
-  alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
+  //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
   
   params = {'id': feature.id.split('_').last(), 'left': feature.style.left, 'top': feature.style.top, 
     'authenticity_token': window._token
