@@ -16,5 +16,12 @@ class GameController < ApplicationController
     
     render :nothing => true
   end
+  
+  def goto
+    active_character = current_user.active_character
+    active_character.area_id = params[:area_id].to_i
+    active_character.save
+    render :nothing => true
+  end
 
 end
