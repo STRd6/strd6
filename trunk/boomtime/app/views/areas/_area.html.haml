@@ -17,4 +17,5 @@
           %li= s.text
 
   .actions
-    = link_to "Go Here"
+    - if current_user && current_user.active_character
+      = link_to_remote "Go Here", :url => "/game/goto?area_id=#{area.id}"

@@ -9,7 +9,7 @@ class Character < ActiveRecord::Base
   
   serialize :stats
   
-  before_create :roll_stats
+  before_create :roll_stats, :set_area
 
   def roll_stats
     str = 3 + rand(5)
@@ -17,6 +17,10 @@ class Character < ActiveRecord::Base
     pow = 3 + rand(5)
     
     self.stats = {:str => str, :dex => dex, :pow => pow}
+  end
+  
+  def set_area
+    self.area_id = 1
   end
   
   def stat_keys
