@@ -4,7 +4,7 @@ describe "/characters/show.html.erb" do
   include CharactersHelper
   
   before(:each) do
-    assigns[:character] = @character = stub_model(Character, :stats => {})
+    assigns[:character] = @character = Factory(:character)
   end
 
   it "should render attributes in <p>" do
