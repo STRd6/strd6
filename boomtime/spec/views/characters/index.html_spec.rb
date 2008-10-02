@@ -5,8 +5,8 @@ describe "/characters/index.html.erb" do
   
   before(:each) do
     assigns[:characters] = [
-      stub_model(Character, :stats => {}),
-      stub_model(Character, :stats => {})
+      Factory(:character),
+      Factory(:character)
     ]
   end
 

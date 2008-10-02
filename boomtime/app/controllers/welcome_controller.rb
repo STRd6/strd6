@@ -23,10 +23,5 @@ class WelcomeController < ApplicationController
     end
     render :nothing => true
   end
-  
-  def game
-    @active_character = current_user.active_character
-    @area = @active_character.area
-  end
 
 end
