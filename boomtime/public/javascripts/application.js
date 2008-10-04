@@ -55,3 +55,12 @@ function feature_dropped(feature, drop) {
     parameters: params
   });
 }
+
+function scroll_chat() {
+  data = $('chat_data');
+  
+  if(data) {
+    chat_area = data.up('div');
+    chat_area.scrollTop = chat_area.scrollHeight;
+  }
+}

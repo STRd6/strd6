@@ -16,6 +16,7 @@ class GameController < ApplicationController
     
     render :juggernaut do |page|
       page.insert_html :bottom, 'chat_data', "<li>#{current_user} has moved a tree!</li>"
+      page.call :scroll_chat
       page.visual_effect :move, "feature_#{feature.id}", {:x => feature.left, :y => feature.top, :mode => '"absolute"' }
     end
     render :nothing => true
