@@ -20,6 +20,7 @@ class WelcomeController < ApplicationController
   def send_data
     render :juggernaut do |page|
       page.insert_html :bottom, 'chat_data', "<li><b>#{current_user}:</b> #{h params[:chat_input]}</li>"
+      page.call :scroll_chat
     end
     render :nothing => true
   end
