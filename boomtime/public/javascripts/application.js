@@ -44,10 +44,18 @@ function item_dropped(item, drop) {
   });
 }
 
+// Game Window Feature Drag'n
+
 function feature_dropped(feature, drop) {
   //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
   
-  params = {'id': feature.id.split('_').last(), 'left': feature.style.left, 'top': feature.style.top, 
+  data = feature.id.split('_');
+  
+  params = {
+    'id': data.last(), 
+    'class': data.first(), 
+    'left': feature.style.left, 
+    'top': feature.style.top, 
     'authenticity_token': window._token
   };
   
@@ -55,6 +63,9 @@ function feature_dropped(feature, drop) {
     parameters: params
   });
 }
+
+
+// Chat Party
 
 function scroll_chat() {
   data = $('chat_data');
