@@ -7,18 +7,24 @@ class GameController < ApplicationController
   end
 
   def feature_move
-    feature = Feature.find(params[:id])
+    valid_classes = [Character, Feature]
     
-    feature.top = params[:top].to_i
-    feature.left = params[:left].to_i
+    klass = params[:class].camelize.constantize
     
-    feature.save
-    
-    render :juggernaut do |page|
-      page.insert_html :bottom, 'chat_data', "<li>#{current_user} has moved a tree!</li>"
-      page.call :scroll_chat
-      page.visual_effect :move, "feature_#{feature.id}", {:x => feature.left, :y => feature.top, :mode => '"absolute"' }
+    if valid_classes.include? klass
+      element = klass.find(params[:id])
+      
+      element.top = params[:top].to_i
+      element.left = params[:left].to_i
+      element.save
+        
+      render :juggernaut do |page|
+        page.insert_html :bottom, 'chat_data', "<li>#{current_user} has moved a #{klass}!</li>"
+        page.call :scroll_chat
+        page.visual_effect :move, "#{klass.to_s.downcase}_#{element.id}", {:x => element.left, :y => element.top, :mode => '"absolute"' }
+      end
     end
+    
     render :nothing => true
   end
   
