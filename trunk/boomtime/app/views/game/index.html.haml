@@ -1,4 +1,5 @@
 #game
+  -# javascript_tag "$('game').observe('click', function(){alert($current_action.id); return false;} );"
   - @area.features.each do |feature|
     = render :partial => 'feature', :locals => {:feature => feature}
   - @area.characters.each do |character|
