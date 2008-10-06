@@ -48,6 +48,7 @@ function item_dropped(item, drop) {
 
 function feature_dropped(feature, drop) {
   //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
+  feature.should_revert = false;
   
   data = feature.id.split('_');
   
@@ -62,6 +63,12 @@ function feature_dropped(feature, drop) {
   new Ajax.Request('/game/feature_move', {
     parameters: params
   });
+}
+
+function drag_revert(draggable) {
+  r = draggable.should_revert; 
+  draggable.should_revert = false; 
+  return r;
 }
 
 // Action Shizzy
