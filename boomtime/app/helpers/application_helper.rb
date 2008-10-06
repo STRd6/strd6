@@ -19,4 +19,8 @@ module ApplicationHelper
   def window(id)
     {:layout => 'components/window', :locals => {:name => id}}
   end
+  
+  def on_click(id, js)
+    
+  end
 end

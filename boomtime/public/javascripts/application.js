@@ -64,9 +64,26 @@ function feature_dropped(feature, drop) {
   });
 }
 
+// Action Shizzy
+// Global to hold the element that is the current action
+$current_action = null;
+
+// Stores the given action element and updates the CSS class visuals
+function active_action(id) {
+  // De-activate the existing action if present
+  if($current_action) {
+    $current_action.toggleClassName('active');
+  }
+  
+  // Assign the new action and toggle it to active
+  if($current_action = $(id)) {
+    $current_action.toggleClassName('active');
+  }
+}
+
 
 // Chat Party
-
+// Scrolls the chat text window to the bottom
 function scroll_chat() {
   data = $('chat_data');
   
