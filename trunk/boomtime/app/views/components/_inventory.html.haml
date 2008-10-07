@@ -7,8 +7,8 @@
           - if i == 1
             %span#item1.item
               = item_image 'default'
-            = draggable_element 'item1', :revert => true
-        = drop_receiving_element "inventory_slot#{i}", :accept => 'item', :hoverclass => 'hover', :onDrop => "function(item, drop, event) { item_dropped(item, drop); }"
+            = draggable_element 'item1'
+        = drop_receiving_element "inventory_slot#{i}", :accept => ['item', 'feature'], :hoverclass => 'hover', :onDrop => "item_dropped"
 
 
 
