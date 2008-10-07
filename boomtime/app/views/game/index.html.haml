@@ -5,4 +5,4 @@
   - @area.characters.each do |character|
     = render :partial => 'area_character', :locals => {:character => character}
 
-= drop_receiving_element 'game', :accept => ['item', 'feature'], :hoverclass => 'hover', :onDrop => "function(drag, drop, event) { feature_dropped(drag, drop); }"
+= drop_receiving_element 'game', :accept => ['item', 'feature'], :hoverclass => 'hover', :onDrop => "feature_dropped"

@@ -8,6 +8,9 @@
   margin: 2px;
   float: left;
   border: 1px solid black; }
+  .inventory_slot .feature {
+    width: 32px;
+    height: 32px; }
 
 .inventory_slot.hover {
   border-color: green;

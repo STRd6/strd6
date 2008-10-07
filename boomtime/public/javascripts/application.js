@@ -1,6 +1,25 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+// Utility
+function relative_position(event, element) {
+  abs_x = Event.pointerX(event);
+  abs_y = Event.pointerY(event);
+  
+  elm_pos = element.cumulativeOffset();
+  
+  console.log("abs x: " + abs_x);
+  console.log("abs y: " + abs_y);
+  
+  console.log("off x: " + elm_pos[0]);
+  console.log("off y: " + elm_pos[1]);
+  
+  x = abs_x - elm_pos[0];
+  y = abs_y - elm_pos[1];
+  
+  return {x: x, y: y};
+}
+
 // Window Dragon
 function end_drag(element) {
   raise(element);
@@ -27,11 +46,18 @@ function raise(element) {
 
 // Item/Inventory Dragon Drop
 
-function item_dropped(item, drop) {
+function item_dropped(item, drop, event) {
   // TODO: Store the previous item
+  
+  console.log(Event.pointerX(event) + ", " + Event.pointerY(event));
   
   // Put the item into it's new home
   drop.insert(item.remove());
+  
+  item.style.top = "0px";
+  item.style.left = "0px";
+  
+  item.should_revert = false;
   
   // Send updated item info to server
   params = {'item[id]': item.id, 'item[owner_type]': 'otype', 'item[owner_id]': 'oid',
@@ -46,9 +72,17 @@ function item_dropped(item, drop) {
 
 // Game Window Feature Drag'n
 
-function feature_dropped(feature, drop) {
+function feature_dropped(feature, drop, event) {
   //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
+  pos = relative_position(event, drop);
+  console.log(pos.x + ", " + pos.y);
+  
   feature.should_revert = false;
+  
+  drop.insert(feature.remove());
+  
+  feature.style.left = pos.x + "px";
+  feature.style.top = pos.y + "px";
   
   data = feature.id.split('_');
   
@@ -63,6 +97,14 @@ function feature_dropped(feature, drop) {
   new Ajax.Request('/game/feature_move', {
     parameters: params
   });
+}
+
+function drag_start(draggable, event) {
+  draggable.element.should_revert = true; 
+  if($current_action == null || $current_action.id != "move_action") {
+    draggable.finishDrag(event, false);
+  } 
+  return true;
 }
 
 function drag_revert(draggable) {
