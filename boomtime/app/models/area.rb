@@ -5,4 +5,5 @@ class Area < ActiveRecord::Base
   has_many :characters
   has_many :features
   has_many :signs
+  has_many :items, :as => :owner
 end
