@@ -21,12 +21,17 @@ div.area {
   width: 640px;
   height: 480px;
   position: relative; }
-  #game .feature {
-    position: absolute;
-    background-repeat: no-repeat;
-    width: 32px;
-    height: 32px; }
 
 #game.hover {
   border-color: green;
   border-style: dashed; }
+
+.displayable {
+  position: absolute;
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+  padding: 0; }
+  .displayable .overlay {
+    font-weight: normal;
+    font-size: 0.8em; }
