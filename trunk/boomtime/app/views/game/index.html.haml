@@ -1,8 +1,10 @@
 #game
   -# javascript_tag "$('game').observe('click', function(){alert($current_action.id); return false;} );"
   - @area.features.each do |feature|
-    = render :partial => 'feature', :locals => {:feature => feature}
+    = render :partial => 'area_displayable', :locals => {:displayable => feature}
   - @area.characters.each do |character|
-    = render :partial => 'area_character', :locals => {:character => character}
+    = render :partial => 'area_displayable', :locals => {:displayable => character}
+  - @area.items.each do |item|
+    = render :partial => 'area_displayable', :locals => {:displayable => item}
 
-= drop_receiving_element 'game', :accept => ['item', 'feature'], :hoverclass => 'hover', :onDrop => "feature_dropped"
+= drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
