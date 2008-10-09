@@ -5,10 +5,10 @@
         .inventory_slot{:id => "inventory_slot#{i}"}
           = i
           - if i == 1
-            %span#item1.item
+            %span#item1.item.displayable
               = item_image 'default'
             = draggable_element 'item1'
-        = drop_receiving_element "inventory_slot#{i}", :accept => ['item', 'feature'], :hoverclass => 'hover', :onDrop => "item_dropped"
+        = drop_receiving_element "inventory_slot#{i}", :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "item_dropped"
 
 
 
