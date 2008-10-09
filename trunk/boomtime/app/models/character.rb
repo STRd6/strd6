@@ -34,4 +34,20 @@ class Character < ActiveRecord::Base
   def inventory
     return self.inventory_items
   end
+  
+  # VV Display Datum Party Bus VV #
+  def image
+    return "man"
+  end
+  
+  def overlay_text
+    name
+  end
+  
+  def update_position(left, top)
+    self.left = left.to_i
+    self.top = top.to_i
+    save
+  end
+  # ^^ Display Datum Party Bus ^^ #
 end
