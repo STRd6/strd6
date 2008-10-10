@@ -16,16 +16,10 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   filter_parameter_logging :password
   
-#  def window_style(window)
-#    return "" unless current_user
-#    
-#    w = WindowPosition.style_for(current_user.id, window)
-#
-#    return "" unless w
-#    
-#    "top: #{w.top}px; left: #{w.left}px;"
-#  end
-#  
-#  helper_method :window_style
+  helper_method :active_character
+  
+  def active_character
+    return current_user.active_character if current_user
+  end
   
 end

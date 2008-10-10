@@ -1,13 +1,12 @@
-- if current_user
+- if active_character
   - render(window 'inventory') do
     .inventory_body
       - 8.times do |i|
         .inventory_slot{:id => "inventory_slot#{i}"}
           = i
-          - if i == 1
-            %span#item1.item.displayable
-              = item_image 'default'
-            = draggable_element 'item1'
+          - if item = active_character.inventory[i]
+            - item.top = 0; item.left = 0
+            = render :partial => 'game/area_displayable', :locals => {:displayable => item}
         = drop_receiving_element "inventory_slot#{i}", :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "item_dropped"
 
 

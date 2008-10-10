@@ -25,8 +25,16 @@ class Item < ActiveRecord::Base
     display_datum.top
   end
   
+  def top=(top)
+    display_datum.top = top
+  end
+  
   def left
     display_datum.left
+  end
+  
+  def left=(left)
+    display_datum.left = left
   end
   
   def update_position(left, top)
