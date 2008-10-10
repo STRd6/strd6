@@ -14,6 +14,13 @@ class GameController < ApplicationController
     if valid_classes.include? klass
       element = klass.find(params[:id])
       
+      #TODO: TOTAL HACK, be way more robust here
+      if klass == Item
+        logger.info "Iteam!"
+        element.owner = active_character.area
+        element.save
+      end
+      
       element.update_position(params[:left], params[:top])
         
       render :juggernaut do |page|
@@ -25,6 +32,19 @@ class GameController < ApplicationController
     else
       render :text => 'Invalid Class'
     end
+  end
+  
+  def get_item
+    #TODO add inventory positioning
+    if active_character
+      item = Item.find(params[:item][:id])
+      if item.owner == active_character.area
+        item.owner = active_character
+        item.save
+      end
+    end
+    
+    render :nothing => true
   end
   
   def goto

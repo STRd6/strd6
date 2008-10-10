@@ -1,4 +1,4 @@
-- if current_user && current_user.active_character
+- if active_character
   - render(window 'active_character') do
     .content
-      = render :partial => 'characters/character', :locals => { :character => current_user.active_character }
+      = render :partial => 'characters/character', :locals => { :character => active_character }

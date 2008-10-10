@@ -33,7 +33,6 @@ function store_position(element) {
   };
   
   new Ajax.Request('/users/store_position', {
-    onComplete:function(request){}, 
     parameters: params
   });
   
@@ -59,13 +58,14 @@ function item_dropped(item, drop, event) {
   
   item.should_revert = false;
   
+  data = item.id.split('_');
+  
   // Send updated item info to server
-  params = {'item[id]': item.id, 'item[owner_type]': 'otype', 'item[owner_id]': 'oid',
+  params = {'item[id]': data.last(),
     'authenticity_token': window._token
   };
   
-  new Ajax.Request('/users/store_position', {
-    onComplete:function(request){}, 
+  new Ajax.Request('/game/get_item', {
     parameters: params
   });
 }
