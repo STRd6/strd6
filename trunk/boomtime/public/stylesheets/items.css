@@ -1,16 +1,16 @@
 /* Items stylesheet */
-.detailed .item {
+.detailed div.item {
   border-style: double;
   border-color: black;
   background-color: #cccccc;
   width: 340px;
   margin-bottom: 0.5em; }
-  .detailed .item .name {
+  .detailed div.item .name {
     margin-left: 50px; }
-  .detailed .item .description {
+  .detailed div.item .description {
     padding: 0.5em;
     font-size: 12px; }
-  .detailed .item img.item {
+  .detailed div.item img.item {
     float: left;
     padding: 0.5em;
     background-color: white; }
