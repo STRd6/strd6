@@ -8,11 +8,13 @@ function relative_position(event, element) {
   
   elm_pos = element.cumulativeOffset();
   
+  /*
   console.log("abs x: " + abs_x);
   console.log("abs y: " + abs_y);
   
   console.log("off x: " + elm_pos[0]);
   console.log("off y: " + elm_pos[1]);
+  */
   
   x = abs_x - elm_pos[0];
   y = abs_y - elm_pos[1];
@@ -48,7 +50,7 @@ function raise(element) {
 function item_dropped(item, drop, event) {
   // TODO: Store the previous item
   
-  console.log(Event.pointerX(event) + ", " + Event.pointerY(event));
+  //console.log(Event.pointerX(event) + ", " + Event.pointerY(event));
   
   // Put the item into it's new home
   drop.insert(item.remove());
@@ -75,7 +77,7 @@ function item_dropped(item, drop, event) {
 function feature_dropped(feature, drop, event) {
   //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
   pos = relative_position(event, drop);
-  console.log(pos.x + ", " + pos.y);
+  //console.log(pos.x + ", " + pos.y);
   
   feature.should_revert = false;
   
@@ -101,10 +103,10 @@ function feature_dropped(feature, drop, event) {
 
 function drag_start(draggable, event) {
   draggable.element.should_revert = true; 
+  
   if($current_action == null || $current_action.id != "move_action") {
     draggable.finishDrag(event, false);
-  } 
-  return true;
+  }
 }
 
 function drag_revert(draggable) {
