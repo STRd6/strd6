@@ -1,0 +1,15 @@
+= javascript_include_tag 'jscolor'
+= javascript_tag "$draw_on = false;"
+= javascript_tag "function clickety(event){if($draw_on) event.element().style.backgroundColor = '#' + $F('current_color');}"
+%input#current_color.color{:type => 'text'}
+#main_canvas.canvas
+  - 32.times do |y|
+    - 32.times do |x|
+      - id = "p_#{x}_#{y}"
+      .pixel{:id => id}
+      = javascript_tag "$('#{id}').observe('mousemove', clickety);"
+  = javascript_tag "$('main_canvas').observe('mousedown', function(event) {$draw_on = true;});"
+  = javascript_tag "$('page').observe('mouseup', function(event) {$draw_on = false;});"
+
+      
+  
