@@ -8,6 +8,7 @@
       .action_slot#move_action
         %span.action
           = action_image 'move'
+      = javascript_tag "active_action('move_action');"
       = javascript_tag "$('move_action').observe('click', active_action.curry('move_action') );"
       .action_slot#null_action
         %span.action
