@@ -3,10 +3,10 @@
 
 // Utility
 function relative_position(event, element) {
-  abs_x = Event.pointerX(event);
-  abs_y = Event.pointerY(event);
+  var abs_x = Event.pointerX(event);
+  var abs_y = Event.pointerY(event);
   
-  elm_pos = element.cumulativeOffset();
+  var elm_pos = element.cumulativeOffset();
   
   /*
   console.log("abs x: " + abs_x);
@@ -16,8 +16,8 @@ function relative_position(event, element) {
   console.log("off y: " + elm_pos[1]);
   */
   
-  x = abs_x - elm_pos[0];
-  y = abs_y - elm_pos[1];
+  var x = abs_x - elm_pos[0];
+  var y = abs_y - elm_pos[1];
   
   return {x: x, y: y};
 }
@@ -29,7 +29,7 @@ function end_drag(element) {
 }
 
 function store_position(element) {
-  params = {'element': element.id, 
+  var params = {'element': element.id, 
     'left': element.style.left, 'top': element.style.top, 
     'authenticity_token': window._token
   };
@@ -60,10 +60,10 @@ function item_dropped(item, drop, event) {
   
   item.should_revert = false;
   
-  data = item.id.split('_');
+  var data = item.id.split('_');
   
   // Send updated item info to server
-  params = {'item[id]': data.last(),
+  var params = {'item[id]': data.last(),
     'authenticity_token': window._token
   };
   
@@ -72,11 +72,39 @@ function item_dropped(item, drop, event) {
   });
 }
 
+function got_item(id, character_id) {
+  if($character_id != character_id){
+    Element.hide(id);
+  }
+}
+
+function displayable_created(id, parent, top, left) {
+  var element = $(id);
+  
+  if(element) {
+    // The element exists, let's update
+    
+    $(parent).insert(element.remove());
+    new Effect.Move(element, {x: left, y: top, mode: 'absolute' });
+    element.show();
+  } else {
+    // Elemet does not exist, get it
+    var params = {
+      'id': id.split('_').last(),
+      'class': 'Item', 
+      'authenticity_token': window._token
+    };
+    new Ajax.Request('/game/get_displayable', {
+      parameters: params
+    });
+  }  
+}
+
 // Game Window Feature Drag'n
 
 function feature_dropped(feature, drop, event) {
   //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
-  pos = relative_position(event, drop);
+  var pos = relative_position(event, drop);
   //console.log(pos.x + ", " + pos.y);
   
   feature.should_revert = false;
@@ -86,9 +114,9 @@ function feature_dropped(feature, drop, event) {
   feature.style.left = pos.x + "px";
   feature.style.top = pos.y + "px";
   
-  data = feature.id.split('_');
+  var data = feature.id.split('_');
   
-  params = {
+  var params = {
     'id': data.last(), 
     'class': data.first(), 
     'left': feature.style.left, 
@@ -110,7 +138,7 @@ function drag_start(draggable, event) {
 }
 
 function drag_revert(draggable) {
-  r = draggable.should_revert; 
+  var r = draggable.should_revert; 
   draggable.should_revert = false; 
   return r;
 }
@@ -134,12 +162,20 @@ function active_action(id) {
 
 
 // Chat Party
+function add_chat(message) {
+  $('chat_data').insert({bottom: "<li>" + message + "</li>"});
+  
+  var should_scroll = true;
+  // TODO: Only scroll if chat was previously at bottom
+  if(should_scroll) scroll_chat();  
+}
+
 // Scrolls the chat text window to the bottom
 function scroll_chat() {
-  data = $('chat_data');
+  var data = $('chat_data');
   
   if(data) {
-    chat_area = data.up('div');
+    var chat_area = data.up('div');
     chat_area.scrollTop = chat_area.scrollHeight;
   }
 }
