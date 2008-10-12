@@ -1,4 +1,2 @@
-%div.displayable[displayable]{:style => "background-image: url(/images/#{displayable.image}.png); top: #{displayable.top}px; left: #{displayable.left}px;"}
-  - if displayable.overlay_text
-    .overlay= displayable.overlay_text
+= render :partial => '/game/displayable_content', :locals => {:displayable => displayable}
 = draggable_element "#{displayable.class.to_s.underscore}_#{displayable.id}", :revert => 'drag_revert', :onStart => 'drag_start'
