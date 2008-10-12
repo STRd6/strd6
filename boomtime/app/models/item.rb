@@ -1,6 +1,7 @@
 class Item < ActiveRecord::Base
-  belongs_to :owner, :polymorphic => true
   include Displayable
+  
+  belongs_to :owner, :polymorphic => true
   
   def description
     "Lorem ipsum dolor sit amet blaw blaw. +13 Fire Damage. -7 Ice Resistance. Great against werewolves!"

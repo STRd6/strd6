@@ -11,6 +11,10 @@ module Displayable
     self.display_datum = DisplayDatum.create if self.display_datum.blank?
   end
   
+  def css_id
+    return "#{self.class.name.underscore}_#{id}"
+  end
+  
   def image
     if display_datum.image
       file = display_datum.image
@@ -18,7 +22,7 @@ module Displayable
       file = "default"
     end
     
-    return "items/#{file}"
+    return "#{self.class.name.underscore.pluralize}/#{file}"
   end
   
   def overlay_text
