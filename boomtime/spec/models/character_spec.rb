@@ -36,4 +36,9 @@ describe Character do
   it "should be able to gather resources" do
     
   end
+  
+  it "should have energy" do
+    c = Factory(:character)
+    c.energy.should_not be_nil
+  end
 end
