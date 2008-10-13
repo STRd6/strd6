@@ -7,7 +7,7 @@ class GameController < ApplicationController
   end
 
   def feature_move
-    valid_classes = [Character, Feature, Item]
+    valid_classes = [Character, Feature, Item, Sign]
     
     klass = params[:class].camelize.constantize
     

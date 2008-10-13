@@ -6,5 +6,7 @@
     = render :partial => 'area_displayable', :locals => {:displayable => character}
   - @area.items.each do |item|
     = render :partial => 'area_displayable', :locals => {:displayable => item}
+  - @area.signs.each do |sign|
+    = render :partial => 'area_displayable', :locals => {:displayable => sign}
 
 = drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
