@@ -1,14 +1,13 @@
 # Include this in ActiveRecord models to gain access to the magic power of 
 # being displayable on screen!
+# 
+# Caveat: setting :top => and :left => in #new will create an extra displayable
+# that is not linked
 module Displayable
   def self.included(base)
     base.send :has_one, :display_datum, :as => :displayable
     base.send :validates_presence_of, :display_datum
     base.send :before_validation, :ensure_display_datum
-  end
-  
-  def ensure_display_datum
-    self.display_datum = DisplayDatum.create if self.display_datum.blank?
   end
   
   def css_id
@@ -34,6 +33,7 @@ module Displayable
   end
   
   def top=(top)
+    ensure_display_datum
     display_datum.top = top
   end
   
@@ -42,6 +42,7 @@ module Displayable
   end
   
   def left=(left)
+    ensure_display_datum
     display_datum.left = left
   end
   
@@ -49,5 +50,10 @@ module Displayable
     display_datum.left = left
     display_datum.top = top
     display_datum.save
+  end
+  
+  private
+  def ensure_display_datum
+    self.display_datum = DisplayDatum.create if self.display_datum.blank?
   end
 end
