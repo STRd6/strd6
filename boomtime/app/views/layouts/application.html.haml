@@ -10,17 +10,12 @@
   %body
     = juggernaut
     #page
-      = render :partial => 'components/active_character'
-      = render :partial => 'components/chat'
-      = render :partial => 'components/inventory'
-      = render :partial => 'components/actions'
-
       #header
         %p.left
           = image_tag "logo-header.png", { :title => "STRd6", :align => "middle"}
-          = link_to "Home", {:controller => "welcome"}, {:class => "button"}
-          = link_to "Game", {:controller => "game"}, {:class => "button"}
-          = link_to "Characters", { :controller => "characters" }, { :class => "button" }
+          = link_to "Home", {:controller => "welcome"}, :class => "button"
+          - %w[game characters areas items signs].each do |c|
+            = link_to c.titleize, {:controller => c}, :class => "button"
 
         %p.right
           - if logged_in?
@@ -37,6 +32,9 @@
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
         = render :partial => 'components/notices'
         = yield
+
+      - %w[active_character chat inventory actions].each do |component|
+        = render :partial => "components/#{component}"
 
       /#bottom
       /  = image_tag "strd6Logo-small.png"
