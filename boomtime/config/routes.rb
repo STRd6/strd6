@@ -6,15 +6,10 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.home '/', :controller => "welcome", :action => "index"
   
-  map.resources :users
+  map.resources :users, :characters, :areas, :items, :signs
 
   map.resource :session
   
-  map.resources :characters
-  
-  map.resources :areas
-  map.resources :items
-
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
