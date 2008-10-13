@@ -5,4 +5,8 @@ class Sign < ActiveRecord::Base
   
   belongs_to :area
   belongs_to :creator, :class_name => 'Character'
+  
+  def overlay_text
+    text
+  end
 end
