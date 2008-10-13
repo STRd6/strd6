@@ -13,3 +13,4 @@
     = javascript_tag "$('#{sign.css_id}').observe('mouseout', function(event) {$('#{sign.css_id}').down('.overlay').hide()});"
 
 = drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
+= javascript_tag "$('game').observe('click', game_click)"
