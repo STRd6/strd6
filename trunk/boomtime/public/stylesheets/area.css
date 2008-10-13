@@ -34,4 +34,7 @@ div.area {
   padding: 0; }
   .displayable .overlay {
     font-weight: normal;
-    font-size: 0.8em; }
+    font-size: 0.8em;
+    position: relative;
+    top: 2em;
+    width: 200px; }
