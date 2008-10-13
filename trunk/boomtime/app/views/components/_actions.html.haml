@@ -1,16 +1,6 @@
 - if current_user
   - render(window 'actions') do
     .actions_body
-      .action_slot#tree_action
-        %span.action
-          = action_image 'tree'
-      = javascript_tag "$('tree_action').observe('click', active_action.curry('tree_action') );"
-      .action_slot#move_action
-        %span.action
-          = action_image 'move'
+      - %w[move sign tree].each do |action|
+        = render :partial => 'components/action', :locals => {:name => action}
       = javascript_tag "active_action('move_action');"
-      = javascript_tag "$('move_action').observe('click', active_action.curry('move_action') );"
-      .action_slot#null_action
-        %span.action
-          = action_image 'null'
-      = javascript_tag "$('null_action').observe('click', active_action.curry('null_action') );"
