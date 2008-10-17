@@ -10,4 +10,7 @@
     = javascript_tag "new Sign('#{sign.css_id}');"
 
 = drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
-= javascript_tag "$('game').observe('click', game_click)"
+= javascript_tag "$('game').observe('click', game_click);"
+
+= render :partial => 'sign_create'
+= javascript_tag "$('sign_create').hide();"
