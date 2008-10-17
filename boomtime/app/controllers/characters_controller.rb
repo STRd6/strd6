@@ -1,4 +1,5 @@
 class CharactersController < ResourceController::Base
+  actions :all, :except => [:destroy]
   before_filter :login_required
   
   def collection

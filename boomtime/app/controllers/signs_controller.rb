@@ -1,4 +1,5 @@
 class SignsController < ResourceController::Base
+  actions :all, :except => [:destroy]
   before_filter :login_required
   
   create.before do
