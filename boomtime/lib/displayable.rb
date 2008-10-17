@@ -1,8 +1,6 @@
 # Include this in ActiveRecord models to gain access to the magic power of 
 # being displayable on screen!
 # 
-# Caveat: setting :top => and :left => in #new will create an extra displayable
-# that is not linked
 module Displayable
   def self.included(base)
     base.send :has_one, :display_datum, :as => :displayable
@@ -54,6 +52,6 @@ module Displayable
   
   private
   def ensure_display_datum
-    self.display_datum = DisplayDatum.create if self.display_datum.blank?
+    self.display_datum = DisplayDatum.new if self.display_datum.blank?
   end
 end
