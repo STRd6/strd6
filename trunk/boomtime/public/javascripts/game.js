@@ -17,8 +17,7 @@ function game_click(event) {
       break;
     case 'sign_action':
       position.text = 'A testyoieu sign'
-      create_sign(position);
-      //position.merge({'text': 'This sign was created at: ' + x, + ', ' + y})
+      prepare_sign(position, relative_position(event, $('content')));
       break;
     default:
       alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y)
@@ -26,25 +25,17 @@ function game_click(event) {
   }
 }
 
-function prepare_sign(position) {
-  
-}
-
 /**
- * Blast an Ajax request off to tell the game to make a sign.
- * sends top as :top || :y
- * sends left as :left || :x
+ * Prepare the form that creates signs.
  */
-function create_sign(options) {
-  var params = {};
-  params['sign[top]'] = options.top || options.y;
-  params['sign[left]'] = options.left || options.x;
-  params['sign[text]'] = options.text;
-  params.authenticity_token = window._token;
+function prepare_sign(game_position, display_position) {
+  var sign_create = $('sign_create');
   
-  new Ajax.Request('/signs', {
-    parameters: params
-  });
+  sign_create.down('#sign_top').value = game_position.y
+  sign_create.down('#sign_left').value = game_position.x
+  
+  sign_create.show();
+  center(sign_create, display_position);
 }
 
 // Item/Inventory Dragon Drop

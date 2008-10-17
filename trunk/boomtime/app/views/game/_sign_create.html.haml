@@ -1,0 +1,9 @@
+#sign_create.border
+  - form_remote_for Sign.new({:top => 0, :left => 0}), {:html => {:onsubmit => "$('sign_create').hide()"}} do |f|
+    = f.hidden_field :top
+    = f.hidden_field :left
+    %span.right= link_to_function 'X', "javascript: $('sign_create').hide();"
+    %span Text: 
+    %br
+    = f.text_field :text
+    = f.submit 'Post it!', :class => 'right'
