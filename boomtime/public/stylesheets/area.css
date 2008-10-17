@@ -38,3 +38,11 @@ div.area {
     position: relative;
     top: 2em;
     width: 200px; }
+
+#sign_create {
+  position: absolute;
+  background-color: #FFF2D5;
+  padding: 0.4em;
+  width: 320px; }
+  #sign_create form input {
+    margin: 0.2em; }
