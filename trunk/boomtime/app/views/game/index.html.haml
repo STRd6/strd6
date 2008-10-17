@@ -1,5 +1,4 @@
 #game
-  -# javascript_tag "$('game').observe('click', function(){alert($current_action.id); return false;} );"
   - @area.features.each do |feature|
     = render :partial => 'area_displayable', :locals => {:displayable => feature}
   - @area.characters.each do |character|
@@ -8,9 +7,7 @@
     = render :partial => 'area_displayable', :locals => {:displayable => item}
   - @area.signs.each do |sign|
     = render :partial => 'area_displayable', :locals => {:displayable => sign}
-    = javascript_tag "$('#{sign.css_id}').down('.overlay').hide();"
-    = javascript_tag "$('#{sign.css_id}').observe('mouseover', function(event) {$('#{sign.css_id}').down('.overlay').appear({ duration: 0.75 })});"
-    = javascript_tag "$('#{sign.css_id}').observe('mouseout', function(event) {$('#{sign.css_id}').down('.overlay').hide()});"
+    = javascript_tag "new Sign('#{sign.css_id}');"
 
 = drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
 = javascript_tag "$('game').observe('click', game_click)"

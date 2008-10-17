@@ -9,14 +9,42 @@ function game_click(event) {
   }
   
   var position = relative_position(event, $('game'));
+  var x = position.x;
+  var y = position.y;
   
   switch($current_action.id) {
     case 'move_action':
       break;
+    case 'sign_action':
+      position.text = 'A testyoieu sign'
+      create_sign(position);
+      //position.merge({'text': 'This sign was created at: ' + x, + ', ' + y})
+      break;
     default:
-      alert("In a better world I'd " + $current_action.id + " at: " + position.x + ", " + position.y)
+      alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y)
       break;
   }
+}
+
+function prepare_sign(position) {
+  
+}
+
+/**
+ * Blast an Ajax request off to tell the game to make a sign.
+ * sends top as :top || :y
+ * sends left as :left || :x
+ */
+function create_sign(options) {
+  var params = {};
+  params['sign[top]'] = options.top || options.y;
+  params['sign[left]'] = options.left || options.x;
+  params['sign[text]'] = options.text;
+  params.authenticity_token = window._token;
+  
+  new Ajax.Request('/signs', {
+    parameters: params
+  });
 }
 
 // Item/Inventory Dragon Drop
