@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081018040137) do
+ActiveRecord::Schema.define(:version => 20081018053001) do
 
   create_table "adjacencies", :force => true do |t|
     t.integer  "area_id"
@@ -32,10 +32,6 @@ ActiveRecord::Schema.define(:version => 20081018040137) do
     t.datetime "updated_at"
     t.integer  "faction_id"
     t.integer  "area_id"
-    t.integer  "top",        :default => 0
-    t.integer  "left",       :default => 0
-    t.integer  "z",          :default => 0
-    t.string   "image"
     t.integer  "energy",     :default => 0
   end
 
@@ -63,10 +59,6 @@ ActiveRecord::Schema.define(:version => 20081018040137) do
     t.integer  "area_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "top"
-    t.integer  "left"
-    t.integer  "z"
-    t.string   "image"
     t.integer  "creator_id"
   end
 
@@ -76,7 +68,6 @@ ActiveRecord::Schema.define(:version => 20081018040137) do
     t.string   "owner_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image"
     t.string   "description"
   end
 
