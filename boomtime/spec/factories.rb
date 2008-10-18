@@ -2,6 +2,9 @@ require 'factory_girl'
 
 Factory.define :character do |c|
   c.name 'A great character name'
+  c.inventory_items do |i| 
+    [i.association(:item), i.association(:item)]
+  end
 end
 
 Factory.define :faction do |f|
