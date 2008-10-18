@@ -6,4 +6,8 @@ class Area < ActiveRecord::Base
   has_many :features
   has_many :signs
   has_many :items, :as => :owner
+  
+  def displayables
+    characters + features + signs + items
+  end
 end

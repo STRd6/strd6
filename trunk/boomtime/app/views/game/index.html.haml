@@ -1,13 +1,7 @@
 #game
-  - @area.features.each do |feature|
-    = render :partial => 'area_displayable', :locals => {:displayable => feature}
-  - @area.characters.each do |character|
-    = render :partial => 'area_displayable', :locals => {:displayable => character}
-  - @area.items.each do |item|
-    = render :partial => 'area_displayable', :locals => {:displayable => item}
-  - @area.signs.each do |sign|
-    = render :partial => 'area_displayable', :locals => {:displayable => sign}
-    = javascript_tag "new Sign('#{sign.css_id}');"
+  - @area.displayables.each do |displayable|
+    = render :partial => 'displayable_content', :locals => {:displayable => displayable}
+    = javascript_tag "new #{displayable.class.name}('#{displayable.css_id}');"
 
 = drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
 = javascript_tag "$('game').observe('click', game_click);"
