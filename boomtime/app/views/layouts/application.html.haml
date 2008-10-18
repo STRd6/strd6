@@ -5,7 +5,7 @@
     %title= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
     = stylesheet_link_tag :all, :cache => true
     = javascript_include_tag 'prototype', 'effects', 'dragdrop', :juggernaut, :cache => 'base'
-    = javascript_include_tag 'application', 'game', 'sign', :cache => 'app'
+    = javascript_include_tag 'application', 'utility', 'game', 'sign', :cache => 'app'
 
   %body
     = juggernaut
