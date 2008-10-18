@@ -1,0 +1,6 @@
+#feature_create.border
+  - form_remote_for Feature.new({:top => 0, :left => 0}), {:html => {:onsubmit => "$('feature_create').hide()"}} do |f|
+    = f.hidden_field :top
+    = f.hidden_field :left
+    %span.right= link_to_function 'X', "javascript: $('feature_create').hide();"
+    = f.submit 'Create it!', :class => 'right'

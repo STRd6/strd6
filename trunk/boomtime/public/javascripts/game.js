@@ -8,16 +8,18 @@ function game_click(event) {
     return;
   }
   
-  var position = relative_position(event, $('game'));
-  var x = position.x;
-  var y = position.y;
+  var game_pos = relative_position(event, $('game'));
+  var x = game_pos.x;
+  var y = game_pos.y;
   
   switch($current_action.id) {
     case 'move_action':
       break;
     case 'sign_action':
-      position.text = 'A testyoieu sign'
-      prepare_sign(position, relative_position(event, $('content')));
+      prepare_sign(game_pos, relative_position(event, $('content')));
+      break;
+    case 'tree_action':
+      create_tree(game_pos);
       break;
     default:
       alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y)
@@ -36,6 +38,18 @@ function prepare_sign(game_position, display_position) {
   
   sign_create.show();
   center(sign_create, display_position);
+}
+
+/**
+ * Send request to create a new tree to server.
+ */
+function create_tree(game_position) {
+  var feature_create = $('feature_create');
+  
+  feature_create.down('#feature_top').value = game_position.y
+  feature_create.down('#feature_left').value = game_position.x
+  
+  new Ajax.Request('/features', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_feature'))});
 }
 
 // Item/Inventory Dragon Drop
