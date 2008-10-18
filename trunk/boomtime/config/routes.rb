@@ -6,7 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.home '/', :controller => "welcome", :action => "index"
   
-  map.resources :users, :characters, :areas, :items, :signs
+  map.resources :users, :characters, :areas, :items, :signs, :features
 
   map.resource :session
   

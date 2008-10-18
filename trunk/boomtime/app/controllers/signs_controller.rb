@@ -1,11 +1,5 @@
 class SignsController < ResourceController::Base
-  actions :all, :except => [:destroy]
-  before_filter :login_required
-  
-  create.before do
-    object.creator = active_character
-    object.area = active_character.area if active_character
-  end
+  include ObjectController
   
   create.wants.js do
     element = render_to_string :partial => 'game/displayable_content', :locals => {:displayable => object}
