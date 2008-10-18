@@ -10,4 +10,8 @@ class Area < ActiveRecord::Base
   def displayables
     characters + features + signs + items
   end
+  
+  def channel
+    :"area_#{id}"
+  end
 end
