@@ -8,6 +8,17 @@ module ObjectController
         object.creator = active_character
         object.area = active_character.area if active_character
       end
+      
+      create.wants.js do
+        element = render_to_string :partial => 'game/displayable_content', :locals => {:displayable => object}
+
+        render :juggernaut do |page|
+          page.insert_html :top, 'game', element
+          page.call "new #{object.class.name}", object.css_id
+        end
+
+        render :nothing => true
+      end
     end
   end
 end
