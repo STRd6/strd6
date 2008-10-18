@@ -1,5 +1,44 @@
 // Game JS Logic
 
+var GameEntity = Class.create({
+  initialize: function(element) {
+    this.element = $(element);
+    
+    new Draggable(this.element, {revert: this.drag_revert, onStart: this.drag_start})
+  },  
+  
+  /** Drag start handler */
+  drag_start: function (draggable, event) {
+    draggable.element.should_revert = true; 
+
+    if($current_action == null || $current_action.id != "move_action") {
+      draggable.finishDrag(event, false);
+    }
+  },
+  /** Revert callback */
+  drag_revert: function (draggable) {
+    return draggable.should_revert; 
+  }
+});
+
+var Character = Class.create(GameEntity, {
+  initialize: function($super, element) {
+    $super(element);
+  }
+});
+
+var Item = Class.create(GameEntity, {
+  initialize: function($super, element) {
+    $super(element);
+  }
+});
+
+var Feature = Class.create(GameEntity, {
+  initialize: function($super, element) {
+    $super(element);
+  }
+});
+
 /**
  * Game area onClick event handler
  */
@@ -144,24 +183,6 @@ function feature_dropped(feature, drop, event) {
   new Ajax.Request('/game/feature_move', {
     parameters: params
   });
-}
-/** 
- * Drag start handler for displayables
- */
-function drag_start(draggable, event) {
-  draggable.element.should_revert = true; 
-  
-  if($current_action == null || $current_action.id != "move_action") {
-    draggable.finishDrag(event, false);
-  }
-}
-/** 
- * Revert callback for displayables
- */
-function drag_revert(draggable) {
-  var r = draggable.should_revert; 
-  draggable.should_revert = false; 
-  return r;
 }
 
 // Action Shizzy

@@ -2,9 +2,9 @@
  * Signs are visible in areas. They are messages written by players.
  * This class handles initializing their state and setting up the mouse effects.
  */
-var Sign = Class.create({
-  initialize: function(element) {
-    this.element = $(element);
+var Sign = Class.create(GameEntity, {
+  initialize: function($super, element) {
+    $super(element);
     this.element.down('.overlay').hide();
     
     this.element.observe('mouseover', this.over.bindAsEventListener(this));
