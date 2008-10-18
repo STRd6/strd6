@@ -1,5 +1,5 @@
 - if current_user
-  - render(window 'actions') do
+  - render window('actions') do
     .actions_body
       - %w[move sign tree].each do |action|
         = render :partial => 'components/action', :locals => {:name => action}
