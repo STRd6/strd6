@@ -3,8 +3,7 @@
     = render :partial => 'displayable_content', :locals => {:displayable => displayable}
     = javascript_tag "new #{displayable.class.name}('#{displayable.css_id}');"
 
-= drop_receiving_element 'game', :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "feature_dropped"
-= javascript_tag "$('game').observe('click', game_click);"
+= javascript_tag "var game = new Game('game');"
 
 = render :partial => 'sign_create'
 = javascript_tag "$('sign_create').hide();"

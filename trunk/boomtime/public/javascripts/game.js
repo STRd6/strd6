@@ -39,57 +39,60 @@ var Feature = Class.create(GameEntity, {
   }
 });
 
-/**
- * Game area onClick event handler
- */
-function game_click(event) {
-  if($current_action == null) {
-    return;
-  }
-  
-  var game_pos = relative_position(event, $('game'));
-  var x = game_pos.x;
-  var y = game_pos.y;
-  
-  switch($current_action.id) {
-    case 'move_action':
-      break;
-    case 'sign_action':
-      prepare_sign(game_pos, relative_position(event, $('content')));
-      break;
-    case 'tree_action':
-      create_tree(game_pos);
-      break;
-    default:
-      alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y)
-      break;
-  }
-}
+var Game = Class.create({
+  initialize: function(element) {
+    this.element = $(element);
+    Droppables.add(this.element, {accept:['displayable'], hoverclass:'hover', onDrop:feature_dropped})
 
-/**
- * Prepare the form that creates signs.
- */
-function prepare_sign(game_position, display_position) {
-  var sign_create = $('sign_create');
+    this.element.observe('click', this.click.bindAsEventListener(this));
+  },
   
-  sign_create.down('#sign_top').value = game_position.y
-  sign_create.down('#sign_left').value = game_position.x
-  
-  sign_create.show();
-  center(sign_create, display_position);
-}
+  /** onClick event handler */
+  click: function(event) {
+    if($current_action == null) {
+      return;
+    }
 
-/**
- * Send request to create a new tree to server.
- */
-function create_tree(game_position) {
-  var feature_create = $('feature_create');
-  
-  feature_create.down('#feature_top').value = game_position.y
-  feature_create.down('#feature_left').value = game_position.x
-  
-  new Ajax.Request('/features', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_feature'))});
-}
+    var game_pos = relative_position(event, $('game'));
+    var x = game_pos.x;
+    var y = game_pos.y;
+
+    switch($current_action.id) {
+      case 'move_action':
+        break;
+      case 'sign_action':
+        this.prepare_sign(game_pos, relative_position(event, $('content')));
+        break;
+      case 'tree_action':
+        this.create_tree(game_pos);
+        break;
+      default:
+        alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y)
+        break;
+    }
+  },
+
+  /** Prepare the form that creates signs. */
+  prepare_sign: function(game_position, display_position) {
+    var sign_create = $('sign_create');
+
+    sign_create.down('#sign_top').value = game_position.y
+    sign_create.down('#sign_left').value = game_position.x
+
+    sign_create.show();
+    center(sign_create, display_position);
+  },
+
+  /** Send request to create a new tree to server. */
+  create_tree: function(game_position) {
+    var feature_create = $('feature_create');
+
+    feature_create.down('#feature_top').value = game_position.y
+    feature_create.down('#feature_left').value = game_position.x
+
+    new Ajax.Request('/features', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_feature'))});
+  }
+});
 
 // Item/Inventory Dragon Drop
 
