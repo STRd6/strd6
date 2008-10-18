@@ -22,6 +22,6 @@ var Sign = Class.create({
    * Mouse out event handler
    */
   out: function(event) {
-    this.element.down('.overlay').fade();
+    this.element.down('.overlay').fade({ duration: 0.34 });
   }
 });
