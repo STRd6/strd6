@@ -195,22 +195,9 @@ describe CharactersController do
   end
 
   describe "responding to DELETE destroy" do
-
-    it "should destroy the requested character" do
-      mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
-      characters.should_receive(:find).with("37").and_return(mock_character)
-      mock_character.should_receive(:destroy).and_return(true)
-      
-      delete :destroy, :id => "37"
+    it "should not destroy the requested character" do
+      #delete :destroy, :id => "37"
     end
-  
-    it "should redirect to the characters list" do
-      mock_user.should_receive(:characters).and_return(characters = mock("Array of Characters"))
-      characters.stub!(:find).and_return(mock_character(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(characters_url)
-    end
-
   end
   
   describe "responding to activate_character" do
