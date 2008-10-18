@@ -1,4 +1,4 @@
-class SignsController < ResourceController::Base
+class FeaturesController < ResourceController::Base
   include ObjectController
   
   create.wants.js do
@@ -7,7 +7,6 @@ class SignsController < ResourceController::Base
     render :juggernaut do |page|
       page.insert_html :top, 'game', element
       page.draggable object.css_id, :revert => 'drag_revert', :onStart => 'drag_start'
-      page.call "new Sign", object.css_id
     end
     
     render :nothing => true
