@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081013180135) do
+ActiveRecord::Schema.define(:version => 20081018040137) do
 
   create_table "adjacencies", :force => true do |t|
     t.integer  "area_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(:version => 20081013180135) do
     t.integer  "left"
     t.integer  "z"
     t.string   "image"
+    t.integer  "creator_id"
   end
 
   create_table "items", :force => true do |t|
