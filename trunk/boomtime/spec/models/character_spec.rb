@@ -20,7 +20,7 @@ describe Character do
   
   it "should have an inventory" do
     c = Factory(:character)
-    c.inventory.should == []
+    assert c.inventory, "Inventory is nullarino"
   end
   
   it "should have equipped items" do
