@@ -2,7 +2,6 @@
 #game
   - @area.displayables.each do |displayable|
     = render_displayable displayable
-    = javascript_tag "new #{displayable.class.name}('#{displayable.css_id}');"
 
 = javascript_tag "var game = new Game('game');"
 
