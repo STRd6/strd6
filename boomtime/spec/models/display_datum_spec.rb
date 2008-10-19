@@ -11,6 +11,10 @@ describe DisplayDatum do
   end
 
   it "should create a new instance given valid attributes" do
-    DisplayDatum.create!(@valid_attributes)
+    d = DisplayDatum.create!(@valid_attributes)
+    
+    assert d.image, "Displayable had no image"
+    assert d.top, "Displayable had no image"
+    assert d.left, "Displayable had no image"
   end
 end

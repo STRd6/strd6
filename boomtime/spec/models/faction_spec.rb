@@ -9,4 +9,8 @@ describe Faction do
     f = Factory(:faction, :characters => [Factory(:character)])
     assert f.characters.size > 0
   end
+  
+  it "should have a channel" do
+    assert Factory(:faction).channel, "No channel!"
+  end
 end
