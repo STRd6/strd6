@@ -9,6 +9,4 @@
             = render_displayable item
             = javascript_tag "new #{item.class.name}('#{item.css_id}');"
         = drop_receiving_element "inventory_slot#{i}", :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "item_dropped"
-
-
-
+    .clear

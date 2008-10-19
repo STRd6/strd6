@@ -1,18 +1,31 @@
 // Draggable window styles
 
 @import constants.sass
-
-.title_bar
-  background-color= !main_color
-  color: white
-  padding: 0.4em
-  margin: 0px
-  font-weight: bold
-
-.window
-  background-color: white
-  border-color: black
-  border-style: solid
-  border-width: 1px
+.window_holder
   position: fixed
   z-index: 1
+
+  .title_bar
+    color: white
+    font-weight: bold
+
+    .title_bar_corner
+      float: left
+      clear: none
+      background: url(../images/windows/window_bar_corner.png) no-repeat
+      background-color: !main_color
+      width: 4px
+      height: 2.1em
+
+    .title_bar_main
+      background: url(../images/windows/window_bar.png) repeat-x
+      background-color= !main_color
+      border-right: 1px solid black
+      padding: 0.4em
+      margin: 0px 0px 0px 4px
+      
+  .window
+    background-color: white
+    border-color: black
+    border-style: solid
+    border-width: 1px
