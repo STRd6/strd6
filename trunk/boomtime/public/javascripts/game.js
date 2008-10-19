@@ -129,9 +129,14 @@ var Game = Class.create({
  */
 $total_inventory_slots = 0;
 var InventorySlot = Class.create({
-  initialize: function(element) {
+  initialize: function(element, item) {
     this.element = $(element);
-    this.element.container_position = $total_inventory_slots++;
+    this.element.obj = this;
+    this.container_position = $total_inventory_slots++;
+    
+    if(item) {
+      this.insertItem(item);
+    }
     
     Droppables.add(this.element, {
       accept: ['displayable'], 
@@ -139,15 +144,27 @@ var InventorySlot = Class.create({
       onDrop: this.onDrop
     });
   },
+  
+  insertItem: function(item) {
+    item = $(item);
+    // Store the previous item for swapping
+    var prevItem = this.containedItem;
+    var otherContainer = item.container;
+    
+    this._moveItem(item);
+    
+    if(otherContainer) {
+      if(prevItem) {
+        otherContainer._moveItem(prevItem);
+      } else {
+        otherContainer._clearItem();
+      }
+    }
+  },
   /** onDrop event handler */
   onDrop: function (item, drop, event) {
-    // TODO: Store the previous item
-
     // Put the item into it's new home
-    drop.insert(item.remove());
-
-    item.style.top = "0px";
-    item.style.left = "0px";
+    drop.obj.insertItem(item);
 
     item.should_revert = false;
 
@@ -155,13 +172,26 @@ var InventorySlot = Class.create({
 
     // Send updated item info to server
     var params = {'item[id]': data.last(),
-      'item[container_position]': drop.container_position,//this.container_position,
+      'item[container_position]': drop.obj.container_position,
       'authenticity_token': $token
     };
 
     new Ajax.Request('/game/get_item', {
       parameters: params
     });
+  },
+  
+  _moveItem: function(item) {
+    item.style.top = "0px";
+    item.style.left = "0px";
+    
+    this.containedItem = item;
+    this.element.insert(item.remove());
+    item.container = this;
+  },
+  
+  _clearItem: function() {
+    this.containedItem = null;
   }
 });
 

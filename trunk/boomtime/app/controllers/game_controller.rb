@@ -44,14 +44,23 @@ class GameController < ApplicationController
   
   #
   # This action is called when a player tries to pick up an item.
+  # TODO: Move a lot of this code into models, it's getting way ugly
   #
   def get_item
     
     if active_character
       item = Item.find(params[:item][:id])
+      position = params[:item][:container_position]
       if item.owner == active_character
-        item.container_position = params[:item][:container_position]
         #TODO swap any existing item in same position
+        prev_item = active_character.inventory.find(:first, :conditions => {:container_position => position})
+        
+        if prev_item
+          prev_item.container_position = item.container_position
+          prev_item.save
+        end
+        
+        item.container_position = position
         item.save
       elsif item.owner == active_character.area
         area = active_character.area
