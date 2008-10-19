@@ -46,12 +46,17 @@ class GameController < ApplicationController
   # This action is called when a player tries to pick up an item.
   #
   def get_item
-    #TODO add inventory positioning
+    
     if active_character
       item = Item.find(params[:item][:id])
-      if item.owner != active_character && item.owner == active_character.area
+      if item.owner == active_character
+        item.container_position = params[:item][:container_position]
+        #TODO swap any existing item in same position
+        item.save
+      elsif item.owner == active_character.area
         area = active_character.area
         item.owner = active_character
+        item.container_position = params[:item][:container_position]
         item.save
         # Update all clients in area
         render :juggernaut => {:type => :send_to_channels, :channels => [area.channel]} do |page|

@@ -42,7 +42,7 @@ var Feature = Class.create(GameEntity, {
 var Game = Class.create({
   initialize: function(element) {
     this.element = $(element);
-    Droppables.add(this.element, {accept:['displayable'], hoverclass:'hover', onDrop:feature_dropped})
+    Droppables.add(this.element, {accept:['displayable'], hoverclass:'hover', onDrop:feature_dropped});
 
     this.element.observe('click', this.click.bindAsEventListener(this));
   },
@@ -124,35 +124,47 @@ var Game = Class.create({
   }
 });
 
-// Item/Inventory Dragon Drop
-
-/** 
- * Droppable evnet handler for inventory
+/**
+ * Inventory Slot: holds inventory items
  */
-function item_dropped(item, drop, event) {
-  // TODO: Store the previous item
-  
-  //console.log(Event.pointerX(event) + ", " + Event.pointerY(event));
-  
-  // Put the item into it's new home
-  drop.insert(item.remove());
-  
-  item.style.top = "0px";
-  item.style.left = "0px";
-  
-  item.should_revert = false;
-  
-  var data = item.id.split('_');
-  
-  // Send updated item info to server
-  var params = {'item[id]': data.last(),
-    'authenticity_token': $token
-  };
-  
-  new Ajax.Request('/game/get_item', {
-    parameters: params
-  });
-}
+$total_inventory_slots = 0;
+var InventorySlot = Class.create({
+  initialize: function(element) {
+    this.element = $(element);
+    this.element.container_position = $total_inventory_slots++;
+    
+    Droppables.add(this.element, {
+      accept: ['displayable'], 
+      hoverclass: 'hover', 
+      onDrop: this.onDrop
+    });
+  },
+  /** onDrop event handler */
+  onDrop: function (item, drop, event) {
+    // TODO: Store the previous item
+
+    // Put the item into it's new home
+    drop.insert(item.remove());
+
+    item.style.top = "0px";
+    item.style.left = "0px";
+
+    item.should_revert = false;
+
+    var data = item.id.split('_');
+
+    // Send updated item info to server
+    var params = {'item[id]': data.last(),
+      'item[container_position]': drop.container_position,//this.container_position,
+      'authenticity_token': $token
+    };
+
+    new Ajax.Request('/game/get_item', {
+      parameters: params
+    });
+  }
+});
+
 /** 
  * Handle removing displayables
  */
