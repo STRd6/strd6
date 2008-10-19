@@ -1,6 +1,8 @@
 .inventory_slot{:id => "inventory_slot_#{num}"}
   = num
-  - if item
-    - item.top = 0; item.left = 0
-    = render_displayable item
-= javascript_tag "new InventorySlot('inventory_slot_#{num}');"
+- if item
+  - item.top = 0; item.left = 0
+  = render_displayable item
+  = javascript_tag "new InventorySlot('inventory_slot_#{num}', '#{item.css_id}');"
+- else
+  = javascript_tag "new InventorySlot('inventory_slot_#{num}');"
