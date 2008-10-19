@@ -20,7 +20,13 @@ describe Area do
   
   it "should have terrain features" do
     area = Factory(:area)
-    area.features.should == []
+    area.features.should_not be_nil
+  end
+  
+  it "should have a list of displayables" do
+    area = Factory(:area)
+    displayables = area.displayables
+    assert displayables, "No displayables!"
   end
   
   it "should be able to be blocked by building a wall" do
@@ -33,5 +39,9 @@ describe Area do
   
   it "should be able to contain plants" do
     
+  end
+  
+  it "should have a channel" do
+    assert Factory(:area).channel, "No channel!"
   end
 end
