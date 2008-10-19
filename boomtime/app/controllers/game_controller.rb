@@ -70,11 +70,10 @@ class GameController < ApplicationController
   #
   def get_displayable
     klass = params[:class].constantize
-    id = params[:id].to_i
     
     if valid_classes.include? klass
       #TODO: Only get local items: active_character.area.items.find(params[:id])
-      displayable = klass.find(id);
+      displayable = klass.find(params[:id]);
       render :partial => 'game/displayable_content', :locals => {:displayable => displayable}
     else
       render :text => 'Invalid Clas', :status => 403
