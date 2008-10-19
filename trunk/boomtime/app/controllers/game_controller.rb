@@ -76,7 +76,7 @@ class GameController < ApplicationController
       displayable = klass.find(params[:id]);
       render :partial => 'game/displayable_content', :locals => {:displayable => displayable}
     else
-      render :text => 'Invalid Clas', :status => 403
+      render :text => 'Invalid Class', :status => 403
     end
   end
   
