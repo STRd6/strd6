@@ -12,7 +12,7 @@ function end_drag(element) {
 function store_position(element) {
   var params = {'element': element.id, 
     'left': element.style.left, 'top': element.style.top, 
-    'authenticity_token': window._token
+    'authenticity_token': $token
   };
   
   new Ajax.Request('/users/store_position', {

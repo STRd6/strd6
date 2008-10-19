@@ -8,7 +8,7 @@
     = javascript_include_tag 'application', 'utility', 'game', 'sign', :cache => 'app'
 
   %body
-    = juggernaut
+    = juggernaut(:channels => [:main])
     #page
       #header
         %p.left
@@ -36,4 +36,6 @@
       - %w[active_character chat inventory actions].each do |component|
         = render :partial => "components/#{component}"
 
-      = javascript_tag "window._token = '#{form_authenticity_token}'"
+    #dcon
+    = javascript_tag "var $token = '#{form_authenticity_token}'"
+

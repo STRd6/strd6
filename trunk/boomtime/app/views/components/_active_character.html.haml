@@ -2,4 +2,4 @@
   - render window('active_character') do
     .content
       = render :partial => 'characters/character', :locals => { :character => active_character }
-  = javascript_tag "$character_id = #{active_character.id}"
+  = javascript_tag "$character_id = #{active_character.id};"
