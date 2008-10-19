@@ -71,7 +71,10 @@ var Game = Class.create({
         break;
     }
   },
-    
+  
+  /** Update the position of the displayable if it is present, otherwise
+   * go to the server to get it.
+   */
   updateDisplayable: function(id, x, y) {
     var element = $(id);
     
@@ -80,7 +83,9 @@ var Game = Class.create({
       new Effect.Move(id, {x: x, y: y, mode: "absolute" });
       element.show();
     } else { // Elemet does not exist, get it
-      // TODO: Placeholder element to prevent loading twice?
+      // TODO: Placeholder element to prevent loading twice? If so then use replace...
+      //var place_holder = new Element('div', {'id': id, 'class': 'displayable'}).hide();
+      //this.element.insert(top: place_holder);
       
       var klass$id = decompose_css_id(id);
       var params = {
@@ -89,9 +94,10 @@ var Game = Class.create({
         'authenticity_token': $token
       };
       
-      new Ajax.Updater({ success: this.element, failure: 'dcon' }, '/game/get_displayable', {
+      new Ajax.Updater({success: this.element, failure: 'dcon'}, '/game/get_displayable', {
         parameters: params,
-        insertion: Insertion.Top
+        evalScripts: true,
+        insertion: 'top'
       });
     }
   },
