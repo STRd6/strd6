@@ -18,8 +18,8 @@ class ApplicationController < ActionController::Base
   
   helper_method :active_character
   
+  protected
   def active_character
     return current_user.active_character if current_user
   end
-  
 end

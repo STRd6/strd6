@@ -49,3 +49,13 @@ function center(element, position) {
   element.style.top = ((position.top || position.y) - element.offsetHeight/2) + 'px';
   element.style.left = ((position.left || position.x) - element.offsetWidth/2) + 'px';
 }
+
+/**
+ * Splits the css id into class and id components
+ */
+function decompose_css_id(css_id) {
+  var pieces = css_id.split('_');
+  var id = pieces.pop();
+  var klass = pieces.map(function(p) {return p.capitalize();}).join('');
+  return [klass, id];
+}

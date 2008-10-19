@@ -1,14 +1,14 @@
-// Game JS Logic
+var $character_id = -1;
 
 var GameEntity = Class.create({
   initialize: function(element) {
     this.element = $(element);
     
-    new Draggable(this.element, {revert: this.drag_revert, onStart: this.drag_start})
+    new Draggable(this.element, {revert: this.revert, onStart: this.start})
   },  
   
   /** Drag start handler */
-  drag_start: function (draggable, event) {
+  start: function (draggable, event) {
     draggable.element.should_revert = true; 
 
     if($current_action == null || $current_action.id != "move_action") {
@@ -16,7 +16,7 @@ var GameEntity = Class.create({
     }
   },
   /** Revert callback */
-  drag_revert: function (draggable) {
+  revert: function (draggable) {
     return draggable.should_revert; 
   }
 });
@@ -71,6 +71,30 @@ var Game = Class.create({
         break;
     }
   },
+    
+  updateDisplayable: function(id, x, y) {
+    var element = $(id);
+    
+    if(element) { // The element exists, let's update
+      this.element.insert(element.remove());
+      new Effect.Move(id, {x: x, y: y, mode: "absolute" });
+      element.show();
+    } else { // Elemet does not exist, get it
+      // TODO: Placeholder element to prevent loading twice?
+      
+      var klass$id = decompose_css_id(id);
+      var params = {
+        'id': klass$id[1],
+        'class': klass$id[0],
+        'authenticity_token': $token
+      };
+      
+      new Ajax.Updater({ success: this.element, failure: 'dcon' }, '/game/get_displayable', {
+        parameters: params,
+        insertion: Insertion.Top
+      });
+    }
+  },
 
   /** Prepare the form that creates signs. */
   prepare_sign: function(game_position, display_position) {
@@ -116,7 +140,7 @@ function item_dropped(item, drop, event) {
   
   // Send updated item info to server
   var params = {'item[id]': data.last(),
-    'authenticity_token': window._token
+    'authenticity_token': $token
   };
   
   new Ajax.Request('/game/get_item', {
@@ -130,30 +154,6 @@ function got_item(id, character_id) {
   if($character_id != character_id){
     Element.hide(id);
   }
-}
-/** 
- * Handle notification of new displayables
- */
-function displayable_created(id, parent, top, left) {
-  var element = $(id);
-  
-  if(element) {
-    // The element exists, let's update
-    
-    $(parent).insert(element.remove());
-    new Effect.Move(element, {x: left, y: top, mode: 'absolute' });
-    element.show();
-  } else {
-    // Elemet does not exist, get it
-    var params = {
-      'id': id.split('_').last(),
-      'class': 'Item', 
-      'authenticity_token': window._token
-    };
-    new Ajax.Request('/game/get_displayable', {
-      parameters: params
-    });
-  }  
 }
 
 // Game Window Feature Drag'n
@@ -180,7 +180,7 @@ function feature_dropped(feature, drop, event) {
     'class': data.first(), 
     'left': feature.style.left, 
     'top': feature.style.top, 
-    'authenticity_token': window._token
+    'authenticity_token': $token
   };
   
   new Ajax.Request('/game/feature_move', {

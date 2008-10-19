@@ -1,0 +1,7 @@
+= juggernaut(:channels => [:game, @area.channel], :swf_name => 'juggernaut_game')
+#game
+  - @area.displayables.each do |displayable|
+    = render :partial => 'displayable_content', :locals => {:displayable => displayable}
+    = javascript_tag "new #{displayable.class.name}('#{displayable.css_id}');"
+
+= javascript_tag "var game = new Game('game');"
