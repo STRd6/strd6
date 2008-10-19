@@ -1,11 +1,14 @@
 - if active_character
   - render window('inventory') do
     .inventory_body
-      - 8.times do |i|
-        .inventory_slot{:id => "inventory_slot#{i}"}
-          = i
-          - if item = active_character.inventory[i]
-            - item.top = 0; item.left = 0
-            = render_displayable item
-        = drop_receiving_element "inventory_slot#{i}", :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "item_dropped"
+      - i = 0
+      - active_character.inventory.each do |item|
+        - while i < item.container_position
+          = render_inventory_slot i
+          - i += 1
+        = render_inventory_slot i, item
+        - i += 1
+      - while i < 8
+        = render_inventory_slot i
+        - i += 1
     .clear

@@ -1,0 +1,6 @@
+.inventory_slot{:id => "inventory_slot_#{num}"}
+  = num
+  - if item
+    - item.top = 0; item.left = 0
+    = render_displayable item
+= drop_receiving_element "inventory_slot_#{num}", :accept => ['displayable'], :hoverclass => 'hover', :onDrop => "item_dropped"

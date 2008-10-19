@@ -5,7 +5,7 @@ class Character < ActiveRecord::Base
   belongs_to :faction
   belongs_to :area
   
-  has_many :inventory_items, :as => :owner, :class_name => 'Item'
+  has_many :inventory_items, :as => :owner, :class_name => 'Item', :order => 'container_position'
   
   validates_length_of :name, :within => 2..32, :too_long => "pick a shorter name", :too_short => "pick a longer name"
   
