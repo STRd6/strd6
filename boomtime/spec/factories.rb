@@ -42,3 +42,7 @@ Factory.define :user do |u|
   u.password 'quire69'
   u.password_confirmation 'quire69'
 end
+
+Factory.define :sign do |s|
+  s.text 'test sign'
+end
