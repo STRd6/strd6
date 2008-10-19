@@ -1,32 +1,35 @@
 // Window Dragon
-/** 
- * End drag event handler for windows
- */
-function end_drag(element) {
-  raise(element);
-  store_position(element);
-}
-/** 
- * Send an Ajax request to store the position of the given window
- */
-function store_position(element) {
-  var params = {'element': element.id, 
-    'left': element.style.left, 'top': element.style.top, 
-    'authenticity_token': $token
-  };
-  
-  new Ajax.Request('/users/store_position', {
-    parameters: params
-  });
-  
-  return false;
-}
-/** 
- * Adjust the z-indexes of windows to raise the given window to the top
- */
-function raise(element) {
-  
-}
+var Window = Class.create({
+  initialize: function(element) {
+    this.element = $(element);
+    
+    new Draggable(this.element, {
+      handle: this.element.id + '_handle', 
+      onEnd: this.onEnd.bindAsEventListener(this), 
+      snap:[10,10]
+    });
+  },
+  /** End drag event handler */
+  onEnd: function() { 
+    this.raise();
+    this.storePosition(this.element);
+  },
+  /** Adjust the z-indexes of windows to raise this window to the top */
+  raise: function() {
+    // TODO
+  },
+  /** Send an Ajax request to store the position of this window */
+  storePosition: function() {
+    var params = {'element': this.element.id, 
+      'left': this.element.style.left, 'top': this.element.style.top, 
+      'authenticity_token': $token
+    };
+
+    new Ajax.Request('/users/store_position', {
+      parameters: params
+    });
+  }
+});
 
 // Chat Party
 /** 

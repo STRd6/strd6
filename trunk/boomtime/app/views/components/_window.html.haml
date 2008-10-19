@@ -1,7 +1,7 @@
 .window_holder{:style => window_style(name), :id => name}
-  .title_bar{:id => "#{name}_handel"}
+  .title_bar{:id => "#{name}_handle"}
     .title_bar_corner
     .title_bar_main= name.titleize
   .window
     = yield
-= draggable_element name, hash_for_draggable(name)
+= javascript_tag "new Window('#{name}');"
