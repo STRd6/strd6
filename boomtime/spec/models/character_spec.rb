@@ -41,4 +41,9 @@ describe Character do
     c = Factory(:character)
     c.energy.should_not be_nil
   end
+  
+  it "should have overlay text" do
+    c = Factory(:character)
+    assert c.overlay_text, "No overlay text!"
+  end
 end
