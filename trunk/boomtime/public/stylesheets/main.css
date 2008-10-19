@@ -28,7 +28,7 @@ h2 {
   #header p, #header a {
     display: inline;
     font-size: 12px;
-    color: #ffffff;
+    color: #303030;
     margin: 0;
     padding: 10px; }
   #header a {
@@ -38,6 +38,7 @@ h2 {
       text-decoration: none; }
   #header img {
     padding: 6px;
+    padding-top: 0;
     margin-right: 10px; }
   #header p.left, #header p.right {
     clear: none;
@@ -53,6 +54,7 @@ h2 {
     width: 25%;
     text-align: right; }
   #header a.button {
+    display: inline-block;
     font-weight: bold;
     color: #303030;
     padding: 1em;
@@ -107,6 +109,9 @@ div.clear {
     width: 22px;
     height: 22px;
     padding: 2px; }
+
+.clear {
+  clear: both; }
 
 .notification {
   padding: 4px;

@@ -36,6 +36,4 @@
       - %w[active_character chat inventory actions].each do |component|
         = render :partial => "components/#{component}"
 
-      /#bottom
-      /  = image_tag "strd6Logo-small.png"
       = javascript_tag "window._token = '#{form_authenticity_token}'"
