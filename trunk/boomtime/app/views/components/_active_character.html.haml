@@ -1,5 +1,15 @@
 - if active_character
   - render window('active_character') do
-    .content
-      = render :partial => 'characters/character', :locals => { :character => active_character }
+    %div.character
+      %h2= active_character.name
+
+      - active_character.stat_keys.each do |key| 
+        %p
+          = icon_for key 
+          == : #{stats_text(active_character, key)}
+      %h4 Resources:
+      %p
+        - active_character.resource_keys.each do |key|
+          == #{key}: #{active_character.resources[key]}<br />
+
   = javascript_tag "$character_id = #{active_character.id};"

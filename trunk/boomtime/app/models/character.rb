@@ -10,16 +10,9 @@ class Character < ActiveRecord::Base
   validates_length_of :name, :within => 2..32, :too_long => "pick a shorter name", :too_short => "pick a longer name"
   
   serialize :stats
+  serialize :resources
   
-  before_create :roll_stats, :set_area
-
-  def roll_stats
-    str = 3 + rand(5)
-    dex = 3 + rand(5)
-    pow = 3 + rand(5)
-    
-    self.stats = {:str => str, :dex => dex, :pow => pow}
-  end
+  before_create :roll_stats, :roll_resources, :set_area
   
   def set_area
     self.area_id = 1
@@ -27,6 +20,10 @@ class Character < ActiveRecord::Base
   
   def stat_keys
     [:str, :dex, :pow]
+  end
+  
+  def resource_keys
+    [:seeds, :wood, :food, :stone, :copper, :silver]
   end
   
   def bonus
@@ -37,9 +34,23 @@ class Character < ActiveRecord::Base
     return self.inventory_items
   end
   
-  # VV Display Datum Party Bus VV #
   def overlay_text
     name
   end
-  # ^^ Display Datum Party Bus ^^ #
+
+  private
+  def roll_stats
+    self.stats = {:str => 3 + rand(5), :dex => 3 + rand(5), :pow => 3 + rand(5)}
+  end
+  
+  def roll_resources
+    self.resources = {
+      :seeds => 1 + rand(6), 
+      :wood => 1 + rand(6),
+      :food => 1 + rand(6),
+      :stone => 1 + rand(6),
+      :copper => 2 + rand(6) + rand(6),
+      :silver => 1 + rand(6),
+    }
+  end
 end
