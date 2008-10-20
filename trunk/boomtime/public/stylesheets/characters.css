@@ -5,6 +5,11 @@
 .character {
   margin: 0px;
   padding: 0.2em; }
+  .character p {
+    margin-top: 0px; }
+  .character h4 {
+    margin: 0px;
+    text-decoration: underline; }
   .character span {
     margin: 0.2em;
     font-weight: bold; }
