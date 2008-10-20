@@ -33,6 +33,11 @@ describe Character do
     assert c.area.characters.include?(c)
   end
   
+  it "should have resources" do
+    c = Factory(:character)
+    assert c.resources
+  end
+  
   it "should be able to gather resources" do
     
   end
