@@ -101,6 +101,11 @@ var Game = Class.create({
       });
     }
   },
+  
+  /** Remove displayable from game (hide it, stow it, axe it, whatev) */
+  removeDisplayable: function(id) {
+    $(id).hide();
+  },
 
   /** Prepare the form that creates signs. */
   prepare_sign: function(game_position, display_position) {
