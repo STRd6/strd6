@@ -112,7 +112,7 @@ div.clear
       padding-bottom: .4em
       
     input, input.text, input.checkbox
-      border: 2px solid
+      border: 2pt solid
       border-color= !light_gray
       padding: 4px
       color= !dark_gray
@@ -121,8 +121,10 @@ div.clear
       font-size: 16px
       font-weight: bold
       width: 20em
-      &.active
-        background-color= !main_color_light
+      &:hover
+        border-color= !dark_gray
+      &:focus
+        border-color= !main_color
         
     input.checkbox
       width: 22px
