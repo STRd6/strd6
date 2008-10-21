@@ -1,4 +1,5 @@
 class GameController < ApplicationController
+  include Renderino
   before_filter :login_required, :except => [:observe]
   
   def index
@@ -127,9 +128,4 @@ class GameController < ApplicationController
   def valid_classes 
     [Character, Feature, Item, Sign]
   end
-  
-  def render_to_area(area, &block)
-    render({:juggernaut => {:type => :send_to_channels, :channels => [area.channel]}}, {}, &block)
-  end
-
 end
