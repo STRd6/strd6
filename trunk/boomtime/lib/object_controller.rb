@@ -1,4 +1,6 @@
 module ObjectController
+  include Renderino
+  
   def self.included(base)
     base.class_eval do
       before_filter :login_required
@@ -12,7 +14,7 @@ module ObjectController
       create.wants.js do
         element = render_to_string :partial => 'game/displayable_content', :locals => {:displayable => object}
 
-        render :juggernaut do |page|
+        render_to_area(object.area) do |page|
           page.insert_html :top, 'game', element
           page.call "new #{object.class.name}", object.css_id
         end
