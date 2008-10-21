@@ -73,5 +73,5 @@ Rails::Initializer.run do |config|
 end
 
 ExceptionNotifier.exception_recipients = %w[yahivin@gmail.com]
-ExceptionNotifier.sender_address = %["Boomtime Error" <boomtime.error@strd6.com>)]
+ExceptionNotifier.sender_address = %["Boomtime Error" <boomtime.error@strd6.com>]
 ExceptionNotifier.email_prefix = "[BOOM:ERROR] " 
