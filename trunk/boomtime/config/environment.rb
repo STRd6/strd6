@@ -71,3 +71,7 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   config.active_record.observers = :user_observer
 end
+
+ExceptionNotifier.exception_recipients = %w[yahivin@gmail.com]
+ExceptionNotifier.sender_address = %["Boomtime Error" <boomtime.error@strd6.com>)]
+ExceptionNotifier.email_prefix = "[BOOM:ERROR] " 
