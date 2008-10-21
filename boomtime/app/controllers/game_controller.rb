@@ -32,7 +32,7 @@ class GameController < ApplicationController
       
       element.update_position(params[:left], params[:top])
       # Update all clients in area
-      render :juggernaut => {:type => :send_to_channels, :channels => [area.channel]} do |page|
+      render_to_area area do |page|
         page.call :add_chat, "#{h current_user} has moved a #{klass}!"
         page.call 'game.updateDisplayable', element.css_id, element.left, element.top
       end
@@ -68,7 +68,7 @@ class GameController < ApplicationController
         item.container_position = params[:item][:container_position]
         item.save
         # Update all clients in area
-        render :juggernaut => {:type => :send_to_channels, :channels => [area.channel]} do |page|
+        render_to_area area do |page|
           page.call :add_chat, "#{h active_character.name} has picked up #{h item.name}!"
           page.call :got_item, item.css_id, active_character.id
         end
@@ -98,15 +98,38 @@ class GameController < ApplicationController
   # This action is called when a character attempts to go to an area
   #
   def goto
-    active_character = current_user.active_character
-    active_character.area_id = params[:area_id].to_i
-    active_character.save
+    area = Area.find(params[:area_id])
+    
+    if area
+      active_character = current_user.active_character
+      
+      if old_area = active_character.area
+        render_to_area old_area do |page|
+          page.call :add_chat, "#{h active_character.name} has left the area."
+          page.call 'game.removeDisplayable', active_character.css_id
+        end
+      end
+          
+      active_character.area = area
+      active_character.save
+      
+      render_to_area area do |page|
+        page.call :add_chat, "#{h active_character.name} has entered the area."
+        page.call 'game.updateDisplayable',
+          active_character.css_id, active_character.left, active_character.top
+      end
+    end
+    
     render :nothing => true
   end
   
   private
   def valid_classes 
     [Character, Feature, Item, Sign]
+  end
+  
+  def render_to_area(area, &block)
+    render({:juggernaut => {:type => :send_to_channels, :channels => [area.channel]}}, {}, &block)
   end
 
 end
