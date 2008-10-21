@@ -1,6 +1,9 @@
 #feature_create.border
-  - form_remote_for Feature.new({:top => 0, :left => 0}), {:html => {:onsubmit => "$('feature_create').hide()"}} do |f|
+  - form_remote_for Feature.new(:top => 0, :left => 0, :properties => {:image => 'plants/tree3'}), {:html => {:onsubmit => "$('feature_create').hide()"}} do |f|
     = f.hidden_field :top
     = f.hidden_field :left
+    - f.fields_for :properties do |ff|
+      = ff.hidden_field :image, {:value => "plants/tree_dead"}
+    
     %span.right= link_to_function 'X', "javascript: $('feature_create').hide();"
     = f.submit 'Create it!', :class => 'right'

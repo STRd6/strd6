@@ -9,6 +9,18 @@ class Feature < ActiveRecord::Base
   before_create :initialize_properties
   
   def initialize_properties
-    self.properties = {}
+    self.properties ||= {}
+  end
+  
+  def image
+    if properties[:image]
+      file = properties[:image]
+    elsif display_datum.image
+      file = display_datum.image
+    else
+      file = "default"
+    end
+    
+    return "#{self.class.name.underscore.pluralize}/#{file}"
   end
 end
