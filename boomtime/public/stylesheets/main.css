@@ -95,7 +95,7 @@ div.clear {
     color: #303030;
     padding-bottom: .4em; }
   #content form input, #content form input.text, #content form input.checkbox {
-    border: 2px solid;
+    border: 2pt solid;
     border-color: #cccccc;
     padding: 4px;
     color: #303030; }
@@ -103,8 +103,10 @@ div.clear {
     font-size: 16px;
     font-weight: bold;
     width: 20em; }
-    #content form input.text.active {
-      background-color: #d7f0ff; }
+    #content form input.text:hover {
+      border-color: #303030; }
+    #content form input.text:focus {
+      border-color: #1084ce; }
   #content form input.checkbox {
     width: 22px;
     height: 22px;
