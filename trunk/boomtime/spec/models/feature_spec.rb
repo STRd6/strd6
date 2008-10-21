@@ -9,4 +9,9 @@ describe Feature do
     f = Factory(:feature, :area => Factory(:area))
     f.area.should_not be_nil
   end
+  
+  it "should have properties" do
+    f = Factory(:feature)
+    f.properties.should_not be_nil
+  end
 end
