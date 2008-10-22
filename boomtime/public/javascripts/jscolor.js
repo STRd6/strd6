@@ -20,8 +20,8 @@ function jscolor_register() {
         jscolor_init()
     }
   } else {
-  window.onload = jscolor_init
-}
+    window.onload = jscolor_init
+  }
 }
 
 
