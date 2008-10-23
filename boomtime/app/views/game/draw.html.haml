@@ -2,6 +2,7 @@
 = javascript_include_tag 'draw'
 = link_to_function 'Pencil', 'canvas.setTool(pencil)'
 = link_to_function 'Dropper', 'canvas.setTool(dropper)'
+= link_to_function 'Eraser', 'canvas.setTool(eraser)'
 %input#current_color.color{:type => 'text'}
 #main_canvas.canvas
   - 32.times do |y|
