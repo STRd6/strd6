@@ -1,16 +1,23 @@
-var Pixel = Class.create({
+var MouseEventMapper = {
+  mapMouseEvents: function(obj) {
+    ['mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout'].each(function(eventType) {
+      if(obj[eventType]) {
+        obj.element.observe(eventType, obj[eventType].bindAsEventListener(obj));
+      }
+    });
+  }
+};
+
+var Pixel = Class.create(MouseEventMapper, {
   initialize: function(element, canvas) {
     this.element = $(element);
     this.canvas = canvas;
-    this.element.observe('mousemove', this.mousemove.bindAsEventListener(this));
-    //this.observe('mouseup', this.mouseup.bindAsEventListener(this));
-    this.element.observe('mousedown', this.mousedown.bindAsEventListener(this));
+    this.mapMouseEvents(this);
   },
   
   mousedown: function(event) { 
     this.canvas.tool.mousedown(event);
   },
-  mouseup: function(event) {  },
   
   mousemove: function(event) { 
     this.canvas.tool.mousemove(event);
@@ -58,11 +65,10 @@ var EyeDropper = Class.create(Tool, {
 var dropper = new EyeDropper();
 
 var Pencil = Class.create(Tool, {
-  initialize: function() {
-  },
-  
   mousedown: function(event) {
     this.active = true;
+    event.stop();
+    return false;
   },
   
   mouseup: function(event) {
@@ -72,6 +78,7 @@ var Pencil = Class.create(Tool, {
   mousemove: function(event) {
     if(this.active) {
       event.element().style.backgroundColor = '#' + $F('current_color');
+      event.element().style.backgroundImage = 'none';
     }
   },
   
@@ -79,8 +86,29 @@ var Pencil = Class.create(Tool, {
     this.active = false;
   }
 });
-
 var pencil = new Pencil();
+
+var Eraser = Class.create(Tool, {
+  
+  mousedown: function(event) {
+    this.active = true;
+  },
+  mouseup: function(event) {
+    this.active = false;
+  },
+  
+  mousemove: function(event) {
+    if(this.active) {
+      event.element().style.backgroundColor = null;
+      event.element().style.backgroundImage = null;
+    }
+  },
+  
+  canvasout: function(event) {
+    this.active = false;
+  }
+});
+var eraser = new Eraser();
 
 var Canvas = Class.create({
   initialize: function(element) {
@@ -100,6 +128,7 @@ var Canvas = Class.create({
   },
   
   mouseout: function(event) {
+    console.log('canvasout');
     //this.tool.canvasout(event);
   },
   
