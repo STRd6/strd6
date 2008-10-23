@@ -6,7 +6,7 @@ protected
   end
   
   def window_style(window)
-    return "" unless current_user && w = WindowPosition.find_by_user_id_and_window(current_user.id, window) 
+    return "top: 0px; left: 0px;" unless current_user && w = WindowPosition.find_by_user_id_and_window(current_user.id, window) 
     
     return "top: #{w.top}px; left: #{w.left}px;"
   end
