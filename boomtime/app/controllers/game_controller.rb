@@ -52,10 +52,11 @@ class GameController < ApplicationController
     if active_character
       item = Item.find(params[:item][:id])
       position = params[:item][:container_position]
+      
+      # swap any existing item in same position
+      prev_item = active_character.inventory.find(:first, :conditions => {:container_position => position})
+      
       if item.owner == active_character
-        #TODO swap any existing item in same position
-        prev_item = active_character.inventory.find(:first, :conditions => {:container_position => position})
-        
         if prev_item
           prev_item.container_position = item.container_position
           prev_item.save
@@ -65,8 +66,19 @@ class GameController < ApplicationController
         item.save
       elsif item.owner == active_character.area
         area = active_character.area
+        
+        if prev_item
+          prev_item.owner = area
+          prev_item.save
+          
+          render_to_area area do |page|
+            page.call :add_chat, "#{h current_user} has dropped #{h prev_item.name}!"
+            page.call 'game.updateDisplayable', prev_item.css_id, prev_item.left, prev_item.top
+          end
+        end
+        
         item.owner = active_character
-        item.container_position = params[:item][:container_position]
+        item.container_position = position
         item.save
         # Update all clients in area
         render_to_area area do |page|

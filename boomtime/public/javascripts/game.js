@@ -144,7 +144,7 @@ var InventorySlot = Class.create({
     }
     
     Droppables.add(this.element, {
-      accept: ['displayable'], 
+      accept: ['item'], 
       hoverclass: 'hover', 
       onDrop: this.onDrop
     });
@@ -164,7 +164,11 @@ var InventorySlot = Class.create({
       } else {
         otherContainer._clearItem();
       }
-    }
+    } else { // Other item is probably from the ground
+      if(prevItem) {
+        game.element.insert(prevItem.remove());
+      }
+    }    
   },
   /** onDrop event handler */
   onDrop: function (item, drop, event) {
