@@ -17,17 +17,21 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 
 # Load secret email settings
-require "#{RAILS_ROOT}/config/email.rb"
-require "#{RAILS_ROOT}/config/site_keys.rb"
+begin
+  require "#{RAILS_ROOT}/config/email.rb"
+  require "#{RAILS_ROOT}/config/site_keys.rb"
+
+  ActionMailer::Base.smtp_settings = {
+    :tls => true,
+    :address => "smtp.gmail.com",
+    :port => "587",
+    :domain => "strd6.com",
+    :authentication => :plain,
+    :user_name => SMTP_USER_NAME,
+    :password => SMTP_PASSWORD
+  }
+rescue
+  # No email for you!
+end
 
 CONF[:host] = '127.0.0.1:3000'
-
-ActionMailer::Base.smtp_settings = {
-  :tls => true,
-  :address => "smtp.gmail.com",
-  :port => "587",
-  :domain => "strd6.com",
-  :authentication => :plain,
-  :user_name => SMTP_USER_NAME,
-  :password => SMTP_PASSWORD
-}
