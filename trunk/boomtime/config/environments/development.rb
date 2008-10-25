@@ -16,10 +16,11 @@ config.action_controller.perform_caching             = false
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
 
+require "#{RAILS_ROOT}/config/site_keys.rb"
+
 # Load secret email settings
-begin
+if File.exists?("#{RAILS_ROOT}/config/email.rb")
   require "#{RAILS_ROOT}/config/email.rb"
-  require "#{RAILS_ROOT}/config/site_keys.rb"
 
   ActionMailer::Base.smtp_settings = {
     :tls => true,
@@ -30,8 +31,6 @@ begin
     :user_name => SMTP_USER_NAME,
     :password => SMTP_PASSWORD
   }
-rescue
-  # No email for you!
 end
 
 CONF[:host] = '127.0.0.1:3000'
