@@ -1,5 +1,6 @@
 class Feature < ActiveRecord::Base
   include Displayable
+  include Costs
   
   belongs_to :area
   belongs_to :creator, :class_name => 'Character'
@@ -40,5 +41,9 @@ class Feature < ActiveRecord::Base
     end
     
     return "#{self.class.name.underscore.pluralize}/#{file}"
+  end
+  
+  def costs
+    {:seeds => 1}
   end
 end
