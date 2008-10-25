@@ -37,6 +37,20 @@ class Character < ActiveRecord::Base
   def overlay_text
     name
   end
+  
+  def pay(costs)
+    # TODO: Lock model?
+    costs.each do |key, value|
+      if resources[key] < value
+        return false
+      end
+    end
+    
+    costs.each do |key, value|
+      resources[key] -= value
+    end
+    save
+  end
 
   private
   def roll_stats

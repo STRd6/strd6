@@ -1,5 +1,6 @@
 class Sign < ActiveRecord::Base
   include Displayable
+  include Costs
   
   validates_length_of :text, :in => 1..255
   
@@ -8,5 +9,9 @@ class Sign < ActiveRecord::Base
   
   def overlay_text
     text
+  end
+  
+  def costs
+    {:wood => 1}
   end
 end
