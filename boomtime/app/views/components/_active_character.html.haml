@@ -11,5 +11,9 @@
       %p
         - active_character.resource_keys.each do |key|
           == #{key}: #{active_character.resources[key]}<br />
+      %h4 Properties:
+      %p
+        - active_character.properties.each do |key, value|
+          == #{key}: #{value}<br />
 
   = javascript_tag "$character_id = #{active_character.id};"
