@@ -1,5 +1,6 @@
 class Character < ActiveRecord::Base
   include Displayable
+  include Propertied
   
   belongs_to :owner, :class_name => 'User'
   belongs_to :faction
@@ -14,9 +15,7 @@ class Character < ActiveRecord::Base
   
   before_create :roll_stats, :roll_resources, :set_area
   
-  def set_area
-    self.area_id = 1
-  end
+  Proteus = {}
   
   def stat_keys
     [:str, :dex, :pow]
@@ -27,7 +26,7 @@ class Character < ActiveRecord::Base
   end
   
   def bonus
-    {:str => 2, :dex => -1, :pow => 0}
+    {:str => 0, :dex => 0, :pow => 0}
   end
   
   def inventory
@@ -66,5 +65,9 @@ class Character < ActiveRecord::Base
       :copper => 2 + rand(6) + rand(6),
       :silver => 1 + rand(6),
     }
+  end
+  
+  def set_area
+    self.area_id = 1
   end
 end
