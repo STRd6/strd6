@@ -4,9 +4,7 @@ describe "/characters/edit.html.erb" do
   include CharactersHelper
   
   before(:each) do
-    assigns[:character] = @character = stub_model(Character,
-      :new_record? => false
-    )
+    assigns[:character] = @character = Factory(:character)
   end
 
   it "should render edit form" do
