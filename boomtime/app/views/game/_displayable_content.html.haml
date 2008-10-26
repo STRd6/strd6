@@ -1,4 +1,4 @@
-%div.displayable[displayable]{:style => "background-image: url(#{image_path "#{displayable.image}.png"}); top: #{displayable.top}px; left: #{displayable.left}px;"}
+%div.displayable[displayable]{:style => "background-image: url(#{image_path "#{displayable.web_image}.png"}); top: #{displayable.top}px; left: #{displayable.left}px;"}
   - if displayable.overlay_text
     .overlay{:class => displayable.class.name.underscore }= displayable.overlay_text
 = javascript_tag "new #{displayable.class.name}('#{displayable.css_id}');"

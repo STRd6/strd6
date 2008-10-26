@@ -16,16 +16,22 @@ module Propertied
   end # class methods
 
   module ModelInstanceMethods
+    def proteus
+      {}
+    end
+  
     def initialize_properties
       self.properties ||= {}
     end
 
+    # Currently a very fake style of prototype inheritance, just copy
+    # properties from the prototype over to the instance.
     def prototype=(prototype)
       self.properties ||= {}
 
       if prototype
         @prototype = prototype.to_sym
-        self.properties.merge! Proteus[@prototype] if Proteus[@prototype]
+        self.properties.merge! proteus[@prototype] if proteus[@prototype]
       end
     end
 
@@ -33,7 +39,7 @@ module Propertied
       @prototype
     end
 
-    def image
+    def web_image
       if properties[:image]
         file = properties[:image]
       elsif display_datum.image

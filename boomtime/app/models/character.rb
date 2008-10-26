@@ -15,7 +15,19 @@ class Character < ActiveRecord::Base
   
   before_create :roll_stats, :roll_resources, :set_area
   
-  Proteus = {}
+  def image=(image)
+    properties[:image] = image
+  end
+  
+  def image
+    properties[:image] || display_datum.image
+  end
+  
+  def images
+    Dir["#{RAILS_ROOT}/public/images/#{image_directory}*.png"].map do |f|
+      f.gsub(/^(.*)\/(.*)\.png/, '\2')
+    end
+  end
   
   def stat_keys
     [:str, :dex, :pow]

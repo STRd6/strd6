@@ -12,14 +12,18 @@ module Displayable
     return "#{self.class.name.underscore}_#{id}"
   end
   
-  def image
+  def web_image
     if display_datum.image
       file = display_datum.image
     else
       file = "default"
     end
     
-    return "#{self.class.name.underscore.pluralize}/#{file}"
+    return "#{image_directory}#{file}"
+  end
+  
+  def image_directory
+    "#{self.class.name.underscore.pluralize}/"
   end
   
   def overlay_text
