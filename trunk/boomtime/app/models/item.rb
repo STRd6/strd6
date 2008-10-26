@@ -1,5 +1,6 @@
 class Item < ActiveRecord::Base
   include Displayable
+  include Propertied
   
   belongs_to :owner, :polymorphic => true
   validates_presence_of :container_position
