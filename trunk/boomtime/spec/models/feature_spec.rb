@@ -5,6 +5,11 @@ describe Feature do
     Factory(:feature)
   end
   
+  it "should not create a new instance without creator" do
+    feature = Factory.build(:feature, :creator => nil)
+    assert_equal false, feature.save
+  end  
+  
   it "should be in an area" do
     f = Factory(:feature, :area => Factory(:area))
     f.area.should_not be_nil

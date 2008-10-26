@@ -7,7 +7,7 @@ module Costs
   def self.included(recipient)
     recipient.extend(ModelClassMethods)
     recipient.class_eval do
-      after_validation :subtract_resources
+      before_create :subtract_resources
       include ModelInstanceMethods
     end
   end

@@ -21,6 +21,7 @@ end
 
 Factory.define :feature do |f|
   f.name 'Feature 51'
+  f.creator {|c| c.association(:character) }
 end
 
 Factory.define :adjacency do |a|
@@ -45,4 +46,5 @@ end
 
 Factory.define :sign do |s|
   s.text 'test sign'
+  s.creator {|c| c.association(:character) }
 end
