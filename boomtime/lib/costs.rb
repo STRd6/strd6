@@ -16,7 +16,7 @@ module Costs
   end # class methods
 
   module ModelInstanceMethods
-    # This method is intendet to be called after validation to 
+    # This method is intended to be called after validation to 
     # make sure that the creator can pay the costs to create 
     # this instance.
     def subtract_resources
