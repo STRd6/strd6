@@ -204,6 +204,36 @@ var InventorySlot = Class.create({
   }
 });
 
+var ResourceDrop = Class.create(InventorySlot, {
+  initialize: function($super, element) {
+    this.element = $(element);
+    this.element.obj = this;
+    Droppables.add(this.element, {
+      accept: ['pile'], 
+      hoverclass: 'hover', 
+      onDrop: this.onDrop
+    });
+  },
+  /** onDrop event handler */
+  onDrop: function (item, drop, event) {
+    // Digest the resources
+    drop.obj.insertItem(item);
+    item.hide();
+    item.should_revert = false;
+
+    var data = item.id.split('_');
+
+    // Send updated item info to server
+    var params = {'item[id]': data.last(),
+      'authenticity_token': $token
+    };
+
+    new Ajax.Request('/game/get_pile', {
+      parameters: params
+    });
+  }
+});
+
 /** 
  * Handle removing displayables
  */
