@@ -12,6 +12,10 @@ module Displayable
     return "#{self.class.name.underscore}_#{id}"
   end
   
+  def css_classes
+    []
+  end
+  
   def web_image
     if display_datum.image
       file = display_datum.image
