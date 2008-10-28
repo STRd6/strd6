@@ -3,7 +3,7 @@
 # 
 module Displayable
   def self.included(base)
-    base.send :has_one, :display_datum, :as => :displayable, :depenent => :destroy
+    base.send :has_one, :display_datum, :as => :displayable, :dependent => :destroy
     base.send :validates_presence_of, :display_datum
     base.send :before_validation, :ensure_display_datum
   end
