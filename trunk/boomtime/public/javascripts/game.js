@@ -249,16 +249,18 @@ function got_item(id, character_id) {
  * Drop handler for Game area
  */
 function feature_dropped(feature, drop, event) {
-  //alert('X: ' + feature.style.left + ', Y: ' + feature.style.top);
+  //console.log('X: ' + feature.style.left + ', Y: ' + feature.style.top);
   var pos = relative_position(event, drop);
+  var offset = relative_position(event, feature);
+  //console.log(offset.x + ", " + offset.y);
   //console.log(pos.x + ", " + pos.y);
   
   feature.should_revert = false;
   
   drop.insert(feature.remove());
   
-  feature.style.left = pos.x + "px";
-  feature.style.top = pos.y + "px";
+  feature.style.left = pos.x - offset.x + "px";
+  feature.style.top = pos.y - offset.y + "px";
   
   var data = feature.id.split('_');
   
