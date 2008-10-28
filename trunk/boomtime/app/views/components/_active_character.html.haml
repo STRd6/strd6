@@ -3,5 +3,7 @@
     .character
       %h2= active_character.name
       = render :partial => 'components/active_character_data', :locals => {:active_character => active_character}
-
+    .character_inventory
+      #resource_drop.inventory_slot
+      = javascript_tag "new ResourceDrop('resource_drop');"
   = javascript_tag "$character_id = #{active_character.id};"
