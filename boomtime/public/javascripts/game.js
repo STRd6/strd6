@@ -66,6 +66,9 @@ var Game = Class.create({
       case 'tree_action':
         this.create_tree(game_pos);
         break;
+      case 'wood_action':
+        this.create_wood(game_pos);
+        break;
       default:
         alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y)
         break;
@@ -126,6 +129,16 @@ var Game = Class.create({
     feature_create.down('#feature_left').value = game_position.x
 
     new Ajax.Request('/features', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_feature'))});
+  },
+  
+  /** Send request to create a wood pile to server. */
+  create_wood: function(game_position) {
+    var item_create = $('item_create');
+
+    item_create.down('#item_top').value = game_position.y
+    item_create.down('#item_left').value = game_position.x
+
+    new Ajax.Request('/items', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_item'))});
   }
 });
 
@@ -249,11 +262,8 @@ function got_item(id, character_id) {
  * Drop handler for Game area
  */
 function feature_dropped(feature, drop, event) {
-  //console.log('X: ' + feature.style.left + ', Y: ' + feature.style.top);
   var pos = relative_position(event, drop);
   var offset = relative_position(event, feature);
-  //console.log(offset.x + ", " + offset.y);
-  //console.log(pos.x + ", " + pos.y);
   
   feature.should_revert = false;
   
