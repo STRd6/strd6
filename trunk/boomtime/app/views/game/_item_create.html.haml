@@ -1,0 +1,8 @@
+#item_create.border
+  - form_remote_for Item.new(:top => 0, :left => 0, :prototype => :wood_pile), {:html => {:onsubmit => "$('item_create').hide()"}} do |f|
+    = f.hidden_field :top
+    = f.hidden_field :left
+    = f.hidden_field :prototype
+    
+    %span.right= link_to_function 'X', "javascript: $('feature_create').hide();"
+    = f.submit 'Create it!', :class => 'right'
