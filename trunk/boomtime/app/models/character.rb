@@ -29,6 +29,27 @@ class Character < ActiveRecord::Base
     end
   end
   
+  def get_pile(item)
+    if item.owner == area
+      if item.properties[:pile]
+        item.properties[:pile].each do |resource, amount|
+          if resources[resource]
+            resources[resource] += amount
+          else
+            resources[resource] = amount
+          end
+        end
+        save
+        item.destroy
+        return true
+      else
+        return false
+      end
+    else
+      return false
+    end
+  end
+  
   def stat_keys
     [:str, :dex, :pow]
   end
