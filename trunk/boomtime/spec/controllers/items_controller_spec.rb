@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ItemsController do
+  before(:each) do
+    controller.stub!(:current_user).and_return(Factory(:user, :active_character => Factory(:character)))
+  end
 
   #Delete these examples and add some real ones
   it "should use ItemsController" do
