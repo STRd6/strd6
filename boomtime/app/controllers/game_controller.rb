@@ -101,7 +101,9 @@ class GameController < ApplicationController
         page.call :add_chat, "#{h active_character.name} has picked up #{h item.name}!"
         page.call :got_item, item.css_id, active_character.id
       end
-      render :nothing => true
+      render :update do |page|
+        page.replace 'active_character_data', :partial => 'components/active_character_data', :locals => {:active_character => active_character}
+      end
     else
       render :update do |page|
         page.call 'game.updateDisplayable', item.css_id, item.left, item.top
