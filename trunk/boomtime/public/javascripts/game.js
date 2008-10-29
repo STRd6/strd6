@@ -1,8 +1,25 @@
 var $character_id = -1;
 
+var Player = Class.create({
+  initialize: function() {
+    this.abilities = {};
+  },
+  hasAbility: function(ability) {
+    return this.abilities[ability] && (this.abilities[ability] > 0)
+  },
+  addAbility: function(ability) {
+    this.abilities[ability] = (this.abilities[ability] || 0) + 1;
+  },
+  removeAbility: function(ability) {
+    this.abilities[ability] = (this.abilities[ability] || 0) - 1;
+  }  
+});
+var player = new Player();
+
 var GameEntity = Class.create({
   initialize: function(element) {
     this.element = $(element);
+    this.element.obj = this;
     
     new Draggable(this.element, {revert: this.revert, onStart: this.start})
   },  
@@ -28,8 +45,9 @@ var Character = Class.create(GameEntity, {
 });
 
 var Item = Class.create(GameEntity, {
-  initialize: function($super, element) {
+  initialize: function($super, element, ability) {
     $super(element);
+    this.ability = ability || 'default'
   }
 });
 
@@ -133,12 +151,17 @@ var Game = Class.create({
   
   /** Send request to create a wood pile to server. */
   create_wood: function(game_position) {
-    var item_create = $('item_create');
-
-    item_create.down('#item_top').value = game_position.y
-    item_create.down('#item_left').value = game_position.x
-
-    new Ajax.Request('/items', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_item'))});
+//    var item_create = $('item_create');
+//
+//    item_create.down('#item_top').value = game_position.y
+//    item_create.down('#item_left').value = game_position.x
+//
+//    new Ajax.Request('/items', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_item'))});
+    if(player.hasAbility('chop')) {
+      alert('Choppy choppy!');
+    } else {
+      alert('No chop for you!');
+    }    
   }
 });
 
@@ -172,16 +195,24 @@ var InventorySlot = Class.create({
     this._moveItem(item);
     
     if(otherContainer) {
+      otherContainer.itemRemoved(item);
       if(prevItem) {
+        this.itemRemoved(prevItem);
         otherContainer._moveItem(prevItem);
+        otherContainer.itemAdded(prevItem);
       } else {
         otherContainer._clearItem();
       }
     } else { // Other item is probably from the ground
+      // game.itemRemoved?
       if(prevItem) {
+        this.itemRemoved(prevItem);
         game.element.insert(prevItem.remove());
+        // game.itemAdded?
       }
-    }    
+    }
+    
+    this.itemAdded(item);
   },
   /** onDrop event handler */
   onDrop: function (item, drop, event) {
@@ -214,6 +245,16 @@ var InventorySlot = Class.create({
   
   _clearItem: function() {
     this.containedItem = null;
+  },
+  
+  /** Callback when an item is removed from this slot */
+  itemRemoved: function(item) {
+    
+  },
+  
+  /** Callback when an item is added to this slot */
+  itemAdded: function(item) {
+    
   }
 });
 
@@ -244,6 +285,32 @@ var ResourceDrop = Class.create(InventorySlot, {
     new Ajax.Request('/game/get_pile', {
       parameters: params
     });
+  }
+});
+
+var EquipmentSlot = Class.create(InventorySlot, {
+  initialize: function(element) {
+    this.element = $(element);
+    this.element.obj = this;
+    Droppables.add(this.element, {
+      accept: ['equipable'],
+      hoverclass: 'hover',
+      onDrop: this.onDrop
+    });
+  },
+  
+  onDrop: function(item, drop, event) {
+    drop.obj.insertItem(item);
+    item.should_revert = false;
+    //alert(item + " confers " + item.obj.ability);
+  },
+  
+  itemAdded: function(item) {
+    player.addAbility(item.obj.ability)
+  },
+  
+  itemRemoved: function(item) {
+    player.removeAbility(item.obj.ability)
   }
 });
 
