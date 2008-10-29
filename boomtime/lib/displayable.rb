@@ -16,6 +16,10 @@ module Displayable
     []
   end
   
+  def js_params
+    'null'
+  end
+  
   def web_image
     if display_datum.image
       file = display_datum.image

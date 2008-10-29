@@ -14,6 +14,10 @@ class Item < ActiveRecord::Base
       :wood_pile => {
         :pile => {:wood => 1},
         :image => 'wood_pile'
+      },
+      :axe => {
+        :image => 'axe',
+        :ability => 'chop',
       }
     }
   end
@@ -23,7 +27,14 @@ class Item < ActiveRecord::Base
   end
   
   def css_classes
-    return ['pile'] if properties[:pile]
-    return []
+    classes = []
+    classes << 'pile' if properties[:pile]
+    classes << 'equipable' if properties[:ability]
+    return classes
+  end
+  
+  def js_params
+    return "'#{properties[:ability]}'" if properties[:ability]
+    return super
   end
 end
