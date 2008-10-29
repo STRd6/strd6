@@ -5,5 +5,9 @@
       = render :partial => 'components/active_character_data', :locals => {:active_character => active_character}
     .character_inventory
       #resource_drop.inventory_slot
+        Drop
       = javascript_tag "new ResourceDrop('resource_drop');"
+      #equip.inventory_slot
+        Equip
+      = javascript_tag "new EquipmentSlot('equip');"
   = javascript_tag "$character_id = #{active_character.id};"
