@@ -1,6 +1,7 @@
 class Item < ActiveRecord::Base
   include Displayable
   include Propertied
+  include Costs
   
   belongs_to :owner, :polymorphic => true
   belongs_to :creator, :class_name => 'Character'
@@ -18,6 +19,7 @@ class Item < ActiveRecord::Base
       :axe => {
         :image => 'axe',
         :ability => 'chop',
+        :costs => {:stone => 1},
       }
     }
   end
@@ -35,6 +37,11 @@ class Item < ActiveRecord::Base
   
   def js_params
     return "'#{properties[:ability]}'" if properties[:ability]
+    return super
+  end
+  
+  def costs
+    return properties[:costs] if properties[:costs]
     return super
   end
 end
