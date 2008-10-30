@@ -20,6 +20,8 @@ module Costs
     # make sure that the creator can pay the costs to create 
     # this instance.
     def subtract_resources
+      return true if costs == {}
+      
       if creator
         if creator.pay costs
           return true
@@ -31,6 +33,10 @@ module Costs
         errors.add_to_base "No creator."
         return false
       end
+    end
+    
+    def costs
+      {}
     end
   end # instance methods
 end
