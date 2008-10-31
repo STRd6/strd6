@@ -187,6 +187,11 @@ function feature_dropped(feature, drop, event) {
   var pos = relative_position(event, drop);
   var offset = relative_position(event, feature);
   
+  if(feature.container) {
+    feature.container.itemRemoved(feature);
+    feature.container._clearItem();
+  }
+  
   feature.should_revert = false;
   
   drop.insert(feature.remove());
