@@ -2,7 +2,7 @@
 
 RAILS_ROOT = "/u/apps/boomtime/current"
 
-%w{8000 8001 8002}.each do |port|
+%w{8000 8001}.each do |port|
   God.watch do |w|
     w.name = "boomtime-mongrel-#{port}"
     w.group = 'mongrels'
