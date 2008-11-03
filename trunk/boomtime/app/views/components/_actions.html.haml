@@ -4,5 +4,4 @@
       - %w[move sign tree wood axe].each do |action|
         = render :partial => 'components/action', :locals => {:name => action}
       = javascript_tag "activeAction(move_action);"
-      = javascript_tag "axe_action.action = axeFunc"
     .clear

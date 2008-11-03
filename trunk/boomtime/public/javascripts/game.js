@@ -71,30 +71,14 @@ var Game = Class.create({
       return;
     }
 
-    var game_pos = relative_position(event, $('game'));
-    var x = game_pos.x;
-    var y = game_pos.y;
+    var gamePos = relative_position(event, $('game'));
+    var displayPos = relative_position(event, $('content'))
 
-    switch($current_action.id) {
-      case 'move_action':
-        break;
-      case 'sign_action':
-        this.prepare_sign(game_pos, relative_position(event, $('content')));
-        break;
-      case 'tree_action':
-        this.create_tree(game_pos);
-        break;
-      case 'wood_action':
-        this.create_wood(game_pos);
-        break;
-      default:
-        if($current_action.action) {
-          $current_action.action(game_pos);
-        } else {
-          alert("In a better world I'd " + $current_action.id + " at: " + x + ", " + y);
-        }        
-        break;
-    }
+    if($current_action.action) {
+      $current_action.action(gamePos, displayPos);
+    } else {
+      alert("In a better world I'd " + $current_action.id + " at: " + gamePos.x + ", " + gamePos.y);
+    }        
   },
   
   /** Update the position of the displayable if it is present, otherwise
@@ -130,42 +114,6 @@ var Game = Class.create({
   /** Remove displayable from game (hide it, stow it, axe it, whatev) */
   removeDisplayable: function(id) {
     $(id).hide();
-  },
-
-  /** Prepare the form that creates signs. */
-  prepare_sign: function(game_position, display_position) {
-    var sign_create = $('sign_create');
-
-    sign_create.down('#sign_top').value = game_position.y
-    sign_create.down('#sign_left').value = game_position.x
-
-    sign_create.show();
-    center(sign_create, display_position);
-  },
-
-  /** Send request to create a new tree to server. */
-  create_tree: function(game_position) {
-    var feature_create = $('feature_create');
-
-    feature_create.down('#feature_top').value = game_position.y
-    feature_create.down('#feature_left').value = game_position.x
-
-    new Ajax.Request('/features', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_feature'))});
-  },
-  
-  /** Send request to create a wood pile to server. */
-  create_wood: function(game_position) {
-//    var item_create = $('item_create');
-//
-//    item_create.down('#item_top').value = game_position.y
-//    item_create.down('#item_left').value = game_position.x
-//
-//    new Ajax.Request('/items', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_item'))});
-    if(player.hasAbility('chop')) {
-      alert('Choppy choppy!');
-    } else {
-      alert('No chop for you!');
-    }    
   }
 });
 
