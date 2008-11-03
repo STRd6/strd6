@@ -134,8 +134,6 @@ class GameController < ApplicationController
     area = Area.find(params[:area_id])
     
     if area
-      active_character = current_user.active_character
-      
       if old_area = active_character.area
         render_to_area old_area do |page|
           page.call :add_chat, "#{h active_character.name} has left the area."
@@ -154,6 +152,27 @@ class GameController < ApplicationController
     end
     
     render :nothing => true
+  end
+  
+  def ability
+    begin
+      target = Feature.find(params[:target])
+      new_item = active_character.perform_ability(params[:ability], target)
+
+      if new_item
+        render_to_area active_character.area do |page|
+          page.call :add_chat, "#{h active_character.name} chopped some wood."
+          page.call 'game.removeDisplayable', target.css_id
+          page.call 'game.updateDisplayable',
+            new_item.css_id, new_item.left, new_item.top
+        end
+      end
+    rescue ActiveRecord::RecordNotFound
+      
+    end
+    
+    render :nothing => true
+    
   end
   
   private

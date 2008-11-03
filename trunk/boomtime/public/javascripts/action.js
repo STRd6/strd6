@@ -37,18 +37,13 @@ var Action = Class.create({
       new Ajax.Request('/features', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_feature'))});
     },
     /** Send request to create a wood pile to server. */
-    wood: function(gamePosition) {
-  //    var item_create = $('item_create');
-  //
-  //    item_create.down('#item_top').value = gamePosition.y
-  //    item_create.down('#item_left').value = gamePosition.x
-  //
-  //    new Ajax.Request('/items', {asynchronous:true, evalScripts:true, parameters:Form.serialize($('new_item'))});
-      if(player.hasAbility('chop')) {
-        alert('Choppy choppy!');
-      } else {
-        alert('No chop for you!');
-      }    
+    wood: function(gamePosition, dp, element) {
+      var target = decompose_css_id(element.id)[1];
+      new Ajax.Request('/game/ability', {asynchronous:true, evalScripts:true, parameters: {
+        ability: 'chop',
+        target: target,
+        authenticity_token: $token
+      }});
     },
     /** Prepare the form that creates signs. */
     sign: function(gamePosition, displayPosition) {
