@@ -14,12 +14,14 @@ class Item < ActiveRecord::Base
     {
       :wood_pile => {
         :pile => {:wood => 1},
-        :image => 'wood_pile'
+        :image => 'wood_pile',
+        :name => 'woop pile',
       },
       :axe => {
         :image => 'axe',
         :ability => 'chop',
         :costs => {:stone => 1},
+        :name => 'axe',
       }
     }
   end
