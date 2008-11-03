@@ -50,6 +50,14 @@ module Propertied
 
       return "#{self.class.name.underscore.pluralize}/#{file}"
     end
+    
+    def name
+      if properties[:name]
+        return properties[:name]
+      else
+        return super
+      end
+    end
   end # instance methods
   
 end
