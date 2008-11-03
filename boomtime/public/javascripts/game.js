@@ -75,7 +75,7 @@ var Game = Class.create({
     var displayPos = relative_position(event, $('content'))
 
     if($current_action.action) {
-      $current_action.action(gamePos, displayPos);
+      $current_action.action(gamePos, displayPos, event.element());
     } else {
       alert("In a better world I'd " + $current_action.id + " at: " + gamePos.x + ", " + gamePos.y);
     }        

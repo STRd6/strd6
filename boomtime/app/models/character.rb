@@ -50,6 +50,24 @@ class Character < ActiveRecord::Base
     end
   end
   
+  def perform_ability(ability, target)
+    if target && target.area == area
+      if ability == 'chop'
+        if target.instance_of? Feature
+          target.destroy
+          return Item.create(:prototype => :wood_pile, :top => target.top, :left => target.left, :area => target.area)
+        else
+          false
+        end
+      else
+        false
+      end
+    else
+      false
+    end
+    
+  end
+  
   def stat_keys
     [:str, :dex, :pow]
   end
