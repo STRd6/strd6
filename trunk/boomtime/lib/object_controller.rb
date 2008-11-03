@@ -23,6 +23,12 @@ module ObjectController
           page.replace 'active_character_data', :partial => 'components/active_character_data', :locals => {:active_character => active_character}
         end
       end
+      
+      create.failure.wants.js do
+        render :update do |page|
+          page.alert object.errors
+        end
+      end
     end
   end
 end
