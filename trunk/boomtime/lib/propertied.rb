@@ -7,7 +7,7 @@ module Propertied
     recipient.extend(ModelClassMethods)
     recipient.class_eval do
       serialize :properties
-      before_create :initialize_properties
+      before_validation_on_create :initialize_properties
       include ModelInstanceMethods
     end
   end
