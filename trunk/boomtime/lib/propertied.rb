@@ -28,15 +28,16 @@ module Propertied
     # properties from the prototype over to the instance.
     def prototype=(prototype)
       self.properties ||= {}
-
+      
       if prototype
-        @prototype = prototype.to_sym
-        self.properties.merge! proteus[@prototype] if proteus[@prototype]
+        prototype = prototype.to_sym
+        self.properties[:prototype] = prototype
+        self.properties.merge! proteus[prototype] if proteus[prototype]
       end
     end
 
     def prototype
-      @prototype
+      self.properties[:prototype]
     end
 
     def web_image
