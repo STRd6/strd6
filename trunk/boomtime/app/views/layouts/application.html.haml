@@ -4,8 +4,8 @@
     %meta{'http-equiv' => "Content-type", 'content' => "text/html; charset=utf-8"}
     %title= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
     = stylesheet_link_tag :all, :cache => true
-    = javascript_include_tag 'prototype', 'effects', 'dragdrop', 'gears_init', :juggernaut, :cache => 'base'
-    = javascript_include_tag 'application', 'utility', 'game', 'inventory', 'action', 'sign', :cache => 'app'
+    = javascript_include_tag 'prototype', 'effects', 'dragdrop', :juggernaut, :cache => 'base'
+    = javascript_include_tag 'gears_init', 'application', 'utility', 'game', 'inventory', 'action', 'sign', :cache => 'app'
 
   %body
     = juggernaut(:channels => [:main])
