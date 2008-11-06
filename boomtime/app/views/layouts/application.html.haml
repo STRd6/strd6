@@ -33,7 +33,7 @@
         = render :partial => 'components/notices'
         = yield
 
-      - %w[active_character chat inventory actions].each do |component|
+      - %w[active_character chat game_console inventory actions].each do |component|
         = render :partial => "components/#{component}"
 
     #dcon

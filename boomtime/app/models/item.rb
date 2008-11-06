@@ -15,7 +15,7 @@ class Item < ActiveRecord::Base
       :wood_pile => {
         :pile => {:wood => 1},
         :image => 'wood_pile',
-        :name => 'woop pile',
+        :name => 'wood pile',
       },
       :axe => {
         :image => 'axe',

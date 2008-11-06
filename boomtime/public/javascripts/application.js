@@ -42,6 +42,10 @@ function add_chat(message) {
   // TODO: Only scroll if chat was previously at bottom
   if(should_scroll) scroll_chat();  
 }
+
+function addEvent(message) {
+  $('game_data').insert({top: "<li>" + message + "</li>"});
+}
 /** 
  * Scrolls the chat text window to the bottom
  */
