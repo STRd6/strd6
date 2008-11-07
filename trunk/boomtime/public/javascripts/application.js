@@ -64,13 +64,19 @@ db.execute('create table if not exists Chat' +
            ' (Phrase text, Timestamp int)');
 
 function loadChatsFromDB() {
-  var rs = db.execute('select * from Chat order by Timestamp');
+  var cnt = db.execute('select count(*) from Chat');
+  var rs = db.execute('select * from Chat order by Timestamp limit 10 offset ' + (cnt.field(0) - 10));
+
+function checkTime(i) {
+  if (i<10) {
+    i="0" + i;
+  }
+return i;
+}
 
   while (rs.isValidRow()) {
-    //alert(rs.field(0) + '@' + rs.field(1));
     var t = new Date(rs.field(1));
-    //t = (t.getMonth() + 1) +'/' + t.getDate() + '/' +  (t.getYear() + 1900) + ' ' + 
-    t = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
+    t = checkTime(t.getHours()) + ':' + checkTime(t.getMinutes()) + ':' + checkTime(t.getSeconds());
     $('chat_data').insert({bottom: "<li>" + t + ' ' + rs.field(0) + "</li>"});
     rs.next();
   }
