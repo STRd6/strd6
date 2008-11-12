@@ -29,7 +29,8 @@ var Tool = Class.create({
   mousedown: function(event) {  },
   mouseup: function(event) {  },
   mousemove: function(event) {  },
-  canvasout: function(event) {  }
+  canvasout: function(event) {  },
+  cursor: "pointer"
 });
 
 var EyeDropper = Class.create(Tool, {
@@ -59,7 +60,9 @@ var EyeDropper = Class.create(Tool, {
       s = '0' + s
     }
     return s;
-  }
+  },
+  
+  cursor: "crosshair"
 });
 
 var dropper = new EyeDropper();
@@ -84,7 +87,9 @@ var Pencil = Class.create(Tool, {
   
   canvasout: function(event) {
     this.active = false;
-  }
+  },
+  
+  cursor: "move"
 });
 var pencil = new Pencil();
 
@@ -106,7 +111,9 @@ var Eraser = Class.create(Tool, {
   
   canvasout: function(event) {
     this.active = false;
-  }
+  },
+  
+  cursor: "n-resize"
 });
 var eraser = new Eraser();
 
@@ -128,11 +135,14 @@ var Canvas = Class.create({
   },
   
   mouseout: function(event) {
-    console.log('canvasout');
+    //console.log('canvasout');
     //this.tool.canvasout(event);
   },
   
   setTool: function(tool) {
     this.tool = tool;
+    this.element.style.cursor = tool.cursor;
+
+    //console.log(tool.cursor);
   }  
 });

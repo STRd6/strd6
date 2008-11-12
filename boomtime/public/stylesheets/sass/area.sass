@@ -35,6 +35,7 @@ div.area
 .displayable
   position: absolute
   background-repeat: no-repeat
+  border: 2px solid white
   width: 32px
   height: 32px
   padding: 0
@@ -42,9 +43,18 @@ div.area
   .overlay
     font-weight: normal
     font-size: 0.8em
+    text-align: center
     position: relative
+    left: -34px
     top: 2em
-    width: 200px
+    width: 100px
+    
+  &:hover
+    border-color= !light_gray
+    
+  // Make JS add this class to divs
+  .dragging
+    border-color= !main_color
 
 #sign_create
   position: absolute

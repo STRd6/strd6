@@ -5,4 +5,4 @@
 
     - form_remote_tag :url => { :controller => :welcome, :action => :send_data }, :complete => "$('chat_input').value = ''" do
       = text_field_tag 'chat_input', '', { :id => 'chat_input'}
-      = submit_tag "Add"
+      = submit_tag "Add", { :id => 'chat_submit'}

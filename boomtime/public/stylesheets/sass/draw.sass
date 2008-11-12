@@ -13,7 +13,27 @@
   height: 15px
   border-bottom: 1px solid black
   border-right: 1px solid black
-  background: transparent url(/images/pixel_bg.png)
+  background: transparent url(/images/draw/pixel_bg.png)
   margin: 0
   padding: 0
   
+// Pencil, Eraser, etc. tool image styles
+img.tool
+  position: relative
+  top: 10px
+  border: 2px solid
+  border-color= !light_gray
+  margin-bottom: 5px
+  
+  &:hover
+    border-color= !dark_gray
+    
+  &.set_tool
+    border-color= !main_color
+  
+// Current color input field
+#current_color
+  border: 2px solid
+  border-color= !light_gray
+  margin: 2px 2px 5px 0
+  width: 50px
