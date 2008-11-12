@@ -3,23 +3,27 @@
 @import constants.sass
 
 #chat
-  float: right
+  width: 300px
+  max-width: 300px
   background-color= !light_gray
 
   input#chat_input
     padding: 2px
     border: 2px solid
     border-color: black
-    width: 245px
+    width: 210px
     font-size: 12px
+  
+  input#chat_submit
+    width: 60px
+    margin-left: 0
 
   input
     margin: 4px
 
   .chat_text
     height: 120px
-    border-style: double
-    border-color: black
+    border-bottom: 1px solid black
     background-color= !white
     padding: 5px
     overflow: auto
@@ -29,5 +33,25 @@
       margin: 0
       list-style: none
       
+      li
+        font-size: 12px
+
+// Remove - should be in console.sass
+#game_console
+  width: 300px
+  max-width: 300px
+  
+  .chat_text
+    height: 120px
+    border-color: black
+    background-color= !white
+    padding: 5px
+    overflow: auto
+
+    ul
+      padding: 0
+      margin: 0
+      list-style: none
+
       li
         font-size: 12px

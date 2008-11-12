@@ -29,15 +29,22 @@ div.area {
 .displayable {
   position: absolute;
   background-repeat: no-repeat;
+  border: 2px solid white;
   width: 32px;
   height: 32px;
   padding: 0; }
   .displayable .overlay {
     font-weight: normal;
     font-size: 0.8em;
+    text-align: center;
     position: relative;
+    left: -34px;
     top: 2em;
-    width: 200px; }
+    width: 100px; }
+  .displayable:hover {
+    border-color: #cccccc; }
+  .displayable .dragging {
+    border-color: #1084ce; }
 
 #sign_create {
   position: absolute;
