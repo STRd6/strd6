@@ -3,9 +3,9 @@
 
 %input#current_color.color{:type => 'text'}
 
-= link_to_function image_tag('draw/pencil.png', :alt => 'Pencil', :class => 'tool'), 'canvas.setTool(pencil)', { :title => 'Pencil'}
-= link_to_function image_tag('draw/dropper.png', :alt => 'Dropper', :class => 'tool'), 'canvas.setTool(dropper)', { :title => 'Dropper' }
-= link_to_function image_tag('draw/eraser.png', :alt => 'Eraser', :class => 'tool'), 'canvas.setTool(eraser)', { :title => 'Eraser' }
+= link_to_function image_tag('draw/pencil.png', :alt => 'Pencil', :id => 'pencil', :class => 'tool'), 'canvas.setTool(pencil)', { :title => 'Pencil'}
+= link_to_function image_tag('draw/dropper.png', :alt => 'Dropper', :id => 'dropper', :class => 'tool'), 'canvas.setTool(dropper)', { :title => 'Dropper' }
+= link_to_function image_tag('draw/eraser.png', :alt => 'Eraser', :id => 'eraser', :class => 'tool'), 'canvas.setTool(eraser)', { :title => 'Eraser' }
 
 #main_canvas.canvas
   - 32.times do |y|

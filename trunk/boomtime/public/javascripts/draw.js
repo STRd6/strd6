@@ -30,7 +30,8 @@ var Tool = Class.create({
   mouseup: function(event) {  },
   mousemove: function(event) {  },
   canvasout: function(event) {  },
-  cursor: "pointer"
+  cursor: "pointer",
+  id: ""
 });
 
 var EyeDropper = Class.create(Tool, {
@@ -62,7 +63,8 @@ var EyeDropper = Class.create(Tool, {
     return s;
   },
   
-  cursor: "crosshair"
+  cursor: "crosshair",
+  id: "dropper"
 });
 
 var dropper = new EyeDropper();
@@ -89,7 +91,8 @@ var Pencil = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "move"
+  cursor: "move",
+  id: "pencil"
 });
 var pencil = new Pencil();
 
@@ -113,7 +116,8 @@ var Eraser = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "n-resize"
+  cursor: "n-resize",
+  id: "eraser"
 });
 var eraser = new Eraser();
 
@@ -142,7 +146,9 @@ var Canvas = Class.create({
   setTool: function(tool) {
     this.tool = tool;
     this.element.style.cursor = tool.cursor;
-
+    // Adds class to outline currently selected tool. Needs to remove 'set_tool' class from other tools
+    $(tool.id).addClassName("set_tool");
+    
     //console.log(tool.cursor);
   }  
 });

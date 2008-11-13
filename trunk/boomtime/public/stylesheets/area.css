@@ -32,7 +32,8 @@ div.area {
   border: 2px solid white;
   width: 32px;
   height: 32px;
-  padding: 0; }
+  padding: 0;
+  cursor: move; }
   .displayable .overlay {
     font-weight: normal;
     font-size: 0.8em;

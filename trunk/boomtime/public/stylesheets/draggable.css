@@ -3,7 +3,8 @@
   z-index: 1; }
   .window_holder .title_bar {
     color: white;
-    font-weight: bold; }
+    font-weight: bold;
+    cursor: move; }
     .window_holder .title_bar .title_bar_corner {
       float: left;
       clear: none;
