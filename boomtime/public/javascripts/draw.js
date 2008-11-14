@@ -34,6 +34,9 @@ var Tool = Class.create({
   id: ""
 });
 
+// Array to hold a reference to each tool
+var tools = new Array();
+
 var EyeDropper = Class.create(Tool, {
   mousedown: function(event) {
     //alert('Pre-parse: ' + event.element().style.backgroundColor);
@@ -54,7 +57,8 @@ var EyeDropper = Class.create(Tool, {
       this.toHex(bits[2]),
       this.toHex(bits[3])
     ].join('').toUpperCase();
-  },  
+  },
+  
   toHex: function(bits) {
     s = parseInt(bits).toString(16);
     if(s.length == 1) {
@@ -63,11 +67,12 @@ var EyeDropper = Class.create(Tool, {
     return s;
   },
   
-  cursor: "crosshair",
+  cursor: "crosshair", // make custom cursor
   id: "dropper"
 });
 
 var dropper = new EyeDropper();
+tools[tools.length] = dropper;
 
 var Pencil = Class.create(Tool, {
   mousedown: function(event) {
@@ -94,7 +99,9 @@ var Pencil = Class.create(Tool, {
   cursor: "move",
   id: "pencil"
 });
+
 var pencil = new Pencil();
+tools[tools.length] = pencil;
 
 var Eraser = Class.create(Tool, {
   
@@ -116,10 +123,26 @@ var Eraser = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "n-resize",
+  cursor: "n-resize", // make custom cursor
   id: "eraser"
 });
+
 var eraser = new Eraser();
+tools[tools.length] = eraser;
+
+var Fill = Class.create(Tool, {
+  
+  mouseup: function(event) {
+    console.log("In Fill");
+  },
+  
+  /* TODO: make mouseup function fill in area */
+  cursor: "e-resize", // make custom
+  id: "fill"
+});
+
+var fill = new Fill();
+tools[tools.length] = fill;
 
 var Canvas = Class.create({
   initialize: function(element) {
@@ -145,10 +168,17 @@ var Canvas = Class.create({
   
   setTool: function(tool) {
     this.tool = tool;
-    this.element.style.cursor = tool.cursor;
-    // Adds class to outline currently selected tool. Needs to remove 'set_tool' class from other tools
-    $(tool.id).addClassName("set_tool");
+    this.element.style.cursor = this.tool.cursor;
     
-    //console.log(tool.cursor);
-  }  
+    // Adds set_tool class to style currently selected tool
+    this.removeSetToolClasses();
+    $(this.tool.id).addClassName("set_tool");
+  },
+  
+  // Removes the "set_tool" class name from each tool
+  removeSetToolClasses: function() {
+    tools.each(function(tool) {
+      $(tool.id).removeClassName("set_tool");
+    });
+  }
 });

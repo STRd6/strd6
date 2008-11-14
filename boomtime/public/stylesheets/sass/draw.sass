@@ -18,18 +18,17 @@
   padding: 0
   
 // Pencil, Eraser, etc. tool image styles
-img.tool
-  position: relative
-  top: 10px
-  border: 2px solid
-  border-color= !light_gray
-  margin-bottom: 5px
+.tool
+  padding: 0 2px
   
   &:hover
-    border-color= !dark_gray
+    background-color= !light_gray
     
   &.set_tool
-    border-color= !main_color
+    background-color= !main_color
+    
+  img
+    border: none
   
 // Current color input field
 #current_color
