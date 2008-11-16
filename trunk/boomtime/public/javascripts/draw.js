@@ -21,7 +21,7 @@ var Pixel = Class.create(MouseEventMapper, {
   
   mousemove: function(event) { 
     this.canvas.tool.mousemove(event);
-  }  
+  }
 });
 
 var Tool = Class.create({
@@ -87,8 +87,7 @@ var Pencil = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      event.element().style.backgroundColor = '#' + $F('current_color');
-      event.element().style.backgroundImage = 'none';
+      setPixelColor(event.element(), '#' + $F('current_color'));
     }
   },
   
@@ -114,8 +113,7 @@ var Eraser = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      event.element().style.backgroundColor = null;
-      event.element().style.backgroundImage = null;
+      setPixelColor(event.element(), null);
     }
   },
   
@@ -131,12 +129,35 @@ var eraser = new Eraser();
 tools[tools.length] = eraser;
 
 var Fill = Class.create(Tool, {
-  
+  // Breadth first graph traversal to get all adjacent pixels
   mouseup: function(event) {
-    console.log("In Fill");
+    // Store original pixel's color here
+    // Remove "visited" class from all other pixels
+    var q = new Array();
+    q.push(event.element());
+    
+    while(q.length > 0) {
+      var pixel = q.pop();
+      setPixelColor(pixel, '#' + $F('current_color'));
+      
+      pixel.addClassName("visited");
+      // Get x, y coordinates of pixel
+      var x = pixel.id.toString().indexOf("_");
+      var y = pixel.id.toString().indexOf("_", x + 1);
+      x = parseInt(pixel.id.toString().slice(x + 1, y));
+      y = parseInt(pixel.id.toString().slice(y + 1));
+      // Add neighboring pixels to the queue
+      // TODO: check that pixel isn't past the edge, that it hasn't been visited, and that the color is the same as the original pixel's color
+      q.push($("p_" + String(x + 1) + "_" + y.toString()));
+    }
+    /*
+    event.element().up('div').adjacent('div.row').each(function(row) {
+      row.down().adjacent('div.pixel').each(function(pixel) {
+        setPixelColor(pixel, '#' + $F('current_color'));
+      });
+    });*/
   },
   
-  /* TODO: make mouseup function fill in area */
   cursor: "e-resize", // make custom
   id: "fill"
 });
@@ -180,5 +201,23 @@ var Canvas = Class.create({
     tools.each(function(tool) {
       $(tool.id).removeClassName("set_tool");
     });
+  },
+  
+  // Removes the color from all pixels
+  clearCanvas: function() {
+    this.element.select('[class="pixel"]').each(function(pixel) {
+      setPixelColor(pixel, null);
+    });
   }
 });
+
+/* Sets the pixels background color to the color passed to it
+ * 'color' must be a properly formatted hexadecimal string or null
+ */
+function setPixelColor(pixel, color) {
+  pixel.style.backgroundColor = color;
+  if(color == null)
+    pixel.style.backgroundImage = null;
+  else
+    pixel.style.backgroundImage = 'none';
+}
