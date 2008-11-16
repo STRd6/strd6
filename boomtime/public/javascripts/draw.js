@@ -129,36 +129,61 @@ var eraser = new Eraser();
 tools[tools.length] = eraser;
 
 var Fill = Class.create(Tool, {
-  // Breadth first graph traversal to get all adjacent pixels
+  // Uses breadth first search graph traversal to get all adjacent pixels
   mouseup: function(event) {
     // Store original pixel's color here
-    // Remove "visited" class from all other pixels
+    var originalColor = event.element().style.backgroundColor;
+    
     var q = new Array();
     q.push(event.element());
     
     while(q.length > 0) {
       var pixel = q.pop();
       setPixelColor(pixel, '#' + $F('current_color'));
-      
       pixel.addClassName("visited");
-      // Get x, y coordinates of pixel
-      var x = pixel.id.toString().indexOf("_");
-      var y = pixel.id.toString().indexOf("_", x + 1);
-      x = parseInt(pixel.id.toString().slice(x + 1, y));
-      y = parseInt(pixel.id.toString().slice(y + 1));
+      
       // Add neighboring pixels to the queue
-      // TODO: check that pixel isn't past the edge, that it hasn't been visited, and that the color is the same as the original pixel's color
-      q.push($("p_" + String(x + 1) + "_" + y.toString()));
-    }
-    /*
-    event.element().up('div').adjacent('div.row').each(function(row) {
-      row.down().adjacent('div.pixel').each(function(pixel) {
-        setPixelColor(pixel, '#' + $F('current_color'));
+      var coords = this.getCoordinates(pixel);
+      var neighbors = this.getNeighbors(coords[0], coords[1]);
+
+      neighbors.each(function(neighbor) {
+        if(neighbor != null && !neighbor.hasClassName("visited") && 
+        neighbor.style.backgroundColor == originalColor) {
+           q.push(neighbor);
+        }
       });
-    });*/
+    }
+
+    // Remove "visited" class from all pixels
+    canvas.element.select('[class="pixel visited"]').each(function(pixel) {
+      pixel.removeClassName("visited");
+    });
   },
   
-  cursor: "e-resize", // make custom
+  // Returns the x, y coordinates of pixel
+  getCoordinates: function(pixel) {
+    var x = pixel.id.toString().indexOf("_");
+    var y = pixel.id.toString().indexOf("_", x + 1);
+    x = parseInt(pixel.id.toString().slice(x + 1, y));
+    y = parseInt(pixel.id.toString().slice(y + 1));
+    return [x, y];
+  },
+  
+  // Returns the pixel element with the x, y coordinates passed to it
+  getPixelByCoordinates: function(x, y) {
+    return $("p_" + x + "_" + y);
+  },
+  
+  // Returns an array of the pixels who neighbor the pixel at coordinates x, y
+  getNeighbors: function(x, y) {
+    return [this.getPixelByCoordinates(x+1, y), 
+            this.getPixelByCoordinates(x, y+1),
+            this.getPixelByCoordinates(x-1, y),
+            this.getPixelByCoordinates(x, y-1)];
+  },
+  
+  // Why does the URL not work? it is a mystery to me...
+  cursor: "url(../images/draw/fill.png)", //'url("../images/draw/fill.png")', //"e-resize", // make custom
   id: "fill"
 });
 
@@ -189,7 +214,8 @@ var Canvas = Class.create({
   
   setTool: function(tool) {
     this.tool = tool;
-    this.element.style.cursor = this.tool.cursor;
+    this.element.style.cursor = tool.cursor;
+    console.log(this.element.style.cursor);
     
     // Adds set_tool class to style currently selected tool
     this.removeSetToolClasses();
