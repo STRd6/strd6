@@ -10,14 +10,10 @@
 = link_to_function 'Clear Canvas', 'canvas.clearCanvas()', {:title => 'Clear Canvas', :id => 'clear_canvas', :class => 'tool'}
 
 #main_canvas.canvas
-  - 32.times do |y|
-  
-    - id = "r_#{y}"
-    .row{:id => id}
-    
-      - 32.times do |x|
-        - id = "p_#{x}_#{y}"
-        .pixel{:id => id}
+  - 32.times do |y|    
+    - 32.times do |x|
+      - id = "p_#{x}_#{y}"
+      .pixel{:id => id}
 = javascript_tag "var canvas = new Canvas('main_canvas');"
 - 32.times do |y|
   - 32.times do |x|
