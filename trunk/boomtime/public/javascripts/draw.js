@@ -33,19 +33,34 @@ var Tool = Class.create({
   mousemove: function(event) {  },
   canvasout: function(event) {  },
   cursor: "default",
-  id: ""
-});
+  id: "",
+  
+  currentColor: function() {
+    return $F('current_color');
+  },
+  
+  toHex: function(bits) {
+    s = parseInt(bits).toString(16);
+    if(s.length == 1) {
+      s = '0' + s
+    }
+    return s;
+  },
 
-// Array to hold a reference to each tool
-var tools = new Array();
-
-var EyeDropper = Class.create(Tool, {
-  mousedown: function(event) {
-    //alert('Pre-parse: ' + event.element().style.backgroundColor);
-    //alert(this.parseColor(event.element().style.backgroundColor));
-    color = this.parseColor(event.element().style.backgroundColor) || 'FFFFFF';
-    $('current_color').value = color;
-    $('current_color').onblur();
+  /**
+   * Sets the pixel's background color to the current color.
+   */
+  colorPixel: function(pixel) {
+    pixel.style.backgroundColor = '#' + this.currentColor();
+    pixel.style.backgroundImage = 'none';
+  },
+  
+  /**
+   * Clears the pixel's background color.
+   */
+  clearPixel: function(pixel) {
+    pixel.style.backgroundColor = null;
+    pixel.style.backgroundImage = null;
   },
   
   parseColor: function(colorString) {
@@ -59,14 +74,17 @@ var EyeDropper = Class.create(Tool, {
       this.toHex(bits[2]),
       this.toHex(bits[3])
     ].join('').toUpperCase();
-  },
-  
-  toHex: function(bits) {
-    s = parseInt(bits).toString(16);
-    if(s.length == 1) {
-      s = '0' + s
-    }
-    return s;
+  }
+});
+
+// Array to hold a reference to each tool
+var tools = new Array();
+
+var EyeDropper = Class.create(Tool, {
+  mousedown: function(event) {
+    color = this.parseColor(event.element().style.backgroundColor) || 'FFFFFF';
+    $('current_color').value = color;
+    $('current_color').onblur();
   },
   
   cursor: "url(../images/draw/dropper.png), default", // works in Safari but not FF/OP
@@ -89,7 +107,7 @@ var Pencil = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      setPixelColor(event.element(), '#' + $F('current_color'));
+      this.colorPixel(event.element());
     }
   },
   
@@ -115,7 +133,7 @@ var Eraser = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      setPixelColor(event.element(), null);
+      this.clearPixel(event.element());
     }
   },
   
@@ -136,30 +154,28 @@ var Fill = Class.create(Tool, {
     // Store original pixel's color here
     var originalColor = event.element().style.backgroundColor;
     
+    // Return if original color is same as currentColor
+    if(this.currentColor() == this.parseColor(originalColor)) {
+      return;
+    }    
+    
     var q = new Array();
     q.push(event.element());
     
     while(q.length > 0) {
       var pixel = q.pop();
-      setPixelColor(pixel, '#' + $F('current_color'));
-      pixel.addClassName("visited");
+      this.colorPixel(pixel);
       
       // Add neighboring pixels to the queue
       var coords = this.getCoordinates(pixel);
       var neighbors = this.getNeighbors(coords[0], coords[1]);
 
       neighbors.each(function(neighbor) {
-        if(neighbor != null && !neighbor.hasClassName("visited") && 
-        neighbor.style.backgroundColor == originalColor) {
+        if(neighbor != null && neighbor.style.backgroundColor == originalColor) {
            q.push(neighbor);
         }
       });
     }
-
-    // Remove "visited" class from all pixels
-    canvas.element.select('[class="pixel visited"]').each(function(pixel) {
-      pixel.removeClassName("visited");
-    });
   },
   
   // Returns the x, y coordinates of pixel
@@ -234,19 +250,20 @@ var Canvas = Class.create({
   // Removes the color from all pixels
   // NOTE: does not work in FF/OP on Mac
   clearCanvas: function() {
+    setPixelColorFunction = this.setPixelColor;
     this.element.select('[class="pixel"]').each(function(pixel) {
-      setPixelColor(pixel, null);
+      setPixelColorFunction(pixel, null);
     });
+  },  
+
+  /* Sets the pixels background color to the color passed to it
+   * 'color' must be a properly formatted hexadecimal string or null
+   */
+  setPixelColor: function(pixel, color) {
+    pixel.style.backgroundColor = color;
+    if(color == null)
+      pixel.style.backgroundImage = null;
+    else
+      pixel.style.backgroundImage = 'none';
   }
 });
-
-/* Sets the pixels background color to the color passed to it
- * 'color' must be a properly formatted hexadecimal string or null
- */
-function setPixelColor(pixel, color) {
-  pixel.style.backgroundColor = color;
-  if(color == null)
-    pixel.style.backgroundImage = null;
-  else
-    pixel.style.backgroundImage = 'none';
-}
