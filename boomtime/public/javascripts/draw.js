@@ -24,13 +24,15 @@ var Pixel = Class.create(MouseEventMapper, {
   }
 });
 
+// NOTE: Eraser and dropper tools don't work in Opera (Mac)
+
 var Tool = Class.create({
   initialize: function() {  },  
   mousedown: function(event) {  },
   mouseup: function(event) {  },
   mousemove: function(event) {  },
   canvasout: function(event) {  },
-  cursor: "pointer",
+  cursor: "default",
   id: ""
 });
 
@@ -67,7 +69,7 @@ var EyeDropper = Class.create(Tool, {
     return s;
   },
   
-  cursor: "crosshair", // make custom cursor
+  cursor: "url(../images/draw/dropper.png), default", // works in Safari but not FF/OP
   id: "dropper"
 });
 
@@ -95,7 +97,7 @@ var Pencil = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "move",
+  cursor: "url(../images/draw/pencil.png), default", // works in Safari but not FF/OP
   id: "pencil"
 });
 
@@ -121,7 +123,7 @@ var Eraser = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "n-resize", // make custom cursor
+  cursor: "url(../images/draw/eraser.png), default", // works in Safari but not FF/OP
   id: "eraser"
 });
 
@@ -183,7 +185,7 @@ var Fill = Class.create(Tool, {
   },
   
   // Why does the URL not work? it is a mystery to me...
-  cursor: "url(../images/draw/fill.png)", //'url("../images/draw/fill.png")', //"e-resize", // make custom
+  cursor: "url(../images/draw/fill.png), default", // works in Safari but not FF/OP
   id: "fill"
 });
 
@@ -230,6 +232,7 @@ var Canvas = Class.create({
   },
   
   // Removes the color from all pixels
+  // NOTE: does not work in FF/OP on Mac
   clearCanvas: function() {
     this.element.select('[class="pixel"]').each(function(pixel) {
       setPixelColor(pixel, null);

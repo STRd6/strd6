@@ -25,3 +25,5 @@
     border-color: black;
     border-style: solid;
     border-width: 1px; }
+    .window_holder .window .minimized {
+      display: none; }
