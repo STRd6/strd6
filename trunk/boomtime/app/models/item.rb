@@ -22,6 +22,12 @@ class Item < ActiveRecord::Base
         :ability => 'chop',
         :costs => {:stone => 1},
         :name => 'axe',
+      },
+      :pick => {
+        :image => 'pick',
+        :ability => 'mine',
+        :cost => {},
+        :name => 'pick'
       }
     }
   end
