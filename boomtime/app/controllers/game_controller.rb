@@ -1,10 +1,14 @@
 class GameController < ApplicationController
   include Renderino
-  before_filter :login_required, :except => [:observe]
+  before_filter :login_required, :except => [:observe, :draw]
   
   def index
     @active_character = current_user.active_character
     @area = @active_character.area
+  end
+  
+  def draw
+    render :layout => 'draw'
   end
   
   def observe
