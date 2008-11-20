@@ -160,7 +160,7 @@ var Fill = Class.create(Tool, {
     var originalColor = event.element().style.backgroundColor;
     
     // Return if original color is same as currentColor
-    if(this.currentColor() == this.parseColor(originalColor)) {
+    if(this.currentColor() === this.parseColor(originalColor)) {
       return;
     }    
     
@@ -182,7 +182,6 @@ var Fill = Class.create(Tool, {
     }
   },
   
-  // Why does the URL not work? it is a mystery to me...
   cursor: "url(../images/draw/fill.png), default", // works in Safari but not FF/OP
   id: "fill"
 });
@@ -251,7 +250,6 @@ var Canvas = Class.create({
   setTool: function(tool) {
     this.tool = tool;
     this.element.style.cursor = tool.cursor;
-    console.log(this.element.style.cursor);
     
     // Adds set_tool class to style currently selected tool
     this.removeSetToolClasses();
