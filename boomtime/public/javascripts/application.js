@@ -8,6 +8,13 @@ var Window = Class.create({
       onEnd: this.onEnd.bindAsEventListener(this), 
       snap:[10,10]
     });
+    
+    // Controls the minimizing/resoring of windows
+    // The window's .window div is bound as "this" with the onClick event
+    minimizeIcon = this.element.select('div[class="minimize"]')[0];    
+    if(minimizeIcon) {
+      minimizeIcon.observe('click', this.toggleMinimize.bindAsEventListener(this.element.select('div[class="window"]')[0]));
+    }
   },
   /** End drag event handler */
   onEnd: function() { 
@@ -28,6 +35,15 @@ var Window = Class.create({
     new Ajax.Request('/users/store_position', {
       parameters: params
     });
+  },
+  
+  // Minimizes or restores the window to be or not be just the title bar
+  // TODO: make the styles look better when minimized, AJAX the state of minimization, fix divs whose widths are based on the elements inside them
+  toggleMinimize: function() {
+    if(this.hasClassName("minimized"))
+      this.removeClassName("minimized");
+    else
+      this.addClassName("minimized");
   }
 });
 

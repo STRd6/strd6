@@ -1,7 +1,9 @@
 .window_holder{:style => window_style(name), :id => name}
   .title_bar{:id => "#{name}_handle"}
     .title_bar_corner
-    .title_bar_main= name.titleize
+    .title_bar_main
+      .minimize M
+      = name.titleize
   .window
     = yield
 = javascript_tag "new Window('#{name}');"
