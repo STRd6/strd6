@@ -1,5 +1,4 @@
-= javascript_include_tag 'jscolor'
-= javascript_include_tag 'draw'
+= javascript_include_tag 'draw', 'jscolor', 'png_encoder'
 
 %input#current_color.color{:type => 'text'}
 
@@ -9,12 +8,14 @@
 = link_to_function image_tag('draw/fill.png', :alt => 'Fill'), 'canvas.setTool(fill)', { :title => 'Fill', :id => 'fill', :class => 'tool'}
 = link_to_function 'Clear Canvas', 'canvas.clearCanvas()', {:title => 'Clear Canvas', :id => 'clear_canvas', :class => 'tool'}
 
+- canvas_width = 32
+- canvas_height = 32
 #main_canvas.canvas
-  - 32.times do |y|    
-    - 32.times do |x|
+  - canvas_height.times do |y|    
+    - canvas_width.times do |x|
       - id = "p_#{x}_#{y}"
       .pixel{:id => id}
-= javascript_tag "var canvas = new Canvas('main_canvas');"
-- 32.times do |y|
-  - 32.times do |x|
-    = javascript_tag "new Pixel('p_#{x}_#{y}', canvas);"
+= javascript_tag "var canvas = new Canvas('main_canvas', #{canvas_width}, #{canvas_height});"
+- canvas_height.times do |y|
+  - canvas_width.times do |x|
+    = javascript_tag "new Pixel('p_#{x}_#{y}', canvas, #{x}, #{y});"

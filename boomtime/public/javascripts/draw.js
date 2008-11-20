@@ -9,10 +9,14 @@ var MouseEventMapper = {
 };
 
 var Pixel = Class.create(MouseEventMapper, {
-  initialize: function(element, canvas) {
+  initialize: function(element, canvas, x, y) {
     this.element = $(element);
+    this.element.pixel = this;
     this.canvas = canvas;
     this.mapMouseEvents(this);
+    this.x = x;
+    this.y = y;
+    this.canvas.registerPixel(this, x, y);
   },
   
   mousedown: function(event) { 
@@ -21,6 +25,22 @@ var Pixel = Class.create(MouseEventMapper, {
   
   mousemove: function(event) { 
     this.canvas.tool.mousemove(event);
+  },
+  
+  /** Sets the pixel's color to the given color. */
+  setColor: function(color) {
+    this.element.style.backgroundColor = color;
+    this.element.style.backgroundImage = 'none';
+  },
+  
+  /** Clears the pixel's color.  */
+  clear: function() {
+    this.element.style.backgroundColor = null;
+    this.element.style.backgroundImage = null;
+  },
+  
+  color: function() {
+    return this.element.style.backgroundColor;
   }
 });
 
@@ -40,32 +60,26 @@ var Tool = Class.create({
   },
   
   toHex: function(bits) {
-    s = parseInt(bits).toString(16);
+    var s = parseInt(bits).toString(16);
     if(s.length == 1) {
       s = '0' + s
     }
     return s;
   },
 
-  /**
-   * Sets the pixel's background color to the current color.
-   */
+  /** Sets the pixel's color to the current color. */
   colorPixel: function(pixel) {
-    pixel.style.backgroundColor = '#' + this.currentColor();
-    pixel.style.backgroundImage = 'none';
+    pixel.setColor('#' + this.currentColor());
   },
   
-  /**
-   * Clears the pixel's background color.
-   */
+  /** Clears the pixel's color. */
   clearPixel: function(pixel) {
-    pixel.style.backgroundColor = null;
-    pixel.style.backgroundImage = null;
+    pixel.clear();
   },
   
   parseColor: function(colorString) {
     if(!colorString) {
-      return false
+      return false;
     }
     
     var bits = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/.exec(colorString);
@@ -107,7 +121,7 @@ var Pencil = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      this.colorPixel(event.element());
+      this.colorPixel(event.element().pixel);
     }
   },
   
@@ -133,7 +147,7 @@ var Eraser = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      this.clearPixel(event.element());
+      this.clearPixel(event.element().pixel);
     }
   },
   
@@ -149,6 +163,7 @@ var eraser = new Eraser();
 tools[tools.length] = eraser;
 
 var Fill = Class.create(Tool, {
+  
   // Uses breadth first search graph traversal to get all adjacent pixels
   mouseup: function(event) {
     // Store original pixel's color here
@@ -160,18 +175,17 @@ var Fill = Class.create(Tool, {
     }    
     
     var q = new Array();
-    q.push(event.element());
+    q.push(event.element().pixel);
     
     while(q.length > 0) {
       var pixel = q.pop();
       this.colorPixel(pixel);
       
       // Add neighboring pixels to the queue
-      var coords = this.getCoordinates(pixel);
-      var neighbors = this.getNeighbors(coords[0], coords[1]);
+      var neighbors = canvas.getNeighbors(pixel.x, pixel.y);
 
       neighbors.each(function(neighbor) {
-        if(neighbor != null && neighbor.style.backgroundColor == originalColor) {
+        if(neighbor && neighbor.color() == originalColor) {
            q.push(neighbor);
         }
       });
@@ -189,7 +203,12 @@ var Fill = Class.create(Tool, {
   
   // Returns the pixel element with the x, y coordinates passed to it
   getPixelByCoordinates: function(x, y) {
-    return $("p_" + x + "_" + y);
+    var element = $("p_" + x + "_" + y)
+    if(element) {
+      return element.pixel;
+    } else {
+      return null;
+    }    
   },
   
   // Returns an array of the pixels who neighbor the pixel at coordinates x, y
@@ -209,12 +228,48 @@ var fill = new Fill();
 tools[tools.length] = fill;
 
 var Canvas = Class.create({
-  initialize: function(element) {
+  initialize: function(element, width, height) {
     this.element = $(element);
     //this.element.observe('mousedown', this.mousedown);
     this.element.observe('mouseup', this.mouseup.bindAsEventListener(this));
     this.element.observe('mouseout', this.mouseout.bindAsEventListener(this));
     this.tool = pencil;
+    this.width = width;
+    this.height = height;
+    
+    this._initPixelArrays();
+  },
+  
+  _initPixelArrays: function() {
+    var pixels = new Array(this.width);
+    $R(0, this.width - 1).each(function(i){
+      pixels[i] = new Array(this.height);
+    });
+    
+    this.pixels = pixels;
+  },
+  
+  registerPixel: function(pixel, x, y) {
+    this.pixels[x][y] = pixel;
+  },
+  
+  /** Returns an array of the pixels who neighbor the pixel at coordinates x, y */
+  getNeighbors: function(x, y) {
+    return [this.getPixel(x+1, y), 
+            this.getPixel(x, y+1),
+            this.getPixel(x-1, y),
+            this.getPixel(x, y-1)];
+  },
+  
+  /** Returns the pixel element with the x, y coordinates passed to it */
+  getPixel: function(x, y) {
+    if(x >= 0 && x < this.width) {
+      if(y >= 0 && y < this.height) {
+        return this.pixels[x][y];
+      }
+    }
+    
+    return null;
   },
   
   mousedown: function(event) {
@@ -250,7 +305,7 @@ var Canvas = Class.create({
   // Removes the color from all pixels
   // NOTE: does not work in FF/OP on Mac
   clearCanvas: function() {
-    setPixelColorFunction = this.setPixelColor;
+    var setPixelColorFunction = this.setPixelColor;
     this.element.select('[class="pixel"]').each(function(pixel) {
       setPixelColorFunction(pixel, null);
     });
