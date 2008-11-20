@@ -41,6 +41,10 @@ var Pixel = Class.create(MouseEventMapper, {
   
   color: function() {
     return this.element.style.backgroundColor;
+  },
+  
+  rgb: function() {
+    return bits = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/.exec(this.element.style.backgroundColor);
   }
 });
 
@@ -247,6 +251,24 @@ var Canvas = Class.create({
     //this.tool.canvasout(event);
   },
   
+  toBase64PNG: function() {
+    var w = this.width;
+    var h = this.height;
+    var p = new Pnglet(w, h, 256);
+    var c = this;
+    
+    $R(0, h - 1).each(function(y){
+      $R(0, w - 1).each(function(x) {
+        var rgb = c.getPixel(x,y).rgb();
+        p.point(p.color(rgb[1], rgb[2], rgb[3]), x, y);        
+      });      
+    });
+    
+    var url = 'url(data:image/png;base64,' + base64Encode(p.output()).gsub("\n", "") + ')';
+    $('sample').style.backgroundImage = url;
+    return url;
+  },
+  
   setTool: function(tool) {
     this.tool = tool;
     this.element.style.cursor = tool.cursor;
@@ -266,7 +288,6 @@ var Canvas = Class.create({
   // Removes the color from all pixels
   // NOTE: does not work in FF/OP on Mac
   clearCanvas: function() {
-    var setPixelColorFunction = this.setPixelColor;
     this.element.select('[class="pixel"]').each(function(element) {
       element.pixel.clear();
     });
