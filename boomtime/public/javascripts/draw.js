@@ -66,16 +66,6 @@ var Tool = Class.create({
     }
     return s;
   },
-
-  /** Sets the pixel's color to the current color. */
-  colorPixel: function(pixel) {
-    pixel.setColor('#' + this.currentColor());
-  },
-  
-  /** Clears the pixel's color. */
-  clearPixel: function(pixel) {
-    pixel.clear();
-  },
   
   parseColor: function(colorString) {
     if(!colorString) {
@@ -121,7 +111,7 @@ var Pencil = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      this.colorPixel(event.element().pixel);
+      event.element().pixel.setColor('#' + this.currentColor());
     }
   },
   
@@ -147,7 +137,7 @@ var Eraser = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      this.clearPixel(event.element().pixel);
+      event.element().pixel.clear();
     }
   },
   
@@ -179,7 +169,7 @@ var Fill = Class.create(Tool, {
     
     while(q.length > 0) {
       var pixel = q.pop();
-      this.colorPixel(pixel);
+      pixel.setColor('#' + this.currentColor());
       
       // Add neighboring pixels to the queue
       var neighbors = canvas.getNeighbors(pixel.x, pixel.y);
@@ -190,33 +180,6 @@ var Fill = Class.create(Tool, {
         }
       });
     }
-  },
-  
-  // Returns the x, y coordinates of pixel
-  getCoordinates: function(pixel) {
-    var x = pixel.id.toString().indexOf("_");
-    var y = pixel.id.toString().indexOf("_", x + 1);
-    x = parseInt(pixel.id.toString().slice(x + 1, y));
-    y = parseInt(pixel.id.toString().slice(y + 1));
-    return [x, y];
-  },
-  
-  // Returns the pixel element with the x, y coordinates passed to it
-  getPixelByCoordinates: function(x, y) {
-    var element = $("p_" + x + "_" + y)
-    if(element) {
-      return element.pixel;
-    } else {
-      return null;
-    }    
-  },
-  
-  // Returns an array of the pixels who neighbor the pixel at coordinates x, y
-  getNeighbors: function(x, y) {
-    return [this.getPixelByCoordinates(x+1, y), 
-            this.getPixelByCoordinates(x, y+1),
-            this.getPixelByCoordinates(x-1, y),
-            this.getPixelByCoordinates(x, y-1)];
   },
   
   // Why does the URL not work? it is a mystery to me...
@@ -306,19 +269,8 @@ var Canvas = Class.create({
   // NOTE: does not work in FF/OP on Mac
   clearCanvas: function() {
     var setPixelColorFunction = this.setPixelColor;
-    this.element.select('[class="pixel"]').each(function(pixel) {
-      setPixelColorFunction(pixel, null);
+    this.element.select('[class="pixel"]').each(function(element) {
+      element.pixel.clear();
     });
-  },  
-
-  /* Sets the pixels background color to the color passed to it
-   * 'color' must be a properly formatted hexadecimal string or null
-   */
-  setPixelColor: function(pixel, color) {
-    pixel.style.backgroundColor = color;
-    if(color == null)
-      pixel.style.backgroundImage = null;
-    else
-      pixel.style.backgroundImage = 'none';
   }
 });
