@@ -9,7 +9,8 @@
 = link_to_function image_tag('draw/eraser.png', :alt => 'Eraser'), 'canvas.setTool(eraser)', { :title => 'Eraser', :id => 'eraser', :class => 'tool'}
 = link_to_function image_tag('draw/fill.png', :alt => 'Fill'), 'canvas.setTool(fill)', { :title => 'Fill', :id => 'fill', :class => 'tool'}
 = link_to_function 'Clear Canvas', 'canvas.clearCanvas()', {:title => 'Clear Canvas', :id => 'clear_canvas', :class => 'tool'}
-= link_to_function 'Preview', 'canvas.toBase64PNG()', {:title => 'Preview', :id => 'preview', :class => 'tool'}
+= link_to_function 'Preview', 'canvas.preview()', {:title => 'Preview', :class => 'tool'}
+= link_to_function 'Save', 'canvas.saveFile()', {:title => 'Save', :class => 'tool'}
 
 - canvas_width = 32
 - canvas_height = 32

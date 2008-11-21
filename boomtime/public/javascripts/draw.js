@@ -39,6 +39,11 @@ var Pixel = Class.create(MouseEventMapper, {
     this.element.style.backgroundImage = null;
   },
   
+  /** Returns true if this pixel is clear (empty, fully transparent) */
+  isClear: function() {
+    return !this.element.style.backgroundColor;
+  },
+  
   color: function() {
     return this.element.style.backgroundColor;
   },
@@ -251,7 +256,7 @@ var Canvas = Class.create({
     //this.tool.canvasout(event);
   },
   
-  toBase64PNG: function() {
+  _toPNG: function() {
     var w = this.width;
     var h = this.height;
     var p = new Pnglet(w, h, 256);
@@ -259,14 +264,29 @@ var Canvas = Class.create({
     
     $R(0, h - 1).each(function(y){
       $R(0, w - 1).each(function(x) {
-        var rgb = c.getPixel(x,y).rgb();
-        p.point(p.color(rgb[1], rgb[2], rgb[3]), x, y);        
+        var pixel = c.getPixel(x,y);
+        if(pixel.isClear()) {
+          p.point(p.color(0, 0, 0, 0), x, y);
+        } else {
+          var rgb = pixel.rgb();
+          p.point(p.color(rgb[1], rgb[2], rgb[3]), x, y);
+        }
       });      
     });
     
-    var url = 'url(data:image/png;base64,' + base64Encode(p.output()).gsub("\n", "") + ')';
-    $('sample').style.backgroundImage = url;
-    return url;
+    return p.output();
+  },
+  
+  toDataURL: function() {
+    return 'url(data:image/png;base64,' + base64Encode(this._toPNG()).gsub("\n", "") + ')';
+  },
+  
+  preview: function() {
+    $('sample').style.backgroundImage = this.toDataURL();
+  },
+  
+  saveFile: function() {
+    document.location.href = 'data:image/octet-stream;base64,' + base64Encode(this._toPNG()).gsub("\n", "");
   },
   
   setTool: function(tool) {
