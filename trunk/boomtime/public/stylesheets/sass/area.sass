@@ -35,10 +35,9 @@ div.area
 .displayable
   position: absolute
   background-repeat: no-repeat
-  border: 2px solid white
   width: 32px
   height: 32px
-  padding: 0
+  margin: 2px
   cursor: move 
   //  url("../images/cursors/move.cur")
 
@@ -52,6 +51,8 @@ div.area
     width: 100px
     
   &:hover
+    margin: 0
+    border: 2px solid
     border-color= !light_gray
     
   // Make JS add this class to divs
