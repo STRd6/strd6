@@ -7,4 +7,7 @@ Experience the horror of the catacombs, from the command line.
 == v0.0.2 ==
 Get it!
 [http://strd6.googlecode.com/files/cask-0.0.2.tar.gz tar.gz]
-[http://strd6.googlecode.com/files/cask-0.0.2.exe Exe]
+
+
+or
+[http://strd6.googlecode.com/files/cask-0.0.2.exe Windows .exe]
