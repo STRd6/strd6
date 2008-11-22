@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  hit_points: 1
+  energy: 1
+  actions: 1
+  spent: false
+
+two:
+  hit_points: 1
+  energy: 1
+  actions: 1
+  spent: false
