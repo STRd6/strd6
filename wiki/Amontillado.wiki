@@ -2,4 +2,7 @@
 
 = Cask of Amontillado =
 
-Add your content here.
+Experience the horror of the catacombs, from the command line.
+
+== v0.0.2 ==
+[Get it!]
