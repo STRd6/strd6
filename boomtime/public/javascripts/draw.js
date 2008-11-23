@@ -1,6 +1,6 @@
 var MouseEventMapper = {
   mapMouseEvents: function(obj) {
-    ['mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout'].each(function(eventType) {
+    ['mousedown', 'mouseup', 'mousemove', 'mouseover', 'mouseout', 'contextmenu'].each(function(eventType) {
       if(obj[eventType]) {
         obj.element.observe(eventType, obj[eventType].bindAsEventListener(obj));
       }
@@ -17,6 +17,10 @@ var Pixel = Class.create(MouseEventMapper, {
     this.x = x;
     this.y = y;
     this.canvas.registerPixel(this, x, y);
+  },
+  
+  contextmenu: function(event) { 
+    event.stop(); 
   },
   
   mousedown: function(event) { 
