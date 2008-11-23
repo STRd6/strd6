@@ -1,10 +1,10 @@
 class CreateItems < ActiveRecord::Migration
   def self.up
     create_table :items do |t|
-      t.string :name
+      t.string :name, :null => false
 
       t.integer :base_uses
-      t.text :stat_mods
+      t.text :stat_mods, :null => false
       
       t.timestamps
     end
