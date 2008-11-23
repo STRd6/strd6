@@ -13,6 +13,10 @@ class ItemTest < ActiveSupport::TestCase
     should "have stat modifications" do
       assert @item.stat_mods
     end
+    
+    should "have a name" do
+      assert @item.name
+    end
   end
   
   context "a usable item" do

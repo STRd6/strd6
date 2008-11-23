@@ -9,9 +9,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081122033628) do
+ActiveRecord::Schema.define(:version => 20081122204728) do
+
+  create_table "abilities", :force => true do |t|
+    t.string   "name"
+    t.text     "cost"
+    t.string   "target_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cards", :force => true do |t|
+    t.integer  "game_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.integer  "slot"
+    t.integer  "card_data_id"
+    t.string   "card_data_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "characters", :force => true do |t|
+    t.string   "name"
     t.integer  "hit_points"
     t.integer  "energy"
     t.integer  "actions"
@@ -21,9 +41,17 @@ ActiveRecord::Schema.define(:version => 20081122033628) do
     t.datetime "updated_at"
   end
 
+  create_table "games", :force => true do |t|
+    t.string   "name"
+    t.boolean  "public"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "items", :force => true do |t|
-    t.integer  "character_id"
+    t.string   "name"
     t.integer  "base_uses"
+    t.text     "stat_mods"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
