@@ -10,10 +10,11 @@ var Window = Class.create({
     });
     
     // Controls the minimizing/resoring of windows
-    // The window's .window div is bound as "this" with the onClick event
-    minimizeIcon = this.element.select('div[class="minimize"]')[0];    
-    if(minimizeIcon) {
-      minimizeIcon.observe('click', this.toggleMinimize.bindAsEventListener(this.element.select('div[class="window"]')[0]));
+    // NEED to do this better - just select title_bar_icon regardless of expansion state
+    titleBarIcon = this.element.select('div[class="title_bar_icon expanded"]')[0];    
+    if(titleBarIcon) {
+      titleBarIcon.observe('click', this.toggleCollapse.bindAsEventListener(this));
+      console.log("Observing " + titleBarIcon.toString());
     }
   },
   /** End drag event handler */
@@ -39,11 +40,28 @@ var Window = Class.create({
   
   // Minimizes or restores the window to be or not be just the title bar
   // TODO: make the styles look better when minimized, AJAX the state of minimization, fix divs whose widths are based on the elements inside them
-  toggleMinimize: function() {
-    if(this.hasClassName("minimized"))
-      this.removeClassName("minimized");
-    else
-      this.addClassName("minimized");
+  toggleCollapse: function() {
+    var windowDiv = this.element.select('div[class="window"]')[0];
+    // This shit is lame, make it better
+    if(!windowDiv) {
+      windowDiv = this.element.select('div[class="window collapsed"]')[0];
+    }
+    
+    // If it's collapsed, expand it. Else collapse it.
+    if(windowDiv.hasClassName("collapsed")) {
+      windowDiv.removeClassName("collapsed");
+      // DO BETTER - titleBarIcon should be out of if statements
+      var titleBarIcon = this.element.select('div[class="title_bar_icon collapsed"]')[0];
+      titleBarIcon.removeClassName("collapsed");
+      titleBarIcon.addClassName("expanded");
+    }
+    else {
+      windowDiv.addClassName("collapsed");
+      // DO BETTER
+      var titleBarIcon = this.element.select('div[class="title_bar_icon expanded"]')[0];
+      titleBarIcon.removeClassName("expanded");
+      titleBarIcon.addClassName("collapsed");
+    }
   }
 });
 

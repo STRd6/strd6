@@ -100,7 +100,7 @@ var EyeDropper = Class.create(Tool, {
     $('current_color').onblur();
   },
   
-  cursor: "url(../images/draw/dropper.png), default", // works in Safari but not FF/OP
+  cursor: "url(../images/draw/dropper.png) 13 13, default", // works in Safari but not FF/OP
   id: "dropper"
 });
 
@@ -128,7 +128,7 @@ var Pencil = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "url(../images/draw/pencil.png), default", // works in Safari but not FF/OP
+  cursor: "url(../images/draw/pencil.png) 4 14, default", // works in Safari but not FF/OP
   id: "pencil"
 });
 
@@ -154,7 +154,7 @@ var Eraser = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "url(../images/draw/eraser.png), default", // works in Safari but not FF/OP
+  cursor: "url(../images/draw/eraser.png) 4 11, default", // works in Safari but not FF/OP
   id: "eraser"
 });
 
@@ -191,7 +191,7 @@ var Fill = Class.create(Tool, {
     }
   },
   
-  cursor: "url(../images/draw/fill.png), default", // works in Safari but not FF/OP
+  cursor: "url(../images/draw/fill.png) 12 13, default", // works in Safari but not FF/OP
   id: "fill"
 });
 

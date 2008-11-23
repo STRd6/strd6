@@ -27,9 +27,17 @@
       padding: 0.4em
       margin: 0px 0px 0px 4px
       
-      .minimize
+      .title_bar_icon
         float: right
         clear: none
+        width: 24px
+        height: 24px
+        
+        &.collapsed
+        background: url(../images/windows/expand.png) no-repeat
+          
+        &.expanded
+        background: url(../images/windows/collapse.png) no-repeat
       
   .window
     background-color: white
@@ -37,5 +45,5 @@
     border-style: solid
     border-width: 1px
     
-    &.minimized
+    &.collapsed
       display: none
