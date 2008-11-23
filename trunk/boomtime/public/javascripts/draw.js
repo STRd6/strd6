@@ -69,9 +69,6 @@ var Tool = Class.create({
   id: "",
   
   currentColor: function(event) {
-    if(event) {
-      console.log("Left? " + event.isLeftClick());
-    }
     if(!event || event.isLeftClick()) {
       return $F('left_color');
     } else {
@@ -125,21 +122,25 @@ var dropper = new EyeDropper();
 tools[tools.length] = dropper;
 
 var Pencil = Class.create(Tool, {
+  /** Activate and store the current color based on which mouse button was 
+   * pressed and color the pixel.
+   */
   mousedown: function(event) {
     this.active = true;
     this._myCurrentColor = this.currentColor(event);
+    event.element().pixel.setColor('#' + this._myCurrentColor);
   },
-  
+  /** De-activate */
   mouseup: function(event) {
     this.active = false;
   },
-  
+  /** Color the pixel if active (mousedown) */
   mousemove: function(event) {
     if(this.active) {
       event.element().pixel.setColor('#' + this._myCurrentColor);
     }
   },
-  
+  /** De-activate when cursor exits the canvas */
   canvasout: function(event) {
     this.active = false;
   },
@@ -181,7 +182,6 @@ var Fill = Class.create(Tool, {
   
   // Uses breadth first search graph traversal to get all adjacent pixels
   mouseup: function(event) {
-    debugger;
     t1 = new Date();
     // Store original pixel's color here
     var originalColor = event.element().style.backgroundColor;
