@@ -1,8 +1,11 @@
 class CreateItems < ActiveRecord::Migration
   def self.up
     create_table :items do |t|
-      t.references :character
+      t.string :name
+
       t.integer :base_uses
+      t.text :stat_mods
+      
       t.timestamps
     end
   end
