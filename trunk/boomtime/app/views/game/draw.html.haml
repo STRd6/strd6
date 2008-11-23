@@ -2,7 +2,8 @@
 
 #sample
 
-%input#current_color.color{:type => 'text'}
+%input#left_color.color{:type => 'text'}
+%input#right_color.color{:type => 'text'}
 
 = link_to_function image_tag('draw/pencil.png', :alt => 'Pencil'), 'canvas.setTool(pencil)', { :title => 'Pencil', :id => 'pencil', :class => 'tool'}
 = link_to_function image_tag('draw/dropper.png', :alt => 'Dropper'), 'canvas.setTool(dropper)', { :title => 'Dropper', :id => 'dropper', :class => 'tool' }

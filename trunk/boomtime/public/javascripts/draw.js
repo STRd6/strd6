@@ -68,8 +68,15 @@ var Tool = Class.create({
   cursor: "default",
   id: "",
   
-  currentColor: function() {
-    return $F('current_color');
+  currentColor: function(event) {
+    if(event) {
+      console.log("Left? " + event.isLeftClick());
+    }
+    if(!event || event.isLeftClick()) {
+      return $F('left_color');
+    } else {
+      return $F('right_color');
+    }
   },
   
   toHex: function(bits) {
@@ -100,8 +107,14 @@ var tools = new Array();
 var EyeDropper = Class.create(Tool, {
   mousedown: function(event) {
     color = this.parseColor(event.element().style.backgroundColor) || 'FFFFFF';
-    $('current_color').value = color;
-    $('current_color').onblur();
+    
+    if(event.isLeftClick()) {
+      $('left_color').value = color;
+      $('left_color').onblur();
+    } else {
+      $('right_color').value = color;
+      $('right_color').onblur();
+    }
   },
   
   cursor: "url(../images/draw/dropper.png) 13 13, default", // works in Safari but not FF/OP
@@ -114,8 +127,7 @@ tools[tools.length] = dropper;
 var Pencil = Class.create(Tool, {
   mousedown: function(event) {
     this.active = true;
-    event.stop();
-    return false;
+    this._myCurrentColor = this.currentColor(event);
   },
   
   mouseup: function(event) {
@@ -124,7 +136,7 @@ var Pencil = Class.create(Tool, {
   
   mousemove: function(event) {
     if(this.active) {
-      event.element().pixel.setColor('#' + this.currentColor());
+      event.element().pixel.setColor('#' + this._myCurrentColor);
     }
   },
   
@@ -169,11 +181,14 @@ var Fill = Class.create(Tool, {
   
   // Uses breadth first search graph traversal to get all adjacent pixels
   mouseup: function(event) {
+    debugger;
+    t1 = new Date();
     // Store original pixel's color here
     var originalColor = event.element().style.backgroundColor;
+    var newColor = this.currentColor(event);
     
     // Return if original color is same as currentColor
-    if(this.currentColor() === this.parseColor(originalColor)) {
+    if(newColor === this.parseColor(originalColor)) {
       return;
     }    
     
@@ -182,7 +197,7 @@ var Fill = Class.create(Tool, {
     
     while(q.length > 0) {
       var pixel = q.pop();
-      pixel.setColor('#' + this.currentColor());
+      pixel.setColor('#' + newColor);
       
       // Add neighboring pixels to the queue
       var neighbors = canvas.getNeighbors(pixel.x, pixel.y);
@@ -193,6 +208,8 @@ var Fill = Class.create(Tool, {
         }
       });
     }
+    
+    console.log(new Date() - t1);
   },
   
   cursor: "url(../images/draw/fill.png) 12 13, default", // works in Safari but not FF/OP
