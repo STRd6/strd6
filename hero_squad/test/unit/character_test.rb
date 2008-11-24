@@ -30,8 +30,8 @@ class ItemTest < ActiveSupport::TestCase
       assert @character.base_stats
     end
     
-    should "have abilities" do
-      assert @character.abilities
+    should "have at least two abilities" do
+      assert @character.abilities.size >= 2
     end
     
     context "with two items" do    
