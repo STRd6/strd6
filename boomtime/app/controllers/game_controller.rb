@@ -4,7 +4,16 @@ class GameController < ApplicationController
   
   def index
     @active_character = current_user.active_character
-    @area = @active_character.area
+    if @active_character
+      @area = @active_character.area
+    else
+      if current_user.characters.size == 0
+        flash[:notice] = "Please create a character"
+        redirect_to :controller => 'characters', :action => 'new'
+      else
+        @active_character = current_user.characters.first
+      end
+    end
   end
   
   def draw

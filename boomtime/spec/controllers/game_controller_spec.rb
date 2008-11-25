@@ -37,6 +37,19 @@ describe GameController do
       end
     end
   end
+  
+  describe "requires active character" do
+    before(:each) do
+      controller.stub!(:current_user).and_return(Factory(:user))
+    end
+    
+    describe "GET 'index'" do
+      it "should be successful" do
+        get 'index'
+        response.should be_redirect
+      end
+    end
+  end
 #
 #  describe "GET 'feature_move'" do
 #    it "should be successful" do
