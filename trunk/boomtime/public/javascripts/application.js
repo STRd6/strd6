@@ -1,3 +1,16 @@
+// Initialize Gears settings
+(function() {
+  if(google && google.gears && google.gears.factory) {
+    // Set Global DB object
+    db = google.gears.factory.create('beta.database');
+    db.open('database-chat');
+    db.execute(
+      'create table if not exists Chat' +
+      '  (Phrase text, Timestamp int)'
+    );
+  }
+})();
+
 // Window Dragon
 var Window = Class.create({
   initialize: function(element) {
@@ -91,11 +104,6 @@ function scroll_chat() {
     chat_area.scrollTop = chat_area.scrollHeight;
   }
 }
-
-var db = google.gears.factory.create('beta.database');
-db.open('database-chat');
-db.execute('create table if not exists Chat' +
-           ' (Phrase text, Timestamp int)');
 
 function loadChatsFromDB() {
   var cnt = db.execute('select count(*) from Chat');
