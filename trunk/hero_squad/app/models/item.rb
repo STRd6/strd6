@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  before_create :ensure_stat_mods
+  include StatModifier
   
   def uses
     base_uses
@@ -7,10 +7,5 @@ class Item < ActiveRecord::Base
   
   def usable?
     return base_uses && base_uses > 0
-  end
-  
-  protected
-  def ensure_stat_mods
-    self.stat_mods ||= {}
   end
 end
