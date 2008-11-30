@@ -11,7 +11,7 @@ Factory.define :character do |c|
   c.hit_points 40
   c.energy 50
   c.actions 2
-  c.base_stats({:str => 5, :dex => 5, :pow => 5})
+  c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2})
 end
 
 Factory.define :ability do |ability|

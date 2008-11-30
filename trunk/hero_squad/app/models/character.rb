@@ -10,6 +10,8 @@ class Character < ActiveRecord::Base
     ITEM_SECONDARY = 5
   end
   
+  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :max_hp, :max_en, :regen, :egen, :damage_received].freeze
+  
   has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :card_data
   has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :card_data
   
@@ -44,5 +46,17 @@ class Character < ActiveRecord::Base
   
   def default_abilities
     {Slot::ABILITY_1 => :def1, Slot::ABILITY_2 => :def2, Slot::ABILITY_3 => :def3}
+  end
+  
+  # Define a method to access each modifiable stat attribute
+  # These attributes may be modified by 
+  STAT_ATTRIBUTES.each do |attr|
+    if !respond_to? attr
+      define_method attr do
+        base_stats[attr] || 0
+      end
+    else
+      raise "Attempting to override an already defined method with stat attribute: #{attr}"
+    end
   end
 end

@@ -24,10 +24,27 @@ class ItemTest < ActiveSupport::TestCase
     
     should "have stats" do
       assert @character.stats
+      
+      # Basic Stats
+      assert @character.str > 0
+      assert @character.dex > 0
+      assert @character.pow > 0
+      assert @character.move >= 0
+      assert @character.max_hp > 0
+      assert @character.max_en > 0
+      
+      # Fancy Stats
+      assert @character.regen
+      assert @character.egen
+      assert @character.damage_received
     end
     
     should "have base stats" do
-      assert @character.base_stats
+      assert base_stats = @character.base_stats
+      
+      assert base_stats[:str]
+      assert base_stats[:dex]
+      assert base_stats[:pow]
     end
     
     should "have at least two abilities" do
