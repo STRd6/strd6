@@ -12,6 +12,10 @@ class Character < ActiveRecord::Base
   
   STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :max_hp, :max_en, :regen, :egen, :damage_received].freeze
   
+  DEFAULT_ACTIONS = 2
+  
+  before_create :prepare_stats
+  
   has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :card_data
   has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :card_data
   
@@ -58,5 +62,11 @@ class Character < ActiveRecord::Base
     else
       raise "Attempting to override an already defined method with stat attribute: #{attr}"
     end
+  end
+  
+  def prepare_stats
+    self.hit_points ||= max_hp
+    self.energy ||= max_en
+    self.actions ||= DEFAULT_ACTIONS
   end
 end
