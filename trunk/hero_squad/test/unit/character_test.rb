@@ -3,7 +3,7 @@ require 'test_helper'
 class ItemTest < ActiveSupport::TestCase
   context "a character" do
     setup do
-      @character = Factory(:character)
+      @character = Factory :character
     end
     
     should "have a name" do
@@ -62,6 +62,17 @@ class ItemTest < ActiveSupport::TestCase
 
       should "not have the same item card in primary and secondary slot" do
         assert @character.primary_item != @character.secondary_item
+      end
+    end
+    
+    context "with an item that modifies stats" do
+      setup do
+        @item_card = Factory :card, :data => Factory(:item, :stat_mods => {:str => 2})
+        @character = Factory :character, :primary_item_card => @item_card
+      end
+      
+      should "have stats modified by the item" do
+        assert_equal @character.base_stats[:str] + @item_card.stat_mods[:str], @character.str
       end
     end
     
