@@ -57,9 +57,10 @@ ActiveRecord::Schema.define(:version => 20081123025443) do
   end
 
   create_table "items", :force => true do |t|
-    t.string   "name",       :null => false
+    t.string   "name",                          :null => false
+    t.boolean  "secondary",  :default => false, :null => false
     t.integer  "base_uses"
-    t.text     "stat_mods",  :null => false
+    t.text     "stat_mods",                     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

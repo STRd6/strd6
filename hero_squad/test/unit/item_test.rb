@@ -5,10 +5,6 @@ class ItemTest < ActiveSupport::TestCase
     setup do
       @item = Factory(:item)
     end
-    
-    should "be primary or secondary" do
-      assert @item
-    end
 
     should "have stat modifications" do
       assert @item.stat_mods
@@ -30,6 +26,16 @@ class ItemTest < ActiveSupport::TestCase
     
     should "have uses" do
       assert @item.uses
+    end
+  end
+  
+  context "a secondary item" do
+    setup do
+      @item = Factory(:item, :secondary => true)
+    end
+    
+    should "be secondary" do
+      assert @item.secondary?
     end
   end
   
