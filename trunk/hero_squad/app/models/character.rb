@@ -16,10 +16,10 @@ class Character < ActiveRecord::Base
   
   before_create :prepare_stats
   
-  has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :card_data
-  has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :card_data
+  has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :data
+  has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :data
   
-  has_many :ability_cards, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ABILITIES}, :include => :card_data
+  has_many :ability_cards, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ABILITIES}, :include => :data
   
   #alias_method :hp, :hit_points 
   #alias_method :en, :energy
@@ -33,11 +33,11 @@ class Character < ActiveRecord::Base
   end
   
   def primary_item
-    primary_item_card.card_data if primary_item_card
+    primary_item_card.data if primary_item_card
   end
   
   def secondary_item
-    secondary_item_card.card_data if secondary_item_card
+    secondary_item_card.data if secondary_item_card
   end
   
   def abilities

@@ -20,12 +20,12 @@ ActiveRecord::Schema.define(:version => 20081123025443) do
   end
 
   create_table "cards", :force => true do |t|
-    t.integer  "game_id",        :null => false
+    t.integer  "game_id",    :null => false
     t.integer  "owner_id"
     t.string   "owner_type"
     t.integer  "slot"
-    t.integer  "card_data_id",   :null => false
-    t.string   "card_data_type"
+    t.integer  "data_id",    :null => false
+    t.string   "data_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

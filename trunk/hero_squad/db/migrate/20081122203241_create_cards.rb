@@ -7,8 +7,8 @@ class CreateCards < ActiveRecord::Migration
       t.string :owner_type
       t.integer :slot
       
-      t.references :card_data, :null => false
-      t.string :card_data_type
+      t.references :data, :null => false
+      t.string :data_type
 
       t.timestamps
     end
