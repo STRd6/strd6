@@ -10,6 +10,10 @@ class ItemTest < ActiveSupport::TestCase
       assert @ability.name 
     end
     
+    should "have stat mods" do
+      assert @ability.stat_mods
+    end
+    
     context "which is activated" do
       setup do
         @ability = Factory :ability, :cost => {}

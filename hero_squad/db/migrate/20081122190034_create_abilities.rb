@@ -3,6 +3,7 @@ class CreateAbilities < ActiveRecord::Migration
     create_table :abilities do |t|
       t.string :name, :null => false
       t.text :cost
+      t.text :stat_mods, :null => false
       t.string :target_type, :null => false
 
       t.timestamps
