@@ -52,6 +52,14 @@ class ItemTest < ActiveSupport::TestCase
     end
     
     context "with two items" do    
+      setup do
+        @p_item_card = Factory :card, :data => Factory(:item)
+        @s_item_card = Factory :card, :data => Factory(:item, :secondary => true)
+        @character = Factory :character, 
+          :primary_item_card => @p_item_card, 
+          :secondary_item_card => @s_item_card
+      end
+      
       should "have a primary item" do
         assert @character.primary_item
       end
@@ -69,6 +77,10 @@ class ItemTest < ActiveSupport::TestCase
       setup do
         @item_card = Factory :card, :data => Factory(:item, :stat_mods => {:str => 2})
         @character = Factory :character, :primary_item_card => @item_card
+      end
+      
+      should "have an item" do
+        assert @character.primary_item || @character.secondary_item
       end
       
       should "have stats modified by the item" do
