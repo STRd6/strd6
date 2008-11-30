@@ -57,9 +57,9 @@ class Character < ActiveRecord::Base
   STAT_ATTRIBUTES.each do |attr|
     if !respond_to? attr
       define_method attr do
-        (base_stats[attr] || 0) + 
-        (primary_item.stat_mods[attr] || 0) +
-        (secondary_item.stat_mods[attr] || 0)
+        (base_stats[attr] or 0) + 
+        ((primary_item.stat_mods[attr] if primary_item) or 0) +
+        ((secondary_item.stat_mods[attr] if secondary_item) or 0)
       end
     else
       raise "Attempting to override an already defined method with stat attribute: #{attr}"
