@@ -32,10 +32,6 @@ class Character < ActiveRecord::Base
     super || dead?
   end
   
-  def stats
-    base_stats
-  end
-  
   def primary_item
     primary_item_card.data if primary_item_card
   end

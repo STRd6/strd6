@@ -22,9 +22,7 @@ class CharacterTest < ActiveSupport::TestCase
       assert @character.actions
     end
     
-    should "have stats" do
-      assert @character.stats
-      
+    should "have stats methods" do      
       # Basic Stats
       assert @character.str > 0
       assert @character.dex > 0
