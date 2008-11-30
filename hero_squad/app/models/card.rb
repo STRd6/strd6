@@ -14,4 +14,8 @@ class Card < ActiveRecord::Base
   def stat_mods
     data.stat_mods if data
   end
+  
+  def mod_for(stat)
+    return data.mod_for(stat) if data
+  end
 end

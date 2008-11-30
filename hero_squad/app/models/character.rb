@@ -57,18 +57,20 @@ class Character < ActiveRecord::Base
   STAT_ATTRIBUTES.each do |attr|
     if !respond_to? attr
       define_method attr do
-        (base_stats[attr] or 0) + 
-        ((primary_item.stat_mods[attr] if primary_item) or 0) +
-        ((secondary_item.stat_mods[attr] if secondary_item) or 0)
+        stat_modifiers.inject(base_stats[attr] || 0) {|memo, modifier| memo + modifier.mod_for(attr)}
       end
     else
       raise "Attempting to override an already defined method with stat attribute: #{attr}"
     end
   end
-  
+  protected
   def prepare_stats
     self.hit_points ||= max_hp
     self.energy ||= max_en
     self.actions ||= DEFAULT_ACTIONS
+  end
+  
+  def stat_modifiers
+    [primary_item, secondary_item].compact
   end
 end
