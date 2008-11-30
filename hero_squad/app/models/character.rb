@@ -28,6 +28,10 @@ class Character < ActiveRecord::Base
     hit_points <= 0
   end
   
+  def spent?
+    super || dead?
+  end
+  
   def stats
     base_stats
   end
