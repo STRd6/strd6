@@ -6,11 +6,6 @@ end
 
 Factory.define :character do |c|
   c.name "Cleric"
-  c.primary_item_card {|c| c.association :card }
-  c.secondary_item_card {|c| c.association :card }
-  c.hit_points 40
-  c.energy 50
-  c.actions 2
   c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2, :max_hp => 50, :max_en => 40})
 end
 
