@@ -43,5 +43,5 @@ end
 
 Factory.define :card do |card|
   card.game Factory(:game)
-  card.card_data {|d| d.association :item}
+  card.data {|d| d.association :item}
 end
