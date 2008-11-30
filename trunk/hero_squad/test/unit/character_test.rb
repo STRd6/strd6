@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ItemTest < ActiveSupport::TestCase
+class CharacterTest < ActiveSupport::TestCase
   context "a character" do
     setup do
       @character = Factory :character
@@ -100,6 +100,10 @@ class ItemTest < ActiveSupport::TestCase
       should "be dead" do
         assert @character.dead?
       end
+      
+      should "be spent" do
+        assert @character.spent?
+      end
     end
     
     context "that is alive" do
@@ -110,10 +114,12 @@ class ItemTest < ActiveSupport::TestCase
       should "not be dead" do
         assert !@character.dead?
       end
-    end
-    
-    should "be spent or not" do
-      assert @character.spent? || !@character.spent?
+      
+      context "is not spent" do
+        should "not be spent" do
+          assert !@character.spent?
+        end
+      end
     end
   end
 end
