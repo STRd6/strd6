@@ -1,6 +1,6 @@
 class Ability < ActiveRecord::Base
   include StatModifier
-  before_validation_on_create :ensure_attribute_expressions
+  before_validation_on_create :ensure_attribute_expressions, :set_default_target_type
   
   def passive?
     !activated?
@@ -33,5 +33,9 @@ class Ability < ActiveRecord::Base
   private
   def ensure_attribute_expressions
     self.attribute_expressions ||= {}
+  end
+  
+  def set_default_target_type
+    self.target_type ||= Target::ANY
   end
 end
