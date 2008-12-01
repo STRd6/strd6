@@ -9,6 +9,13 @@ class CreateAbilities < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    Ability.create :name => "Strike", 
+      :activated => true,
+      :attribute_expressions => {
+        :energy_cost => 3,
+        :damage => 1,
+      }
   end
 
   def self.down

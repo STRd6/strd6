@@ -38,6 +38,26 @@ class ItemTest < ActiveSupport::TestCase
       should "have a target type" do
         assert @ability.target_type
       end
+      
+      context "has range and area" do
+        setup do
+          @ability = Factory :ability, :activated => true, :attribute_expressions => {
+            :range => '6', :area => '2',
+          }
+        end
+        
+        should "have action attributes" do
+          assert @ability.energy_cost
+          assert @ability.hit_point_cost
+          assert @ability.range
+          assert @ability.area
+          assert @ability.damage
+          assert @ability.energy_damage
+          assert @ability.heal
+          assert @ability.energy_gain
+          assert @ability.duration
+        end
+      end
     end
     
     context "which is passive" do
