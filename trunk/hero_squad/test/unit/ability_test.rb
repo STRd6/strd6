@@ -16,15 +16,23 @@ class ItemTest < ActiveSupport::TestCase
     
     context "which is activated" do
       setup do
-        @ability = Factory :ability, :cost => {}
+        @ability = Factory :ability, :activated => true
       end
       
       should "be activated" do
         assert @ability.activated?
       end
       
-      should "have a cost" do
-        assert @ability.cost
+      should "have action attributes" do
+        assert @ability.energy_cost
+        assert @ability.hit_point_cost
+        assert @ability.range
+        assert @ability.area
+        assert @ability.damage
+        assert @ability.energy_damage
+        assert @ability.heal
+        assert @ability.energy_gain
+        assert @ability.duration
       end
       
       should "have a target type" do
