@@ -8,6 +8,10 @@ Factory.define :character do |c|
   c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2, :max_hp => 50, :max_en => 40})
 end
 
+Factory.define :character_instance do |c|
+  c.character {|character| character.association :character}
+end
+
 Factory.define :ability do |ability|
   ability.name "Strike"
   ability.target_type Target::ANY
