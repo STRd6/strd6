@@ -1,7 +1,6 @@
 Factory.define :item do |item|
   item.name "Robe"
-  item.base_uses 3
-  item.stat_mods({})
+  item.stat_mods({:pow => 2})
 end
 
 Factory.define :character do |c|

@@ -4,6 +4,7 @@ module StatModifier
   def self.included(recipient)
     recipient.extend(ModelClassMethods)
     recipient.class_eval do
+      serialize :stat_mods
       before_validation_on_create :ensure_stat_mods
       include ModelInstanceMethods
     end
