@@ -1,20 +1,9 @@
-class Character < ActiveRecord::Base
-  module Slot
-    ABILITY_1 = 1
-    ABILITY_2 = 2
-    ABILITY_3 = 3
-    
-    ABILITIES = [ABILITY_1, ABILITY_2, ABILITY_3]
-    
-    ITEM_PRIMARY = 4
-    ITEM_SECONDARY = 5
-  end
-  
-  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :max_hp, :max_en, :regen, :egen, :damage_received].freeze
-  
+class Character < ActiveRecord::Base  
   DEFAULT_ACTIONS = 2
   
   before_create :prepare_stats
+  
+  serialize :base_stats
   
   has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :data
   has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :data
@@ -51,6 +40,8 @@ class Character < ActiveRecord::Base
   def default_abilities
     {Slot::ABILITY_1 => :def1, Slot::ABILITY_2 => :def2, Slot::ABILITY_3 => :def3}
   end
+  
+  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :max_hp, :max_en, :regen, :egen, :damage_received].freeze
   
   # Define a method to access each modifiable stat attribute
   # These attributes may be modified by 

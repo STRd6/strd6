@@ -45,6 +45,12 @@ class CharacterTest < ActiveSupport::TestCase
       assert base_stats[:pow]
     end
     
+    should "have str after reloading" do
+      x = @character.str
+      @character.reload
+      assert_equal x, @character.str
+    end
+    
     should "have at least two abilities" do
       assert @character.abilities.size >= 2
     end
