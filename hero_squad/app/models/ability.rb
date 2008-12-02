@@ -6,23 +6,23 @@ class Ability < ActiveRecord::Base
     !activated?
   end
   
-  ACTION_ATTRIBUTES = [:energy_cost, :hit_point_cost, :damage, :energy_damage, 
+  ACTION_ATTRIBUTES = [:energy_cost, :life_loss, :damage, :energy_damage, 
     :heal, :energy_gain, :duration, :actions_required, :area, :range].freeze
   
   ACTION_ATTRIBUTES.each do |attr|
     case attr
-    when :energy_cost, :hit_point_cost, :damage, :energy_damage, :heal, :energy_gain, :duration
-      define_method attr do
+    when :energy_cost, :life_loss, :damage, :energy_damage, :heal, :energy_gain, :duration
+      define_method attr do |character|
         if attribute_expressions[attr]
-          eval attribute_expressions[attr], binding, "Ability: id = #{id}"
+          character.instance_eval attribute_expressions[attr], "Ability: id = #{id}"
         else
           0
         end
       end
     when :actions_required, :area, :range
-      define_method attr do
+      define_method attr do |character|
         if attribute_expressions[attr]
-          eval attribute_expressions[attr], binding, "Ability: id = #{id}"
+          character.instance_eval attribute_expressions[attr], "Ability: id = #{id}"
         else
           1
         end
