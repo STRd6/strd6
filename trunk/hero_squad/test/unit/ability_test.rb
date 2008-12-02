@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ItemTest < ActiveSupport::TestCase
+class AbilityTest < ActiveSupport::TestCase
   context "an ability" do
     setup do
       @ability = Factory :ability
@@ -22,7 +22,7 @@ class ItemTest < ActiveSupport::TestCase
       
       context "on cleric" do
         setup do
-          @character = Factory :character, :name => "Cleric"
+          @character = Factory :character_instance
         end
         
         should "have damage between 3 and 8" do
@@ -46,7 +46,7 @@ class ItemTest < ActiveSupport::TestCase
     context "which is activated" do
       setup do
         @ability = Factory :ability, :activated => true
-        @character = Factory :character
+        @character = Factory :character_instance
       end
       
       should "be activated" do
