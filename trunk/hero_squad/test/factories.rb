@@ -12,7 +12,7 @@ end
 Factory.define :ability do |ability|
   ability.name "Strike"
   ability.target_type Target::ANY
-  ability.attribute_expressions({:energy_cost => '3', :damage => '1',})
+  ability.attribute_expressions({:energy_cost => '3', :damage => 'str/2 + 1.d(6)',})
 end
 
 Factory.sequence :player_name do |n|
