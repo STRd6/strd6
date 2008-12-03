@@ -49,7 +49,7 @@ Factory.define :game do |game|
 end
 
 Factory.define :game_entry do |entry|
-  entry.game Factory(:game)
+  entry.game {|game| game.association :game}
   entry.player {|player| player.association :player}
   entry.position 0
 end

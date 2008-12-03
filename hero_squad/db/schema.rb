@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20081202055000) do
     t.datetime "updated_at"
   end
 
+  add_index "game_entries", ["game_id", "position"], :name => "index_game_entries_on_game_id_and_position", :unique => true
   add_index "game_entries", ["player_id", "game_id"], :name => "index_game_entries_on_player_id_and_game_id", :unique => true
 
   create_table "games", :force => true do |t|
