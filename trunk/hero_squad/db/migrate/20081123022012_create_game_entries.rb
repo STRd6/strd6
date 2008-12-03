@@ -7,6 +7,9 @@ class CreateGameEntries < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    # A player may only be entered once in a particular game
+    add_index :game_entries, [:player_id, :game_id], :unique => true
   end
 
   def self.down
