@@ -1,6 +1,10 @@
 class Ability < ActiveRecord::Base
   include StatModifier
+  
   before_validation_on_create :ensure_attribute_expressions, :set_default_target_type
+  
+  validates_presence_of :name
+  validates_uniqueness_of :name
   
   def passive?
     !activated?

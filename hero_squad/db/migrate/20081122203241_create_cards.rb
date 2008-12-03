@@ -12,6 +12,8 @@ class CreateCards < ActiveRecord::Migration
 
       t.timestamps
     end
+    
+    add_index :cards, [:game_id, :owner_id, :owner_type]
   end
 
   def self.down

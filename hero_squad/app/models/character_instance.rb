@@ -4,11 +4,15 @@ class CharacterInstance < ActiveRecord::Base
   before_create :prepare_stats
   
   belongs_to :character
+  belongs_to :player
+  belongs_to :game
   
   has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :data
   has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :data
   
   has_many :ability_cards, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ABILITIES}, :include => :data
+  
+  validates_presence_of :character, :player, :game
   
   #alias_method :hp, :hit_points 
   #alias_method :en, :energy

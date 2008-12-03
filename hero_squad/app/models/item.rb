@@ -1,6 +1,9 @@
 class Item < ActiveRecord::Base
   include StatModifier
   
+  validates_presence_of :name
+  validates_uniqueness_of :name
+  
   def uses
     base_uses
   end
