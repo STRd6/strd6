@@ -3,6 +3,8 @@ class Card < ActiveRecord::Base
   belongs_to :data, :polymorphic => true
   belongs_to :owner, :polymorphic => true
   
+  validates_presence_of :game, :data
+  
   def name
     data.name
   end

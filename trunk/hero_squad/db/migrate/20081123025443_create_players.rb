@@ -7,6 +7,9 @@ class CreatePlayers < ActiveRecord::Migration
     end
     
     add_index :players, :name, :unique => true
+    
+    Player.create :name => "Player1"
+    Player.create :name => "Player2"
   end
 
   def self.down

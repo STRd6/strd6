@@ -10,6 +10,8 @@ class CreateGameEntries < ActiveRecord::Migration
     
     # A player may only be entered once in a particular game
     add_index :game_entries, [:player_id, :game_id], :unique => true
+    # A game may not have multiple entries in the same position
+    add_index :game_entries, [:game_id, :position], :unique => true
   end
 
   def self.down
