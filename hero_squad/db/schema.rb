@@ -65,12 +65,16 @@ ActiveRecord::Schema.define(:version => 20081202055000) do
     t.datetime "updated_at"
   end
 
+  add_index "game_entries", ["player_id", "game_id"], :name => "index_game_entries_on_player_id_and_game_id", :unique => true
+
   create_table "games", :force => true do |t|
     t.string   "name",                         :null => false
     t.boolean  "public",     :default => true, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "games", ["name"], :name => "index_games_on_name"
 
   create_table "items", :force => true do |t|
     t.string   "name",                          :null => false

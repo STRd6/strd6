@@ -5,6 +5,8 @@ class CreateGames < ActiveRecord::Migration
       t.boolean :public, :default => true, :null => false
       t.timestamps
     end
+    
+    add_index :games, :name
   end
 
   def self.down
