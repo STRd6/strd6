@@ -10,6 +10,8 @@ class CreateItems < ActiveRecord::Migration
       t.timestamps
     end
     
+    add_index :items, :name, :unique => true
+    
     Item.create({
       :name => 'Robe',
       :stat_mods => {:pow => 2},

@@ -8,6 +8,8 @@ class CreateCharacters < ActiveRecord::Migration
       t.timestamps
     end
     
+    add_index :characters, :name, :unique => true
+    
     Character.create({
       :name => "Cleric",
       :base_stats => {:str => 5, :dex => 5, :pow => 5, :max_hp => 50, :max_en => 40, :move => 2}

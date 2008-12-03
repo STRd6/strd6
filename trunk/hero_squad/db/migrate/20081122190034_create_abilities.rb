@@ -10,6 +10,8 @@ class CreateAbilities < ActiveRecord::Migration
       t.timestamps
     end
     
+    add_index :abilities, :name, :unique => true
+    
     Ability.create :name => "Strike", 
       :activated => true,
       :attribute_expressions => {

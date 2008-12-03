@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20081202055000) do
     t.datetime "updated_at"
   end
 
+  add_index "abilities", ["name"], :name => "index_abilities_on_name", :unique => true
+
   create_table "cards", :force => true do |t|
     t.integer  "game_id",    :null => false
     t.integer  "owner_id"
@@ -32,8 +34,12 @@ ActiveRecord::Schema.define(:version => 20081202055000) do
     t.datetime "updated_at"
   end
 
+  add_index "cards", ["game_id", "owner_id", "owner_type"], :name => "index_cards_on_game_id_and_owner_id_and_owner_type"
+
   create_table "character_instances", :force => true do |t|
-    t.integer  "character_id"
+    t.integer  "character_id",                    :null => false
+    t.integer  "player_id",                       :null => false
+    t.integer  "game_id",                         :null => false
     t.integer  "hit_points",                      :null => false
     t.integer  "energy",                          :null => false
     t.integer  "actions",                         :null => false
@@ -48,6 +54,8 @@ ActiveRecord::Schema.define(:version => 20081202055000) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "characters", ["name"], :name => "index_characters_on_name", :unique => true
 
   create_table "game_entries", :force => true do |t|
     t.integer  "player_id",  :null => false
@@ -73,10 +81,14 @@ ActiveRecord::Schema.define(:version => 20081202055000) do
     t.datetime "updated_at"
   end
 
+  add_index "items", ["name"], :name => "index_items_on_name", :unique => true
+
   create_table "players", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "players", ["name"], :name => "index_players_on_name", :unique => true
 
 end
