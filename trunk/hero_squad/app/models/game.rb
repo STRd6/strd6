@@ -7,33 +7,35 @@ class Game < ActiveRecord::Base
   validates_presence_of :name
   
   def self.make(name, players)
-    game = Game.new :name => name
-    
+    game = Game.new
+    game.configure name, players
+    game.save
+    return game
+  end
+  
+  def configure(name, players)
+    self.name = name
     # Set up player entries
     position = 0
     players.each do |p|
-      game.entries.build :player => p, :position => position, :game => game
+      entries.build :player => p, :position => position, :game => self
       position += 1
       
       # Set up Character instances for player
       #TODO: Use character list
       Character.all.each do |character|
-        game.character_instances.build :character => character, :player => p, :game => game
+        character_instances.build :character => character, :player => p, :game => self
       end
     end
     
     # Create deck for game
     #TODO: Use decklists for this
     Item.all.each do |i|
-      game.cards.build :data => i, :game => game
+      cards.build :data => i, :game => self
     end
 
     Ability.all.each do |a|
-      game.cards.build :data => a, :game => game
+      cards.build :data => a, :game => self
     end
-    
-    game.save
-    
-    return game
   end
 end
