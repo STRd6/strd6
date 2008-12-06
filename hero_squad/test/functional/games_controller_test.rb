@@ -22,4 +22,27 @@ class GamesControllerTest < ActionController::TestCase
     
     should_respond_with :success
   end
+  
+  context "on SHOW" do
+    setup do
+      ActionView::Base.any_instance.stubs(:juggernaut)
+      g = Factory :game
+      
+      get :show, :id => g.id
+    end
+    
+    should_respond_with :success
+    should_assign_to :game
+  end
+  
+  context "on NEW" do
+    setup do
+      ActionView::Base.any_instance.stubs(:juggernaut)
+      get :new
+    end
+    
+    should_respond_with :success
+    should_assign_to :game
+    should_render_a_form
+  end
 end

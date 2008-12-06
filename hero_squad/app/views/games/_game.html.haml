@@ -1,0 +1,11 @@
+%div[game]
+  = game.name
+  .characters
+    - game.character_instances.each do |character|
+      = character.name
+      %br
+
+  .cards
+    - game.cards.each do |card|
+      = card.name
+      %br
