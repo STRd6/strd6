@@ -5,6 +5,10 @@ class Card < ActiveRecord::Base
   
   validates_presence_of :game, :data
   
+  include RandomScope
+  named_scope :unowned, :conditions => {:owner_id => nil}
+  named_scope :for_player, lambda {|player| {:conditions => {:owner_id => player.id}  } }
+  
   def name
     data.name
   end
