@@ -1,5 +1,9 @@
 %div[game]
   = game.name
+  %br
+  .players
+    - game.players.each do |player|
+      = player.name
   .characters
     - game.character_instances.each do |character|
       = character.name
@@ -7,5 +11,5 @@
 
   .cards
     - game.cards.each do |card|
-      = card.name
+      = render :partial => card
       %br
