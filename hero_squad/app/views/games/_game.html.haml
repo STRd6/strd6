@@ -3,13 +3,10 @@
   %br
   .players
     - game.players.each do |player|
-      = player.name
+      = render :partial => player
   .characters
     - game.character_instances.each do |character|
-      = character.name
-      %br
-
+      = render :partial => character
   .cards
     - game.cards.each do |card|
       = render :partial => card
-      %br
