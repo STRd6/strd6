@@ -37,6 +37,10 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       assert @character.damage_received
     end
     
+    should "have a position in two dimensions" do
+      assert_equal 2, @character.position.size
+    end
+    
     should "have base stats" do
       assert base_stats = @character.base_stats
       
