@@ -21,6 +21,10 @@ class CharacterInstance < ActiveRecord::Base
     character.name
   end
   
+  def position
+    [x, y]
+  end
+  
   def base_stats
     character.base_stats
   end
