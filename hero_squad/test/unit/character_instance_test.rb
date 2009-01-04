@@ -41,6 +41,12 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       assert_equal 2, @character.position.size
     end
     
+    should "be able to set position" do
+      @character.position = [1,1]
+      
+      assert_equal [1,1], @character.position
+    end
+    
     should "have base stats" do
       assert base_stats = @character.base_stats
       
