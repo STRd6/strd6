@@ -25,6 +25,11 @@ class CharacterInstance < ActiveRecord::Base
     [x, y]
   end
   
+  def position=(new_position)
+    self.x = new_position[0]
+    self.y = new_position[1]
+  end
+  
   def base_stats
     character.base_stats
   end
