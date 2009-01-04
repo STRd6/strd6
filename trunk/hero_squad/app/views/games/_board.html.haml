@@ -1,0 +1,9 @@
+.board
+  - num_rows = 13
+  - num_cols = 10
+  - num_rows.times do |row|
+    - (num_rows - row).times do
+      .hex_spacer
+    - num_cols.times do |col|
+      .hex
+    .clear
