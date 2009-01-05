@@ -355,6 +355,10 @@ var Draggable = Class.create({
   
   updateDrag: function(event, pointer) {
     if(!this.dragging) this.startDrag(event);
+    if(!this.dragging) {
+      Event.stop(event);
+      return;
+    }
     
     if(!this.options.quiet){
       Position.prepare();
