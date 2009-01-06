@@ -1,3 +1,7 @@
+function defaultParams(params) {
+  return $H({'authenticity_token': AUTH_TOKEN}).merge(params);
+}
+
 var GameEntity = Class.create({
   initialize: function(element) {
     this.element = $(element);
@@ -23,6 +27,7 @@ var GameEntity = Class.create({
 var Token = Class.create(GameEntity, {
   initialize: function($super, element) {
     $super(element);
+    this.element.objectId = element.split('_').last();
   }
 });
 
@@ -47,6 +52,18 @@ var Hex = Class.create({
     item.shouldRevert = false;
     hex._moveItem(item);
     console.log("Dropped on: " + hex.row + ", " + hex.col);
+    
+    // Send updated item info to server
+    var params = defaultParams({
+      'id': gameId,
+      'token[id]': item.objectId,
+      'x': hex.row,
+      'y': hex.col
+    });
+
+    new Ajax.Request('/games/move_character/1', {
+      parameters: params
+    });
   },
   
   _moveItem: function(item) {
