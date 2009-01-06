@@ -62,4 +62,9 @@ class Game < ActiveRecord::Base
   def cards_for_player(player)
     cards.for_player player
   end
+  
+  def move_character(character, position)
+    character.position = position
+    character.save
+  end
 end
