@@ -5,4 +5,25 @@ class GamesController < ResourceController::Base
     players = Player.find params[:players]
     object.configure(params[:name], players)
   end
+  
+  show.before do
+    @positions = Hash.new { |hash, key| hash[key] = [] }
+    
+    object.character_instances.each do |character|
+      @positions[character.position] << character
+    end
+  end
+  
+  def move_character
+    game = Game.find params[:id]
+    character = CharacterInstance.find params[:token][:id]
+    
+    game.move_character character, [params[:x], params[:y]]
+    
+    if request.xhr?
+      render :nothing => true
+    else
+      render :nothing => true
+    end
+  end
 end
