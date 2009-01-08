@@ -7,7 +7,16 @@ class Card < ActiveRecord::Base
   
   include RandomScope
   named_scope :unowned, :conditions => {:owner_id => nil}
-  named_scope :for_player, lambda {|player| {:conditions => {:owner_id => player.id}  } }
+  named_scope :for_player, 
+    lambda { |player| {
+      :conditions => {:owner_id => player.id}
+    } }
+  named_scope :abilities, :conditions => {:data_type => 'Ability'}
+  named_scope :items, :conditions => {:data_type => 'Item'}
+  named_scope :in_slot, 
+    lambda { |slot| {
+      :conditions => {:slot => slot}
+    } }
   
   def name
     data.name

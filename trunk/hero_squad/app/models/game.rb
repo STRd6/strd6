@@ -67,4 +67,8 @@ class Game < ActiveRecord::Base
     character.position = position
     character.save
   end
+  
+  def assign_ability(character, ability, slot)
+    character.assign_ability(ability, slot)
+  end
 end

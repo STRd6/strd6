@@ -30,6 +30,21 @@ class CharacterInstance < ActiveRecord::Base
     self.y = new_position[1]
   end
   
+  def assign_ability(ability, slot)
+    ability.slot = slot
+    ability.owner = self
+    
+    CharacterInstance.transaction do
+      ability_cards.in_slot(slot).each do |card|
+        card.slot = Slot::NONE
+        card.owner = player
+        card.save!
+      end
+      
+      ability.save!
+    end
+  end
+  
   def base_stats
     character.base_stats
   end
