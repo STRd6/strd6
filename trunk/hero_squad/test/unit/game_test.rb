@@ -21,4 +21,33 @@ class GameTest < ActiveSupport::TestCase
       assert_equal 2, @game.players.size
     end
   end
+  
+  context "making a new game" do
+    setup do
+      @players = [Factory(:player), Factory(:player)]
+      # These are used when creating instances in the game
+      Factory :character
+      Factory :item
+      Factory :ability
+    end
+    
+    should "make a new one if given players" do
+      assert Game.make("A New Game", @players)
+    end
+    
+    context "after a game is made" do
+      setup do
+        @game = Game.make("A New Game", @players)
+      end
+      
+      should "Deal and assign cards to players " do
+        @game.deal
+        assert @game.cards_for_player(@players.first).size > 0
+      end
+    
+      should "be able to move a character" do
+        @game.move_character(@game.character_instances.first, [2,2])
+      end
+    end
+  end
 end
