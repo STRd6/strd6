@@ -13,7 +13,7 @@ end
 
 Factory.define :character do |c|
   c.name {Factory.next :character_name}
-  c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2, :max_hp => 50, :max_en => 40})
+  c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2, :hp_max => 50, :en_max => 40})
 end
 
 Factory.define :character_instance do |c|

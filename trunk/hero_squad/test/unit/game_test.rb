@@ -49,11 +49,13 @@ class GameTest < ActiveSupport::TestCase
         @game.move_character(@game.character_instances.first, [2,2])
       end
       
-      should "be able to assign an ability ot a character" do
+      should "be able to assign an ability to a character" do
         character_instance = @game.character_instances.first
         ability = @game.cards.abilities.first
+        assert !character_instance.ability_cards.include?(ability)
         slot = Slot::ABILITY_1
         @game.assign_ability(character_instance, ability, slot)
+        assert character_instance.ability_cards.include?(ability)
       end
     end
   end

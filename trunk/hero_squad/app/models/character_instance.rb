@@ -77,7 +77,7 @@ class CharacterInstance < ActiveRecord::Base
     {Slot::ABILITY_1 => :def1, Slot::ABILITY_2 => :def2, Slot::ABILITY_3 => :def3}
   end
   
-  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :max_hp, :max_en, :regen, :egen, :damage_received].freeze
+  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :hp_max, :en_max, :regen, :egen, :damage_received].freeze
   
   # Define a method to access each modifiable stat attribute
   # These attributes may be modified by 
@@ -92,8 +92,8 @@ class CharacterInstance < ActiveRecord::Base
   end
   protected
   def prepare_stats
-    self.hit_points ||= max_hp
-    self.energy ||= max_en
+    self.hit_points ||= hp_max
+    self.energy ||= en_max
     self.actions ||= DEFAULT_ACTIONS
   end
   
