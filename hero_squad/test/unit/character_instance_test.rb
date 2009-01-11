@@ -28,8 +28,8 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       assert @character.dex > 0
       assert @character.pow > 0
       assert @character.move >= 0
-      assert @character.max_hp > 0
-      assert @character.max_en > 0
+      assert @character.hp_max > 0
+      assert @character.en_max > 0
       
       # Fancy Stats
       assert @character.regen
