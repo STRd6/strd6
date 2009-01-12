@@ -122,7 +122,7 @@ class CreateAbilities < ActiveRecord::Migration
     Ability.create :name => "Pummel", 
       :activated => true,
       :attribute_expressions => {
-        :energy_cost => 'max_en',
+        :energy_cost => 'en_max',
         :damage => 'str.d(6)',
       }
     
