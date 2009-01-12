@@ -1,0 +1,3 @@
+.slot{:id => "slot_#{character_id}_#{slot}"}
+  = render :partial => card
+= javascript_tag "new Slot('slot_#{character_id}_#{slot}');"

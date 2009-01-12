@@ -26,4 +26,14 @@ class GamesController < ResourceController::Base
       render :nothing => true
     end
   end
+  
+  def assign_card
+    game = Game.find params[:id]
+    
+    character = CharacterInstance.find params[:character_instance][:id]
+    card = Card.find params[:card][:id]
+    slot = params[:slot]
+    
+    game.assign_card character, card, slot
+  end
 end

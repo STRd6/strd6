@@ -31,45 +31,91 @@ var Token = Class.create(GameEntity, {
   }
 });
 
-var Hex = Class.create({
-  initialize: function(element, row, col) {
+var Card = Class.create(GameEntity, {
+  initialize: function($super, element) {
+    $super(element);
+    this.element.objectId = element.split('_').last();
+  }
+});
+
+var DropBase = Class.create({
+  initialize: function(element) {
     this.element = $(element);
-    this.row = row;
-    this.col = col;
     this.element.obj = this;
     
-    console.log("Hex: " + this.row + ", " + this.col);
+    Droppables.add(this.element, {
+      accept: this.accept,
+      hoverclass: 'hover',
+      onDrop: this.onDrop
+    });
+  },
+  
+  onDrop: function(item, drop, event) {
+    item.shouldRevert = false;
+    
+    var target = drop.obj;
+    target._insertItem(item);
+    
+    target.sendData(target.commandData(item));
+  },
+  
+  sendData: function(params) {
+    new Ajax.Request(this.commandURL, {
+      parameters: defaultParams(params)
+    });
+  },
+  
+  _insertItem: function(item) {
+    item.style.top = "0px";
+    item.style.left = "0px";
+    
+    this.element.insert(item.remove());
+  }
+});
+
+var Slot = Class.create(DropBase, {
+  accept: ['card'],
+  commandURL: '/games/assign_card/1',
+  commandData: function(item) {
+    return {
+      'character_instance[id]': this.characterInstanceId,
+      'slot': this.slot,
+      'card[id]': item.objectId
+    }
+  },
+  
+  initialize: function($super, element) {
+    $super(element);
+    
+    ids = element.split('_');
+    
+    this.characterInstanceId = ids[1];
+    this.slot = ids[2];
+  }
+});
+
+var Hex = Class.create(DropBase, {
+  accept: ['token'],
+  commandURL: '/games/move_character/1',
+  commandData: function(item) {
+    return {
+      'id': gameId,
+      'token[id]': item.objectId,
+      'x': this.row,
+      'y': this.col
+    };
+  },
+  
+  initialize: function($super, element, row, col) {
+    $super(element);
+    
+    this.row = row;
+    this.col = col;
     
     Droppables.add(this.element, {
       accept: ['token'], 
       hoverclass: 'hover', 
       onDrop: this.onDrop
     });
-  },
-  
-  onDrop: function(item, drop, event) {
-    var hex = drop.obj;
-    item.shouldRevert = false;
-    hex._moveItem(item);
-    console.log("Dropped on: " + hex.row + ", " + hex.col);
-    
-    // Send updated item info to server
-    var params = defaultParams({
-      'id': gameId,
-      'token[id]': item.objectId,
-      'x': hex.row,
-      'y': hex.col
-    });
-
-    new Ajax.Request('/games/move_character/1', {
-      parameters: params
-    });
-  },
-  
-  _moveItem: function(item) {
-    item.style.top = "0px";
-    item.style.left = "0px";
-    
-    this.element.insert(item.remove());
   }
 });

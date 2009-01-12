@@ -1,7 +1,13 @@
 %div[character_instance]
   .name= character_instance.name
-  = draw_attribute "STR", character_instance.str
-  = draw_attribute "DEX", character_instance.dex
-  = draw_attribute "POW", character_instance.pow
-  = draw_attribute "HP", "#{character_instance.hit_points}/#{character_instance.hp_max}"
-  = draw_attribute "EN", "#{character_instance.energy}/#{character_instance.en_max}"
+  .attributes
+    = draw_attribute "STR", character_instance.str
+    = draw_attribute "DEX", character_instance.dex
+    = draw_attribute "POW", character_instance.pow
+    = draw_attribute "HP", "#{character_instance.hit_points}/#{character_instance.hp_max}"
+    = draw_attribute "EN", "#{character_instance.energy}/#{character_instance.en_max}"
+
+  - Slot::ALL.each do |slot|
+    - card = character_instance.cards.in_slot slot
+    - id = character_instance.id
+    = render :partial => 'character_instances/slot', :locals => {:card => card, :character_id => id, :slot => slot}
