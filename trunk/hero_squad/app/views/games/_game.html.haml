@@ -11,4 +11,6 @@
     - game.cards.each do |card|
       = render :partial => card
   = render :partial => 'board'
+  - @positions[[nil,nil]].each do |character|
+    = render :partial => 'token', :locals => {:character => character}
 = javascript_tag "var gameId = #{game.id};"

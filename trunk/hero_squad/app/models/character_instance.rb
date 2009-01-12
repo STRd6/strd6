@@ -12,6 +12,8 @@ class CharacterInstance < ActiveRecord::Base
   
   has_many :ability_cards, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ABILITIES}, :include => :data
   
+  has_many :cards, :as => :owner
+  
   validates_presence_of :character, :player, :game
   
   #alias_method :hp, :hit_points 
@@ -30,19 +32,38 @@ class CharacterInstance < ActiveRecord::Base
     self.y = new_position[1]
   end
   
+  def token_class
+    entry = GameEntry.find_by_player_id_and_game_id(player_id, game_id)
+    "p#{entry.position}"
+  end
+  
   def assign_ability(ability, slot)
-    ability.slot = slot
-    ability.owner = self
+    assign_card(ability, slot)
+  end
+  
+  def assign_primary_item(item)
+    assign_card(item, Slot::ITEM_PRIMARY)
+  end
+  
+  def assign_secondary_item(item)
+    assign_card(item, Slot::ITEM_SECONDARY)
+  end
+  
+  def assign_card(card, slot)
+    card.slot = slot
+    card.owner = self
     
     CharacterInstance.transaction do
-      ability_cards.in_slot(slot).each do |card|
-        card.slot = Slot::NONE
-        card.owner = player
-        card.save!
+      cards.in_slot(slot).each do |c|
+        c.slot = Slot::NONE
+        c.owner_id = player_id
+        c.save!
       end
       
-      ability.save!
+      card.save!
     end
+    
+    reload
   end
   
   def base_stats
