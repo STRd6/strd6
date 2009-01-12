@@ -1,0 +1,3 @@
+.token{:id => "character_token_#{character.id}", :class => character.token_class}
+  = character.name[0..0]
+= javascript_tag "new Token('character_token_#{character.id}');"

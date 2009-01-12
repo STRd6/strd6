@@ -7,8 +7,6 @@
     - num_cols.times do |col|
       .hex{:id => "hex_#{row}_#{col}"}
         - @positions[[row, col]].each do |character|
-          .token{:id => "character_token_#{character.id}"}
-            = character.name[0..0]
-          = javascript_tag "new Token('character_token_#{character.id}');"
+          = render :partial => 'token', :locals => {:character => character}
       = javascript_tag "new Hex('hex_#{row}_#{col}', #{row}, #{col});"
     .clear

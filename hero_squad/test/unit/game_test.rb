@@ -57,6 +57,24 @@ class GameTest < ActiveSupport::TestCase
         @game.assign_ability(character_instance, ability, slot)
         assert character_instance.ability_cards.include?(ability)
       end
+      
+      should "be able to assign a primary item to a character" do
+        character_instance = @game.character_instances.first
+        item = @game.cards.items.first
+        assert_not_equal item, character_instance.primary_item_card
+        slot = Slot::ITEM_PRIMARY
+        @game.assign_ability(character_instance, item, slot)
+        assert_equal item, character_instance.primary_item_card
+      end
+      
+      should "be able to assign a secondary item to a character" do
+        character_instance = @game.character_instances.first
+        item = @game.cards.items.first
+        assert_not_equal item, character_instance.secondary_item_card
+        slot = Slot::ITEM_SECONDARY
+        @game.assign_ability(character_instance, item, slot)
+        assert_equal item, character_instance.secondary_item_card
+      end
     end
   end
 end
