@@ -71,4 +71,8 @@ class Game < ActiveRecord::Base
   def assign_ability(character, ability, slot)
     character.assign_ability(ability, slot)
   end
+  
+  def assign_card(character, card, slot)
+    character.assign_card(card, slot)
+  end
 end
