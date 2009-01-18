@@ -16,8 +16,14 @@ class CharacterInstance < ActiveRecord::Base
   
   validates_presence_of :character, :player, :game
   
-  #alias_method :hp, :hit_points 
-  #alias_method :en, :energy
+  named_scope :in_target_with_area, lambda {|target, area|
+    #TODO: Include all positions in area
+    conditions = "(x = #{target[0].to_i} AND y = #{target[1].to_i})"
+    {:conditions => conditions}
+  }
+  
+  #alias :hp, :hit_points 
+  #alias :en, :energy
   
   def name
     character.name
@@ -39,6 +45,36 @@ class CharacterInstance < ActiveRecord::Base
   
   def assign_ability(ability, slot)
     assign_card(ability, slot)
+  end
+  
+  def perform_ability(ability, target_position)
+    ability_attributes = ability.action_hash(self)
+    area = ability_attributes[area]
+    
+    targets = game.character_instances.in_target_with_area(target_position, area)
+    
+    targets = ability.filter_targets(targets)
+    
+    if targets.size > 0
+      pay_costs(ability_attributes)
+      
+      targets.each do |target|
+        # TODO: Different damages for different targets
+        target.apply_effect(ability_attributes)
+      end
+    end
+  end
+  
+  def apply_effect(ability_attributes)
+    #TODO: Damage reduction
+    #TODO: Absorption
+    self.hit_points -= ability_attributes[:damage]
+    #TODO: Special Effects
+  end
+  
+  def pay_costs(ability_attributes)
+    self.energy -= ability_attributes[:energy_cost]
+    self.hit_points -= ability_attributes[:life_loss]
   end
   
   def assign_primary_item(item)

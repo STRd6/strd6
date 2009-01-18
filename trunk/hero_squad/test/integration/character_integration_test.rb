@@ -8,8 +8,12 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
 
     context "strike ability" do
       setup do
-        @ability = Factory :ability, :name => "Strike", 
-          :attribute_expressions => {:energy_cost => '3', :damage => 'str/2 + 1.d(6)',}
+        @ability = Factory :ability, 
+          :name => "Strike", 
+          :attribute_expressions => {
+            :energy_cost => '3', 
+            :damage => 'str/2 + 1.d(6)',
+          }
       end
 
       should "have damage between 3 and 8" do
@@ -48,6 +52,61 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         assert @ability.energy_gain(@character)
         assert @ability.duration(@character)
         assert @ability.actions_required(@character)
+      end
+    end
+  end
+  
+  context "one character attacking another" do
+    setup do
+      @character1 = Factory :character_instance
+      @character2 = Factory :character_instance
+    end
+    
+    context "the strike ability used from one character to another" do
+      setup do
+        @ability = Factory :ability, 
+          :name => "Strike", 
+          :attribute_expressions => {
+            :energy_cost => '3', 
+            :damage => 'str/2 + 1.d(6)',
+          }
+      end
+
+      should "rough up the other character" do
+        effects = @ability.action_hash(@character1)
+
+        hp = @character2.hit_points
+
+        @character2.apply_effect(effects)
+
+        assert @character2.hit_points < hp, "Struck character should have lost hit points"
+      end
+
+      should "cost energy" do
+        effects = @ability.action_hash(@character1)
+        assert_difference "@character1.energy", -3, "Strike should cost 3 energy" do
+          @character1.pay_costs(effects)
+        end
+      end
+    end
+
+    context "the overpower ability" do
+      setup do
+        @ability = Factory :ability,
+          :name => "Overpower",
+          :activated => true,
+          :attribute_expressions => {
+            :energy_cost => 'str + 1',
+            :life_loss => 'pow',
+            :damage => 'str + pow + 1.d(6)',
+          }
+      end
+      
+      should "damage user" do
+        effects = @ability.action_hash(@character1)
+        assert_difference "@character1.hit_points", -effects[:life_loss], "Overpower should reduct user's hit points by POW" do
+          @character1.pay_costs(effects)
+        end
       end
     end
   end
