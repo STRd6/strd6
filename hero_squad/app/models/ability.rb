@@ -10,6 +10,11 @@ class Ability < ActiveRecord::Base
     !activated?
   end
   
+  def filter_targets(targets)
+    #TODO: Filter based on ability properties i.e. not-self, enemy_only
+    return targets
+  end
+  
   ACTION_ATTRIBUTES = [:energy_cost, :life_loss, :damage, :energy_damage, 
     :heal, :energy_gain, :duration, :actions_required, :area, :range].freeze
   
@@ -31,6 +36,13 @@ class Ability < ActiveRecord::Base
           1
         end
       end
+    end
+  end
+  
+  def action_hash(character_instance)
+    ACTION_ATTRIBUTES.inject({}) do |memo, action|
+      memo[action] = self.send(action, character_instance)
+      memo
     end
   end
   
