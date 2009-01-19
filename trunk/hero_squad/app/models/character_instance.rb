@@ -56,20 +56,28 @@ class CharacterInstance < ActiveRecord::Base
     targets = ability.filter_targets(targets)
     
     if targets.size > 0
-      pay_costs(ability_attributes)
-      
-      targets.each do |target|
-        # TODO: Different damages for different targets
-        target.apply_effect(ability_attributes)
+      CharacterInstance.transaction do
+        pay_costs(ability_attributes)
+
+        targets.each do |target|
+          # TODO: Different damages for different targets
+          target.apply_effect(ability_attributes)
+          target.save!
+        end
+        
+        # TODO: Energy gain like effects
+        # TODO: Move Effects
+        
+        save!
       end
     end
   end
   
   def apply_effect(ability_attributes)
-    #TODO: Damage reduction
-    #TODO: Absorption
+    # TODO: Damage reduction
+    # TODO: Absorption
     self.hit_points -= ability_attributes[:damage]
-    #TODO: Special Effects
+    # TODO: Special Effects
   end
   
   def pay_costs(ability_attributes)
