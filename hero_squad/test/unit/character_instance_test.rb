@@ -135,5 +135,17 @@ class CharacterInstanceTest < ActiveSupport::TestCase
         end
       end
     end
+    
+    context "position related" do
+      setup do
+        @position = [1,1]
+        @character.position = @position
+        @character.save
+      end
+      
+      should "be able to find by position" do
+        assert CharacterInstance.in_target_with_area(@position, 1).include?(@character), "Character should be found in target area"
+      end
+    end
   end
 end

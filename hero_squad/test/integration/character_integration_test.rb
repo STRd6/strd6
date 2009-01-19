@@ -35,9 +35,12 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
   
     context "ability that has range and area" do
       setup do
-        @ability = Factory :ability, :activated => true, :attribute_expressions => {
-          :range => '6', :area => '2',
-        }
+        @ability = Factory :ability, 
+          :activated => true, 
+          :attribute_expressions => {
+            :range => '6', 
+            :area => '2',
+          }
         @character = Factory :character_instance
       end
 
@@ -59,7 +62,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
   context "one character attacking another" do
     setup do
       @character1 = Factory :character_instance
-      @character2 = Factory :character_instance
+      @character2 = Factory :character_instance, :game => @character1.game
     end
     
     context "the strike ability used from one character to another" do
@@ -88,6 +91,21 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
           @character1.pay_costs(effects)
         end
       end
+      
+      context "on a target location" do
+        setup do
+          @target_location = [1,1]
+          @character2.position = @target_location
+          @character2.save
+        end
+
+        should "damage the target character" do
+          hp = @character2.hit_points
+          @character1.perform_ability(@ability, @target_location)
+          @character2.reload
+          assert @character2.hit_points < hp, "Struck character should have lost hit points"
+        end
+      end
     end
 
     context "the overpower ability" do
@@ -102,7 +120,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
           }
       end
       
-      should "damage user" do
+      should "cost user life" do
         effects = @ability.action_hash(@character1)
         assert_difference "@character1.hit_points", -effects[:life_loss], "Overpower should reduct user's hit points by POW" do
           @character1.pay_costs(effects)
