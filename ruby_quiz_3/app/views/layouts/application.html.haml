@@ -9,8 +9,14 @@
     = javascript_include_tag 'application', :cache => 'app'
 
   %body
-    %h1 Ruby Quiz 3
     #page
-      Coming soon!
-      = yield
+      %h1 Ruby Quiz 3
+
+      #content
+        Coming soon!
+        = yield
+      
+      #footer
+        = link_to "STRd6", "http://strd6.com"
+
     = javascript_tag "var AUTH_TOKEN = '#{form_authenticity_token};'" if protect_against_forgery?
