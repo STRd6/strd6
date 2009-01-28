@@ -62,6 +62,7 @@ class CharacterInstanceTest < ActiveSupport::TestCase
     end
     
     should "have at least two abilities" do
+      puts @character.abilities
       assert @character.abilities.size >= 2
     end
     
@@ -99,6 +100,18 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       
       should "have stats modified by the item" do
         assert_equal @character.base_stats[:str] + @item_card.stat_mods[:str], @character.str
+      end
+    end
+    
+    context "with an activated ability" do
+      setup do
+        card = Factory :card, :data => Factory(:ability)
+        @ability = card.data
+        @character.assign_card(card, Slot::ABILITY_1)
+      end
+      
+      should "have the assigned activated ability" do
+        assert @character.abilities.include?(@ability)
       end
     end
     

@@ -30,6 +30,7 @@ Factory.define :ability do |ability|
   ability.name {Factory.next :ability_name}
   ability.target_type Target::ANY
   ability.attribute_expressions({:energy_cost => '3', :damage => 'str/2 + 1.d(6)',})
+  ability.activated true
 end
 
 Factory.sequence :player_name do |n|
