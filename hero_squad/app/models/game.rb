@@ -4,7 +4,15 @@ class Game < ActiveRecord::Base
   has_many :cards
   has_many :character_instances
   
+  belongs_to :active_player, :class_name => 'Player'
+  belongs_to :active_character, :class_name => 'CharacterInstance'
+  
   validates_presence_of :name
+  
+  module Phase
+    SETUP = "SETUP"
+    MAIN = "MAIN"
+  end
   
   def self.make(name, players)
     game = Game.new
@@ -15,6 +23,9 @@ class Game < ActiveRecord::Base
   
   def configure(name, players)
     self.name = name
+    
+    self.phase = Phase::SETUP
+    
     # Set up player entries
     position = 0
     players.each do |p|

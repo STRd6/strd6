@@ -40,9 +40,22 @@ class GameTest < ActiveSupport::TestCase
         @game = Game.make("A New Game", @players)
       end
       
+      should "begin in the SETUP phase" do
+        assert_equal Game::Phase::SETUP, @game.phase
+      end
+      
+      should "have no active character" do
+        assert_equal nil, @game.active_character
+      end
+      
+      should "have no active player" do
+        assert_equal nil, @game.active_player
+      end
+      
       should "Deal and assign cards to players " do
+        assert_equal 0, @game.cards_for_player(@players.first).size, "Precondition: First player starts with zero cards"
         @game.deal
-        assert @game.cards_for_player(@players.first).size > 0
+        assert @game.cards_for_player(@players.first).size > 0, "Postcondition: First player ends with one or more cards"
       end
     
       should "be able to move a character" do
