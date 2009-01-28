@@ -29,6 +29,10 @@ class AbilityTest < ActiveSupport::TestCase
     end
     
     context "which is passive" do
+      setup do
+        @ability = Factory :ability, :activated => false
+      end
+      
       should "be passive" do
         assert @ability.passive?
       end

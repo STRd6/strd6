@@ -131,11 +131,14 @@ class CharacterInstance < ActiveRecord::Base
   end
   
   def abilities
-    applied_abilities = ability_cards.inject({}) {|h, a| h[a.slot] = a.card_data}
+    applied_abilities = ability_cards.inject({}) {|h, card| h[card.slot] = card.data if card.data.activated?; h}
     
     current_abilities = default_abilities.merge applied_abilities    
     
     return Slot::ABILITIES.map {|slot| current_abilities[slot]}.compact
+    
+#    card_abilities = ability_cards.map {|card| card.data}.select {|ability| ability.activated?}
+#    [move_ability, rest_ability] + card_abilities
   end
   
   def default_abilities
