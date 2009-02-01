@@ -9,6 +9,14 @@ class Item < ActiveRecord::Base
   end
   
   def usable?
-    return base_uses && base_uses > 0
+    base_uses && base_uses > 0
+  end
+  
+  def invoke_action
+    if usable?
+      true
+    else
+      false
+    end
   end
 end
