@@ -115,6 +115,18 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       end
     end
     
+    context "with an activated ability granted by an item" do
+      setup do
+        card = Factory :card, :data => Factory(:item, :base_uses => 3)
+        @ability = card.data.invoke_action
+        @character.assign_card(card, Slot::ITEM_SECONDARY)
+      end
+      
+      should "have the invokable ability granted by the item" do
+        assert @character.abilities.include?(@ability)
+      end
+    end
+    
     context "that is dead" do
       setup do
         @character = Factory :character_instance, :hit_points => 0
