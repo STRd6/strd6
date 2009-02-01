@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
   # This route can be invoked with purchase_url(:id => product.id)
 
-  map.resources :games
+  map.resources :games, :players
 
   # Sample resource route with options:
   #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
