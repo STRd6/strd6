@@ -130,7 +130,7 @@ class CharacterInstance < ActiveRecord::Base
     secondary_item_card.data if secondary_item_card
   end
   
-  def abilities
+  def activated_abilities
     # Get a mapping of the applied abilities in each slot
     applied_abilities = ability_cards.inject({}) {|h, card| h[card.slot] = card.data if card.data.activated?; h}
     
@@ -138,9 +138,7 @@ class CharacterInstance < ActiveRecord::Base
     current_abilities = default_abilities.merge applied_abilities
     
     # Add the item abilities
-    item_abilities = [true]
-    
-    return Slot::ABILITIES.map {|slot| current_abilities[slot]}.compact + item_abilities
+    return Slot::ABILITIES.map {|slot| current_abilities[slot]}.compact + item_actions
     
 #    card_abilities = ability_cards.map {|card| card.data}.select {|ability| ability.activated?}
 #    [move_ability, rest_ability] + card_abilities
@@ -172,5 +170,9 @@ class CharacterInstance < ActiveRecord::Base
   
   def stat_modifiers
     [primary_item, secondary_item].compact
+  end
+  
+  def item_actions
+    [primary_item, secondary_item].map {|item| item.invoke_action if item}.compact
   end
 end

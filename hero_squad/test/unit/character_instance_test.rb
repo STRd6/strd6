@@ -61,9 +61,8 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       assert_equal x, @character.str
     end
     
-    should "have at least two abilities" do
-      puts @character.abilities
-      assert @character.abilities.size >= 2
+    should "have at least two activated abilities" do
+      assert @character.activated_abilities.size >= 2
     end
     
     context "with two items" do    
@@ -111,7 +110,7 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       end
       
       should "have the assigned activated ability" do
-        assert @character.abilities.include?(@ability)
+        assert @character.activated_abilities.include?(@ability)
       end
     end
     
@@ -123,7 +122,7 @@ class CharacterInstanceTest < ActiveSupport::TestCase
       end
       
       should "have the invokable ability granted by the item" do
-        assert @character.abilities.include?(@ability)
+        assert @character.activated_abilities.include?(@ability)
       end
     end
     
