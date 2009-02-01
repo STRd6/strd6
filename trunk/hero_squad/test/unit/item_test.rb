@@ -33,6 +33,10 @@ class ItemTest < ActiveSupport::TestCase
     should "have uses" do
       assert @item.uses
     end
+    
+    should "have an invoke action" do
+      assert @item.invoke_action
+    end
   end
   
   context "a secondary item" do
@@ -56,6 +60,10 @@ class ItemTest < ActiveSupport::TestCase
     
     should "not have uses" do
       assert !@item.uses
+    end
+    
+    should "not have an invoke action" do
+      assert !@item.invoke_action
     end
   end
 end
