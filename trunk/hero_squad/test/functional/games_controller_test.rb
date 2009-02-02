@@ -47,5 +47,41 @@ class GamesControllerTest < ActionController::TestCase
       should_assign_to :game
       should_render_a_form
     end
+    
+    context "game commands" do
+      setup do
+        # Create a test character to derive instances of, one for each player
+        Factory :character
+        
+        # Create the test ability
+        @ability = Factory :ability, :name => "Strike"
+        
+        @game = Game.make("Action Game", [Factory(:player), Factory(:player)])
+      end
+      
+      should "let characters blast each other" do
+        post :character_action, { 
+          :id => @game.id, 
+          :x => 0, :y => 0,
+          :character_instance => {
+            :id => 1
+          },
+          :ability_id => 0,
+          :ability_name => @ability.name
+        }
+      end
+      
+      should "be a teapot when incorrect" do
+        post :character_action, { 
+          :id => @game.id, 
+          :x => 0, :y => 0,
+          :character_instance => {
+            :id => 1
+          },
+        }
+        
+        assert_response 418
+      end
+    end
   end
 end
