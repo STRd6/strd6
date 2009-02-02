@@ -37,7 +37,8 @@ ActiveRecord::Schema.define(:version => 20090128032024) do
   add_index "cards", ["game_id", "owner_id", "owner_type"], :name => "index_cards_on_game_id_and_owner_id_and_owner_type"
 
   create_table "character_instances", :force => true do |t|
-    t.integer  "character_id",                            :null => false
+    t.string   "name",                                    :null => false
+    t.text     "base_stats",                              :null => false
     t.integer  "player_id",                               :null => false
     t.integer  "game_id",                                 :null => false
     t.integer  "default_ability_1_id"
