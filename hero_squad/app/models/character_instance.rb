@@ -22,8 +22,8 @@ class CharacterInstance < ActiveRecord::Base
     {:conditions => conditions}
   }
   
-  #alias :hp, :hit_points 
-  #alias :en, :energy
+  #alias :hp :hit_points 
+  #alias :en :energy
   
   def name
     character.name
@@ -47,6 +47,8 @@ class CharacterInstance < ActiveRecord::Base
     assign_card(ability, slot)
   end
   
+  # Returns true if the ability was performed successfully
+  # false if the ability was not performed and the data remains unchanged
   def perform_ability(ability, target_position)
     ability_attributes = ability.action_hash(self)
     area = ability_attributes[area]
@@ -145,7 +147,7 @@ class CharacterInstance < ActiveRecord::Base
   end
   
   def default_abilities
-    {Slot::ABILITY_1 => :def1, Slot::ABILITY_2 => :def2, Slot::ABILITY_3 => :def3}
+    {Slot::ABILITY_1 => Ability.find(1), Slot::ABILITY_2 => :def2, Slot::ABILITY_3 => :def3}
   end
   
   STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :hp_max, :en_max, :regen, :egen, :damage_received].freeze
@@ -161,6 +163,7 @@ class CharacterInstance < ActiveRecord::Base
       raise "Attempting to override an already defined method with stat attribute: #{attr}"
     end
   end
+  
   protected
   def prepare_stats
     self.hit_points ||= hp_max
@@ -172,6 +175,7 @@ class CharacterInstance < ActiveRecord::Base
     [primary_item, secondary_item].compact
   end
   
+  # Activated abilities granted by items
   def item_actions
     [primary_item, secondary_item].map {|item| item.invoke_action if item}.compact
   end
