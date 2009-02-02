@@ -35,7 +35,14 @@ class Game < ActiveRecord::Base
       # Set up Character instances for player
       #TODO: Use character list
       Character.all.each do |character|
-        character_instances.build :character => character, :player => p, :game => self
+        character_instances.build(
+          :character => character, 
+          :default_ability_1 => character.default_ability_1,
+          :default_ability_2 => character.default_ability_2,
+          :default_ability_3 => character.default_ability_3,
+          :player => p, 
+          :game => self
+        )
       end
     end
     

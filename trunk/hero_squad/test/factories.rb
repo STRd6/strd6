@@ -7,21 +7,6 @@ Factory.define :item do |item|
   item.stat_mods({:pow => 2})
 end
 
-Factory.sequence :character_name do |n|
-  "Character_%03d" % n
-end
-
-Factory.define :character do |c|
-  c.name {Factory.next :character_name}
-  c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2, :hp_max => 50, :en_max => 40})
-end
-
-Factory.define :character_instance do |c|
-  c.character {|character| character.association :character}
-  c.game {|game| game.association :game}
-  c.player {|player| player.association :player}
-end
-
 Factory.sequence :ability_name do |n|
   "Ability_%03d" % n
 end
@@ -31,6 +16,22 @@ Factory.define :ability do |ability|
   ability.target_type Target::ANY
   ability.attribute_expressions({:energy_cost => '3', :damage => 'str/2 + 1.d(6)',})
   ability.activated true
+end
+
+Factory.sequence :character_name do |n|
+  "Character_%03d" % n
+end
+
+Factory.define :character do |c|
+  c.name {Factory.next :character_name}
+  c.base_stats({:str => 5, :dex => 5, :pow => 5, :move => 2, :hp_max => 50, :en_max => 40})
+  c.default_ability_1 {|ability| ability.association :ability}
+end
+
+Factory.define :character_instance do |c|
+  c.character {|character| character.association :character}
+  c.game {|game| game.association :game}
+  c.player {|player| player.association :player}
 end
 
 Factory.sequence :player_name do |n|
