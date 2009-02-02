@@ -12,4 +12,12 @@ module Slot
   ITEM_SECONDARY = 5
   
   ALL = [ITEM_PRIMARY, ITEM_SECONDARY, ABILITY_1, ABILITY_2, ABILITY_3]
+  
+  DISPLAY_CLASS = {
+    ABILITY_1 => 'ability',
+    ABILITY_2 => 'ability',
+    ABILITY_3 => 'ability',
+    ITEM_PRIMARY => 'primary',
+    ITEM_SECONDARY => 'secondary',
+  }
 end
