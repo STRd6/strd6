@@ -5,6 +5,10 @@ class CreateCharacterInstances < ActiveRecord::Migration
       t.references :player, :null => false
       t.references :game, :null => false
       
+      t.references :default_ability_1
+      t.references :default_ability_2
+      t.references :default_ability_3
+      
       t.integer :hit_points, :null => false
       t.integer :energy, :null => false
       t.integer :actions, :null => false

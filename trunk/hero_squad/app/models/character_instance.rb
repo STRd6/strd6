@@ -7,6 +7,10 @@ class CharacterInstance < ActiveRecord::Base
   belongs_to :player
   belongs_to :game
   
+  belongs_to :default_ability_1, :class_name => 'Ability'
+  belongs_to :default_ability_2, :class_name => 'Ability'
+  belongs_to :default_ability_3, :class_name => 'Ability'
+  
   has_one :primary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_PRIMARY}, :include => :data
   has_one :secondary_item_card, :class_name => 'Card', :as => :owner, :conditions => {:slot => Slot::ITEM_SECONDARY}, :include => :data
   
@@ -147,7 +151,11 @@ class CharacterInstance < ActiveRecord::Base
   end
   
   def default_abilities
-    {Slot::ABILITY_1 => Ability.find(1), Slot::ABILITY_2 => :def2, Slot::ABILITY_3 => :def3}
+    {
+      Slot::ABILITY_1 => default_ability_1,
+      Slot::ABILITY_2 => default_ability_2,
+      Slot::ABILITY_3 => default_ability_3,
+    }
   end
   
   STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :hp_max, :en_max, :regen, :egen, :damage_received].freeze
