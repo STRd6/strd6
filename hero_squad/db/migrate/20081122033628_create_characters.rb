@@ -3,6 +3,10 @@ class CreateCharacters < ActiveRecord::Migration
     create_table :characters do |t|
       t.string :name, :null => false
       
+      t.references :default_ability_1
+      t.references :default_ability_2
+      t.references :default_ability_3
+      
       t.text :base_stats, :null => false
       
       t.timestamps

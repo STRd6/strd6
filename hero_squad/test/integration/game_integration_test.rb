@@ -38,7 +38,9 @@ class GameIntegrationTest < ActiveSupport::TestCase
       
       players = game.players
       
-      assert game.cards_for_player(players[0]).size <= game.cards.for_player(players[1]).size 
+      # The first player should have the same amout of cards or one more
+      assert game.cards_for_player(players[0]).size == game.cards.for_player(players[1]).size ||
+        game.cards_for_player(players[0]).size == game.cards.for_player(players[1]).size + 1
     end
   end
 end

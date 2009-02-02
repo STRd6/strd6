@@ -54,8 +54,11 @@ ActiveRecord::Schema.define(:version => 20090128032024) do
   end
 
   create_table "characters", :force => true do |t|
-    t.string   "name",       :null => false
-    t.text     "base_stats", :null => false
+    t.string   "name",                 :null => false
+    t.integer  "default_ability_1_id"
+    t.integer  "default_ability_2_id"
+    t.integer  "default_ability_3_id"
+    t.text     "base_stats",           :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
