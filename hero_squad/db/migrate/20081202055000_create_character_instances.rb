@@ -1,7 +1,8 @@
 class CreateCharacterInstances < ActiveRecord::Migration
   def self.up
     create_table :character_instances do |t|
-      t.references :character, :null => false
+      t.string :name, :null => false
+      t.text :base_stats, :null => false
       t.references :player, :null => false
       t.references :game, :null => false
       

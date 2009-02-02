@@ -1,9 +1,9 @@
 class CharacterInstance < ActiveRecord::Base
   DEFAULT_ACTIONS = 2
+  serialize :base_stats
   
   before_create :prepare_stats
   
-  belongs_to :character
   belongs_to :player
   belongs_to :game
   
@@ -18,7 +18,7 @@ class CharacterInstance < ActiveRecord::Base
   
   has_many :cards, :as => :owner
   
-  validates_presence_of :character, :player, :game
+  validates_presence_of :name, :player, :game
   
   named_scope :in_target_with_area, lambda {|target, area|
     #TODO: Include all positions in area
@@ -29,8 +29,12 @@ class CharacterInstance < ActiveRecord::Base
   #alias :hp :hit_points 
   #alias :en :energy
   
-  def name
-    character.name
+  def character=(character)
+    self.name = character.name
+    self.base_stats = character.base_stats
+    self.default_ability_1 = character.default_ability_1
+    self.default_ability_2 = character.default_ability_2
+    self.default_ability_3 = character.default_ability_3
   end
   
   def position
@@ -114,10 +118,6 @@ class CharacterInstance < ActiveRecord::Base
     end
     
     reload
-  end
-  
-  def base_stats
-    character.base_stats
   end
   
   def dead?
