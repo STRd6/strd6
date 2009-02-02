@@ -11,7 +11,13 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   
+  helper_method :slot_class
+  
   def game_state_error
     {:text => "I am a teapot", :status => 418}
+  end
+  
+  def slot_class
+    Slot::DISPLAY_CLASS
   end
 end
