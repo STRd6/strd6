@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(:version => 20090118025556) do
   create_table "quizzes", :force => true do |t|
     t.string   "title"
     t.text     "description"
+    t.text     "summary"
     t.date     "posted"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -23,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20090118025556) do
     t.integer  "quiz_id"
     t.string   "author"
     t.text     "body"
+    t.text     "reference"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

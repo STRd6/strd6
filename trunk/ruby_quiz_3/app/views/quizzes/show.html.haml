@@ -1,3 +1,3 @@
-%div[@quiz]
-  %h2= @quiz.title
-  .description= @quiz.description
+%h2= @quiz.title
+%p
+  = @quiz.description.gsub(/(\n)+/, "</p><p>")

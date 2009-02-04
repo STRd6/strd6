@@ -1,0 +1,7 @@
+#sidebar
+  %h2 Archives
+  %ol
+    - Quiz.all.each do |quiz|
+      %li= link_to quiz.title, quiz
+
+  

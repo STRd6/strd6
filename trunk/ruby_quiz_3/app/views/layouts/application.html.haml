@@ -9,21 +9,13 @@
     = javascript_include_tag 'application', :cache => 'app'
 
   %body
-    #page
-      %h1 Ruby Quiz 3
+    = render :partial => 'common/header'  
 
+    #main
       #content
-        Coming soon!
-        %br
-        In the meantime check out:
-        %br
-        = link_to "Ruby Quiz", 'http://rubyquiz.com'
-        %br
-        = link_to "Ruby Quiz 2", 'http://splatbang.com/rubyquiz/'
         = yield
-      
-      #footer
-        = link_to "STRd6", "http://strd6.com"
+
+      = render :partial => 'common/sidebar'
 
     = javascript_tag "var AUTH_TOKEN = '#{form_authenticity_token};'" if protect_against_forgery?
     = render :partial => 'common/google_analytics'

@@ -1,0 +1,16 @@
+#header
+  %p#logo_text
+    = link_to '/', image_tag("ruby.png", :class => "logo_image")
+    %span.ruby Ruby
+    %span.quiz Quiz
+
+  %p#nav
+    %span#button_shadows
+      = link_to "Home", '/', :class => "button_shadow"
+      = link_to "Archives", '#', :class => "button_shadow"
+      = link_to "About", '#', :class => "button_shadow"
+
+    %span#buttons
+      = link_to "Home", '/', :class => "button"
+      = link_to "Archives", '#', :class => "button"
+      = link_to "About", '#', :class => "button"

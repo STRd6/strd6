@@ -4,6 +4,7 @@ class CreateResponses < ActiveRecord::Migration
       t.references :quiz
       t.string :author
       t.text :body
+      t.text :reference
 
       t.timestamps
     end
