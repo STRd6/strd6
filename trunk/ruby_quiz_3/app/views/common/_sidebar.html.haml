@@ -2,6 +2,6 @@
   %h2 Archives
   %ol
     - Quiz.all.each do |quiz|
-      %li= link_to quiz.title, quiz
+      %li{:value => quiz.id}= link_to quiz.title, quiz
 
   

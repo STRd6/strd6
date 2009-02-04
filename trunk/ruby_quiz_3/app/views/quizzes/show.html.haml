@@ -1,3 +1,2 @@
 %h2= @quiz.title
-%p
-  = @quiz.description.gsub(/(\n)+/, "</p><p>")
+= Maruku.new(@quiz.description).to_html
