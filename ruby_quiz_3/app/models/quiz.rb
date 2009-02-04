@@ -27,6 +27,7 @@ class Quiz < ActiveRecord::Base
           )
         end
         
+        quiz.id = num
         quiz.save
         
         num += 1
