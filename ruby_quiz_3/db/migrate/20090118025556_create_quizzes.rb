@@ -3,6 +3,7 @@ class CreateQuizzes < ActiveRecord::Migration
     create_table :quizzes do |t|
       t.string :title
       t.text :description
+      t.text :summary
       t.date :posted
 
       t.timestamps

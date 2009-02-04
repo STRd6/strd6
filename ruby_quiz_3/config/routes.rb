@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   #   map.resources :products
   map.resources :quizzes
   
-  map.root :controller => "quizzes"
+  map.root :controller => "quizzes", :action => "show"
 
   # Sample resource route with options:
   #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
