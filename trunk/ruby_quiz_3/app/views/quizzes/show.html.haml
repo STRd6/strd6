@@ -1,2 +1,4 @@
-%h2= @quiz.title
+%h2
+  = @quiz.id
+  = @quiz.title
 = Maruku.new(@quiz.description).to_html

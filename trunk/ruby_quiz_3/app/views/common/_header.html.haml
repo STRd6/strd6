@@ -6,10 +6,10 @@
   %p#nav
     %span#button_shadows
       = link_to "Home", '/', :class => "button_shadow"
-      = link_to "Archives", '#', :class => "button_shadow"
-      = link_to "About", '#', :class => "button_shadow"
+      = link_to "Archives", {:controller => 'quizzes', :action => 'index'}, :class => "button_shadow"
+      = link_to "About", '/about', :class => "button_shadow"
 
     %span#buttons
       = link_to "Home", '/', :class => "button"
-      = link_to "Archives", '#', :class => "button"
-      = link_to "About", '#', :class => "button"
+      = link_to "Archives", {:controller => 'quizzes', :action => 'index'}, :class => "button"
+      = link_to "About", '/about', :class => "button"

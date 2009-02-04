@@ -1,4 +1,11 @@
 #sidebar
+  - if @quiz && @quiz.responses.size > 0
+    %h2 Solutions
+    %ul
+      - @quiz.responses.each do |response|
+        %li
+          = link_to response.author, response.reference
+
   %h2 Archives
   %ol
     - Quiz.all.each do |quiz|

@@ -1,5 +1,5 @@
 .quizzes
-  - @quizzes.each do |quiz|
-    %ol
-      %li
+  %ol
+    - @quizzes.each do |quiz|
+      %li{:value => quiz.id}
         = link_to quiz.title, quiz
