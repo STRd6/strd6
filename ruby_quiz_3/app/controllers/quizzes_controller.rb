@@ -1,5 +1,5 @@
 class QuizzesController < ResourceController::Base
-  actions :show, :index, :new, :edit, :update, :create
+  actions :show, :index
   
   caches_page :index, :show
   
