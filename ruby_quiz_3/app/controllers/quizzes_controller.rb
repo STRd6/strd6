@@ -1,8 +1,7 @@
 class QuizzesController < ResourceController::Base
   actions :show, :index, :new, :edit, :update, :create
   
-  caches_page :index
-  caches_page :show
+  caches_page :index, :show
   
   before_filter :authenticate, :except => [ :index , :show ]
   
