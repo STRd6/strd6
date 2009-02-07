@@ -16,6 +16,9 @@
         = yield
 
       = render :partial => 'common/sidebar'
+      .clear
+      
+    = render :partial => 'common/footer'
 
     = javascript_tag "var AUTH_TOKEN = '#{form_authenticity_token};'" if protect_against_forgery?
     = render :partial => 'common/google_analytics'
