@@ -1,13 +1,8 @@
 class QuizzesController < ResourceController::Base
-  actions :show, :index
+  actions :show, :index, :new, :edit, :update, :create
   
-  private
+  caches_page :index
+  caches_page :show
   
-  def object
-    if params[:id]
-      Quiz.find(params[:id])
-    else
-      Quiz.last
-    end
-  end
+  before_filter :authenticate, :except => [ :index , :show ]
 end
