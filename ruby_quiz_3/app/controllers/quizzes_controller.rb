@@ -5,4 +5,14 @@ class QuizzesController < ResourceController::Base
   caches_page :show
   
   before_filter :authenticate, :except => [ :index , :show ]
+  
+  private
+  
+  def object
+    if params[:id]
+      Quiz.find(params[:id])
+    else
+      Quiz.last
+    end
+  end
 end
