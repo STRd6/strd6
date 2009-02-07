@@ -1,34 +1,30 @@
 /* Main CSS file for Ruby Quiz v. 3.0
   Copywrite 2009 Jeff Zych and Daniel Moore
 
-  Colors:
-  Main red: #C61A1A
-  Button gray: #E5E5E5
+// Colors:
+!primary = #C61A1A
+!primary_light = #E85353
+!button = #E5E5E5
 
 body 
   margin: 0
   padding: 0
 
-
 .clear 
   clear: both
 
-
 h1, h2, h3 
   font-family: Georgia, serif
-  color: #C61A1A
-
+  color = !primary
 
 h2 
-  font-size: 24px
+  font-size: 1.5em
   font-weight: bold
   margin-top: 0
 
-
-p 
+p, ul, ol
   font-family: Verdana, Arial, Helvetica, sans-serif
   color: black
-
 
 #header 
   position: relative
@@ -41,7 +37,6 @@ p
   background-image: url('/images/header.png')
   background-repeat: none
 
-
 p#logo_text 
   float: left
   margin: 5px 5px 5px 60px
@@ -52,35 +47,28 @@ p#logo_text
   font-family: Georgia, serif
   font-size: 35px
 
-
 p#logo_text img.logo_image 
   width: 40px
   height: 40px
 
-
 p#logo_text .ruby 
   color: black
 
-
 p#logo_text .quiz 
-  color: #E5E5E5
-
+  color = !button
 
 p#nav 
   float: right
   margin-right: 75px
-
 
 p#nav #buttons, p#nav #button_shadows 
   position: absolute
   top: 15px
   left: 320px
 
-
 p#nav #button_shadows 
   margin-top: 3px
   margin-left: 3px
-
 
 p#nav .button, p#nav .button_shadow 
   width: 75px
@@ -90,18 +78,14 @@ p#nav .button, p#nav .button_shadow
   font-weight: bold
   text-decoration: none  
 
-
 p#nav .button   
-  color: #E5E5E5
-
+  color = !button
 
 p#nav .button_shadow 
   color: black
 
-
 p#nav .button:hover 
   color: #999
-
 
 #main 
   position: relative
@@ -112,17 +96,20 @@ p#nav .button:hover
   width: 800px
   height: auto
 
-
 #main #content 
   float: left
   width: 560px
   height: auto
   padding-right: 20px
 
-
 #main #content p 
-  font-size: 14px
+  font-size: .8em
 
+#main #content a
+  color = !primary
+  
+  &:hover
+    text-decoration: none
 
 #main #sidebar 
   float: left
@@ -133,27 +120,50 @@ p#nav .button:hover
   border-left: 1px black dotted
 
 ul li
-  font-size: 14px
+  font-size: .8em
 
 #sidebar ol li, #sidebar ul li
   font-family: Verdana, Arial, Helvetica, sans-serif
-  font-size: 12px
+  font-size: .8em
 
 
-#sidebar ol 
-  padding-left: 20px
-
+#sidebar ol, #sidebar ul
+  padding-left: 1.5em
 
 #sidebar a 
-  color: #C61A1A
+  color = !primary
 
+  &:hover 
+    color = !primary_light
+    text-decoration: none
 
-#sidebar a:hover 
-  color: #BB1A1A
-  text-decoration: none
+// Element to clear the floated divs inside #main so 
+  the footer will render in the right spot
+.clear
+  clear: left
+  height: 0
 
 textarea
   width: 570px
 
 input.text
   width: 570px
+  
+// Footer
+#footer
+  position: relative
+  margin-left: auto
+  margin-right: auto
+  width: 800px
+  padding: 25px
+  
+  p
+    color: #999
+    font-size: .6em
+    text-align: center
+    
+  a
+    color: #333
+    
+    &:hover
+      text-decoration: none
