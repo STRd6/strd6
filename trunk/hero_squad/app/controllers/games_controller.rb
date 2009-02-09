@@ -53,18 +53,18 @@ class GamesController < ResourceController::Base
         # Success
         success = true
       else
-        # Ability failed to perform
+        error_message = "Ability failed to perform"
         success = false
       end
     else
-      # Bad Request
+      error_message = "Character: #{character}\nAbility: #{ability}\n Ability Name: #{ability_name}"
       success = false
     end
     
     if success
       render :nothing => true
     else
-      render game_state_error
+      render game_state_error(error_message)
     end
     
   end

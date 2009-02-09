@@ -66,7 +66,7 @@ class CharacterInstance < ActiveRecord::Base
     targets = ability.filter_targets(targets)
     
     if targets.size > 0
-      CharacterInstance.transaction do
+      transaction do
         pay_costs(ability_attributes)
 
         targets.each do |target|
@@ -80,6 +80,8 @@ class CharacterInstance < ActiveRecord::Base
         
         save!
       end
+    else
+      false
     end
   end
   
