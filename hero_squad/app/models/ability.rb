@@ -1,6 +1,8 @@
 class Ability < ActiveRecord::Base
   include StatModifier
   
+  serialize :attribute_expressions
+  
   before_validation_on_create :ensure_attribute_expressions, :set_default_target_type
   
   validates_presence_of :name
@@ -8,6 +10,10 @@ class Ability < ActiveRecord::Base
   
   def passive?
     !activated?
+  end
+  
+  def css_class
+    "ability"
   end
   
   def filter_targets(targets)
