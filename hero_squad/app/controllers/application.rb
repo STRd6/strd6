@@ -13,8 +13,8 @@ class ApplicationController < ActionController::Base
   
   helper_method :slot_class
   
-  def game_state_error
-    {:text => "I am a teapot", :status => 418}
+  def game_state_error(message)
+    {:text => message || "I am a teapot", :status => 418}
   end
   
   def slot_class
