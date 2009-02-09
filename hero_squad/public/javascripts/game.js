@@ -1,6 +1,34 @@
-function defaultParams(params) {
-  return $H({'authenticity_token': AUTH_TOKEN}).merge(params);
-}
+var Ajaxer = Class.create({
+  sendData: function(params, commandURL) {
+    // Use the default command url if none passed in
+    commandURL = commandURL || this.commandURL;
+    
+    // Make the Ajax request with default parameters (auth token, etc.)
+    new Ajax.Request(commandURL, {
+      parameters: this.defaultParams(params)
+    });
+  },
+  
+  defaultParams: function defaultParams(params) {
+    return $H({'authenticity_token': AUTH_TOKEN}).merge(params);
+  }
+});
+
+var Game = Class.create(Ajaxer, {
+  initialize: function(element) {
+  },
+  
+  characterAction: function() {
+    var params = {
+      'x': 1, 'y': 5, 
+      'character_instance[id]': 1,
+      'ability_id': 0,
+      'ability_name': 'Strike'
+    };
+    
+    this.sendData(params, '/games/character_action/' + gameId);
+  }
+});
 
 var GameEntity = Class.create({
   initialize: function(element) {
@@ -38,7 +66,7 @@ var Card = Class.create(GameEntity, {
   }
 });
 
-var DropBase = Class.create({
+var DropBase = Class.create(Ajaxer, {
   initialize: function(element) {
     this.element = $(element);
     this.element.obj = this;
@@ -57,12 +85,6 @@ var DropBase = Class.create({
     target._insertItem(item);
     
     target.sendData(target.commandData(item));
-  },
-  
-  sendData: function(params) {
-    new Ajax.Request(this.commandURL, {
-      parameters: defaultParams(params)
-    });
   },
   
   _insertItem: function(item) {
