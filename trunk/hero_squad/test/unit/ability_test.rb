@@ -37,5 +37,19 @@ class AbilityTest < ActiveSupport::TestCase
         assert @ability.passive?
       end
     end
+    
+    should "maintain attribute expressions across reloads" do
+      @ability.attribute_expressions[:energy_cost] = "3"
+      @ability.save
+      @ability.reload
+      assert_equal "3", @ability.attribute_expressions[:energy_cost]
+    end
+    
+    should "maintain stat mods across reloads" do
+      @ability.stat_mods[:pow] = 3
+      @ability.save
+      @ability.reload
+      assert_equal 3, @ability.stat_mods[:pow]
+    end
   end
 end
