@@ -9,9 +9,10 @@
       = render :partial => character
   .cards
     - game.cards.each do |card|
-      = render :partial => card
+      = render :partial => card if card.owner.nil?
   = render :partial => 'board'
   .tokens
     - @positions[[nil,nil]].each do |character|
       = render :partial => 'token', :locals => {:character => character}
+= javascript_tag "var game = new Game('game_#{game.id}');"
 = javascript_tag "var gameId = #{game.id};"
