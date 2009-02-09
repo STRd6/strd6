@@ -14,10 +14,11 @@ class ItemTest < ActiveSupport::TestCase
       assert @item.name
     end
     
-    should "maintain stat mods accross reloads" do
-      x = @item.stat_mods[:pow]
+    should "maintain stat mods across reloads" do
+      @item.stat_mods[:pow] = 3
+      @item.save
       @item.reload
-      assert_equal x, @item.stat_mods[:pow]
+      assert_equal 3, @item.stat_mods[:pow]
     end
   end
   
