@@ -22,6 +22,10 @@ class Card < ActiveRecord::Base
     data.name
   end
   
+  def css_class
+    data.css_class
+  end
+  
   def item
     data if data.instance_of?(Item)
   end
