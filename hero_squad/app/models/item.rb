@@ -19,4 +19,8 @@ class Item < ActiveRecord::Base
       false
     end
   end
+  
+  def css_class
+    secondary? ? "secondary" : "primary"
+  end
 end
