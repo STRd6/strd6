@@ -1,3 +1,5 @@
+var targeting = false;
+
 var Ajaxer = Class.create({
   sendData: function(params, commandURL) {
     // Use the default command url if none passed in
@@ -18,15 +20,27 @@ var Game = Class.create(Ajaxer, {
   initialize: function(element) {
   },
   
-  characterAction: function() {
-    var params = {
-      'x': 1, 'y': 5, 
-      'character_instance[id]': 1,
-      'ability_id': 0,
-      'ability_name': 'Strike'
-    };
-    
-    this.sendData(params, '/games/character_action/' + gameId);
+  characterAction: function(characterId, ability) {
+    if(this.selectedCharacter && this.target) {
+      var params = {
+        'x': this.target.row, 'y': this.target.col, 
+        'character_instance[id]': characterId,
+        'ability_index': ability.index,
+        'ability_name': ability.name
+      };
+
+      this.sendData(params, '/games/character_action/' + gameId);
+    }
+  },
+  
+  setTargetHex: function(hex) {
+    if(this.target) {
+      this.target.deselect();
+    }
+    this.target = hex;
+    if(this.target) {
+      this.target.select();
+    }
   }
 });
 
@@ -52,14 +66,41 @@ var GameEntity = Class.create({
   }
 });
 
-var Token = Class.create(GameEntity, {
-  initialize: function($super, element) {
+var Token = Class.create(GameEntity, {  
+  initialize: function($super, element, abilities) {
     $super(element);
-    this.element.objectId = element.split('_').last();
+    var id = element.split('_').last();
+    this.element.objectId = id;
+    this.element.observe('mouseover', function() {
+      if(!targeting) {
+        $$('.character_instance').invoke('hide');
+        $('character_instance_' + id).show();
+        game.selectedCharacter = this;
+      }
+    }.bind(this));
+    
+    var menuItems = [];
+    
+    abilities.each(function(ability) {
+      menuItems.push({
+        name: ability.name,
+        className: ability.name,
+        callback: function() {
+          game.characterAction(id, ability);
+        }
+      });
+    });
+    
+    new Proto.Menu({
+      selector: '#' + this.element.id,
+      className: 'menu desktop', // this is a class which will be attached to menu container (used for css styling)
+      menuItems: menuItems // array of menu items
+    })
+
   }
 });
 
-var Card = Class.create(GameEntity, {
+var Card = Class.create(GameEntity, {  
   initialize: function($super, element) {
     $super(element);
     this.element.objectId = element.split('_').last();
@@ -74,15 +115,20 @@ var DropBase = Class.create(Ajaxer, {
     Droppables.add(this.element, {
       accept: this.accept,
       hoverclass: 'hover',
-      onDrop: this.onDrop
+      onDrop: this.onDrop.bind(this)
     });
   },
   
-  onDrop: function(item, drop, event) {
+  process: function(droppable) {
+    
+  },
+  
+  onDrop: function(item, drop, event) {    
     item.shouldRevert = false;
     
     var target = drop.obj;
     target._insertItem(item);
+    this.process(item.obj);
     
     target.sendData(target.commandData(item));
   },
@@ -106,6 +152,10 @@ var Slot = Class.create(DropBase, {
     }
   },
   
+  process: function(card) {
+    card.equipped = true;
+  },
+  
   initialize: function($super, element) {
     $super(element);
     
@@ -119,10 +169,10 @@ var Slot = Class.create(DropBase, {
 var Hex = Class.create(DropBase, {
   accept: ['token'],
   commandURL: '/games/move_character/1',
-  commandData: function(item) {
+  commandData: function(token) {
     return {
       'id': gameId,
-      'token[id]': item.objectId,
+      'token[id]': token.objectId,
       'x': this.row,
       'y': this.col
     };
@@ -139,5 +189,19 @@ var Hex = Class.create(DropBase, {
       hoverclass: 'hover', 
       onDrop: this.onDrop
     });
+    
+    this.element.observe('click', this.onClick.bindAsEventListener(this));
+  },
+  
+  onClick: function(event) {
+    game.setTargetHex(this);
+  },
+  
+  deselect: function() {
+    this.element.removeClassName('target');
+  },
+  
+  select: function() {
+    this.element.addClassName('target');
   }
 });

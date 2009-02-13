@@ -105,16 +105,16 @@ class CharacterInstance < ActiveRecord::Base
     assign_card(item, Slot::ITEM_SECONDARY)
   end
   
-  def assign_card(card, slot)
-    card.slot = slot
-    card.owner = self
-    
-    CharacterInstance.transaction do
+  def assign_card(card, slot)    
+    transaction do
       cards.in_slot(slot).each do |c|
         c.slot = Slot::NONE
-        c.owner_id = player_id
+        c.owner = player
         c.save!
       end
+      
+      card.slot = slot
+      card.owner = self
       
       card.save!
     end

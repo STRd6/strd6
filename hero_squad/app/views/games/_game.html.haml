@@ -7,10 +7,12 @@
   .characters
     - game.character_instances.each do |character|
       = render :partial => character
+  = javascript_tag "$$('.character_instance').invoke('hide');$('character_instance_1').show();"
   .cards
     - game.cards.each do |card|
       = render :partial => card if card.owner.nil?
   = render :partial => 'board'
+  = javascript_tag "$$('.card').invoke('hide');$('card_1').show();"
   .tokens
     - @positions[[nil,nil]].each do |character|
       = render :partial => 'token', :locals => {:character => character}
