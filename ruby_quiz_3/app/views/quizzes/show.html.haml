@@ -7,5 +7,6 @@
 = Maruku.new(@quiz.description).to_html
 
 - unless @quiz.summary.blank?
+  %a{:name => 'summary'}
   %h3 Summary
   = Maruku.new(@quiz.summary).to_html
