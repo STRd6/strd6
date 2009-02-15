@@ -48,9 +48,9 @@ var Scorpio = function() {
   }
   
   var dropTables = function(db) {
-    db.execute('CREATE TABLE IF EXISTS config');
-    db.execute('CREATE TABLE IF EXISTS history');
-    db.execute('CREATE TABLE IF EXISTS scripts');
+    db.execute('DROP TABLE IF EXISTS config');
+    db.execute('DROP TABLE IF EXISTS history');
+    db.execute('DROP TABLE IF EXISTS scripts');
   }
   
   /** Create and return an object with properties named for the current result set
@@ -112,6 +112,8 @@ var Scorpio = function() {
       db.open('scorpio');
       
       createTables(db);
+      
+      self.db = db;
     },
     
     reset: function() {
@@ -161,7 +163,7 @@ var Scorpio = function() {
     },
     
     storeScript: function(code) {
-      db.execute('INSERT INTO scripts (code) VALUES(?)', [code]);
+      db.execute('INSERT INTO scripts (code, active) VALUES(?, 1)', [code]);
     },
     
     deleteScript: function(id) {
@@ -354,7 +356,12 @@ CommandHistory = function(store) {
 };
 
 $(document).ready(function() {
+  if(unsafeWindow.console) {
+    console = unsafeWindow.console;
+  }
+  
   try {
+      
     // Globals
     google = unsafeWindow.google;
     Scorpio.init();
@@ -366,16 +373,19 @@ $(document).ready(function() {
 
     var config = Scorpio.loadConfig();
     var interactiveConsole = new IJC();
-    interactiveConsole.attach(config.left, config.top);
+    interactiveConsole.attach(config.left || 0, config.top || 0);
     
     interactiveConsole.registerCallback('command', commandHistory.add)
     interactiveConsole.registerCallback('keydown', commandHistory.arrowKeyEvent);
     
     // Execute Active Micro-scripts
-    $.each(Scorpio.scripts.all(), function(script) {
+    $.each(Scorpio.scripts.all(), function(index, script) {
       if(script.active) {
         try{
+          GM_log(script.code);
           eval(script.code);
+        } catch(e) {
+          console.error(e);
         }
       }
     });
