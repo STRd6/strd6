@@ -1,0 +1,6 @@
+width: 512
+height: 512
+depth: 6
+red: (Math.sin(Math::PI * Math.sin(Math::PI * (Math.cos(Math::PI * Math.sin(Math::PI * p)) + Math.cos(Math::PI * p * p))/2)) + Math.sin(Math::PI * Math.sin(Math::PI * Math.sin(Math::PI * q * q))) * ((Math.cos(Math::PI * (p + q)/2) + (Math.cos(Math::PI * q) + (p + q)/2)/2)/2 + Math.cos(Math::PI * Math.sin(Math::PI * Math.sin(Math::PI * p))))/2)/2
+green: (Math.cos(Math::PI * (Math.cos(Math::PI * (p + q)/2) + (p + p)/2 * Math.cos(Math::PI * q))/2) + Math.sin(Math::PI * Math.sin(Math::PI * Math.cos(Math::PI * q)) * Math.cos(Math::PI * p) * Math.sin(Math::PI * p)))/2 * Math.sin(Math::PI * (Math.sin(Math::PI * Math.cos(Math::PI * p)) + Math.cos(Math::PI * Math.cos(Math::PI * p)))/2 * ((q + p)/2 + Math.cos(Math::PI * p))/2 * Math.sin(Math::PI * (q + p)/2))
+blue: Math.cos(Math::PI * ((Math.sin(Math::PI * q) + (q + p)/2)/2 * q * p * Math.sin(Math::PI * q) * Math.cos(Math::PI * q * q) * (Math.sin(Math::PI * q) + Math.sin(Math::PI * q))/2 + (Math.sin(Math::PI * q * p * p * p) + (Math.sin(Math::PI * q) + (q + q)/2)/2 * (Math.sin(Math::PI * p) + q * p)/2)/2)/2)

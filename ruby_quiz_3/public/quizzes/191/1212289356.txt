@@ -1,0 +1,6 @@
+width: 512
+height: 512
+depth: 6
+red: Math.sin(Math::PI * Math.cos(Math::PI * Math.sin(Math::PI * Math.cos(Math::PI * Math.cos(Math::PI * q)) * (Math.cos(Math::PI * p) + Math.cos(Math::PI * q))/2)))
+green: Math.sin(Math::PI * Math.sin(Math::PI * Math.cos(Math::PI * (Math.sin(Math::PI * p) + Math.cos(Math::PI * p))/2))) * Math.cos(Math::PI * Math.cos(Math::PI * Math.cos(Math::PI * Math.cos(Math::PI * q))) * Math.sin(Math::PI * Math.sin(Math::PI * q) * Math.cos(Math::PI * q)))
+blue: Math.cos(Math::PI * Math.cos(Math::PI * Math.cos(Math::PI * q) * Math.sin(Math::PI * q) * Math.sin(Math::PI * q) * (p + q)/2 * Math.cos(Math::PI * q * q * (p + q)/2)))
