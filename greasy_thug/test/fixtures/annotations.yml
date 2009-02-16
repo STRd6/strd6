@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  top: 1
+  left: 1
+  text: MyText
+  owner: 
+
+two:
+  top: 1
+  left: 1
+  text: MyText
+  owner: 
