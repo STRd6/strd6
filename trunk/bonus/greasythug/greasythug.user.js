@@ -2,7 +2,7 @@
 // @name           GreasyThug
 // @namespace      http://strd6.com
 // @description    GearsMonkey + jQuery
-// @include        http://*
+// @include        *
 // @require        http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js
 // @require        http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.2/jquery-ui.min.js
 
@@ -199,26 +199,39 @@ var Scorpio = function() {
 var Speakeasy = function() {
   var baseUrl = 'http://localhost:3000/';
   
+  function generateArrayDataTransfer(objectType, callback) {
+    return function(responseData) {
+      var dataArray = eval('(' + responseData + ')');
+      var elements = $.map(dataArray, function(element) {
+        return element[objectType];
+      });
+      callback(elements);
+    };
+  }
+  
   function makeRequest(resource, options) {
     var method = options.method || 'GET';
     var url = baseUrl + resource + '.js';
-
     var headers = {
       'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey',
       'Accept': 'application/json,application/atom+xml,application/xml,text/xml'
     };
+    var data = $.param(options.data || '');
+    var onSuccess = options.onSuccess || (function(){});
+    
     if(method == 'POST') {
       headers['Content-type'] = 'application/x-www-form-urlencoded';
+    } else if(method == 'GET') {
+      if(data) {
+        url += '?' + data;
+      }
     }
-    
-    var data = options.data || '';
-    var onSuccess = options.onSuccess || (function(){});
     
     GM_xmlhttpRequest({
       method: method,
       url: url,
       headers: headers,
-      data: $.param(data),
+      data: data,
       
       onload: function(responseDetails) {
         if(responseDetails.status == 200) {
@@ -230,14 +243,15 @@ var Speakeasy = function() {
     });
   }
   
+  function allAnnotations(url, callback) {
+    var dataTransfer = generateArrayDataTransfer('annotation', callback);
+    
+    makeRequest('annotations', {data: {url: url}, onSuccess: dataTransfer});
+  }
+  
   function allScripts(callback) {
-    var dataTransfer = function(responseData) {
-      var dataArray = eval('(' + responseData + ')');
-      var scripts = $.map(dataArray, function(element) {
-        return element.script;
-      });
-      callback(scripts);
-    }
+    var dataTransfer = generateArrayDataTransfer('script', callback);
+    
     makeRequest('scripts', {onSuccess: dataTransfer});
   }
   
@@ -259,6 +273,7 @@ var Speakeasy = function() {
   }
 
   var self = {
+    allAnnotations: allAnnotations,
     allScripts: allScripts,
     script: script,
     executeScript: function(id){
@@ -470,6 +485,31 @@ function enumerateRemote() {
   });
 }
 
+function displayAnnotation(annotation) {
+  var element = $('<div></div>')
+    .append(document.createTextNode(annotation.text))
+    .css({
+      'background-color': 'yellow',
+      'position': 'absolute',
+      'top': annotation.top,
+      'left': annotation.left,
+      'z-index': 999
+    });
+    
+  $('body').append(element);
+}
+
+/** Allows existing proctected methods to be called from the page console */
+Function.prototype.safeCall = function() {
+  var self = this, args = [];
+  for (var i = 0; i < arguments.length; i++) {
+    args.push(arguments[i]);
+  }
+  setTimeout(function() {
+    return self.apply(null, args);
+  }, 0);
+}
+
 $(document).ready(function() {
   if(unsafeWindow.console) {
     console = unsafeWindow.console;
@@ -518,6 +558,15 @@ $(document).ready(function() {
           console.error(e);
         }
       }
+    });
+    
+    // Attach all annotations
+    var href = window.location.href;
+    var currentUrl = href.substring(href.indexOf('://') + 3);
+    Speakeasy.allAnnotations(currentUrl, function(annotations) {
+      $.each(annotations, function(index, annotation) {
+        displayAnnotation(annotation);
+      });
     });
   } catch(e) {
     console.error(e);
