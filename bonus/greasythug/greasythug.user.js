@@ -67,9 +67,12 @@ var Scorpio = function() {
     return object;
   }
   
-  var generators = {
-    all: function(table) {
-      return function() {
+  function TableInterface(table, options) {
+    options = options || {};
+    var primaryKey = options.primaryKey || 'id';
+  
+    return {
+      all: function() {
         var rs = db.execute('SELECT * FROM ' + table);
         
         var results = [];
@@ -81,18 +84,36 @@ var Scorpio = function() {
         rs.close();
         
         return results;
-      }
-    },
-    
-    deleteAll: function(table) {
-      return function() {
+      },
+      
+      create: function(object) {
+        var fields = [];
+        var values = [];
+        var placeholders = [];
+        
+        $.each(object, function(key, value) {
+          fields.push(key);
+          values.push(value);
+          placeholders.push('?');
+        });
+        
+        db.execute(
+          'INSERT INTO ' + table + 
+          ' (' + fields.join(', ') + ') ' +
+          'VALUES(' + placeholders.join(', ') + ')',
+          values
+        );
+      },
+      
+      deleteAll: function() {
         db.execute('DELETE FROM ' + table);
-      }
-    },
-    
-    find: function(table) {
-      return function(id) {
-        var rs = db.execute('SELECT * FROM ' + table + ' WHERE id = ?', [id]);
+      },
+      
+      find: function(id) {
+        var rs = db.execute(
+          'SELECT * FROM ' + table + 
+          ' WHERE ' + primaryKey + ' = ?', [id]
+        );
         
         var result = null;
         
@@ -162,19 +183,11 @@ var Scorpio = function() {
       db.execute('INSERT INTO history (code) VALUES(?)', [code]);
     },
     
-    storeScript: function(code) {
-      db.execute('INSERT INTO scripts (code, active) VALUES(?, 1)', [code]);
-    },
-    
     deleteScript: function(id) {
       db.execute('DELETE FROM scripts WHERE id = ?', [id]);
     },
     
-    scripts: {
-      all: generators.all('scripts'),
-      deleteAll: generators.deleteAll('scripts'),
-      find: generators.find('scripts')
-    }
+    scripts: new TableInterface('scripts')
   };
   
   return self;
@@ -217,7 +230,7 @@ var IJC = function() {
     output.append(document.createTextNode(text));
     output.append('<br />');
     // Scroll to bottom
-    output.scrollTop = output.scrollHeight;
+    output[0].scrollTop = output[0].scrollHeight;
   };
   
   var input = $("<input type='text'></input>")
@@ -368,7 +381,18 @@ $(document).ready(function() {
     commandHistory = new CommandHistory(Scorpio);
     
     savePrevious = function() {
-      Scorpio.storeScript(commandHistory.last());
+      Scorpio.scripts.create({
+        code: commandHistory.last(),
+        active: 1
+      });
+    }
+    
+    listScripts = function() {
+      var scripts = "";
+      $.each(Scorpio.scripts.all(), function(index, script) {
+        scripts += script.id + '-' + script.active +': ' + script.code + "\n";
+      });
+      return scripts;
     }
 
     var config = Scorpio.loadConfig();
@@ -382,7 +406,7 @@ $(document).ready(function() {
     $.each(Scorpio.scripts.all(), function(index, script) {
       if(script.active) {
         try{
-          GM_log(script.code);
+          console.log(script.code);
           eval(script.code);
         } catch(e) {
           console.error(e);
