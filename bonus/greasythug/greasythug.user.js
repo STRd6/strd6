@@ -197,7 +197,7 @@ var Scorpio = function() {
   Speakeasy abstracts the GM_xmlhttprequest and handles communication with the remote script server.
  */
 var Speakeasy = function() {
-  var baseUrl = 'http://localhost:3000/';
+  var baseUrl = 'http://67.207.139.110:9000/';
   
   function generateArrayDataTransfer(objectType, callback) {
     return function(responseData) {
@@ -263,6 +263,18 @@ var Speakeasy = function() {
     makeRequest('scripts/' + id, {onSuccess: dataTransfer});
   }
   
+  function createAnnotation(annotation) {
+    makeRequest('annotations', {
+      method: 'POST',
+      data: {
+        'annotation[url]': annotation.url,
+        'annotation[top]': annotation.top,
+        'annotation[left]': annotation.left,
+        'annotation[text]': annotation.text
+      }
+    });
+  }
+  
   function create(code) {
     makeRequest('scripts', {
       method: 'POST', 
@@ -274,6 +286,7 @@ var Speakeasy = function() {
 
   var self = {
     allAnnotations: allAnnotations,
+    createAnnotation: createAnnotation,
     allScripts: allScripts,
     script: script,
     executeScript: function(id){
@@ -485,6 +498,29 @@ function enumerateRemote() {
   });
 }
 
+function createAnnotationForm(x, y) {
+  var input = $("<input type='text'></input>");
+
+  var element = $('<form action="#" method="get"></form>')
+    .append(input)
+    .css({
+      'background-color': 'yellow',
+      'position': 'absolute',
+      'top': y,
+      'left': x,
+      'z-index': 999
+    }).submit( function() {
+      var text = input.val();
+      var annotation = {top: y, left: x, text: text, url: currentUrl};
+      Speakeasy.createAnnotation(annotation);
+      element.remove();
+      displayAnnotation(annotation);
+      return false;
+    });
+    
+  $('body').append(element);
+}
+
 function displayAnnotation(annotation) {
   var element = $('<div></div>')
     .append(document.createTextNode(annotation.text))
@@ -562,11 +598,18 @@ $(document).ready(function() {
     
     // Attach all annotations
     var href = window.location.href;
-    var currentUrl = href.substring(href.indexOf('://') + 3);
+    currentUrl = href.substring(href.indexOf('://') + 3);
     Speakeasy.allAnnotations(currentUrl, function(annotations) {
       $.each(annotations, function(index, annotation) {
         displayAnnotation(annotation);
       });
+    });
+    
+    // Add annotation creation shizzy
+    $('body').click(function(e) {
+      if(e.ctrlKey) {
+        createAnnotationForm(e.pageX, e.pageY);
+      }
     });
   } catch(e) {
     console.error(e);
