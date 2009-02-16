@@ -194,6 +194,85 @@ var Scorpio = function() {
 }();
 
 /**
+  Speakeasy abstracts the GM_xmlhttprequest and handles communication with the remote script server.
+ */
+var Speakeasy = function() {
+  var baseUrl = 'http://localhost:3000/';
+  
+  function makeRequest(resource, options) {
+    var method = options.method || 'GET';
+    var url = baseUrl + resource + '.js';
+
+    var headers = {
+      'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey',
+      'Accept': 'application/json,application/atom+xml,application/xml,text/xml'
+    };
+    if(method == 'POST') {
+      headers['Content-type'] = 'application/x-www-form-urlencoded';
+    }
+    
+    var data = options.data || '';
+    var onSuccess = options.onSuccess || (function(){});
+    
+    GM_xmlhttpRequest({
+      method: method,
+      url: url,
+      headers: headers,
+      data: $.param(data),
+      
+      onload: function(responseDetails) {
+        if(responseDetails.status == 200) {
+          onSuccess(responseDetails.responseText);
+        } else {
+          console.warn(url + ' - ' + responseDetails.status + ':\n\n' + responseDetails.responseText);
+        }
+      }
+    });
+  }
+  
+  function allScripts(callback) {
+    var dataTransfer = function(responseData) {
+      var dataArray = eval('(' + responseData + ')');
+      var scripts = $.map(dataArray, function(element) {
+        return element.script;
+      });
+      callback(scripts);
+    }
+    makeRequest('scripts', {onSuccess: dataTransfer});
+  }
+  
+  function script(id, callback) {
+    var dataTransfer = function(responseData) {
+      var script = eval('(' + responseData + ')').script;
+      callback(script);
+    }
+    makeRequest('scripts/' + id, {onSuccess: dataTransfer});
+  }
+  
+  function create(code) {
+    makeRequest('scripts', {
+      method: 'POST', 
+      data: { 
+        'script[code]': code
+      }
+    });
+  }
+
+  var self = {
+    allScripts: allScripts,
+    script: script,
+    executeScript: function(id){
+      self.script(id, function(script) {
+        eval(script.code);
+      });
+    },
+    create: create
+  };
+  
+  return self;
+}();
+
+/**
 * This controls the interactive console for testing the Grease
 */
 var IJC = function() {
@@ -368,13 +447,35 @@ CommandHistory = function(store) {
   };
 };
 
+var remoteId = 1;
+
+function executeRemoteScript() {
+  //alert('test');
+  Speakeasy.executeScript(remoteId);
+}
+
+function storePreviousAsRemote() {
+  Speakeasy.create(commandHistory.last());
+}
+
+function enumerateRemote() {
+  Speakeasy.allScripts(function(scripts) {
+    var display = '';
+    
+    $.each(scripts, function(index, script) {
+      display += script.id + ': ' + script.code + '\n';
+    });
+    
+    alert(display);
+  });
+}
+
 $(document).ready(function() {
   if(unsafeWindow.console) {
     console = unsafeWindow.console;
   }
   
   try {
-      
     // Globals
     google = unsafeWindow.google;
     Scorpio.init();
@@ -386,6 +487,11 @@ $(document).ready(function() {
         active: 1
       });
     }
+    
+    // Create menu items
+    GM_registerMenuCommand("Execute Remote", executeRemoteScript);
+    GM_registerMenuCommand("Store Previous as Remote", storePreviousAsRemote);
+    GM_registerMenuCommand("Enumerate Remote", enumerateRemote);
     
     listScripts = function() {
       var scripts = "";
@@ -402,7 +508,7 @@ $(document).ready(function() {
     interactiveConsole.registerCallback('command', commandHistory.add)
     interactiveConsole.registerCallback('keydown', commandHistory.arrowKeyEvent);
     
-    // Execute Active Micro-scripts
+    // Execute Active Local Micro-scripts
     $.each(Scorpio.scripts.all(), function(index, script) {
       if(script.active) {
         try{
