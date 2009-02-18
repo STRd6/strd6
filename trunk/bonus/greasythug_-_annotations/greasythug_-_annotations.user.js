@@ -3,8 +3,61 @@
 // @namespace      http://strd6.com
 // @description    Super-simple website annotations shared with all!
 // @include        *
+//
 // @require        http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js
 // @require        http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.2/jquery-ui.min.js
+//
+// @resource       jQueryUICSS http://strd6.com/stuff/jqui/ui.all.css
+// @resource 6da8d5_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_down.gif
+// @resource 469bdd_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_doc.gif
+// @resource fcfdfd_40x100_textures_06_inset_hard_100.png http://strd6.com/stuff/jqui/images/fcfdfd_40x100_textures_06_inset_hard_100.png
+// @resource 469bdd_11x11_icon_resize_se.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_resize_se.gif
+// @resource 217bc0_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_arrows_leftright.gif
+// @resource 469bdd_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_arrows_updown.gif
+// @resource 217bc0_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_down.gif
+// @resource 469bdd_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_right.gif
+// @resource 217bc0_11x11_icon_close.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_close.gif
+// @resource 6da8d5_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_arrows_leftright.gif
+// @resource 217bc0_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_right.gif
+// @resource 217bc0_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_doc.gif
+// @resource 469bdd_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_minus.gif
+// @resource f9bd01_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_doc.gif
+// @resource 469bdd_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_left.gif
+// @resource 6da8d5_11x11_icon_folder_open.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_folder_open.gif
+// @resource 6da8d5_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_minus.gif
+// @resource 6da8d5_11x11_icon_close.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_close.gif
+// @resource 6da8d5_11x11_icon_folder_closed.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_folder_closed.gif
+// @resource f9bd01_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_plus.gif
+// @resource 217bc0_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_left.gif
+// @resource f9bd01_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_down.gif
+// @resource 217bc0_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_plus.gif
+// @resource dfeffc_40x100_textures_02_glass_85.png http://strd6.com/stuff/jqui/images/dfeffc_40x100_textures_02_glass_85.png
+// @resource f9bd01_11x11_icon_folder_closed.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_folder_closed.gif
+// @resource 6da8d5_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_doc.gif
+// @resource f9bd01_11x11_icon_folder_open.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_folder_open.gif
+// @resource f9bd01_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_minus.gif
+// @resource 469bdd_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_plus.gif
+// @resource 6da8d5_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_plus.gif
+// @resource f9bd01_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_right.gif
+// @resource 6da8d5_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_up.gif
+// @resource f9bd01_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_left.gif
+// @resource f9bd01_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_up.gif
+// @resource 469bdd_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_arrows_leftright.gif
+// @resource 217bc0_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_arrows_updown.gif
+// @resource f9bd01_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_arrows_updown.gif
+// @resource 6da8d5_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_left.gif
+// @resource 469bdd_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_down.gif
+// @resource 217bc0_11x11_icon_folder_open.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_folder_open.gif
+// @resource 217bc0_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_up.gif
+// @resource 469bdd_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_up.gif
+// @resource 6da8d5_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_right.gif
+// @resource f9bd01_11x11_icon_close.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_close.gif
+// @resource 217bc0_11x11_icon_folder_closed.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_folder_closed.gif
+// @resource 6da8d5_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_arrows_updown.gif
+// @resource f9bd01_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_arrows_leftright.gif
+// @resource f5f8f9_40x100_textures_06_inset_hard_100.png http://strd6.com/stuff/jqui/images/f5f8f9_40x100_textures_06_inset_hard_100.png
+// @resource 217bc0_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_minus.gif
+// @resource d0e5f5_40x100_textures_02_glass_75.png http://strd6.com/stuff/jqui/images/d0e5f5_40x100_textures_02_glass_75.png
 
 // ==/UserScript==
 
@@ -225,6 +278,79 @@ $(document).ready(function() {
         return false;
       }
     });
+    
+    // Load UI Styles
+    (function() {
+        var resources = [
+          '6da8d5_7x7_arrow_down.gif',
+          '469bdd_11x11_icon_doc.gif',
+          'fcfdfd_40x100_textures_06_inset_hard_100.png',
+          '469bdd_11x11_icon_resize_se.gif',
+          '217bc0_11x11_icon_arrows_leftright.gif',
+          '469bdd_11x11_icon_arrows_updown.gif',
+          '217bc0_7x7_arrow_down.gif',
+          '469bdd_7x7_arrow_right.gif',
+          '217bc0_11x11_icon_close.gif',
+          '6da8d5_11x11_icon_arrows_leftright.gif',
+          '217bc0_7x7_arrow_right.gif',
+          '217bc0_11x11_icon_doc.gif',
+          '469bdd_11x11_icon_minus.gif',
+          'f9bd01_11x11_icon_doc.gif',
+          '469bdd_7x7_arrow_left.gif',
+          '6da8d5_11x11_icon_folder_open.gif',
+          '6da8d5_11x11_icon_minus.gif',
+          '6da8d5_11x11_icon_close.gif',
+          '6da8d5_11x11_icon_folder_closed.gif',
+          'f9bd01_11x11_icon_plus.gif',
+          '217bc0_7x7_arrow_left.gif',
+          'f9bd01_7x7_arrow_down.gif',
+          '217bc0_11x11_icon_plus.gif',
+          'dfeffc_40x100_textures_02_glass_85.png',
+          'f9bd01_11x11_icon_folder_closed.gif',
+          '6da8d5_11x11_icon_doc.gif',
+          'f9bd01_11x11_icon_folder_open.gif',
+          'f9bd01_11x11_icon_minus.gif',
+          '469bdd_11x11_icon_plus.gif',
+          '6da8d5_11x11_icon_plus.gif',
+          'f9bd01_7x7_arrow_right.gif',
+          '6da8d5_7x7_arrow_up.gif',
+          'f9bd01_7x7_arrow_left.gif',
+          'f9bd01_7x7_arrow_up.gif',
+          '469bdd_11x11_icon_arrows_leftright.gif',
+          '217bc0_11x11_icon_arrows_updown.gif',
+          'f9bd01_11x11_icon_arrows_updown.gif',
+          '6da8d5_7x7_arrow_left.gif',
+          '469bdd_7x7_arrow_down.gif',
+          '217bc0_11x11_icon_folder_open.gif',
+          '217bc0_7x7_arrow_up.gif',
+          '469bdd_7x7_arrow_up.gif',
+          '6da8d5_7x7_arrow_right.gif',
+          'f9bd01_11x11_icon_close.gif',
+          '217bc0_11x11_icon_folder_closed.gif',
+          '6da8d5_11x11_icon_arrows_updown.gif',
+          'f9bd01_11x11_icon_arrows_leftright.gif',
+          'f5f8f9_40x100_textures_06_inset_hard_100.png',
+          '217bc0_11x11_icon_minus.gif',
+          'd0e5f5_40x100_textures_02_glass_75.png'
+        ];
+        
+        var head = document.getElementsByTagName('head')[0];
+
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        
+        var css = GM_getResourceText ( 'jQueryUICSS'); 
+        $.each(resources, function(index, resourceName) {
+          css = css.replace( 'images/' + resourceName, GM_getResourceURL(resourceName));
+        });
+        
+        console.log(css);
+        
+        style.innerHTML = css;
+        head.appendChild(style);
+    })();
+    
+    $('<div></div>').dialog();
   } catch(e) {
     console.error(e);
   }
