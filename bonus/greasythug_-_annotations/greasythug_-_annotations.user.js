@@ -4,60 +4,25 @@
 // @description    Super-simple website annotations shared with all!
 // @include        *
 //
-// @require        http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js
-// @require        http://ajax.googleapis.com/ajax/libs/jqueryui/1.5.2/jquery-ui.min.js
+// @resource       jQuery               http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js
+// @resource       jQueryUI             http://strd6.com/stuff/jqui/jquery-ui-personalized-1.6rc6.min.js
 //
-// @resource       jQueryUICSS http://strd6.com/stuff/jqui/ui.all.css
-// @resource 6da8d5_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_down.gif
-// @resource 469bdd_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_doc.gif
-// @resource fcfdfd_40x100_textures_06_inset_hard_100.png http://strd6.com/stuff/jqui/images/fcfdfd_40x100_textures_06_inset_hard_100.png
-// @resource 469bdd_11x11_icon_resize_se.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_resize_se.gif
-// @resource 217bc0_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_arrows_leftright.gif
-// @resource 469bdd_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_arrows_updown.gif
-// @resource 217bc0_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_down.gif
-// @resource 469bdd_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_right.gif
-// @resource 217bc0_11x11_icon_close.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_close.gif
-// @resource 6da8d5_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_arrows_leftright.gif
-// @resource 217bc0_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_right.gif
-// @resource 217bc0_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_doc.gif
-// @resource 469bdd_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_minus.gif
-// @resource f9bd01_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_doc.gif
-// @resource 469bdd_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_left.gif
-// @resource 6da8d5_11x11_icon_folder_open.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_folder_open.gif
-// @resource 6da8d5_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_minus.gif
-// @resource 6da8d5_11x11_icon_close.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_close.gif
-// @resource 6da8d5_11x11_icon_folder_closed.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_folder_closed.gif
-// @resource f9bd01_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_plus.gif
-// @resource 217bc0_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_left.gif
-// @resource f9bd01_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_down.gif
-// @resource 217bc0_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_plus.gif
-// @resource dfeffc_40x100_textures_02_glass_85.png http://strd6.com/stuff/jqui/images/dfeffc_40x100_textures_02_glass_85.png
-// @resource f9bd01_11x11_icon_folder_closed.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_folder_closed.gif
-// @resource 6da8d5_11x11_icon_doc.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_doc.gif
-// @resource f9bd01_11x11_icon_folder_open.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_folder_open.gif
-// @resource f9bd01_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_minus.gif
-// @resource 469bdd_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_plus.gif
-// @resource 6da8d5_11x11_icon_plus.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_plus.gif
-// @resource f9bd01_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_right.gif
-// @resource 6da8d5_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_up.gif
-// @resource f9bd01_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_left.gif
-// @resource f9bd01_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/f9bd01_7x7_arrow_up.gif
-// @resource 469bdd_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/469bdd_11x11_icon_arrows_leftright.gif
-// @resource 217bc0_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_arrows_updown.gif
-// @resource f9bd01_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_arrows_updown.gif
-// @resource 6da8d5_7x7_arrow_left.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_left.gif
-// @resource 469bdd_7x7_arrow_down.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_down.gif
-// @resource 217bc0_11x11_icon_folder_open.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_folder_open.gif
-// @resource 217bc0_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/217bc0_7x7_arrow_up.gif
-// @resource 469bdd_7x7_arrow_up.gif http://strd6.com/stuff/jqui/images/469bdd_7x7_arrow_up.gif
-// @resource 6da8d5_7x7_arrow_right.gif http://strd6.com/stuff/jqui/images/6da8d5_7x7_arrow_right.gif
-// @resource f9bd01_11x11_icon_close.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_close.gif
-// @resource 217bc0_11x11_icon_folder_closed.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_folder_closed.gif
-// @resource 6da8d5_11x11_icon_arrows_updown.gif http://strd6.com/stuff/jqui/images/6da8d5_11x11_icon_arrows_updown.gif
-// @resource f9bd01_11x11_icon_arrows_leftright.gif http://strd6.com/stuff/jqui/images/f9bd01_11x11_icon_arrows_leftright.gif
-// @resource f5f8f9_40x100_textures_06_inset_hard_100.png http://strd6.com/stuff/jqui/images/f5f8f9_40x100_textures_06_inset_hard_100.png
-// @resource 217bc0_11x11_icon_minus.gif http://strd6.com/stuff/jqui/images/217bc0_11x11_icon_minus.gif
-// @resource d0e5f5_40x100_textures_02_glass_75.png http://strd6.com/stuff/jqui/images/d0e5f5_40x100_textures_02_glass_75.png
+// @resource       jQueryUICSS          http://strd6.com/stuff/jqui/theme/ui.all.css
+//
+// @resource    ui-bg_diagonals-thick_18_b81900_40x40.png       http://strd6.com/stuff/jqui/theme/images/ui-bg_diagonals-thick_18_b81900_40x40.png
+// @resource    ui-bg_glass_100_f6f6f6_1x400.png                http://strd6.com/stuff/jqui/theme/images/ui-bg_glass_100_f6f6f6_1x400.png
+// @resource    ui-bg_diagonals-thick_20_666666_40x40.png       http://strd6.com/stuff/jqui/theme/images/ui-bg_diagonals-thick_20_666666_40x40.png
+// @resource    ui-bg_glass_65_ffffff_1x400.png                 http://strd6.com/stuff/jqui/theme/images/ui-bg_glass_65_ffffff_1x400.png
+// @resource    ui-bg_gloss-wave_35_f6a828_500x100.png          http://strd6.com/stuff/jqui/theme/images/ui-bg_gloss-wave_35_f6a828_500x100.png
+// @resource    ui-icons_222222_256x240.png                     http://strd6.com/stuff/jqui/theme/images/ui-icons_222222_256x240.png
+// @resource    ui-bg_flat_10_000000_40x100.png                 http://strd6.com/stuff/jqui/theme/images/ui-bg_flat_10_000000_40x100.png
+// @resource    ui-icons_ef8c08_256x240.png                     http://strd6.com/stuff/jqui/theme/images/ui-icons_ef8c08_256x240.png
+// @resource    ui-icons_ffd27a_256x240.png                     http://strd6.com/stuff/jqui/theme/images/ui-icons_ffd27a_256x240.png
+// @resource    ui-bg_glass_100_fdf5ce_1x400.png                http://strd6.com/stuff/jqui/theme/images/ui-bg_glass_100_fdf5ce_1x400.png
+// @resource    ui-icons_228ef1_256x240.png                     http://strd6.com/stuff/jqui/theme/images/ui-icons_228ef1_256x240.png
+// @resource    ui-icons_ffffff_256x240.png                     http://strd6.com/stuff/jqui/theme/images/ui-icons_ffffff_256x240.png
+// @resource    ui-bg_highlight-soft_75_ffe45c_1x100.png        http://strd6.com/stuff/jqui/theme/images/ui-bg_highlight-soft_75_ffe45c_1x100.png
+// @resource    ui-bg_highlight-soft_100_eeeeee_1x100.png       http://strd6.com/stuff/jqui/theme/images/ui-bg_highlight-soft_100_eeeeee_1x100.png
 
 // ==/UserScript==
 
@@ -68,18 +33,62 @@
  *  real good and trash that place with a baseball bat. - Homer
  */
 
-/* 
-jquery.event.drag.js ~ v1.4 ~ Copyright (c) 2008, Three Dub Media (http://threedubmedia.com)  
-Liscensed under the MIT License ~ http://threedubmedia.googlecode.com/files/MIT-LICENSE.txt
-*/
-(function(H){H.fn.drag=function(K,J,I){if(J){this.bind("dragstart",K)}if(I){this.bind("dragend",I)}return !K?this.trigger("drag"):this.bind("drag",J?J:K)};var D=H.event,B=D.special,F=B.drag={not:":input",distance:0,which:1,setup:function(I){I=H.extend({distance:F.distance,which:F.which,not:F.not},I||{});I.distance=G(I.distance);D.add(this,"mousedown",E,I)},teardown:function(){D.remove(this,"mousedown",E);if(this===F.dragging){F.dragging=F.proxy=null}C(this,true)}};function E(K){var J=this,I,L=K.data||{};if(L.elem){J=K.dragTarget=L.elem;K.dragProxy=F.proxy||J;K.cursorOffsetX=L.pageX-L.left;K.cursorOffsetY=L.pageY-L.top;K.offsetX=K.pageX-K.cursorOffsetX;K.offsetY=K.pageY-K.cursorOffsetY}else{if(F.dragging||(L.which>0&&K.which!=L.which)||H(K.target).is(L.not)){return }}switch(K.type){case"mousedown":H.extend(L,H(J).offset(),{elem:J,target:K.target,pageX:K.pageX,pageY:K.pageY});D.add(document,"mousemove mouseup",E,L);C(J,false);return false;case !F.dragging&&"mousemove":if(G(K.pageX-L.pageX)+G(K.pageY-L.pageY)<L.distance){break}K.target=L.target;I=A(K,"dragstart",J);if(I!==false){F.dragging=J;F.proxy=K.dragProxy=H(I||J)[0]}case"mousemove":if(F.dragging){I=A(K,"drag",J);if(B.drop){B.drop.allowed=(I!==false);B.drop.handler(K)}if(I!==false){break}K.type="mouseup"}case"mouseup":D.remove(document,"mousemove mouseup",E);if(F.dragging){if(B.drop){B.drop.handler(K)}A(K,"dragend",J)}C(J,true);F.dragging=F.proxy=L.elem=null;break}}function A(L,J,K){L.type=J;var I=D.handle.call(K,L);return I===false?false:I||L.result}function G(I){return Math.pow(I,2)}function C(J,I){if(!J){return }J.unselectable=I?"off":"on";J.onselectstart=function(){return I};if(document.selection&&document.selection.empty){document.selection.empty()}if(J.style){J.style.MozUserSelect=I?"":"none"}}})(jQuery);
-
 /*
   GreasyThug - Annotations
   Everything from here on down 
   Copyright (c) 2009, STRd6 (http://strd6.com)  
   Liscensed under the MIT License 
 */
+
+// Inject jQuery into page... gross hack... for now...
+(function() {
+  var head = document.getElementsByTagName('head')[0];
+  
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  
+  var jQuery = GM_getResourceText('jQuery');
+  var jQueryUI = GM_getResourceText('jQueryUI');
+  
+  script.innerHTML = jQuery + jQueryUI;
+  head.appendChild(script);
+  
+  $ = unsafeWindow.$;
+})();
+    
+// Load UI Styles
+(function() {
+    var resources = {
+      'ui-bg_diagonals-thick_18_b81900_40x40.png': GM_getResourceURL('ui-bg_diagonals-thick_18_b81900_40x40.png'), 
+      'ui-bg_glass_100_f6f6f6_1x400.png': GM_getResourceURL('ui-bg_glass_100_f6f6f6_1x400.png'),
+      'ui-bg_diagonals-thick_20_666666_40x40.png': GM_getResourceURL('ui-bg_diagonals-thick_20_666666_40x40.png'),
+      'ui-bg_glass_65_ffffff_1x400.png': GM_getResourceURL('ui-bg_glass_65_ffffff_1x400.png'),
+      'ui-bg_gloss-wave_35_f6a828_500x100.png': GM_getResourceURL('ui-bg_gloss-wave_35_f6a828_500x100.png'),
+      'ui-icons_222222_256x240.png': GM_getResourceURL('ui-icons_222222_256x240.png'),
+      'ui-bg_flat_10_000000_40x100.png': GM_getResourceURL('ui-bg_flat_10_000000_40x100.png'),
+      'ui-icons_ef8c08_256x240.png': GM_getResourceURL('ui-icons_ef8c08_256x240.png'),
+      'ui-icons_ffd27a_256x240.png': GM_getResourceURL('ui-icons_ffd27a_256x240.png'),
+      'ui-bg_glass_100_fdf5ce_1x400.png': GM_getResourceURL('ui-bg_glass_100_fdf5ce_1x400.png'),
+      'ui-icons_228ef1_256x240.png': GM_getResourceURL('ui-icons_228ef1_256x240.png'),
+      'ui-icons_ffffff_256x240.png': GM_getResourceURL('ui-icons_ffffff_256x240.png'),
+      'ui-bg_highlight-soft_75_ffe45c_1x100.png': GM_getResourceURL('ui-bg_highlight-soft_75_ffe45c_1x100.png'),
+      'ui-bg_highlight-soft_100_eeeeee_1x100.png': GM_getResourceURL('ui-bg_highlight-soft_100_eeeeee_1x100.png')
+    };
+    
+    var head = document.getElementsByTagName('head')[0];
+
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    
+    var css = GM_getResourceText ('jQueryUICSS');
+    $.each(resources, function(resourceName, resourceUrl) {
+      console.log(resourceName + ': ' + resourceUrl);
+      css = css.replace( 'images/' + resourceName, resourceUrl);
+    });
+    
+    style.innerHTML = css;
+    head.appendChild(style);
+})();
 
 /**
   Speakeasy abstracts the GM_xmlhttprequest and handles communication with the remote script server.
@@ -200,30 +209,34 @@ var Speakeasy = function() {
   return self;
 }();
 
+/** Allows existing proctected methods to be called from the page console */
+Function.prototype.safeCall = function() {
+  var self = this, args = [];
+  for (var i = 0; i < arguments.length; i++) {
+    args.push(arguments[i]);
+  }
+  setTimeout(function() {
+    alert(self);
+    return self.apply(null, args);
+  }, 0);
+}
+
 var Annotations = function() {  
   var self = {
     display: function (annotation) {
       var id = annotation.id;
-      var element = $('<div></div>')
-        .append(document.createTextNode(annotation.text))
+      $('<div></div>')
+        .text(annotation.text)
+        .dialog({
+          title: 'Annotation',
+//          shadow: false,
+//          draggable: false,
+          buttons: { "Ok": function() { $(this).dialog("close"); } },
+          position: [annotation.left, annotation.top]
+        })
         .css({
-          'background-color': 'yellow',
-          'position': 'absolute',
-          'top': annotation.top,
-          'left': annotation.left,
-          'z-index': 999
-        })
-        .bind('drag', function( event ) {
-          $( this ).css({
-            top: event.offsetY,
-            left: event.offsetX
-          });
-        })
-        .bind('dragend', function( event ) {
-          Speakeasy.updateAnnotation({id: id, top: $(this).css('top'), left: $(this).css('left')});
+          'font-size': '0.5em'
         });
-        
-      $('body').append(element);
     },
     
     createForm: function (x, y) {
@@ -256,102 +269,36 @@ var Annotations = function() {
   return self;
 }();
 
-$(document).ready(function() {
-  if(unsafeWindow.console) {
-    console = unsafeWindow.console;
-  }
+
+function allAnnotations(callback) {
+  Speakeasy.allAnnotations(currentUrl, callback);
+}
+
+try {
+  // Attach all annotations for this page from remote server
+  var href = window.location.href;
+  currentUrl = href.substring(href.indexOf('://') + 3);
+  console.log(currentUrl);
   
-  try {
-    // Attach all annotations for this page from remote server
-    var href = window.location.href;
-    currentUrl = href.substring(href.indexOf('://') + 3);
-    Speakeasy.allAnnotations(currentUrl, function(annotations) {
-      $.each(annotations, function(index, annotation) {
+  allAnnotations(function(annotations) {
+    console.log(annotations);
+    $.each(annotations, function(index, annotation) {
+      console.log(annotation.text);
+      try {
         Annotations.display(annotation);
-      });
-    });
-    
-    // Add annotation creation shizzy
-    $('body').click(function(e) {
-      if(e.shiftKey) {
-        Annotations.createForm(e.pageX, e.pageY);
-        return false;
+      } catch (e) {
+        console.error(e);
       }
     });
-    
-    // Load UI Styles
-    (function() {
-        var resources = [
-          '6da8d5_7x7_arrow_down.gif',
-          '469bdd_11x11_icon_doc.gif',
-          'fcfdfd_40x100_textures_06_inset_hard_100.png',
-          '469bdd_11x11_icon_resize_se.gif',
-          '217bc0_11x11_icon_arrows_leftright.gif',
-          '469bdd_11x11_icon_arrows_updown.gif',
-          '217bc0_7x7_arrow_down.gif',
-          '469bdd_7x7_arrow_right.gif',
-          '217bc0_11x11_icon_close.gif',
-          '6da8d5_11x11_icon_arrows_leftright.gif',
-          '217bc0_7x7_arrow_right.gif',
-          '217bc0_11x11_icon_doc.gif',
-          '469bdd_11x11_icon_minus.gif',
-          'f9bd01_11x11_icon_doc.gif',
-          '469bdd_7x7_arrow_left.gif',
-          '6da8d5_11x11_icon_folder_open.gif',
-          '6da8d5_11x11_icon_minus.gif',
-          '6da8d5_11x11_icon_close.gif',
-          '6da8d5_11x11_icon_folder_closed.gif',
-          'f9bd01_11x11_icon_plus.gif',
-          '217bc0_7x7_arrow_left.gif',
-          'f9bd01_7x7_arrow_down.gif',
-          '217bc0_11x11_icon_plus.gif',
-          'dfeffc_40x100_textures_02_glass_85.png',
-          'f9bd01_11x11_icon_folder_closed.gif',
-          '6da8d5_11x11_icon_doc.gif',
-          'f9bd01_11x11_icon_folder_open.gif',
-          'f9bd01_11x11_icon_minus.gif',
-          '469bdd_11x11_icon_plus.gif',
-          '6da8d5_11x11_icon_plus.gif',
-          'f9bd01_7x7_arrow_right.gif',
-          '6da8d5_7x7_arrow_up.gif',
-          'f9bd01_7x7_arrow_left.gif',
-          'f9bd01_7x7_arrow_up.gif',
-          '469bdd_11x11_icon_arrows_leftright.gif',
-          '217bc0_11x11_icon_arrows_updown.gif',
-          'f9bd01_11x11_icon_arrows_updown.gif',
-          '6da8d5_7x7_arrow_left.gif',
-          '469bdd_7x7_arrow_down.gif',
-          '217bc0_11x11_icon_folder_open.gif',
-          '217bc0_7x7_arrow_up.gif',
-          '469bdd_7x7_arrow_up.gif',
-          '6da8d5_7x7_arrow_right.gif',
-          'f9bd01_11x11_icon_close.gif',
-          '217bc0_11x11_icon_folder_closed.gif',
-          '6da8d5_11x11_icon_arrows_updown.gif',
-          'f9bd01_11x11_icon_arrows_leftright.gif',
-          'f5f8f9_40x100_textures_06_inset_hard_100.png',
-          '217bc0_11x11_icon_minus.gif',
-          'd0e5f5_40x100_textures_02_glass_75.png'
-        ];
-        
-        var head = document.getElementsByTagName('head')[0];
-
-        var style = document.createElement('style');
-        style.type = 'text/css';
-        
-        var css = GM_getResourceText ( 'jQueryUICSS'); 
-        $.each(resources, function(index, resourceName) {
-          css = css.replace( 'images/' + resourceName, GM_getResourceURL(resourceName));
-        });
-        
-        console.log(css);
-        
-        style.innerHTML = css;
-        head.appendChild(style);
-    })();
-    
-    $('<div></div>').dialog();
-  } catch(e) {
-    console.error(e);
-  }
-});
+  });
+  
+  // Add annotation creation shizzy
+  $('body').click(function(e) {
+    if(e.ctrlKey) {
+      Annotations.createForm(e.pageX, e.pageY);
+      return false;
+    }
+  });
+} catch(e) {
+  console.error(e);
+}
