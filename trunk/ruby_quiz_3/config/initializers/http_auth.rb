@@ -1,2 +1,2 @@
 USER_NAME = "dimo"
-PASSWORD = File.read('web_auth').chomp
+PASSWORD = File.read(RAILS_ROOT + '/web_auth').chomp
