@@ -1,4 +1,5 @@
 class QuizzesController < ResourceController::Base
-  actions :show, :index
   caches_page :show, :index
+  
+  before_filter :authenticate, :except => [ :show, :index ]
 end
