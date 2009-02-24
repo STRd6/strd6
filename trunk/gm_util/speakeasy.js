@@ -136,6 +136,10 @@ Speakeasy = function($) {
   }
 
   var self = {
+    configure: function(options) {
+      baseUrl = options.baseUrl || baseUrl;
+      apiKey = options.apiKey || apiKey;
+    },
     annotation: generateResource('annotation'),
     script: generateResource('script')
   };
