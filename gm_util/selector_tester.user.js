@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           jQuery Selector Tester
 // @namespace      http://strd6.com
-// @description    Highlights elements to show what matches jQuery selectors
+// @description    Highlights elements on page to show what matches jQuery selectors
 // @include        *
 //
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js
-// ==UserScript==
+// ==/UserScript==
 
 /* 
 jquery.event.drag.js ~ v1.4 ~ Copyright (c) 2008, Three Dub Media (http://threedubmedia.com)  
