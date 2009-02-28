@@ -47,7 +47,7 @@ Speakeasy = function($) {
   
   function makeRequest(resource, options) {
     var method = options.method || 'GET';
-    var url = baseUrl + resource + '.js';
+    var url = baseUrl + resource + '.json';
     var headers = {
       'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey',
       'Accept': 'application/json,application/atom+xml,application/xml,text/xml'
