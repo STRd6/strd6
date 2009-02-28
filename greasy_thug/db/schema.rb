@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090216204333) do
+ActiveRecord::Schema.define(:version => 20090227020338) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "top"
@@ -22,6 +22,21 @@ ActiveRecord::Schema.define(:version => 20090216204333) do
   end
 
   add_index "annotations", ["url"], :name => "index_annotations_on_url"
+
+  create_table "open_id_authentication_associations", :force => true do |t|
+    t.integer "issued"
+    t.integer "lifetime"
+    t.string  "handle"
+    t.string  "assoc_type"
+    t.binary  "server_url"
+    t.binary  "secret"
+  end
+
+  create_table "open_id_authentication_nonces", :force => true do |t|
+    t.integer "timestamp",  :null => false
+    t.string  "server_url"
+    t.string  "salt",       :null => false
+  end
 
   create_table "scripts", :force => true do |t|
     t.string   "name"
@@ -45,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20090216204333) do
     t.datetime "remember_token_expires_at"
     t.string   "activation_code",           :limit => 40
     t.datetime "activated_at"
+    t.string   "identity_url"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
