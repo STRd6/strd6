@@ -2,8 +2,8 @@ class AnnotationsController < ResourceController::Base
   actions :all, :except => [:destroy]
   protect_from_forgery :except => [:create, :update]
   
-  index.wants.js {render :json => @annotations}
-  show.wants.js {render :json => @annotation}
+  index.wants.json {render :json => @annotations}
+  show.wants.json {render :json => @annotation}
   
   private
   
