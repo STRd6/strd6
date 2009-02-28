@@ -8,6 +8,6 @@ class AnnotationsController < ResourceController::Base
   private
   
   def collection
-    Annotation.all :conditions => {:url => params[:url]}
+    Annotation.all :conditions => {:url => params[:url], :owner_id => params[:owner]}
   end
 end

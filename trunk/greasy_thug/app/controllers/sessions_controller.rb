@@ -8,24 +8,12 @@ class SessionsController < ApplicationController
   end
 
   def create
-    logout_keeping_session!
-    user = User.authenticate(params[:login], params[:password])
-    if user
-      # Protects against session fixation attacks, causes request forgery
-      # protection if user resubmits an earlier form using back
-      # button. Uncomment if you understand the tradeoffs.
-      # reset_session
-      self.current_user = user
-      new_cookie_flag = (params[:remember_me] == "1")
-      handle_remember_cookie! new_cookie_flag
-      redirect_back_or_default('/')
-      flash[:notice] = "Logged in successfully"
+    if using_open_id?
+      open_id_authentication(params[:openid_url])
     else
-      note_failed_signin
-      @login       = params[:login]
-      @remember_me = params[:remember_me]
-      render :action => 'new'
+      password_authentication(params[:login], params[:password])
     end
+      
   end
 
   def destroy
@@ -35,9 +23,55 @@ class SessionsController < ApplicationController
   end
 
 protected
+  def open_id_authentication(openid_url)
+    authenticate_with_open_id(openid_url, :required => [:nickname, :email]) do |result, identity_url, registration|
+      if result.successful?
+        user = User.find_or_initialize_by_identity_url(identity_url)
+        if user.new_record?
+          user.login = registration['nickname']
+          user.email = registration['email']
+          user.save(false)
+        end
+        self.current_user = user
+        successful_login
+      else
+        failed_login result.message
+      end
+    end
+  end
+  
+  def password_authentication(login, password)
+    logout_keeping_session!
+    user = User.authenticate(login, password)
+    if user
+      # Protects against session fixation attacks, causes request forgery
+      # protection if user resubmits an earlier form using back
+      # button. Uncomment if you understand the tradeoffs.
+      # reset_session
+      self.current_user = user
+      successful_login
+    else
+      failed_login "Couldn't log you in as '#{params[:login]}'"
+    end
+  end
+  
+  def successful_login
+    new_cookie_flag = (params[:remember_me] == "1")
+    handle_remember_cookie! new_cookie_flag
+    redirect_back_or_default('/')
+    flash[:notice] = "Logged in successfully"
+  end
+  
+  def failed_login(message)
+    note_failed_signin(message)
+    @login       = params[:login]
+    @remember_me = params[:remember_me]
+    render :action => 'new'
+  end
+  
   # Track failed login attempts
-  def note_failed_signin
-    flash[:error] = "Couldn't log you in as '#{params[:login]}'"
+  def note_failed_signin(message)
+    flash[:error] = message
     logger.warn "Failed login for '#{params[:login]}' from #{request.remote_ip} at #{Time.now.utc}"
   end
 end
