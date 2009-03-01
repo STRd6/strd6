@@ -9,14 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090227020338) do
+ActiveRecord::Schema.define(:version => 20090301002510) do
 
   create_table "annotations", :force => true do |t|
     t.integer  "top"
     t.integer  "left"
     t.text     "text"
     t.string   "url"
-    t.integer  "owner_id"
+    t.integer  "owner_id",   :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20090227020338) do
     t.string   "activation_code",           :limit => 40
     t.datetime "activated_at"
     t.string   "identity_url"
+    t.string   "api_key",                   :limit => 40
   end
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
