@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
-  before_create :make_activation_code, :make_api_key 
+  before_create :make_activation_code, :make_api_key
   
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
@@ -73,5 +73,4 @@ class User < ActiveRecord::Base
   def make_api_key
     self.api_key = self.class.make_token
   end
-
 end
