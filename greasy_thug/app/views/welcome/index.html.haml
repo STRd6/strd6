@@ -1,1 +1,5 @@
-%h1 Welcome!
+- if current_user
+  %p
+    Your API Key is
+    %pre
+      = current_user.api_key

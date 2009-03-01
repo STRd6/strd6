@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # render new.rhtml
   def new
+    @title = 'Sign Up'
     @user = User.new
   end
  
