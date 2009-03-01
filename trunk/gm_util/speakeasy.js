@@ -34,12 +34,9 @@ Speakeasy = function($) {
   }
   
   function loadOptionsData(type, dataObject) {
-    var optionsData = {
-      api_key: apiKey
-    };
+    var optionsData = {};
     
     $.each(dataObject, function(field, value) {
-      log(field + ': ' + value)
       optionsData[type + '[' + field +']'] = value;
     });
     return optionsData;
@@ -52,6 +49,7 @@ Speakeasy = function($) {
       'User-agent': 'Mozilla/4.0 (compatible) Greasemonkey',
       'Accept': 'application/json,application/atom+xml,application/xml,text/xml'
     };
+    options.data.api_key = apiKey;
     var data = $.param(options.data || '');
     var onSuccess = options.onSuccess || (function(){});
     
