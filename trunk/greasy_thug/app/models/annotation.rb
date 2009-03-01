@@ -5,7 +5,7 @@ class Annotation < ActiveRecord::Base
 
   before_save :check_public
   
-  attr_accessible :top, :left, :text, :url
+  attr_accessible :top, :left, :text, :url, :public
   
   private
   def check_public
