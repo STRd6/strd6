@@ -71,7 +71,7 @@ Speakeasy = function($) {
         if(responseDetails.status == 200) {
           onSuccess(responseDetails.responseText);
         } else {
-          console.warn(url + ' - ' + responseDetails.status + ':\n\n' + responseDetails.responseText);
+          log(url + ' - ' + responseDetails.status + ':\n\n' + responseDetails.responseText);
         }
       }
     });
