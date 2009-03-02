@@ -7,11 +7,13 @@ D$ = (function($) {
         console.error(message);
       }
     },
+    
     log: function(message) {
       if(debug) {
         console.log(message);
       }
     },
+    
     injectResourceCSS: function (resources) {
       $.each(resources, function(index, resource) {
         var style = document.createElement('style');
@@ -22,6 +24,7 @@ D$ = (function($) {
         $('head').append(style);
       });
     },
+    
     debug: function (newValue) {
       if(newValue == undefined) {
         return debug;
@@ -40,7 +43,9 @@ D$.Widget = function(options) {
   
   var defaults = {
     title: 'Widget',
-    opacity: 0.75
+    opacity: 0.75,
+    top: 0,
+    left: 0
   };
   
   var opts = $.extend(defaults, options);
@@ -48,7 +53,9 @@ D$.Widget = function(options) {
   var chasis = $('<div></div>')
     .css({
       'z-index': '1000',
-      position: 'absolute'
+      position: 'absolute',
+      top: opts.top,
+      left: opts.left
     })
     .fadeTo(0, opts.opacity)
     .bind('dragstart', function(event) {
@@ -59,9 +66,21 @@ D$.Widget = function(options) {
         top: event.offsetY,
         left: event.offsetX
       });
-    });
-    
-  var handle = $('<div>'+ opts.title +'</div>')
+    })
+  ;
+  
+  var closeButton = $('<a href="#">X</a>')
+    .css({
+      position: 'absolute',
+      right: 5
+    })
+    .click(function() {
+      chasis.hide();
+      return false;
+    })
+  ;
+  
+  var handle = $('<div></div>')
     .css({
       backgroundColor: 'blue',
       color: 'white',
@@ -72,11 +91,23 @@ D$.Widget = function(options) {
       '-moz-border-radius': '4px 4px 0 0',
       'padding': '1px 4px'
     })
+    .append(opts.title)
+    .append(closeButton)
     .addClass(cssClass)
     .addClass('handle')
-    .appendTo(chasis);
+    .appendTo(chasis)
+  ;
+  
+  var content = $('<div />')
+    .css({
+      backgroundColor: '#DDDDDD',
+      padding: 2,
+      border: '2px ridge #EEEEEE'
+    })
+    .appendTo(chasis)
+  ;
+  
+  chasis.content = content;
   
   return chasis;
 };
-
-//$('body').append(new Widget());
