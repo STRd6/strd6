@@ -1,5 +1,6 @@
 /*
   Speakeasy.js 
+  Version 0.2.0
   Copyright (c) 2009, STRd6 (http://strd6.com)  
   Liscensed under the MIT License 
   
@@ -130,16 +131,18 @@ Speakeasy = function($) {
       update: update
     };
     
-    return resource;
+    self[type] = resource;
+    return self;
   }
-
+  
   var self = {
     configure: function(options) {
       baseUrl = options.baseUrl || baseUrl;
       apiKey = options.apiKey || apiKey;
+      
+      return self;
     },
-    annotation: generateResource('annotation'),
-    script: generateResource('script')
+    generateResource: generateResource
   };
   
   return self;
