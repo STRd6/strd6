@@ -38,34 +38,37 @@ class GamesController < ResourceController::Base
   end
   
   def character_action
-    ability_id = params[:ability_id].to_i if params[:ability_id]
+    ability_index = params[:ability_index].to_i if params[:ability_index]
     ability_name = params[:ability_name]
     target = [params[:x], params[:y]]
     
     game = Game.find params[:id]
     character = CharacterInstance.find params[:character_instance][:id]
     
-    ability = character.activated_abilities[ability_id] if ability_id
+    ability = character.activated_abilities[ability_index] if ability_index
     
     # Check that ability is valid and that it is the ability that client believes it to be
     if ability && ability.name == ability_name
-      if character.perform_ability(ability, target)
-        # Success
-        success = true
-      else
-        error_message = "Ability failed to perform"
-        success = false
-      end
+      results = character.perform_ability(ability, target)
     else
       error_message = "Character: #{character}\nAbility: #{ability}\n Ability Name: #{ability_name}"
-      success = false
+      results = false
     end
     
-    if success
-      render :nothing => true
+    if results
+      render :update do |page|
+        results.each do |result|
+          update_for page, result
+        end
+      end
     else
       render game_state_error(error_message)
     end
     
+  end
+  
+  private
+  def object
+    @object ||= end_of_association_chain.find(params[:id], :include => [:cards, :character_instances, :entries])
   end
 end

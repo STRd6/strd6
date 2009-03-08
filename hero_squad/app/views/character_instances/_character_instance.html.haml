@@ -6,6 +6,7 @@
     = draw_attribute "POW", character_instance.pow
     = draw_attribute "HP", "#{character_instance.hit_points}/#{character_instance.hp_max}"
     = draw_attribute "EN", "#{character_instance.energy}/#{character_instance.en_max}"
+    = draw_attribute "ACT", character_instance.actions
 
   - Slot::ALL.each do |slot|
     - card = character_instance.cards.in_slot slot

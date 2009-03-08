@@ -68,17 +68,21 @@ class CharacterInstance < ActiveRecord::Base
     if targets.size > 0
       transaction do
         pay_costs(ability_attributes)
+        
+        modified_instances = [self]
 
         targets.each do |target|
           # TODO: Different damages for different targets
           target.apply_effect(ability_attributes)
           target.save!
+          modified_instances << target
         end
         
         # TODO: Energy gain like effects
         # TODO: Move Effects
         
         save!
+        return modified_instances
       end
     else
       false

@@ -6,4 +6,11 @@ module ApplicationHelper
       :value => value,
     }
   end
+  
+  def update_for(page, object)
+    underscored_class = object.class.to_s.underscore
+    page.replace "#{underscored_class}_#{object.id}", 
+      :object => object,
+      :partial => "#{underscored_class.pluralize}/#{underscored_class}"
+  end
 end
