@@ -134,28 +134,34 @@ class CreateAbilities < ActiveRecord::Migration
       }
       
     Ability.create :name => "Regeneration", 
-      :activated => true,
+      :activated => false,
       :stat_mods => {
         :regen => 2
       }
       
     Ability.create :name => "Resistance", 
-      :activated => true,
+      :activated => false,
       :stat_mods => {
         :damage_received => -2
       }
       
     Ability.create :name => "Toughness", 
-      :activated => true,
+      :activated => false,
       :stat_mods => {
         :damage_received => -2,
         :regen => 1
       }
       
     Ability.create :name => "Egeneration", 
-      :activated => true,
+      :activated => false,
       :stat_mods => {
         :egen => 3
+      }
+      
+    Ability.create :name => "Absorbtion",
+      :activated => false,
+      :stat_mods => {
+        :absorption => 50
       }
   end
 
