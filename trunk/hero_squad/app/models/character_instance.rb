@@ -90,10 +90,24 @@ class CharacterInstance < ActiveRecord::Base
   end
   
   def apply_effect(ability_attributes)
-    # TODO: Damage reduction
-    # TODO: Absorption
-    self.hit_points -= ability_attributes[:damage]
+    apply_damage ability_attributes[:damage]
+    
+    
+    
     # TODO: Special Effects
+  end
+  
+  def apply_damage(damage)
+    if damage > 0
+      # Damage reduction
+      net_damage = [damage + damage_received, 0].max
+      
+      # Absorption
+      energy_absorbed = ((absorption * net_damage)/100.0).ceil
+      
+      self.hit_points -= net_damage
+      self.energy += energy_absorbed
+    end
   end
   
   def pay_costs(ability_attributes)
@@ -164,7 +178,7 @@ class CharacterInstance < ActiveRecord::Base
     }
   end
   
-  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :hp_max, :en_max, :regen, :egen, :damage_received].freeze
+  STAT_ATTRIBUTES = [:str, :dex, :pow, :move, :hp_max, :en_max, :regen, :egen, :damage_received, :absorption].freeze
   
   # Define a method to access each modifiable stat attribute
   # These attributes may be modified by 
@@ -186,7 +200,7 @@ class CharacterInstance < ActiveRecord::Base
   end
   
   def stat_modifiers
-    [primary_item, secondary_item].compact
+    ([primary_item, secondary_item] + ability_cards.map(&:data)).compact
   end
   
   # Activated abilities granted by items
