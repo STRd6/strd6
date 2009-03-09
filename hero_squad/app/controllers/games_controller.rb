@@ -14,6 +14,10 @@ class GamesController < ResourceController::Base
     end
   end
   
+  def setup
+    @game = object
+  end
+  
   def move_character
     game = Game.find params[:id]
     character = CharacterInstance.find params[:token][:id]

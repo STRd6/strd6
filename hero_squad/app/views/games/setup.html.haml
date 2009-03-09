@@ -1,0 +1,7 @@
+.characters
+  - @game.character_instances.each do |character|
+    = render :partial => character
+.cards
+  - @game.cards.each do |card|
+    = render :partial => card if card.owner.nil?
+
