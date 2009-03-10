@@ -78,7 +78,6 @@ class CharacterInstance < ActiveRecord::Base
           modified_instances << target
         end
         
-        # TODO: Energy gain like effects
         # TODO: Move Effects
         
         save!
@@ -92,7 +91,7 @@ class CharacterInstance < ActiveRecord::Base
   def apply_effect(ability_attributes)
     apply_damage ability_attributes[:damage]
     
-    
+    self.energy += ability_attributes[:energy_gain]
     
     # TODO: Special Effects
   end
@@ -156,6 +155,7 @@ class CharacterInstance < ActiveRecord::Base
     secondary_item_card.data if secondary_item_card
   end
   
+  # Return a list of the character's activated abilities
   def activated_abilities
     # Get a mapping of the applied abilities in each slot
     applied_abilities = ability_cards.inject({}) {|h, card| h[card.slot] = card.data if card.data.activated?; h}
@@ -165,9 +165,6 @@ class CharacterInstance < ActiveRecord::Base
     
     # Add the item abilities
     return Slot::ABILITIES.map {|slot| current_abilities[slot]}.compact + item_actions
-    
-#    card_abilities = ability_cards.map {|card| card.data}.select {|ability| ability.activated?}
-#    [move_ability, rest_ability] + card_abilities
   end
   
   def default_abilities

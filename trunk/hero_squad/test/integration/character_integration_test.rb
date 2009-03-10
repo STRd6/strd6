@@ -32,6 +32,29 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         assert_equal 8, max
       end
     end
+    
+    
+  
+    context "energy gain ability" do
+      setup do
+        @ability = Factory :ability,
+          :name => "Elixer",
+          :attribute_expressions => {
+            :energy_cost => '0',
+            :energy_gain => "2.d(6) + 4"
+          }
+          
+        @character.energy = 0
+        @character.save
+        @character.reload
+        assert_equal 0, @character.energy
+      end
+      
+      should "gain energy when used on self" do
+        @character.apply_effect(@ability.action_hash(@character))
+        assert @character.energy > 0
+      end
+    end
   
     context "ability that has range and area" do
       setup do
