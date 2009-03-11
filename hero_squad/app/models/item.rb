@@ -16,7 +16,7 @@ class Item < ActiveRecord::Base
     if usable?
       true
     else
-      false
+      nil
     end
   end
   
