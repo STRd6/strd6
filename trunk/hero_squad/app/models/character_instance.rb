@@ -122,7 +122,9 @@ class CharacterInstance < ActiveRecord::Base
     assign_card(item, Slot::ITEM_SECONDARY)
   end
   
-  def assign_card(card, slot)    
+  def assign_card(card, slot)
+    return false unless card.valid_for? slot
+    
     transaction do
       cards.in_slot(slot).each do |c|
         c.slot = Slot::NONE

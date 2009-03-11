@@ -37,4 +37,16 @@ class Card < ActiveRecord::Base
   def mod_for(stat)
     return data.mod_for(stat) if data
   end
+  
+  def valid_for?(slot)
+    if Slot::ABILITIES.include? slot
+      true unless item
+    elsif Slot::ITEM_PRIMARY
+      true if item
+    elsif Slot::ITEM_SECONDARY
+      true if item
+    else
+      false
+    end
+  end
 end
