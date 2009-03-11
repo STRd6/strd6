@@ -32,8 +32,6 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         assert_equal 8, max
       end
     end
-    
-    
   
     context "energy gain ability" do
       setup do
