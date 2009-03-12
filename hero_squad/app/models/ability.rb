@@ -22,11 +22,11 @@ class Ability < ActiveRecord::Base
   end
   
   ACTION_ATTRIBUTES = [:energy_cost, :life_loss, :damage, :energy_damage, 
-    :heal, :energy_gain, :duration, :actions_required, :area, :range].freeze
+    :life_gain, :energy_gain, :duration, :actions_required, :area, :range].freeze
   
   ACTION_ATTRIBUTES.each do |attr|
     case attr
-    when :energy_cost, :life_loss, :damage, :energy_damage, :heal, :energy_gain, :duration
+    when :energy_cost, :life_loss, :damage, :energy_damage, :life_gain, :energy_gain, :duration
       define_method attr do |character|
         if attribute_expressions[attr]
           character.instance_eval attribute_expressions[attr], "Ability: id = #{id}"

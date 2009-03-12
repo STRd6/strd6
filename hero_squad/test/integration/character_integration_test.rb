@@ -53,6 +53,27 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         assert @character.energy > 0
       end
     end
+    
+    context "healing ability" do
+      setup do
+        @ability = Factory :ability,
+          :name => "Potion",
+          :attribute_expressions => {
+            :energy_cost => '0',
+            :life_gain => "1.d(6) + 8"
+          }
+          
+        @character.hit_points = 1
+        @character.save
+        @character.reload
+        assert_equal 1, @character.hit_points
+      end
+      
+      should "gain energy when used on self" do
+        @character.apply_effect(@ability.action_hash(@character))
+        assert @character.hit_points > 1
+      end
+    end
   
     context "ability that has range and area" do
       setup do
