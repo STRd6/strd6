@@ -92,6 +92,7 @@ class CharacterInstance < ActiveRecord::Base
     apply_damage ability_attributes[:damage]
     
     self.energy += ability_attributes[:energy_gain]
+    self.hit_points += ability_attributes[:heal]
     
     # TODO: Special Effects
   end
@@ -157,16 +158,23 @@ class CharacterInstance < ActiveRecord::Base
     secondary_item_card.data if secondary_item_card
   end
   
-  # Return a list of the character's activated abilities
-  def activated_abilities
+  def abilities
     # Get a mapping of the applied abilities in each slot
-    applied_abilities = ability_cards.inject({}) {|h, card| h[card.slot] = card.data if card.data.activated?; h}
+    applied_abilities = ability_cards.inject({}) {|h, card| h[card.slot] = card.data; h}
     
     # Have the applied abilities overwrite the default abilities
     current_abilities = default_abilities.merge applied_abilities
     
+    # Map back to a simple list of abilities
+    return Slot::ABILITIES.map {|slot| current_abilities[slot]}.compact
+  end
+  
+  # Return a list of the character's activated abilities
+  def activated_abilities
+    activated = abilities.select{|ability| ability.activated?}
+    
     # Add the item abilities
-    return Slot::ABILITIES.map {|slot| current_abilities[slot]}.compact + item_actions
+    return activated + item_actions
   end
   
   def default_abilities
