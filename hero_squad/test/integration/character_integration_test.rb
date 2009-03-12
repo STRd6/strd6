@@ -93,7 +93,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         assert @ability.area(@character)
         assert @ability.damage(@character)
         assert @ability.energy_damage(@character)
-        assert @ability.heal(@character)
+        assert @ability.life_gain(@character)
         assert @ability.energy_gain(@character)
         assert @ability.duration(@character)
         assert @ability.actions_required(@character)
