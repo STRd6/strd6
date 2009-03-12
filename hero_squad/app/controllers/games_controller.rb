@@ -36,9 +36,11 @@ class GamesController < ResourceController::Base
     
     character = CharacterInstance.find params[:character_instance][:id]
     card = Card.find params[:card][:id]
-    slot = params[:slot]
+    slot = params[:slot].to_i
     
     game.assign_card character, card, slot
+    
+    render :text => 'OK'
   end
   
   def character_action
