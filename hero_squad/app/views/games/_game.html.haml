@@ -11,6 +11,7 @@
   .cards
     - game.cards.each do |card|
       -# = render :partial => card if card.owner.nil?
+  .clear
   = render :partial => 'board'
   -# = javascript_tag "$$('.card').invoke('hide');$('card_1').show();"
   .tokens

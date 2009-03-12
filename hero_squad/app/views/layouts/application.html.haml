@@ -9,6 +9,8 @@
 
   %body
     -# = juggernaut(:channels => [:main])
+    #header
+      = link_to "Games", games_url
     #page
       = yield
     = javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery?
