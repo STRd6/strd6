@@ -133,6 +133,12 @@ class CreateAbilities < ActiveRecord::Migration
         :range => 'pow',
       }
       
+    Ability.create :name => "Elixir", 
+      :activated => true,
+      :attribute_expressions => {
+        :energy_gain => "2.d(6) + 4"
+      }
+      
     Ability.create :name => "Regeneration", 
       :activated => false,
       :stat_mods => {
