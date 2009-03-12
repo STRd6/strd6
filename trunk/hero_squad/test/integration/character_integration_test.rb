@@ -74,6 +74,23 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         assert @character.hit_points > 1
       end
     end
+    
+    context "an energy damaging ability" do
+      setup do
+        @ability = Factory :ability,
+          :name => "EDamager",
+          :attribute_expressions => {
+            :energy_cost => '0',
+            :energy_damage => '5'
+          }
+      end
+      
+      should "gain energy when used on self" do
+        assert_difference "@character.energy", -5 do
+          @character.apply_effect(@ability.action_hash(@character))
+        end
+      end
+    end
   
     context "ability that has range and area" do
       setup do
