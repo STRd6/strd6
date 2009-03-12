@@ -92,7 +92,7 @@ class CharacterInstance < ActiveRecord::Base
     apply_damage ability_attributes[:damage]
     
     self.energy += ability_attributes[:energy_gain]
-    self.hit_points += ability_attributes[:heal]
+    self.hit_points += ability_attributes[:life_gain]
     
     # TODO: Special Effects
   end

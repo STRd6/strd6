@@ -41,7 +41,7 @@ class CreateAbilities < ActiveRecord::Migration
       :activated => true,
       :attribute_expressions => {
         :energy_cost => '8',
-        :heal => '4 + 1.d(6)',
+        :life_gain => '4 + 1.d(6)',
         :range => '5',
       }
     
@@ -131,6 +131,12 @@ class CreateAbilities < ActiveRecord::Migration
       :attribute_expressions => {
         :energy_cost => '(dist-1)**2',
         :range => 'pow',
+      }
+      
+    Ability.create :name => "Potion",
+      :activated => true,
+      :attribute_expressions => {
+        :life_gain => "1.d(6) + 8"
       }
       
     Ability.create :name => "Elixir", 
