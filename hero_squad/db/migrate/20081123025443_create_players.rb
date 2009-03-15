@@ -1,15 +1,17 @@
 class CreatePlayers < ActiveRecord::Migration
   def self.up
     create_table :players do |t|
-      t.string :name, :null => false
+      t.string :identity_url, :null => false
+      t.string :nickname
+      t.string :email
 
       t.timestamps
     end
     
-    add_index :players, :name, :unique => true
+    add_index :players, :identity_url, :unique => true
     
-    Player.create :name => "Player1"
-    Player.create :name => "Player2"
+    Player.create :nickname => "Player 1", :email => "test1@example.com", :identity_url => 'test1'
+    Player.create :nickname => "Player 2", :email => "test2@example.com", :identity_url => 'test2'
   end
 
   def self.down
