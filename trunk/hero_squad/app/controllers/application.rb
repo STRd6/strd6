@@ -11,13 +11,42 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   
-  helper_method :slot_class
+  helper_method :slot_class, :current_player
   
+  protected
   def game_state_error(message)
     {:text => message || "I am a teapot", :status => 418}
   end
   
   def slot_class
     Slot::DISPLAY_CLASS
+  end
+  
+  def current_player=(player)
+    if player
+      if (session[:player_id] = player.id)
+        @current_player = player
+      else
+        @current_player = nil
+      end
+    else
+      @current_player = nil
+    end
+  end
+  
+  def current_player
+    @current_player ||= (player_from_session) unless @current_player == false
+  end
+  
+  def player_from_session
+    if session[:player_id]
+      begin
+        @current_player = Player.find(session[:player_id])
+      rescue ActiveRecord::RecordNotFound
+        session[:player_id] = false
+      end
+    else
+      false
+    end
   end
 end
