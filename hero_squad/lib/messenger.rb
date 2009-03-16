@@ -10,7 +10,7 @@ module Messenger
   end
   
   def add_channel_for(object)
-    add_channel channel_for(object) unless object.nil?
+    add_channel channel_for(object) if object
   end
   
   def channel_for(object)

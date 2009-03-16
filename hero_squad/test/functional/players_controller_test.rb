@@ -2,13 +2,14 @@ require 'test_helper'
 class PlayersControllerTest < ActionController::TestCase
   context "Players Controller" do
     setup do
-      ActionView::Base.any_instance.stubs(:juggernaut)
+      controller_setup
     end
     
     context "on CREATE" do
       setup do
         post :create, { :player => {
-          :name => 'New Player'
+          :nickname => 'New Player',
+          :identity_url => 'http://test.example.com/489431'
         }}
       end
 

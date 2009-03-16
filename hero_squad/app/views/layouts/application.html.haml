@@ -8,7 +8,7 @@
     = javascript_include_tag 'application', 'game', :cache => 'app'
 
   %body
-    = juggernaut(:channels => channels)
+    = juggernaut :channels => channels
     #header
       = link_to "Games", games_url
       - if current_player
