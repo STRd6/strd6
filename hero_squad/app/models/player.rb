@@ -5,4 +5,8 @@ class Player < ActiveRecord::Base
   def name
     nickname || "Noob#{id}"
   end
+  
+  def play
+    "#{self} wants to play!"
+  end
 end
