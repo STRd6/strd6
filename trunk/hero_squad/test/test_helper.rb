@@ -35,4 +35,7 @@ class Test::Unit::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def controller_setup
+    ActionView::Base.any_instance.stubs(:juggernaut)
+  end
 end

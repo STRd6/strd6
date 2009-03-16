@@ -38,8 +38,13 @@ Factory.sequence :player_name do |n|
   "Player_%03d" % n
 end
 
+Factory.sequence :identity_url do |n|
+  "http://example.com/#{n}" % n
+end
+
 Factory.define :player do |player|
-  player.name {Factory.next :player_name}
+  player.nickname {Factory.next :player_name}
+  player.identity_url {Factory.next :identity_url}
 end
 
 Factory.sequence :game_name do |n|
