@@ -16,6 +16,11 @@ var Ajaxer = Class.create({
   }
 });
 
+var commando = new Ajaxer();
+commando.play = function() {
+  this.sendData(null, '/games/play')
+};
+
 var Game = Class.create(Ajaxer, {
   initialize: function(element) {
   },

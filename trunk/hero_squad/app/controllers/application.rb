@@ -2,6 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  include Messenger
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   protect_from_forgery # :secret => '01af6afa7f8f56bfa759ae004d49b701'
@@ -11,7 +12,9 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   
-  helper_method :slot_class, :current_player
+  helper_method :slot_class, :current_player, :channels
+  
+  before_filter :add_default_channels
   
   protected
   def game_state_error(message)
@@ -20,6 +23,10 @@ class ApplicationController < ActionController::Base
   
   def slot_class
     Slot::DISPLAY_CLASS
+  end
+  
+  def add_default_channels
+    add_channel_for current_player
   end
   
   def current_player=(player)

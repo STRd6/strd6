@@ -12,6 +12,8 @@ class GamesController < ResourceController::Base
     object.character_instances.each do |character|
       @positions[character.position] << character
     end
+    
+    add_channel_for @game
   end
   
   def setup
@@ -71,6 +73,16 @@ class GamesController < ResourceController::Base
       render game_state_error(error_message)
     end
     
+  end
+  
+  def play
+    if current_player
+      send_to_channels_for current_player do |page|
+        page.call :alert, current_player.play
+      end
+    end
+    
+    render :text => 'OK'
   end
   
   private

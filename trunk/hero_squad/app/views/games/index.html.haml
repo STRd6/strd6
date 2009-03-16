@@ -1,2 +1,5 @@
-- @games.each do |game|
-  = link_to h(game.name), game
+
+= link_to_function "Play!", 'commando.play()'
+
+= link_to_function "Watch!", 'commando.watch()'
+
