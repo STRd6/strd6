@@ -1,3 +1,4 @@
+= link_to_function "Done!", 'commando.finishSetup()'
 .characters
   - @game.character_instances.each do |character|
     = render :partial => character
@@ -5,3 +6,4 @@
   - @game.cards.each do |card|
     = render :partial => card if card.owner.nil?
 
+= javascript_tag "var gameId = #{@game.id};"

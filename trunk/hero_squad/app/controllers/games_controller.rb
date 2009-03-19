@@ -24,10 +24,14 @@ class GamesController < ResourceController::Base
     game = Game.find params[:id]
     character = CharacterInstance.find params[:token][:id]
     
-    game.move_character character, [params[:x], params[:y]]
+    success = game.move_character character, [params[:x], params[:y]]
     
     if request.xhr?
-      render :nothing => true
+      if success
+        render :text => 'OK'
+      else
+        render :status => 403, :text => 'Command Invalid'
+      end
     else
       render :nothing => true
     end
@@ -73,6 +77,18 @@ class GamesController < ResourceController::Base
       render game_state_error(error_message)
     end
     
+  end
+  
+  def finish_setup
+    @game = object
+    
+    if current_player
+      send_to_channels_for current_player do |page|
+        page.call :alert, @game.finish_setup(current_player)
+      end
+    end
+    
+    render :text => 'OK'
   end
   
   def play
