@@ -18,7 +18,11 @@ var Ajaxer = Class.create({
 
 var commando = new Ajaxer();
 commando.play = function() {
-  this.sendData(null, '/games/play')
+  this.sendData(null, '/games/play');
+};
+
+commando.finishSetup = function() {
+  this.sendData(null, '/games/finish_setup/' + gameId);
 };
 
 var Game = Class.create(Ajaxer, {

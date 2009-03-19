@@ -11,6 +11,7 @@ class Game < ActiveRecord::Base
   
   module Phase
     SETUP = "SETUP"
+    DEPLOY = "DEPLOY"
     MAIN = "MAIN"
   end
   
@@ -54,6 +55,10 @@ class Game < ActiveRecord::Base
     end
   end
   
+  def finish_setup(player)
+    "#{player} is done with setup"
+  end
+  
   # Assign all unassigned cards to players evenly
   def deal
     num_players = players.size
@@ -71,7 +76,6 @@ class Game < ActiveRecord::Base
         current_player = players[current_index]
       end
     end
-    
   end
   
   def cards_for_player(player)
@@ -79,15 +83,28 @@ class Game < ActiveRecord::Base
   end
   
   def move_character(character, position)
-    character.position = position
-    character.save
+    if phase == Phase::DEPLOY
+      #TODO: Validate position
+      character.position = position
+      character.save
+    else
+      false
+    end
   end
   
   def assign_ability(character, ability, slot)
-    character.assign_ability(ability, slot)
+    if phase == Phase::SETUP
+      character.assign_ability(ability, slot)
+    else
+      false
+    end
   end
   
   def assign_card(character, card, slot)
-    character.assign_card(card, slot)
+    if phase == Phase::SETUP
+      character.assign_card(card, slot)
+    else
+      false
+    end
   end
 end
