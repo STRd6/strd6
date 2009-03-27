@@ -3,6 +3,7 @@ class CreateRecipeComponents < ActiveRecord::Migration
     create_table :recipe_components do |t|
       t.references :recipe, :null => false
       t.references :item_base, :null => false
+      t.integer :quantity, :null => false
 
       t.timestamps :null => false
     end
