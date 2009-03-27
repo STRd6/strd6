@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
     t.integer  "owner_id"
     t.string   "owner_type"
     t.integer  "item_base_id", :null => false
+    t.integer  "quantity",     :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

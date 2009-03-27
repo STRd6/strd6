@@ -4,4 +4,5 @@ class RecipeComponent < ActiveRecord::Base
 
   validates_presence_of :recipe
   validates_presence_of :item_base
+  validates_numericality_of :quantity
 end

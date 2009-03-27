@@ -4,4 +4,5 @@ class Item < ActiveRecord::Base
   has_many :items, :dependent => :destroy
 
   validates_presence_of :item_base
+  validates_numericality_of :quantity
 end

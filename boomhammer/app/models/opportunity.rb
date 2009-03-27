@@ -6,7 +6,7 @@ class Opportunity < ActiveRecord::Base
   validates_presence_of :area
   
   def depletion
-    50
+    0
   end
 
   def explore
