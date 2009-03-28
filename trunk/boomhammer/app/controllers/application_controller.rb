@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   include TheAuthenticator
   
   helper :all # include all helpers, all the time
+  helper :facility
+
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   # Scrub sensitive parameters from your log
