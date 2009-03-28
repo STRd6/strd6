@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.login '/login', :controller => 'sessions', :action => 'new'
 
   map.my_account '/my_account', :controller => 'accounts', :action => 'show'
+  map.my_account '/edit_account', :controller => 'accounts', :action => 'edit'
 
   map.resource :session
 

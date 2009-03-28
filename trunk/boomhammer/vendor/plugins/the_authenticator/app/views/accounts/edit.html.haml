@@ -1,0 +1,12 @@
+= error_messages_for :account
+
+- form_for :account do |form|
+  = form.label :nickname
+  = form.text_field :nickname
+  %br
+
+  = form.label :email
+  = form.text_field :email
+  %br
+
+  = submit_tag

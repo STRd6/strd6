@@ -3,6 +3,14 @@ class AccountsController < ApplicationController
     @account = current_account
   end
 
+  def edit
+    @account = current_account
+  end
+
+  def update
+
+  end
+
   def activate
     logout_keeping_session!
     code = params[:activation_code]
