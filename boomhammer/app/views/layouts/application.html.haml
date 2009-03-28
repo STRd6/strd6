@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %meta{'http-equiv' => "Content-type", 'content' => "text/html; charset=utf-8"}
+    %title= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
+    = stylesheet_link_tag 'start/jquery-ui', :cache => true
+    = javascript_include_tag 'jquery', 'jquery-ui', :cache => 'jquery'
+    = javascript_include_tag 'gears_init', 'application', 'utility', 'game', 'inventory', 'action', 'sign', :cache => 'app'
+
+  %body
+    #page
+      #header
+        %p.left
+          
+
+        %p.right
+          - if logged_in?
+            == Logged in as #{link_to_current_user :content_method => :login}
+            == (#{link_to "Log out", logout_path, { :title => "Log out" }})
+
+          -else
+            = link_to "Log in",  login_path,  { :title => "Log in" }
+            == /
+            = link_to "Sign up", signup_path, { :title => "Create an account" }
+
+      #content
+        %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
+        = #render :partial => 'components/notices'
+        = yield
+
+
