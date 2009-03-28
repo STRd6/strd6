@@ -1,13 +1,29 @@
 TheAuthenticator
 ================
 
-Introduction goes here.
+It's an authentication dynamo! (Engine)
+
+Authenticate via OpenID.
+
+Includes models:
+  * Login
+  * Account
+
+Includes controllers and views.
+  * Sessions
+
+Coming soon?:
+  * Multple logins per account / Joining accounts
+  * Editing account info
+  * Account Activation
+
+Inspired by Restful Authentication and Railscasts OpenID tutorial.
 
 
 Example
 =======
 
-Example goes here.
+Example goes here. It certainly does!
 
 
 Copyright (c) 2009 STRd6, released under the MIT license
