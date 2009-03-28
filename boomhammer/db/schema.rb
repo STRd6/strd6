@@ -12,9 +12,14 @@
 ActiveRecord::Schema.define(:version => 20090327030912) do
 
   create_table "accounts", :force => true do |t|
+    t.string   "nickname"
     t.string   "email"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "remember_token",            :limit => 40
+    t.datetime "remember_token_expires_at"
+    t.string   "activation_code",           :limit => 40
+    t.datetime "activated_at"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
   end
 
   create_table "area_bases", :force => true do |t|
@@ -59,9 +64,10 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   add_index "items", ["owner_id", "owner_type"], :name => "index_items_on_owner_id_and_owner_type"
 
   create_table "logins", :force => true do |t|
-    t.integer  "account_id", :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "account_id",   :null => false
+    t.string   "identity_url", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "loots", :force => true do |t|
@@ -120,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   create_table "recipe_components", :force => true do |t|
     t.integer  "recipe_id",    :null => false
     t.integer  "item_base_id", :null => false
+    t.integer  "quantity",     :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
