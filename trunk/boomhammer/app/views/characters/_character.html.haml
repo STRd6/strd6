@@ -1,6 +1,10 @@
 .character
   %h2= character.name
 
+  %p
+    Currently in
+    = link_to character.area, character.area
+
   %h3 Inventory
   - character.items.each do |item|
     = render :partial => item

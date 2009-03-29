@@ -14,7 +14,9 @@ class Character < ActiveRecord::Base
   def take_opportunity(opportunity)
     transaction do
       if (item_base = opportunity.explore)
-        items << item_base.spawn
+        item = item_base.spawn
+        items << item
+        item
       end
     end
   end

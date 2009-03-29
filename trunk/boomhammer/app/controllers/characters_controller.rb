@@ -32,7 +32,8 @@ class CharactersController < ResourceController::Base
   end
 
   def take_opportunity
-    flash[:notice] = current_character.take_opportunity(params[:id])
+    opportunity = current_character.area.opportunities.find(params[:id])
+    flash[:notice] = current_character.take_opportunity(opportunity)
   end
 
   protected
