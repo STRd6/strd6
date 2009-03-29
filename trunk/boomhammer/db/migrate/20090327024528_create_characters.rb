@@ -1,6 +1,6 @@
-class CreatePlayers < ActiveRecord::Migration
+class CreateCharacters < ActiveRecord::Migration
   def self.up
-    create_table :players do |t|
+    create_table :characters do |t|
       t.references :account, :null => false
       t.string :name, :null => false
 
@@ -10,11 +10,11 @@ class CreatePlayers < ActiveRecord::Migration
       t.timestamps :null => false
     end
 
-    add_index :players, :account_id
-    add_index :players, [:location_id, :location_type]
+    add_index :characters, :account_id
+    add_index :characters, [:location_id, :location_type]
   end
 
   def self.down
-    drop_table :players
+    drop_table :characters
   end
 end

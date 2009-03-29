@@ -45,6 +45,18 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "characters", :force => true do |t|
+    t.integer  "account_id",    :null => false
+    t.string   "name",          :null => false
+    t.integer  "location_id"
+    t.string   "location_type"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "characters", ["account_id"], :name => "index_characters_on_account_id"
+  add_index "characters", ["location_id", "location_type"], :name => "index_characters_on_location_id_and_location_type"
+
   create_table "item_bases", :force => true do |t|
     t.string   "name",        :null => false
     t.text     "description", :null => false
@@ -110,18 +122,6 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
-
-  create_table "players", :force => true do |t|
-    t.integer  "account_id",    :null => false
-    t.string   "name",          :null => false
-    t.integer  "location_id"
-    t.string   "location_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
-
-  add_index "players", ["account_id"], :name => "index_players_on_account_id"
-  add_index "players", ["location_id", "location_type"], :name => "index_players_on_location_id_and_location_type"
 
   create_table "recipe_components", :force => true do |t|
     t.integer  "recipe_id",    :null => false

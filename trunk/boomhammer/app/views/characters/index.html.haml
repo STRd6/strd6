@@ -1,0 +1,9 @@
+- @characters.each do |character|
+  = render :partial => character
+  = link_to "Edit", :action => 'edit', :id => character.id
+  %br
+  = link_to "Activate #{character.name}", :action => 'activate', :id => character.id
+
+%br
+
+= link_to 'New character', new_character_path

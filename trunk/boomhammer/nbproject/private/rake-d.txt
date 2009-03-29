@@ -44,6 +44,7 @@ doc\:plugins\:exception_notification=Generate documentation for the exception_no
 doc\:plugins\:juggernaut_plugin=Generate documentation for the juggernaut_plugin plugin
 doc\:plugins\:open_id_authentication=Generate documentation for the open_id_authentication plugin
 doc\:plugins\:resource_controller=Generate documentation for the resource_controller plugin
+doc\:plugins\:the_authenticator=Generate documentation for the the_authenticator plugin
 doc\:rails=Build the RDOC HTML Files
 doc\:reapp=Force a rebuild of the RDOC files
 doc\:rerails=Force a rebuild of the RDOC files
