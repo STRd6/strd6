@@ -1,12 +1,12 @@
-= error_messages_for :account
+- form_for :account, @account, :url => { :action => "update" } do |form|
+  = form.error_messages
+  %p
+    = form.label :nickname
+    = form.text_field :nickname, :class => :text
 
-- form_for :account do |form|
-  = form.label :nickname
-  = form.text_field :nickname
-  %br
-
-  = form.label :email
-  = form.text_field :email
-  %br
-
-  = submit_tag
+  %p
+    = form.label :email
+    = form.text_field :email, :class => :text
+  
+  .right
+    = submit_tag
