@@ -4,14 +4,13 @@ class CreateCharacters < ActiveRecord::Migration
       t.references :account, :null => false
       t.string :name, :null => false
 
-      t.references :location
-      t.string :location_type
+      t.references :area, :null => false
 
       t.timestamps :null => false
     end
 
     add_index :characters, :account_id
-    add_index :characters, [:location_id, :location_type]
+    add_index :characters, :area_id
   end
 
   def self.down

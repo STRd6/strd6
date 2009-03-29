@@ -46,16 +46,15 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   end
 
   create_table "characters", :force => true do |t|
-    t.integer  "account_id",    :null => false
-    t.string   "name",          :null => false
-    t.integer  "location_id"
-    t.string   "location_type"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.integer  "account_id", :null => false
+    t.string   "name",       :null => false
+    t.integer  "area_id",    :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "characters", ["account_id"], :name => "index_characters_on_account_id"
-  add_index "characters", ["location_id", "location_type"], :name => "index_characters_on_location_id_and_location_type"
+  add_index "characters", ["area_id"], :name => "index_characters_on_area_id"
 
   create_table "item_bases", :force => true do |t|
     t.string   "name",        :null => false
@@ -67,10 +66,10 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   create_table "items", :force => true do |t|
     t.integer  "owner_id"
     t.string   "owner_type"
-    t.integer  "item_base_id", :null => false
-    t.integer  "quantity",     :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "item_base_id",                :null => false
+    t.integer  "quantity",     :default => 1, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   add_index "items", ["owner_id", "owner_type"], :name => "index_items_on_owner_id_and_owner_type"
@@ -108,10 +107,11 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   end
 
   create_table "opportunities", :force => true do |t|
-    t.integer  "opportunity_base_id", :null => false
-    t.integer  "area_id",             :null => false
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.integer  "opportunity_base_id",                :null => false
+    t.integer  "area_id",                            :null => false
+    t.integer  "depletion",           :default => 0, :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   add_index "opportunities", ["area_id"], :name => "index_opportunities_on_area_id"

@@ -1,4 +1,7 @@
 class Area < ActiveRecord::Base
+  include Named
+  include RandomScope
+  
   belongs_to :area_base
 
   has_many :area_links, :dependent => :destroy
@@ -9,11 +12,8 @@ class Area < ActiveRecord::Base
   has_many :opportunities, :dependent => :destroy
 
   validates_presence_of :area_base
-  validates_presence_of :name
 
-  def to_s
-    name
-  end
+  named_scope :starting
 
   def add_bi_directional_link_to(area, attributes={})
     area.area_links << AreaLink.new(attributes.merge(:linked_area => self))

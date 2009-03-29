@@ -1,10 +1,6 @@
 namespace :data do
   desc "Populate sample app data"
   task :populate => :environment do
-    account = Account.create
-
-    character = Character.create :name => "Moo II", :account => account
-
     berry = ItemBase.create :name => "berry",
       :description => "This berry looks delicious."
     coin = ItemBase.create :name => "coin",
@@ -21,10 +17,17 @@ namespace :data do
       ]
 
     tor = plains.spawn :name => "Tor"
-    opportunity = Opportunity.create :opportunity_base => bush, :area => tor
+    Opportunity.create :opportunity_base => bush, :area => tor
     tyr = plains.spawn :name => "Tyr"
-    opportunity = Opportunity.create :opportunity_base => bush, :area => tyr
+    Opportunity.create :opportunity_base => bush, :area => tyr
 
     tor.add_bi_directional_link_to tyr
+
+    account = Account.create
+    character = Character.create :name => "Moo II", :account => account
+
+    2.times do
+      character.take_opportunity(character.area.opportunities.first)
+    end
   end
 end

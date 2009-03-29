@@ -15,12 +15,15 @@
           
 
         %p.right
+          - if current_character
+            = link_to "Current Character: #{current_character}", current_character
+
           - if logged_in?
             == Logged in as #{link_to current_account, my_account_path }
             == (#{link_to "Log out", logout_path, { :title => "Log out" }})
 
           -else
-            = link_to "Log in",  login_path,  { :title => "Log in" }
+            = link_to "Log in",  login_path,  { :title => "Log in" }          
 
       #content
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase

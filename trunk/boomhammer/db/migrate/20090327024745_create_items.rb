@@ -4,7 +4,7 @@ class CreateItems < ActiveRecord::Migration
       t.references :owner
       t.string :owner_type
       t.references :item_base, :null => false
-      t.integer :quantity, :null => false
+      t.integer :quantity, :null => false, :default => 1
 
       t.timestamps :null => false
     end

@@ -5,11 +5,9 @@ class Opportunity < ActiveRecord::Base
   validates_presence_of :opportunity_base
   validates_presence_of :area
   
-  def depletion
-    0
-  end
-
   def explore
+    increment! :depletion
+
     roll = rand(100) - depletion
     if roll < 0
       nil

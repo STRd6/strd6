@@ -1,8 +1,6 @@
-%div.character
-  
+.character
   %h2= character.name
 
-  - character.stat_keys.each do |key| 
-    %p
-      = icon_for key 
-      == : #{stats_text(character, key)}
+  %h3 Inventory
+  - character.items.each do |item|
+    = render :partial => item
