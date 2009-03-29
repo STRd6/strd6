@@ -34,8 +34,8 @@ class ApplicationController < ActionController::Base
   def character_from_session
     character = Character.find_by_id(session[:character_id]) if session[:character_id]
 
-    if current_account && current_account.id == character.account_id
-      self.current_character = character
+    if current_account && character
+      self.current_character = character if current_account.id == character.account_id
     else
       session[:character_id] = nil
       self.current_character = false
