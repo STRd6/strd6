@@ -11,4 +11,18 @@ class ApplicationController < ActionController::Base
 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
+
+  def current_character
+    @current_character ||= character_from_session unless @current_character == false
+  end
+
+  def current_character=(character)
+    session[:character_id] = character ? character.id : nil
+    @current_character = character || false
+  end
+
+  # Attempt to load the character id stored in the session.
+  def character_from_session
+    self.current_character = Character.find_by_id(session[:character_id]) if session[:character_id]
+  end
 end

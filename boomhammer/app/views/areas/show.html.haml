@@ -1,0 +1,11 @@
+- if @area.opportunities.size > 0
+  - @area.opportunities.each do |opportunity|
+    = link_to opportunity, :action => 'take', :id => @area.id, :opportunity_id => opportunity.id
+
+- else
+  %h2 No Opportunities here
+
+- if @area.linked_areas.size > 0
+  %h2 Travel To
+  - @area.linked_areas.each do |area|
+    = link_to area, area

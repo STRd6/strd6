@@ -1,4 +1,4 @@
-class Player < ActiveRecord::Base
+class Character < ActiveRecord::Base
   belongs_to :account
 
   has_many :items, :as => :owner, :dependent => :destroy
