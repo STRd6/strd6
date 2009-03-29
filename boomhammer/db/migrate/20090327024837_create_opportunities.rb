@@ -3,6 +3,7 @@ class CreateOpportunities < ActiveRecord::Migration
     create_table :opportunities do |t|
       t.references :opportunity_base, :null => false
       t.references :area, :null => false
+      t.integer :depletion, :null => false, :default => 0
 
       t.timestamps :null => false
     end

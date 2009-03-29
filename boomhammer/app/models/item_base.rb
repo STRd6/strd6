@@ -5,7 +5,8 @@ class ItemBase < ActiveRecord::Base
   has_many :recipe_outcomes, :dependent => :destroy
 
   def spawn(attributes={})
-    item = Item.new(attributes)
+    defaults = {}
+    item = Item.new(attributes.reverse_merge!(defaults))
     items << item
     return item
   end

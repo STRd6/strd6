@@ -3,20 +3,20 @@ class CharactersController < ResourceController::Base
   before_filter :login_required
 
   def collection
-    @collection ||= current_account.characters
+    current_account_characters
   end
 
   def object
-    @object ||= current_account.characters.find(params[:id])
+    current_account_characters.find(params[:id])
   end
 
   def build_object
-    @object ||= current_account.characters.new object_params
+    Character.new object_params.merge(:account => current_account)
   end
 
   def activate
     begin
-      @character = current_account.characters.find(params[:id])
+      @character = current_account_characters.find(params[:id])
       self.current_character = @character
 
       if current_account.save
@@ -32,7 +32,13 @@ class CharactersController < ResourceController::Base
   end
 
   def take_opportunity
-    flash[:notice] = current_character.take_opportunity(params[:opportunity_id])
+    flash[:notice] = current_character.take_opportunity(params[:id])
   end
 
+  protected
+
+  # Temporary workaround until a reliable way to add `has_many :characters` to `Account` is found
+  def current_account_characters
+    Character.for_account_id(current_account.id)
+  end
 end
