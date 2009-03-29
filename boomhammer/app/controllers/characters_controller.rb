@@ -7,11 +7,13 @@ class CharactersController < ResourceController::Base
   end
 
   def object
-    current_account_characters.find(params[:id])
+    @object ||= current_account_characters.find(params[:id])
   end
 
   def build_object
-    Character.new object_params.merge(:account => current_account)
+    return @object if @object
+    attributes = (object_params || {}).merge!(:account => current_account)
+    @object = Character.new attributes
   end
 
   def activate
@@ -32,14 +34,12 @@ class CharactersController < ResourceController::Base
   end
 
   def take_opportunity
-    opportunity = current_character.area.opportunities.find(params[:id])
-    flash[:notice] = current_character.take_opportunity(opportunity)
-  end
-
-  protected
-
-  # Temporary workaround until a reliable way to add `has_many :characters` to `Account` is found
-  def current_account_characters
-    Character.for_account_id(current_account.id)
+    if current_character
+      opportunity = current_character.area.opportunities.find(params[:id])
+      flash[:notice] = current_character.take_opportunity(opportunity)
+    else
+      flash[:error] = "Please activate a character!"
+      redirect_to characters_path
+    end
   end
 end

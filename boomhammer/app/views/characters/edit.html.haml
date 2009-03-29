@@ -2,9 +2,10 @@
   = f.error_messages
   
   %p
-    == Name: #{f.text_field :name}
+    = f.label :name
+    = f.text_field :name, :class => :text
 
-  %p
+  .right
     = f.submit "Update"
 
 = link_to 'Show', @character 
