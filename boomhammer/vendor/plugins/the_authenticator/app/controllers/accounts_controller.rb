@@ -1,14 +1,23 @@
 class AccountsController < ApplicationController
   def show
+    @title = "Your Account"
     @account = current_account
   end
 
   def edit
+    @title = "Edit Account"
     @account = current_account
   end
 
   def update
-
+    if current_account.update_attributes params[:account]
+      flash[:notice] = "Account updated"
+      redirect_to current_account
+    else
+      flash[:error] = "There was an error updating your account"
+      @account = current_account
+      render :action => :edit
+    end
   end
 
   def activate
