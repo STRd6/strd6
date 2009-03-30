@@ -46,11 +46,12 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   end
 
   create_table "characters", :force => true do |t|
-    t.integer  "account_id", :null => false
-    t.string   "name",       :null => false
-    t.integer  "area_id",    :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "account_id",                 :null => false
+    t.string   "name",                       :null => false
+    t.integer  "area_id",                    :null => false
+    t.integer  "actions",    :default => 50, :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   add_index "characters", ["account_id"], :name => "index_characters_on_account_id"

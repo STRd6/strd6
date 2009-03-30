@@ -5,7 +5,7 @@
 - else
   %h2 No Opportunities here
 
-- if @area.linked_areas.size > 0
+- if @area.area_links.size > 0
   %h2 Travel To
-  - @area.linked_areas.each do |area|
-    = link_to area, area
+  - @area.area_links.each do |area_link|
+    = link_to area_link.linked_area, :controller => 'characters', :action => 'take_area_link', :id => area_link.id

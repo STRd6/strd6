@@ -1,4 +1,6 @@
 class Opportunity < ActiveRecord::Base
+  include Named
+
   belongs_to :opportunity_base
   belongs_to :area
 
@@ -14,5 +16,9 @@ class Opportunity < ActiveRecord::Base
     else
       opportunity_base.generate_loot_item roll
     end
+  end
+
+  def name
+    opportunity_base.name
   end
 end

@@ -6,6 +6,8 @@ class CreateCharacters < ActiveRecord::Migration
 
       t.references :area, :null => false
 
+      t.integer :actions, :null => false, :default => 50
+
       t.timestamps :null => false
     end
 
