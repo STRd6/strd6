@@ -5,6 +5,10 @@
     = f.label :name
     = f.text_field :name, :class => :text
 
+  %p
+    = f.label :intrinsic
+    = collection_select :character, :intrinsic, [:charisma, :flight, :see_invisible], :to_sym, :to_s
+
   .right
     = f.submit('Create')
 

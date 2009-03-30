@@ -3,6 +3,7 @@ class CreateAreas < ActiveRecord::Migration
     create_table :areas do |t|
       t.references :area_base
       t.string :name
+      t.boolean :starting_location, :null => false, :default => false
 
       t.timestamps :null => false
     end

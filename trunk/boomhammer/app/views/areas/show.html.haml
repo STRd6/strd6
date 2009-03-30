@@ -1,11 +1,17 @@
-- if @area.opportunities.size > 0
-  - @area.opportunities.each do |opportunity|
-    = link_to opportunity, :controller => 'characters', :action => 'take_opportunity', :id => opportunity.id
+- available_opportunities = @area.opportunities.select {|opportunity| opportunity.requisite_met? current_character.intrinsics}
+
+- if available_opportunities.size > 0
+  - available_opportunities.each do |opportunity|
+    %p
+      = link_to opportunity, :controller => 'characters', :action => 'take_opportunity', :id => opportunity.id
+      = opportunity.description
 
 - else
   %h2 No Opportunities here
 
-- if @area.area_links.size > 0
+- available_area_links = @area.area_links.select {|area_link| area_link.requisite_met? current_character.intrinsics}
+
+- if available_area_links.size > 0
   %h2 Travel To
-  - @area.area_links.each do |area_link|
+  - available_area_links.each do |area_link|
     = link_to area_link.linked_area, :controller => 'characters', :action => 'take_area_link', :id => area_link.id

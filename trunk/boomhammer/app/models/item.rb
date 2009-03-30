@@ -9,7 +9,6 @@ class Item < ActiveRecord::Base
   validates_presence_of :item_base
   validates_numericality_of :quantity
 
-  def name
-    item_base.name
-  end
+  delegate :name, :to => :item_base
+  delegate :description, :to => :item_base
 end
