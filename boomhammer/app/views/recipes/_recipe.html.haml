@@ -1,0 +1,10 @@
+.recipe
+  %h3= recipe.name
+  %p
+    - recipe.recipe_components.each do |ingredient|
+      = "#{ingredient} x#{ingredient.quantity}"
+  %h4 Yields:
+  %p
+    - outcome = recipe.recipe_outcomes.first
+    = outcome
+  = recipe_action_link recipe

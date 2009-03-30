@@ -74,5 +74,51 @@ module DataMeister
     2.times do
       character.take_opportunity(character.area.opportunities.first)
     end
+
+    #####
+    # Recipes
+    #
+    peanut_butter = ItemBase.create :name => "peanut butter",
+      :description => "Made from the finest ingredients."
+
+    bread = ItemBase.create :name => "bread",
+      :description => "Made from the finest ingredients."
+
+    berry_jam = ItemBase.create :name => "berry jam",
+      :description => "Made from the finest ingredients."
+
+    pbj = ItemBase.create :name => "peanut butter and jelly sandwich",
+      :description => "Made from the finest ingredients."
+
+    fertalizer = ItemBase.create :name => "fertalizer",
+      :description => "Made from the finest ingredients."
+
+    magic_fertalizer = ItemBase.create :name => "magic fertalizer",
+      :description => "This fertalizer has an eerie glow to it."
+
+    Recipe.auto_build "peanut butter",
+      {coin => 2},
+      {peanut_butter => 1}
+
+    Recipe.auto_build "bread",
+      {coin => 3},
+      {bread => 1}
+
+    Recipe.auto_build "berry jam",
+      {berry => 3},
+      {berry_jam => 1}
+
+    Recipe.auto_build "berry jam",
+      {bread => 2, berry_jam => 1, peanut_butter => 1},
+      {pbj => 1}
+
+    Recipe.auto_build "fertalizer",
+      {wookie_droppings => 4},
+      {fertalizer => 1}
+
+    Recipe.auto_build "magic fertalizer",
+      {magic_water => 1, fertalizer => 1},
+      {magic_fertalizer => 1}
+    
   end
 end

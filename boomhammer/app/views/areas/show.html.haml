@@ -3,7 +3,7 @@
 - if available_opportunities.size > 0
   - available_opportunities.each do |opportunity|
     %p
-      = link_to opportunity, :controller => 'characters', :action => 'take_opportunity', :id => opportunity.id
+      = opportunity_action_link opportunity
       = opportunity.description
 
 - else
@@ -14,4 +14,4 @@
 - if available_area_links.size > 0
   %h2 Travel To
   - available_area_links.each do |area_link|
-    = link_to area_link.linked_area, :controller => 'characters', :action => 'take_area_link', :id => area_link.id
+    = area_link_action_link area_link
