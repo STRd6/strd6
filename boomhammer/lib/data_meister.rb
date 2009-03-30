@@ -90,11 +90,11 @@ module DataMeister
     pbj = ItemBase.create :name => "peanut butter and jelly sandwich",
       :description => "Made from the finest ingredients."
 
-    fertalizer = ItemBase.create :name => "fertalizer",
+    fertilizer = ItemBase.create :name => "fertalizer",
       :description => "Made from the finest ingredients."
 
-    magic_fertalizer = ItemBase.create :name => "magic fertalizer",
-      :description => "This fertalizer has an eerie glow to it."
+    magic_fertilizer = ItemBase.create :name => "magic fertilizer",
+      :description => "This fertilizer has an eerie glow to it."
 
     Recipe.auto_build "peanut butter",
       {coin => 2},
@@ -108,17 +108,17 @@ module DataMeister
       {berry => 3},
       {berry_jam => 1}
 
-    Recipe.auto_build "berry jam",
+    Recipe.auto_build "pbj sandwich",
       {bread => 2, berry_jam => 1, peanut_butter => 1},
       {pbj => 1}
 
-    Recipe.auto_build "fertalizer",
+    Recipe.auto_build "fertilizer",
       {wookie_droppings => 4},
-      {fertalizer => 1}
+      {fertilizer => 1}
 
     Recipe.auto_build "magic fertalizer",
-      {magic_water => 1, fertalizer => 1},
-      {magic_fertalizer => 1}
+      {magic_water => 1, fertilizer => 1},
+      {magic_fertilizer => 1}
     
   end
 end
