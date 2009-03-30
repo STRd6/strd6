@@ -5,6 +5,10 @@
     Currently in
     = link_to character.area, character.area
 
+  %p
+    Intrinsic Abilities:
+    = character.intrinsics.keys.join ", "
+
   %h3 Inventory
   - character.items.each do |item|
     = render :partial => item
