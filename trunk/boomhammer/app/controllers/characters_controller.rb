@@ -47,4 +47,11 @@ class CharactersController < ResourceController::Base
 
     redirect_to current_character.area
   end
+
+  def make_recipe
+    recipe = Recipe.find(params[:id])
+    flash[:notice] = current_character.make_recipe recipe
+
+    redirect_to recipes_path
+  end
 end

@@ -22,12 +22,14 @@ class Character < ActiveRecord::Base
       if actions > 0
         self.actions -= 1
         if (item_base = opportunity.explore)
-          item = item_base.spawn
-          items << item
-          "Got #{item}"
+          response = add_item_from_base(item_base)
+        else
+          response = "Found nothing"
         end
+        save!
+        return response
       else
-        "No actions remaining"
+        return "No actions remaining"
       end
     end
   end
@@ -38,11 +40,65 @@ class Character < ActiveRecord::Base
         self.actions -= 1
         self.area = area_link.linked_area
         save!
-        "Travelled to #{area}"
+        return "Travelled to #{area}"
       else
-        "No actions remaining"
+        return "No actions remaining"
       end
     end
+  end
+
+  def make_recipe(recipe)
+    transaction do
+      if actions > 0
+        self.actions -= 1
+
+        ingredient_component_pairs = recipe.recipe_components.map do |component|
+          [
+            items.first(:conditions =>
+              ["quantity >= ? AND item_base_id = ?", component.quantity, component.item_base_id]
+            ),
+            component
+          ]
+        end
+        
+        missing_ingredient_pairs = ingredient_component_pairs.select do |pair|
+          pair.first.nil?
+        end
+
+        if missing_ingredient_pairs.size > 0
+          # Missing one or more ingredients...
+          return "Insufficient ingredients... Missing: " +
+            missing_ingredient_pairs.map do |pair|
+              "#{pair.last}x#{pair.last.quantity}"
+            end.join(' ')
+        else
+          ingredient_component_pairs.each do |pair|
+            pair.first.quantity -= pair.last.quantity
+            pair.first.save!
+          end
+
+          result = add_item_from_base(recipe.generate_outcome_item_base)
+          save!
+          return result
+        end
+      else
+        return "No actions remaining"
+      end
+    end
+  end
+
+  def add_item_from_base(item_base)
+    # If we've got one of the same stack it!
+    if (item = items.find_by_item_base_id(item_base.id))
+      # TODO: Maybe check for secret differences, like enchants, or bustiness
+      item.quantity += 1
+      item.save!
+    else
+      item = item_base.spawn
+      items << item
+    end
+
+    return "Got #{item}"
   end
 
   def assign_starting_area
