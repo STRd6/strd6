@@ -1,15 +1,17 @@
 class Character < ActiveRecord::Base
   include Named
 
+  serialize :intrinsics
+
   belongs_to :account
   belongs_to :area
 
   has_many :items, :as => :owner, :dependent => :destroy
 
   validates_presence_of :area
-  before_validation_on_create :assign_starting_area
-
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
+
+  before_validation_on_create :assign_starting_area
 
   named_scope :for_account_id, lambda {|account_id| {:conditions => {:account_id => account_id}}}
 

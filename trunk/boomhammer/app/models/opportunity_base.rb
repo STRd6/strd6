@@ -1,4 +1,6 @@
 class OpportunityBase < ActiveRecord::Base
+  include Requisite
+
   has_many :opportunities, :dependent => :destroy
   has_many :loots, 
     :order => "weight DESC",

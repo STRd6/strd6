@@ -7,6 +7,7 @@ class CreateCharacters < ActiveRecord::Migration
       t.references :area, :null => false
 
       t.integer :actions, :null => false, :default => 50
+      t.text :intrinsics, :null => false, :default => {}
 
       t.timestamps :null => false
     end

@@ -4,6 +4,8 @@ class CreateAreaLinks < ActiveRecord::Migration
       t.references :area, :null => false
       t.references :linked_area, :null => false
 
+      t.text :requisites, :null => false, :default => [:any]
+
       t.timestamps :null => false
     end
 
