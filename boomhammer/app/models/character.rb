@@ -1,6 +1,8 @@
 class Character < ActiveRecord::Base
   include Named
 
+  attr_accessor :intrinsic
+
   serialize :intrinsics
 
   belongs_to :account
@@ -11,7 +13,7 @@ class Character < ActiveRecord::Base
   validates_presence_of :area
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
 
-  before_validation_on_create :assign_starting_area
+  before_validation_on_create :assign_starting_area, :set_default_intrinsics, :add_intrinsic
 
   named_scope :for_account_id, lambda {|account_id| {:conditions => {:account_id => account_id}}}
 
@@ -45,5 +47,13 @@ class Character < ActiveRecord::Base
 
   def assign_starting_area
     self.area = Area.random.starting.first
+  end
+  
+  def set_default_intrinsics
+    self.intrinsics ||= {}
+  end
+
+  def add_intrinsic
+    intrinsics[intrinsic.to_sym] = true if intrinsic
   end
 end

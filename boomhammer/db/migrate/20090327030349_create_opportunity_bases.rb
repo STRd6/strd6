@@ -4,7 +4,7 @@ class CreateOpportunityBases < ActiveRecord::Migration
       t.string :name, :null => false
       t.text :description, :null => false
 
-      t.text :requisites, :null => false, :default => [:any]
+      t.text :requisites, :null => false
 
       t.timestamps :null => false
     end

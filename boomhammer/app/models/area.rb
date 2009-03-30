@@ -13,7 +13,7 @@ class Area < ActiveRecord::Base
 
   validates_presence_of :area_base
 
-  named_scope :starting
+  named_scope :starting, :conditions => {:starting_location => true}
 
   def add_bi_directional_link_to(area, attributes={})
     area.area_links << AreaLink.new(attributes.merge(:linked_area => self))

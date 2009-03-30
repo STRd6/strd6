@@ -6,6 +6,15 @@ class Opportunity < ActiveRecord::Base
 
   validates_presence_of :opportunity_base
   validates_presence_of :area
+
+  delegate :name, :to => :opportunity_base
+  delegate :description, :to => :opportunity_base
+  delegate :requisites, :to => :opportunity_base
+
+  delegate :requisite_met?, :to => :opportunity_base
+#  def requisite_met?(attributes)
+#    opportunity_base.requisite_met? attributes
+#  end
   
   def explore
     increment! :depletion
@@ -16,9 +25,5 @@ class Opportunity < ActiveRecord::Base
     else
       opportunity_base.generate_loot_item roll
     end
-  end
-
-  def name
-    opportunity_base.name
   end
 end
