@@ -30,10 +30,11 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   end
 
   create_table "area_links", :force => true do |t|
-    t.integer  "area_id",        :null => false
-    t.integer  "linked_area_id", :null => false
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.integer  "area_id",                                        :null => false
+    t.integer  "linked_area_id",                                 :null => false
+    t.text     "requisites",     :default => "'--- \n- :any\n'", :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
   end
 
   add_index "area_links", ["area_id"], :name => "index_area_links_on_area_id"
@@ -46,12 +47,13 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   end
 
   create_table "characters", :force => true do |t|
-    t.integer  "account_id",                 :null => false
-    t.string   "name",                       :null => false
-    t.integer  "area_id",                    :null => false
-    t.integer  "actions",    :default => 50, :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.integer  "account_id",                             :null => false
+    t.string   "name",                                   :null => false
+    t.integer  "area_id",                                :null => false
+    t.integer  "actions",    :default => 50,             :null => false
+    t.text     "intrinsics", :default => "'--- {}\n\n'", :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   add_index "characters", ["account_id"], :name => "index_characters_on_account_id"
@@ -118,10 +120,11 @@ ActiveRecord::Schema.define(:version => 20090327030912) do
   add_index "opportunities", ["area_id"], :name => "index_opportunities_on_area_id"
 
   create_table "opportunity_bases", :force => true do |t|
-    t.string   "name",        :null => false
-    t.text     "description", :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "name",                                        :null => false
+    t.text     "description",                                 :null => false
+    t.text     "requisites",  :default => "'--- \n- :any\n'", :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
   end
 
   create_table "recipe_components", :force => true do |t|

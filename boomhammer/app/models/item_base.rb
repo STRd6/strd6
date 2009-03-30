@@ -10,4 +10,8 @@ class ItemBase < ActiveRecord::Base
     items << item
     return item
   end
+
+  def loot_entry(weight)
+    Loot.new(:item_base => self, :weight => weight)
+  end
 end
