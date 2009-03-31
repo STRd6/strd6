@@ -9,6 +9,10 @@ class Image < ActiveRecord::Base
 
   attr_accessor :file
 
+  def image_file_name
+    file_name
+  end
+
   protected
 
   def generate_file_name
