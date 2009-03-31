@@ -309,6 +309,12 @@ var Canvas = Class.create({
   saveFile: function() {
     document.location.href = 'data:image/octet-stream;base64,' + base64Encode(this._toPNG()).gsub("\n", "");
   },
+
+  upload: function() {
+    new Ajax.Request('/images', {
+      parameters: {'image[file]': base64Encode(this._toPNG()).gsub("\n", "")}
+    });
+  },
   
   setTool: function(tool) {
     this.tool = tool;

@@ -1,4 +1,7 @@
 class ItemBase < ActiveRecord::Base
+  include Named
+  include Imageable
+
   has_many :items, :dependent => :destroy
   has_many :loots, :dependent => :destroy
   has_many :recipe_components, :dependent => :destroy
