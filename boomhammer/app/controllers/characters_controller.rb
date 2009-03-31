@@ -22,16 +22,12 @@ class CharactersController < ResourceController::Base
       @character = current_account_characters.find(params[:id])
       self.current_character = @character
 
-      if current_account.save
-        flash[:notice] = "#{@character.name} activated!"
-      else
-        flash[:error] = "#{@character.name} NOT activated!"
-      end
+      flash[:notice] = "#{@character.name} activated!"
+      redirect_to current_character.area
     rescue ActiveRecord::RecordNotFound
       flash[:error] = "NOT activated!"
+      redirect_to :back
     end
-
-    redirect_to :action => 'index'
   end
 
   def take_opportunity
