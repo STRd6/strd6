@@ -20,6 +20,14 @@ role :app, "67.207.139.110"
 role :web, "67.207.139.110"
 role :db,  "67.207.139.110", :primary => true
 
+task :after_setup do
+  run "mkdir #{shared_path}/production"
+end
+
+task :after_symlink do
+  run "ln -nfs #{shared_path}/production #{release_path}/public/production"
+end
+
 namespace :juggernaut do
   desc "Stop the juggernaut push server"
   task :stop , :roles => :app do
