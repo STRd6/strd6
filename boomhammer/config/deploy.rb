@@ -22,6 +22,7 @@ role :db,  "67.207.139.110", :primary => true
 
 task :after_setup do
   run "mkdir #{shared_path}/production"
+  run "mkdir #{shared_path}/db"
 end
 
 task :after_symlink do
