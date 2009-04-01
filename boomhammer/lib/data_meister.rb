@@ -68,13 +68,6 @@ module DataMeister
     tor.add_bi_directional_link_to bespin, :requisites => [:flight]
     tyr.add_bi_directional_link_to bespin, :requisites => [:flight]
 
-    account = Account.create
-    character = Character.create :name => "Moo II", :account => account, :intrinsics => {:flight => true, :charisma => true}
-
-    2.times do
-      character.take_opportunity(character.area.opportunities.first)
-    end
-
     #####
     # Recipes
     #
@@ -119,6 +112,19 @@ module DataMeister
     Recipe.auto_build "magic fertalizer",
       {magic_water => 1, fertilizer => 1},
       {magic_fertilizer => 1}
-    
+
+    #####
+    # Account
+    #
+    newbie_badge = BadgeBase.create :name => "Newbie", :description => "That's right, I'm new!", :image_file_name => "default.png"
+
+    account = Account.create
+    newbie_badge.grant(account)
+
+    character = Character.create :name => "Moo II", :account => account, :intrinsics => {:flight => true, :charisma => true}
+
+    2.times do
+      character.take_opportunity(character.area.opportunities.first)
+    end
   end
 end
