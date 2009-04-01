@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090331042625) do
+ActiveRecord::Schema.define(:version => 20090401033224) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -47,6 +47,25 @@ ActiveRecord::Schema.define(:version => 20090331042625) do
     t.datetime "updated_at",                           :null => false
   end
 
+  create_table "badge_bases", :force => true do |t|
+    t.string   "name",            :null => false
+    t.string   "description",     :null => false
+    t.string   "image_file_name", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "badges", :force => true do |t|
+    t.integer  "owner_id",                     :null => false
+    t.string   "owner_type",                   :null => false
+    t.integer  "badge_base_id",                :null => false
+    t.integer  "quantity",      :default => 1, :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "badges", ["owner_id", "owner_type"], :name => "index_badges_on_owner_id_and_owner_type"
+
   create_table "characters", :force => true do |t|
     t.integer  "account_id",                 :null => false
     t.string   "name",                       :null => false
@@ -61,18 +80,15 @@ ActiveRecord::Schema.define(:version => 20090331042625) do
   add_index "characters", ["area_id"], :name => "index_characters_on_area_id"
 
   create_table "images", :force => true do |t|
-    t.integer  "imageable_id"
-    t.string   "imageable_type"
-    t.string   "file_name",      :null => false
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.string   "file_name",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
-
-  add_index "images", ["imageable_id", "imageable_type"], :name => "index_images_on_imageable_id_and_imageable_type"
 
   create_table "item_bases", :force => true do |t|
     t.string   "name",        :null => false
     t.text     "description", :null => false
+    t.integer  "image_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
