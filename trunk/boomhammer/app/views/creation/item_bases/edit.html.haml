@@ -1,19 +1,5 @@
 - form_for [:creation, @item_base] do |form|
-  = form.error_messages
+  = render form
 
-  %p
-    = form.label :name
-    = form.text_field :name
-
-  %p
-    = form.label :description
-    = form.text_area :description
-
-  = image_select(form)
-
-  .left
-    = link_to "Back", creation_item_bases_path
-  
   .right
-    = submit_tag "Update"
-    
+    = submit_tag @item_base.new_record? ? "Create" : "Update"
