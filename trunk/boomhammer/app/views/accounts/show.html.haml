@@ -1,0 +1,11 @@
+%p
+  = @account.nickname
+%p
+  = @account.email
+
+%h3 Badges
+.badges
+  - account_badges(@account).each do |badge|
+    = draw_badge badge
+
+= link_to "Edit Account", edit_account_path

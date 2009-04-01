@@ -8,7 +8,7 @@ namespace :images do
       image = Image.find_by_file_name basename
 
       if image.nil?
-        image.create(:file_name => basename)
+        Image.create(:file_name => basename)
       end
     end
   end

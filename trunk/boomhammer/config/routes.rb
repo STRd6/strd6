@@ -27,6 +27,10 @@ ActionController::Routing::Routes.draw do |map|
   #     admin.resources :products
   #   end
 
+  map.namespace :creation do |creation|
+    creation.resources :item_bases
+  end
+
   map.resources :areas, :characters, :recipes, :images
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
