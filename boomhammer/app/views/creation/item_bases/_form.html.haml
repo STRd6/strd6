@@ -1,0 +1,14 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.text_field :name
+
+%p
+  = form.label :description
+  = form.text_area :description
+
+= image_select(form)
+
+.left
+  = link_to "Back", creation_item_bases_path
