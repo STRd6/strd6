@@ -16,12 +16,14 @@ class Image < ActiveRecord::Base
   protected
 
   def generate_file_name
-    self.file_name = Digest::SHA1.hexdigest("--#{rand(10000)}--#{Time.now}--")[0,16]
+    self.file_name ||= Digest::SHA1.hexdigest("--#{rand(10000)}--#{Time.now}--")[0,16]
   end
 
   def save_file
-    File.open("#{Rails.root}/public/production/images/#{file_name}", 'wb') do |f|
-      f << Base64.decode64(file)
+    if file
+      File.open("#{Rails.root}/public/production/images/#{file_name}", 'wb') do |f|
+        f << Base64.decode64(file)
+      end
     end
   end
 end
