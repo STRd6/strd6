@@ -1,0 +1,14 @@
+- if object[:got]
+  - if object[:got].size == 0
+    = "Nothing..."
+  - else
+    = "Got"
+    - object[:got].each do |item|
+      = image_for item
+
+- if object[:travelled]
+  = "Travelled to #{object[:travelled]}"
+
+- if object[:status]
+  = object[:status]
+

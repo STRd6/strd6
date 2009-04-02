@@ -32,22 +32,25 @@ class CharactersController < ResourceController::Base
 
   def take_opportunity
     opportunity = current_character.area.opportunities.find(params[:id])
-    flash[:notice] = current_character.take_opportunity(opportunity)
+    notifications = current_character.take_opportunity(opportunity)
 
+    flash[:game_notice] = render_to_string :partial => 'game/game_notifications', :object => notifications
     redirect_to current_character.area
   end
 
   def take_area_link
     area_link = current_character.area.area_links.find(params[:id])
-    flash[:notice] = current_character.take_area_link area_link
+    notifications = current_character.take_area_link(area_link)
 
+    flash[:game_notice] = render_to_string :partial => 'game/game_notifications', :object => notifications
     redirect_to current_character.area
   end
 
   def make_recipe
     recipe = Recipe.find(params[:id])
-    flash[:notice] = current_character.make_recipe recipe
+    notifications = current_character.make_recipe recipe
 
+    flash[:game_notice] = render_to_string :partial => 'game/game_notifications', :object => notifications
     redirect_to recipes_path
   end
 end
