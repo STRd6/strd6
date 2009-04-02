@@ -30,6 +30,7 @@
       #content
         %h1= @title || "#{controller.controller_name}: #{controller.action_name}".titlecase
         = notifications
+        #game_notice= flash[:game_notice]
         = yield
 
 
