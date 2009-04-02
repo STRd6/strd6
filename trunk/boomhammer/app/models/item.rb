@@ -11,4 +11,5 @@ class Item < ActiveRecord::Base
 
   delegate :name, :to => :item_base
   delegate :description, :to => :item_base
+  delegate :image_file_name, :to => :item_base
 end
