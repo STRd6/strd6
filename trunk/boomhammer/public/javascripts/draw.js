@@ -112,6 +112,8 @@ var EyeDropper = Class.create(Tool, {
       $('right_color').value = color;
       $('right_color').onblur();
     }
+
+    canvas.setTool(pencil);
   },
   
   cursor: "url(../images/draw/dropper.png) 13 13, default", // works in Safari but not FF/OP
@@ -343,3 +345,28 @@ var Canvas = Class.create({
     });
   }
 });
+
+/**
+ * Configure hot keys
+ */
+Event.observe(window, 'load', function() {
+  canvas.setTool(pencil);
+
+  document.observe('keydown', function(event) {
+    switch(event.keyCode) {
+      case 68: // d
+        canvas.setTool(dropper);
+        break;
+      case 69: // e
+        canvas.setTool(eraser);
+        break;
+      case 70: // f
+        canvas.setTool(fill);
+        break;
+      case 80: // p
+        canvas.setTool(pencil);
+        break;
+    }
+  });
+});
+
