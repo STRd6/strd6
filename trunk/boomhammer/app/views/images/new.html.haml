@@ -7,10 +7,6 @@
 = link_to_function image_tag('draw/dropper.png', :alt => 'Dropper'), 'canvas.setTool(dropper)', { :title => 'Dropper', :id => 'dropper', :class => 'tool' }
 = link_to_function image_tag('draw/eraser.png', :alt => 'Eraser'), 'canvas.setTool(eraser)', { :title => 'Eraser', :id => 'eraser', :class => 'tool'}
 = link_to_function image_tag('draw/fill.png', :alt => 'Fill'), 'canvas.setTool(fill)', { :title => 'Fill', :id => 'fill', :class => 'tool'}
-= link_to_function 'Clear Canvas', 'canvas.clearCanvas()', {:title => 'Clear Canvas', :id => 'clear_canvas', :class => 'tool'}
-= link_to_function 'Preview', 'canvas.preview()', {:title => 'Preview', :class => 'tool'}
-= link_to_function 'Save', 'canvas.saveFile()', {:title => 'Save', :class => 'tool'}
-= link_to_function 'Upload', 'canvas.upload()', {:title => 'Upload', :class => 'tool'}
 
 - canvas_width = 32
 - canvas_height = 32
@@ -24,3 +20,9 @@
 - canvas_height.times do |y|
   - canvas_width.times do |x|
     = javascript_tag "new Pixel('p_#{x}_#{y}', canvas, #{x}, #{y});"
+
+%p
+  = link_to_function 'Clear Canvas', 'canvas.clearCanvas()', {:title => 'Clear Canvas', :id => 'clear_canvas', :class => 'tool'}
+  = link_to_function 'Preview', 'canvas.preview()', {:title => 'Preview', :class => 'tool'}
+  = link_to_function 'Save', 'canvas.saveFile()', {:title => 'Save', :class => 'tool'}
+  = link_to_function 'Upload', 'canvas.upload()', {:title => 'Upload', :class => 'tool'}
