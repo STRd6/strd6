@@ -8,5 +8,7 @@
   %body
     #page
       #content
+        #notice
         %h1 Pixie
         = yield
+    = javascript_tag "var $token = '#{form_authenticity_token}'"
