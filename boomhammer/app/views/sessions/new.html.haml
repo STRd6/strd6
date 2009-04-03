@@ -1,0 +1,31 @@
+= stylesheet_link_tag 'openid-selector/openid.css'
+= javascript_include_tag 'openid-selector/openid-jquery.js'
+= javascript_tag "$(document).ready(function() {openid.init('openid_identifier');	});"
+
+- form_tag session_path, :id => 'openid_form' do
+  =# hidden_field_tag :action, :value => 'verify'
+
+  %fieldset
+    %legend Sign-in or Create New Account
+
+    #openid_choice
+      %p Please click your account provider:
+      #openid_btns
+
+
+    #openid_input_area
+      %input#openid_identifier{:name => "openid_identifier", :type => "text", :value => "http://"}
+      =# text_field_tag :name, :id => 'openid_identifier', :name => "openid_identifier", :value => "http://"
+      %input#openid_submit{:type => "submit", :value => "Sign-In"}
+
+    %noscript
+      %p
+        OpenID is service that allows you to log-on to many different
+        websites using a single indentity. 
+        Find out <a href="http://openid.net/what/">more about OpenID</a> and
+        <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.
+
+
+
+
+
