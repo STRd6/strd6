@@ -1,0 +1,17 @@
+#header
+  %p.left
+    = link_to "Characters", characters_path
+    = link_to "Recipes", recipes_path
+    = link_to "Draw", new_image_path
+    = link_to "Create Items", creation_item_bases_path
+
+  %p.right
+    - if current_character
+      = link_to "Current Character: #{current_character}", current_character
+
+    - if logged_in?
+      == Logged in as #{link_to current_account, current_account }
+      == (#{link_to "Log out", logout_path, { :title => "Log out" }})
+
+    -else
+      = link_to "Log in",  login_path,  { :title => "Log in" }

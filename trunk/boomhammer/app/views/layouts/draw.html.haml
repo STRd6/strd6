@@ -7,8 +7,11 @@
     = javascript_include_tag 'prototype', 'Pnglet', 'draw', 'jscolor', :cache => 'pixie'
   %body
     #page
+      = render :partial => 'game/header'
+
       #content
         #notice
         %h1 Pixie
         = yield
+
     = javascript_tag "var $token = '#{form_authenticity_token}'"
