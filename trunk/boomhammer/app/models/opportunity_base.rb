@@ -8,6 +8,9 @@ class OpportunityBase < ActiveRecord::Base
 
   validates_presence_of :name
 
+  accepts_nested_attributes_for :loots, :allow_destroy => true,
+    :reject_if => proc {|attributes| attributes['weight'].to_i <= 0}
+
   def spawn(attributes={})
     opportunity = Opportunity.new(attributes)
     opportunities << opportunity

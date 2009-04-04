@@ -1,0 +1,21 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.text_field :name
+
+%p
+  = form.label :description
+  = form.text_field :description
+
+#outcomes
+  %h3 Outcomes
+  - form.fields_for :loots do |loots_form|
+    = render :partial => 'loot', :locals => {:form => loots_form}
+= add_loot_link form
+
+.left
+  = link_to "Back", creation_opportunity_bases_path
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"
