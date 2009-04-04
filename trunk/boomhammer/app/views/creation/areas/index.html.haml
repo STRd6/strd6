@@ -1,0 +1,5 @@
+= link_to "New", :action => :new
+
+- @areas.each do |area|
+  = render area
+  = link_to "Edit", :action => :edit, :id => area.id
