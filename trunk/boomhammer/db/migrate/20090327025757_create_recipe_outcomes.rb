@@ -3,7 +3,7 @@ class CreateRecipeOutcomes < ActiveRecord::Migration
     create_table :recipe_outcomes do |t|
       t.references :recipe, :null => false
       t.references :item_base, :null => false
-      t.integer :weight, :null => false
+      t.integer :weight, :null => false, :default => 1
 
       t.timestamps :null => false
     end
