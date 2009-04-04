@@ -17,15 +17,16 @@ class OpportunityBase < ActiveRecord::Base
     return opportunity
   end
 
-  def generate_loot_item(roll)
-    if loots.size > 0
-      loots.each do |loot|
-        roll -= loot.weight
-        return loot.item_base if roll < 0
-      end
-      return loots.last.item_base
-    else
-      nil
+  def generate_loot_item()
+    total_weight = loots.all.sum(&:weight)
+
+    roll = rand(total_weight)
+
+    loots.each do |outcome|
+      roll -= outcome.weight
+      return outcome.item_base if roll <= 0
     end
+
+    return loots.last.item_base
   end
 end
