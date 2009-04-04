@@ -1,0 +1,2 @@
+module Creation::RecipesHelper
+end

@@ -1,9 +1,10 @@
 #header
   %p.left
-    = link_to "Characters", characters_path
-    = link_to "Recipes", recipes_path
-    = link_to "Draw", new_image_path
-    = link_to "Create Items", creation_item_bases_path
+    = link_to_unless_current "Characters", characters_path, :class => "button"
+    = link_to_unless_current "Recipes", recipes_path, :class => "button"
+    = link_to_unless_current "Draw", new_image_path, :class => "button"
+    = link_to_unless_current "Create Items", creation_item_bases_path, :class => "button"
+    = link_to_unless_current "Create Recipes", creation_recipes_path, :class => "button"
 
   %p.right
     - if current_character

@@ -1,0 +1,22 @@
+- form_for [:creation, @recipe] do |form|
+  = form.error_messages
+
+  %p
+    = form.label :name
+    = form.text_field :name
+
+  %h3 Ingredients
+  - ItemBase.all.map do |item_base|
+    = form.label "ingredient_ids_#{item_base.id}", image_for(item_base), :class => "image"
+    = check_box_tag "recipe[ingredient_ids][]", item_base.id, form.object.ingredient_ids.include?(item_base.id), :id => "recipe_ingredient_ids_#{item_base.id}"
+
+  %h3 Potential Outcomes
+  - ItemBase.all.map do |item_base|
+    = form.label "outcome_ids_#{item_base.id}", image_for(item_base), :class => "image"
+    = check_box_tag "recipe[outcome_ids][]", item_base.id, form.object.outcome_ids.include?(item_base.id), :id => "recipe_outcome_ids_#{item_base.id}"
+
+  .left
+    = link_to "Back", creation_recipes_path
+
+  .right
+    = submit_tag @recipe.new_record? ? "Create" : "Update"
