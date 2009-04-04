@@ -1,4 +1,5 @@
-class Creation::ItemBasesController < ResourceController::Base
+class Creation::ItemBasesController < Creation::CreationController
+  resource_controller
   actions :all, :except => :destroy
 
   show.before do

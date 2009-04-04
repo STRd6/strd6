@@ -1,4 +1,5 @@
-class Creation::OpportunityBasesController < ResourceController::Base
+class Creation::OpportunityBasesController < Creation::CreationController
+  resource_controller
   actions :all, :except => :destroy
 
   create.before do

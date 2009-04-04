@@ -313,7 +313,7 @@ var Canvas = Class.create({
   },
 
   upload: function() {
-    new Ajax.Request('/images', {
+    new Ajax.Request('/creation/images', {
       parameters: {
         'image[file]': base64Encode(this._toPNG()).gsub("\n", ""),
         'authenticity_token': $token

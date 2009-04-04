@@ -1,4 +1,5 @@
-class Creation::AreaLinksController  < ResourceController::Base
+class Creation::AreaLinksController  < Creation::CreationController
+  resource_controller
   actions :all, :except => :destroy
 
   new_action.before do

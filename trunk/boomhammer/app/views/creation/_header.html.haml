@@ -1,0 +1,11 @@
+#header
+  %p.left
+    = link_to "Home", '/', :class => "button"
+    = link_to_unless_current "Images", creation_images_path, :class => "button"
+    = link_to_unless_current "Items", creation_item_bases_path, :class => "button"
+    = link_to_unless_current "Recipes", creation_recipes_path, :class => "button"
+    = link_to_unless_current "Areas", creation_areas_path, :class => "button"
+    = link_to_unless_current "Area Links", creation_area_links_path, :class => "button"
+    = link_to_unless_current "Opportunity Bases", creation_opportunity_bases_path, :class => "button"
+
+  = login_area
