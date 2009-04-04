@@ -6,8 +6,10 @@
         = image_for ingredient
         == x#{ingredient.quantity}
 
-  - if (outcome = recipe.recipe_outcomes.first)
-    .yields.left
-      &raquo;
-    .image= image_for outcome
-    .clear
+  .yields.left
+    &raquo;
+  - recipe.recipe_outcomes.each do |outcome|
+    .image.left= image_for outcome
+    .left
+      = "or" unless outcome == recipe.recipe_outcomes.last
+  .clear
