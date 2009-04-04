@@ -7,7 +7,7 @@
 
   %p
     = f.label :intrinsic
-    = collection_select :character, :intrinsic, [:charisma, :flight, :see_invisible], :to_sym, :to_s
+    = collection_select :character, :intrinsic, Intrinsic.all, :name, :name
 
   .right
     = f.submit('Create')
