@@ -1,0 +1,10 @@
+= label_tag :base
+= form.collection_select :opportunity_base_id, OpportunityBase.all, :id, :name
+%p
+  = form.label :depletion
+  = form.text_field :depletion
+
+- unless form.object.new_record?
+  %p
+    = form.label :_delete, 'Remove:'
+    = form.check_box :_delete

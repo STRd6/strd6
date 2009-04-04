@@ -1,0 +1,19 @@
+= form.error_messages
+
+= label_tag :base
+= form.collection_select :area_base_id, AreaBase.all, :id, :name
+%p
+  = form.label :name
+  = form.text_field :name
+
+#opportunities
+  %h3 Opportunities
+  - form.fields_for :opportunities do |opportunities_form|
+    = render :partial => 'opportunity', :locals => {:form => opportunities_form}
+= add_opportunity_link form
+
+.left
+  = link_to "Back", creation_areas_path
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"
