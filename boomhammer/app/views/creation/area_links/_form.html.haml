@@ -1,0 +1,26 @@
+= form.error_messages
+
+%p
+  = form.label :area_id, :from
+  = form.collection_select :area_id, Area.all, :id, :name
+
+%p
+  = form.label :linked_area_id, :to
+  = form.collection_select :linked_area_id, Area.all, :id, :name
+
+%p
+  = form.label :create_inverse_link
+  = form.check_box :create_inverse_link
+
+%h3 This link requires any of the following abilities:
+- Intrinsic.all.each do |intrinsic|
+  .left
+    = label_tag "area_link[requisites][]", intrinsic.name
+    = check_box_tag "area_link[requisites][]", intrinsic.name, form.object.requisites.include?(intrinsic.name)
+.clear
+
+.left
+  = link_to "Back", creation_area_links_path
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"

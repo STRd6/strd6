@@ -5,6 +5,8 @@
     = link_to_unless_current "Draw", new_image_path, :class => "button"
     = link_to_unless_current "Create Items", creation_item_bases_path, :class => "button"
     = link_to_unless_current "Create Recipes", creation_recipes_path, :class => "button"
+    = link_to_unless_current "Create Areas", creation_areas_path, :class => "button"
+    = link_to_unless_current "Create Area Links", creation_area_links_path, :class => "button"
 
   %p.right
     - if current_character

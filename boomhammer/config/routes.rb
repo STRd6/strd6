@@ -28,7 +28,7 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   map.namespace :creation do |creation|
-    creation.resources :item_bases, :recipes, :areas
+    creation.resources :item_bases, :recipes, :areas, :area_links
   end
 
   map.resources :areas, :characters, :recipes, :images
