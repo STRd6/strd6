@@ -1,4 +1,11 @@
 module DataMeister
+  def self.populate_intrinsics
+    existing_intrinsics = Intrinsic.all.map(&:name)
+    Intrinsic.basic.each do |intrinsic|
+      Intrinsic.create(:name => intrinsic) unless existing_intrinsics.include? intrinsic
+    end
+  end
+
   def self.populate
     berry = ItemBase.create :name => "berry",
       :description => "This berry looks delicious."
@@ -36,7 +43,7 @@ module DataMeister
         gem.loot_entry(9),
         magic_water.loot_entry(99),
       ],
-      :requisites => [:see_invisible]
+      :requisites => ['see_invisible']
 
     cantina = OpportunityBase.create :name => "cantina",
       :description => "Oona goota, Solo?",
@@ -44,7 +51,7 @@ module DataMeister
         coin.loot_entry(25),
         wookie_droppings.loot_entry(75),
       ],
-      :requisites => [:charisma]
+      :requisites => ['charisma']
 
     cumulonimbus = OpportunityBase.create :name => "cumulonimbus",
       :description => "Cumulonimbus (Cb) is a type of cloud that is tall, dense, and involved in thunderstorms and other intense weather. It is a result of atmospheric instability. These clouds can form alone, in clusters, or along a cold front in a squall line. They create lightning throught the heart of the cloud.",
@@ -65,8 +72,8 @@ module DataMeister
     Opportunity.create :opportunity_base => cumulonimbus, :area => bespin
 
     tor.add_bi_directional_link_to tyr
-    tor.add_bi_directional_link_to bespin, :requisites => [:flight]
-    tyr.add_bi_directional_link_to bespin, :requisites => [:flight]
+    tor.add_bi_directional_link_to bespin, :requisites => ['flight']
+    tyr.add_bi_directional_link_to bespin, :requisites => ['flight']
 
     #####
     # Recipes
@@ -126,5 +133,7 @@ module DataMeister
     2.times do
       character.take_opportunity(character.area.opportunities.first)
     end
+
+    populate_intrinsics
   end
 end

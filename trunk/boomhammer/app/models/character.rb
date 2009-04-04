@@ -13,7 +13,9 @@ class Character < ActiveRecord::Base
   validates_presence_of :area
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
 
-  before_validation_on_create :assign_starting_area, :set_default_intrinsics, :add_intrinsic
+  before_validation_on_create :assign_starting_area, 
+    :set_default_intrinsics,
+    :add_intrinsic
 
   named_scope :for_account_id, lambda {|account_id| {:conditions => {:account_id => account_id}}}
 
@@ -107,6 +109,8 @@ class Character < ActiveRecord::Base
   end
 
   def add_intrinsic
-    intrinsics[intrinsic.to_sym] = true if intrinsic
+    if Intrinsic.legit?(intrinsic)
+      intrinsics[intrinsic] = true
+    end
   end
 end
