@@ -15,8 +15,8 @@ class Recipe < ActiveRecord::Base
     roll = rand(total_weight)
 
     recipe_outcomes.each do |outcome|
-      return outcome.item_base if roll <= 0
       roll -= outcome.weight
+      return outcome.item_base if roll <= 0
     end
 
     return recipe_outcomes.last.item_base
