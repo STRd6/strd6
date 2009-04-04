@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090401033224) do
+ActiveRecord::Schema.define(:version => 20090404162526) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -84,6 +84,15 @@ ActiveRecord::Schema.define(:version => 20090401033224) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "intrinsics", :force => true do |t|
+    t.string   "name",       :null => false
+    t.integer  "image_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "intrinsics", ["name"], :name => "index_intrinsics_on_name", :unique => true
 
   create_table "item_bases", :force => true do |t|
     t.string   "name",        :null => false
@@ -163,11 +172,11 @@ ActiveRecord::Schema.define(:version => 20090401033224) do
   end
 
   create_table "recipe_outcomes", :force => true do |t|
-    t.integer  "recipe_id",    :null => false
-    t.integer  "item_base_id", :null => false
-    t.integer  "weight",       :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "recipe_id",                   :null => false
+    t.integer  "item_base_id",                :null => false
+    t.integer  "weight",       :default => 1, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
   end
 
   add_index "recipe_outcomes", ["recipe_id", "weight"], :name => "index_recipe_outcomes_on_recipe_id_and_weight"
