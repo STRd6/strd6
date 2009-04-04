@@ -1,0 +1,15 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.text_field :name
+
+%p
+  = form.label :description
+  = form.text_field :description
+
+.left
+  = link_to "Back", creation_area_bases_path
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"

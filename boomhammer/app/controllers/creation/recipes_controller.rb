@@ -1,4 +1,5 @@
-class Creation::RecipesController < ResourceController::Base
+class Creation::RecipesController < Creation::CreationController
+  resource_controller
   actions :all, :except => :destroy
 
   show.before do

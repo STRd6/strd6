@@ -19,4 +19,8 @@ module ApplicationHelper
   def account_badges(account)
     Badge.for_account_id(account.id)
   end
+
+  def login_area
+    render :partial => 'components/login'
+  end
 end
