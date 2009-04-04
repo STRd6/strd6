@@ -1,0 +1,13 @@
+.recipe
+  = recipe.name
+  .ingredients
+    - recipe.recipe_components.each do |ingredient|
+      .image.left
+        = image_for ingredient
+        == x#{ingredient.quantity}
+
+  - if (outcome = recipe.recipe_outcomes.first)
+    .yields.left
+      &raquo;
+    .image= image_for outcome
+    .clear

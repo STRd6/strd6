@@ -1,0 +1,24 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.text_field :name
+
+#ingredients
+  %h3 Ingredients
+  - form.fields_for :recipe_components do |ingredients_form|
+    = render :partial => 'ingredient', :locals => {:form => ingredients_form}
+= add_ingredient_link form
+
+
+#outcomes
+  %h3 Outcomes
+  - form.fields_for :recipe_outcomes do |outcomes_form|
+    = render :partial => 'outcome', :locals => {:form => outcomes_form}
+= add_outcome_link form
+
+.left
+  = link_to "Back", creation_recipes_path
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"

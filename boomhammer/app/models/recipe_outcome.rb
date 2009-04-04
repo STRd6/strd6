@@ -8,4 +8,5 @@ class RecipeOutcome < ActiveRecord::Base
   validates_presence_of :item_base
 
   delegate :name, :to => :item_base
+  delegate :image_file_name, :to => :item_base
 end

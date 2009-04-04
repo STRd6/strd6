@@ -1,0 +1,5 @@
+= link_to "New", :action => :new
+
+- @recipes.each do |recipe|
+  = render recipe
+  = link_to "Edit", :action => :edit, :id => recipe.id
