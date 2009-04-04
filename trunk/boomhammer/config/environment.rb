@@ -7,7 +7,6 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
-  config.gem 'thoughtbot-quietbacktrace', :lib => 'quietbacktrace'
   config.gem 'thoughtbot-shoulda', :lib => 'shoulda'
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl'
   config.gem 'ruby-openid', :lib => 'openid'
