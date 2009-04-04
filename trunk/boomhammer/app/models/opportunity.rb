@@ -23,7 +23,7 @@ class Opportunity < ActiveRecord::Base
     if roll < 0
       nil
     else
-      opportunity_base.generate_loot_item roll
+      opportunity_base.generate_loot_item
     end
   end
 end
