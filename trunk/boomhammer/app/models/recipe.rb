@@ -2,7 +2,7 @@ class Recipe < ActiveRecord::Base
   include Named
 
   has_many :recipe_components, :dependent => :destroy
-  has_many :recipe_outcomes, :dependent => :destroy
+  has_many :recipe_outcomes, :order => "weight DESC", :dependent => :destroy
 
   accepts_nested_attributes_for :recipe_components, :allow_destroy => true, 
     :reject_if => proc {|attributes| attributes['quantity'].to_i <= 0}
