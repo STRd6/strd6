@@ -3,4 +3,5 @@
 
 - @area_links.each do |area_link|
   = render area_link
-  = link_to "Edit", :action => :edit, :id => area_link.id
+  %p
+    = link_to "Edit", :action => :edit, :id => area_link.id
