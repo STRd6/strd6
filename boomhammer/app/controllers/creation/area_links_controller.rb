@@ -5,4 +5,9 @@ class Creation::AreaLinksController  < Creation::CreationController
   new_action.before do
     @object.requisites = []
   end
+
+  create.before do
+    # Convert into language that the model can understand
+    @object.create_inverse_link = false if @object.create_inverse_link == "0"
+  end
 end
