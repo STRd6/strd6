@@ -70,6 +70,11 @@ class Character < ActiveRecord::Base
     end
   end
 
+  def daily_update
+    self.actions = 50
+    self.save
+  end
+
   protected
 
   def perform(action_cost)
