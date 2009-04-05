@@ -15,8 +15,13 @@
 %h3 This link requires any of the following abilities:
 - Intrinsic.all.each do |intrinsic|
   .left
-    = label_tag "area_link[requisites][]", intrinsic.name
-    = check_box_tag "area_link[requisites][]", intrinsic.name, form.object.requisites.include?(intrinsic.name)
+    = label_tag "area_link_requisites_#{intrinsic.name}", intrinsic.name
+    = check_box_tag "area_link[requisites][]", intrinsic.name, form.object.requisites.include?(intrinsic.name), :id => "opportunity_base_requisites_#{intrinsic.name}"
+.clear
+%h4 - or -
+.left
+  = label_tag "area_link[requisites][]", "any"
+  = check_box_tag "area_link[requisites][]", "any", form.object.requisites.include?("any"), :id => "opportunity_base_requisites_any"
 .clear
 
 .left
