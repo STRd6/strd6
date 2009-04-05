@@ -1,2 +1,4 @@
 - @recipes.each do |recipe|
-  = render :partial => recipe
+  = draw_recipe recipe
+  %p
+    = recipe_action_link recipe
