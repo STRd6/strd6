@@ -8,6 +8,18 @@
   = form.label :description
   = form.text_field :description
 
+%h3 This opportunity requires any of the following abilities:
+- Intrinsic.all.each do |intrinsic|
+  .left
+    = label_tag "opportunity_base_requisites_#{intrinsic.name}", intrinsic.name
+    = check_box_tag "opportunity_base[requisites][]", intrinsic.name, form.object.requisites.include?(intrinsic.name), :id => "opportunity_base_requisites_#{intrinsic.name}"
+.clear
+%h4 - or -
+.left
+  = label_tag "opportunity_base[requisites][]", "any"
+  = check_box_tag "opportunity_base[requisites][]", "any", form.object.requisites.include?("any"), :id => "opportunity_base_requisites_any"
+.clear
+
 #outcomes
   %h3 Outcomes
   - form.fields_for :loots do |loots_form|
