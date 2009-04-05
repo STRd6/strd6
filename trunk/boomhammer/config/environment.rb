@@ -12,6 +12,7 @@ Rails::Initializer.run do |config|
   config.gem 'ruby-openid', :lib => 'openid'
   config.gem 'mocha'
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
+  config.gem "mbleigh-acts-as-taggable-on", :lib => "acts-as-taggable-on", :source => "http://gems.github.com"
   config.gem 'juggernaut'
   config.gem 'haml'
   # Settings in config/environments/* take precedence over those specified here.
