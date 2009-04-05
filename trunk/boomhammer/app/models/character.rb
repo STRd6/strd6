@@ -75,21 +75,6 @@ class Character < ActiveRecord::Base
     self.save
   end
 
-  protected
-
-  def perform(action_cost)
-    notifications = {}
-    transaction do
-      if (self.actions -= action_cost) >= 0
-        yield notifications
-        save!
-      else
-        notifications[:status] = "No actions remaining"
-      end
-    end
-    return notifications
-  end
-
   # Always returns the new item
   def add_item_from_base(item_base)
     # If we've got one of the same stack it!
@@ -103,6 +88,21 @@ class Character < ActiveRecord::Base
     end
 
     return item
+  end
+
+  protected
+
+  def perform(action_cost)
+    notifications = {}
+    transaction do
+      if (self.actions -= action_cost) >= 0
+        yield notifications
+        save!
+      else
+        notifications[:status] = "No actions remaining"
+      end
+    end
+    return notifications
   end
 
   def assign_starting_area

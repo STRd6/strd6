@@ -30,3 +30,14 @@ Factory.define :opportunity_base do |opportunity_base|
   opportunity_base.name {Factory.next :name}
   opportunity_base.description "Indescribable"
 end
+
+Factory.define :character do |character|
+  character.name {Factory.next :name}
+  character.association :area, :starting_location => true
+  character.association :account
+  character.actions 10000
+end
+
+Factory.define :account do |account|
+  
+end

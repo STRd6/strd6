@@ -1,5 +1,6 @@
 class Recipe < ActiveRecord::Base
   include Named
+  include WeightedDistribution
 
   has_many :recipe_components, :dependent => :destroy
   has_many :recipe_outcomes, :order => "weight DESC", :dependent => :destroy
@@ -10,16 +11,7 @@ class Recipe < ActiveRecord::Base
     :reject_if => proc {|attributes| attributes['weight'].to_i <= 0}
 
   def generate_outcome_item_base
-    total_weight = recipe_outcomes.all.sum(&:weight)
-
-    roll = rand(total_weight)
-
-    recipe_outcomes.each do |outcome|
-      roll -= outcome.weight
-      return outcome.item_base if roll <= 0
-    end
-
-    return recipe_outcomes.last.item_base
+    return select_from_weighted_distribution(recipe_outcomes.all).item_base
   end
 
   def add_component(item_base, quantity=1)

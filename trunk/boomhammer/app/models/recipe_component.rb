@@ -4,8 +4,7 @@ class RecipeComponent < ActiveRecord::Base
   belongs_to :recipe
   belongs_to :item_base
 
-  validates_presence_of :recipe
-  validates_presence_of :item_base
+  validates_presence_of :recipe, :item_base
   validates_numericality_of :quantity, :greater_than => 0
 
   delegate :name, :to => :item_base
