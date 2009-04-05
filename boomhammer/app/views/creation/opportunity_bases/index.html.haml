@@ -3,4 +3,5 @@
 
 - @opportunity_bases.each do |opportunity_base|
   = render opportunity_base
-  = link_to "Edit", :action => :edit, :id => opportunity_base.id
+  %p
+    = link_to "Edit", :action => :edit, :id => opportunity_base.id
