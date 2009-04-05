@@ -1,5 +1,6 @@
 class OpportunityBase < ActiveRecord::Base
   include Requisite
+  include WeightedDistribution
 
   has_many :opportunities, :dependent => :destroy
   has_many :loots, 
@@ -18,15 +19,6 @@ class OpportunityBase < ActiveRecord::Base
   end
 
   def generate_loot_item()
-    total_weight = loots.all.sum(&:weight)
-
-    roll = rand(total_weight)
-
-    loots.each do |outcome|
-      roll -= outcome.weight
-      return outcome.item_base if roll <= 0
-    end
-
-    return loots.last.item_base
+    return select_from_weighted_distribution(loots.all).item_base
   end
 end
