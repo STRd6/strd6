@@ -1,10 +1,15 @@
 .recipe
-  %h3= recipe.name
-  %p
+  = recipe.name
+  .ingredients
     - recipe.recipe_components.each do |ingredient|
-      = "#{ingredient} x#{ingredient.quantity}"
-  %h4 Yields:
-  %p
-    - outcome = recipe.recipe_outcomes.first
-    = outcome
-  = recipe_action_link recipe
+      .image.left
+        = image_for ingredient
+        == x#{ingredient.quantity}
+
+  .yields.left
+    &raquo;
+  - recipe.recipe_outcomes.each do |outcome|
+    .image.left= image_for outcome
+    .left
+      = "or" unless outcome == recipe.recipe_outcomes.last
+  .clear
