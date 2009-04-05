@@ -66,4 +66,26 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
       
     end
   end
+
+  context "abilities from equipped items" do
+    setup do
+      @character = Factory :character
+
+      @granted_ability = "darkness resistance"
+
+      @item_base = Factory :item_base, :granted_abilities => [@granted_ability]
+      @item = Factory :item, :item_base => @item_base, :owner => @character
+
+      assert @item.granted_abilities.include?(@granted_ability)
+    end
+
+    should "have abilities granted by equipped items" do
+      assert_equal false, @character.net_abilities.include?(@granted_ability)
+
+      @character.equip(@item, Item::EquipSlots::HANDS)
+      #@character.reload
+
+      assert @character.net_abilities.include?(@granted_ability)
+    end
+  end
 end

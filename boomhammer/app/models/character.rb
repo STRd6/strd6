@@ -9,6 +9,7 @@ class Character < ActiveRecord::Base
   belongs_to :area
 
   has_many :items, :as => :owner, :dependent => :destroy
+  has_many :equipped_items, :as => :owner, :conditions => {:slot => Item::EquipSlots::EQUIPPED}, :class_name => "Item"
 
   validates_presence_of :area
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
@@ -18,6 +19,39 @@ class Character < ActiveRecord::Base
     :add_intrinsic
 
   named_scope :for_account_id, lambda {|account_id| {:conditions => {:account_id => account_id}}}
+
+  def net_abilities
+    intrinsics.keys + granted_abilities
+  end
+
+  def granted_abilities
+    equipped_items.inject([]) {|array, item| array + item.granted_abilities}
+  end
+
+  def equip(item, slot)
+    perform(1) do |notifications|
+      if items.include? item
+        puts "Hi"
+        # Remove item from any slots it is in
+        unequip(item)
+        # Remove from target slot any equipped item
+        unequip_slot(slot)
+
+        item.slot = slot
+        item.save!
+
+        equipped_items.reload
+      end
+    end
+  end
+
+  def unequip(item)
+
+  end
+
+  def unequip_slot(slot)
+
+  end
 
   def take_opportunity(opportunity)
     perform(1) do |notifications|

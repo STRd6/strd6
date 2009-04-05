@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090405032230) do
+ActiveRecord::Schema.define(:version => 20090405203145) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -95,11 +95,12 @@ ActiveRecord::Schema.define(:version => 20090405032230) do
   add_index "intrinsics", ["name"], :name => "index_intrinsics_on_name", :unique => true
 
   create_table "item_bases", :force => true do |t|
-    t.string   "name",        :null => false
-    t.text     "description", :null => false
+    t.string   "name",              :null => false
+    t.text     "description",       :null => false
     t.integer  "image_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.text     "granted_abilities", :null => false
   end
 
   create_table "items", :force => true do |t|
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(:version => 20090405032230) do
     t.integer  "quantity",     :default => 1, :null => false
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
+    t.integer  "slot",         :default => 0, :null => false
   end
 
   add_index "items", ["owner_id", "owner_type"], :name => "index_items_on_owner_id_and_owner_type"

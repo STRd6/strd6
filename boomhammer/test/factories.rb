@@ -26,6 +26,10 @@ Factory.define :item_base do |item_base|
   item_base.description "Indescribable"
 end
 
+Factory.define :item do |item|
+  item.association :item_base
+end
+
 Factory.define :opportunity_base do |opportunity_base|
   opportunity_base.name {Factory.next :name}
   opportunity_base.description "Indescribable"

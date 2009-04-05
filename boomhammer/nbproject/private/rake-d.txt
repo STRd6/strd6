@@ -1,4 +1,5 @@
 data\:populate=Populate sample app data
+data\:populate\:intrinsics=Populate intrinsics
 db\:abort_if_pending_migrations=Raises an error if there are pending migrations
 db\:charset=Retrieves the charset for the current environment's database
 db\:collation=Retrieves the collation for the current environment's database
@@ -62,6 +63,7 @@ images\:populate=Populate image db entries for images that are missing entries
 juggernaut\:compile_flash=Compile the juggernaut flash file
 juggernaut\:reinstall=Reinstall the Juggernaut js and swf files
 log\:clear=Truncates all *.log files in log/ to zero bytes
+maintenance\:daily=Daily update to characters
 middleware=Prints out your Rack middleware stack
 notes=Enumerate all annotations
 notes\:custom=Enumerate a custom annotation, specify with ANNOTATION=WTFHAX

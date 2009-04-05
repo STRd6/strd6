@@ -2,10 +2,14 @@ class ItemBase < ActiveRecord::Base
   include Named
   include Imageable
 
+  serialize :granted_abilities
+
   has_many :items, :dependent => :destroy
   has_many :loots, :dependent => :destroy
   has_many :recipe_components, :dependent => :destroy
   has_many :recipe_outcomes, :dependent => :destroy
+
+  before_validation_on_create :configure_granted_abilities
 
   def spawn(attributes={})
     defaults = {}
@@ -16,5 +20,11 @@ class ItemBase < ActiveRecord::Base
 
   def loot_entry(weight)
     Loot.new(:item_base => self, :weight => weight)
+  end
+
+  protected
+
+  def configure_granted_abilities
+    self.granted_abilities ||= []
   end
 end
