@@ -73,7 +73,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
 
       @granted_ability = "darkness resistance"
 
-      @item_base = Factory :item_base, :granted_abilities => [@granted_ability]
+      @item_base = Factory :item_base, :granted_abilities => [@granted_ability], :allowed_slot => Item::EquipSlots::HANDS
       @item = Factory :item, :item_base => @item_base, :owner => @character
 
       assert @item.granted_abilities.include?(@granted_ability)
@@ -82,7 +82,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
     should "have abilities granted by equipped items" do
       assert_equal false, @character.net_abilities.include?(@granted_ability)
 
-      @character.equip(@item, Item::EquipSlots::HANDS)
+      @character.equip(@item, @item.allowed_slot)
       #@character.reload
 
       assert @character.net_abilities.include?(@granted_ability)
