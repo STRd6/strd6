@@ -31,7 +31,6 @@ class Character < ActiveRecord::Base
     return {:status => "Cannot equip #{item}"} unless can_equip?(item, slot)
 
     perform(1) do |notifications|
-      unequip(item)
       unequip_slot(slot)
 
       item.slot = slot
@@ -46,12 +45,23 @@ class Character < ActiveRecord::Base
     item.allowed_slot == slot && items.include?(item)
   end
 
+  # Remove item from any slots it is in
   def unequip(item)
-    #TODO: Remove item from any slots it is in
+    return {:status => "Item not equipped"} unless item.equipped?
+    
+    perform(0) do |notifications|
+      item.unequip!
+      notifications[:status] = "Unequipped #{item}"
+    end
   end
 
+  # Remove from target slot any equipped item
   def unequip_slot(slot)
-    #TODO: Remove from target slot any equipped item
+    if(equipped_item = equipped_items.first(:conditions => {:slot => slot}))
+      equipped_item.unequip!
+    else
+      true
+    end
   end
 
   def take_opportunity(opportunity)

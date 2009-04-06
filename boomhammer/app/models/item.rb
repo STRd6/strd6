@@ -21,8 +21,6 @@ class Item < ActiveRecord::Base
     }
   end
 
-  include Named
-
   belongs_to :item_base
   belongs_to :owner, :polymorphic => true
 
@@ -38,10 +36,32 @@ class Item < ActiveRecord::Base
   delegate :granted_abilities, :to => :item_base
   delegate :allowed_slot, :to => :item_base
 
+  def to_s
+    if equipped?
+      "#{name}(#{allowed_slot_name})"
+    else
+      name
+    end
+  end
+
+  # The string name for this item's allowed slot
   def allowed_slot_name
     EquipSlots::NAME_FOR[allowed_slot]
   end
 
+  # Remove item from any slots it is in and call `save!`
+  def unequip!
+    self.slot = EquipSlots::INVENTORY
+    self.save!
+  end
+
+  # True if this item is currently equipped
+  def equipped?
+    EquipSlots::EQUIPPED.include? slot
+  end
+
+  # Returns an array suitable for collection select:
+  # form.collection_select :field, Item.slot_select, :first, :last
   def self.slot_select
     EquipSlots::ALL.map {|slot| [slot, EquipSlots::NAME_FOR[slot]]}
   end

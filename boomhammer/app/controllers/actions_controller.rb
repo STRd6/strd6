@@ -9,6 +9,14 @@ class ActionsController < ApplicationController
     redirect_to current_character
   end
 
+  def unequip_item
+    item = Item.find(params[:item_id])
+
+    set_game_notice current_character.unequip(item)
+
+    redirect_to current_character
+  end
+
   def take_opportunity
     opportunity = current_character.area.opportunities.find(params[:opportunity_id])
     set_game_notice current_character.take_opportunity(opportunity)

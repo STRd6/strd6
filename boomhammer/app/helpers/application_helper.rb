@@ -5,7 +5,13 @@ module ApplicationHelper
   end
 
   def equip_link(item)
-    if Item::EquipSlots::EQUIPPED.include? item.allowed_slot
+    if item.equipped?
+      link_to "Unequip #{item}", {
+        :controller => 'actions',
+        :action => 'unequip_item',
+        :item_id => item.id,
+      }
+    elsif Item::EquipSlots::EQUIPPED.include? item.allowed_slot
       link_to "Equip #{item}:#{item.allowed_slot_name}", {
         :controller => 'actions',
         :action => 'equip_item',
