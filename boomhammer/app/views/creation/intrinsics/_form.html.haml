@@ -1,0 +1,11 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.text_field :name
+
+.left
+  = link_to "Back", creation_intrinsics_path
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"

@@ -30,7 +30,8 @@ ActionController::Routing::Routes.draw do |map|
   map.namespace :creation do |creation|
     creation.resources :item_bases, :recipes, :images,
       :areas, :area_bases, :area_links,
-      :opportunity_bases
+      :opportunity_bases,
+      :intrinsics
 
     creation.root :controller => "creation"
   end

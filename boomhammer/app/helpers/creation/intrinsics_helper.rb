@@ -1,0 +1,2 @@
+module Creation::IntrinsicsHelper
+end
