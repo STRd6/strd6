@@ -8,6 +8,9 @@
   = form.label :description
   = form.text_area :description
 
+%h3 This item grants the following abilities
+= intrinsic_checkbox_array :item_base, :granted_abilities, form.object.granted_abilities
+
 = image_select(form)
 
 .left
