@@ -8,7 +8,7 @@
 
   %h2 Archives
   %ol
-    - Quiz.all.each do |quiz|
+    - Quiz.all(:order => "id DESC").each do |quiz|
       %li{:value => quiz.id}= link_to quiz.title, quiz
 
   
