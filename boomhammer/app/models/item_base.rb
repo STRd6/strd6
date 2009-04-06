@@ -9,6 +9,8 @@ class ItemBase < ActiveRecord::Base
   has_many :recipe_components, :dependent => :destroy
   has_many :recipe_outcomes, :dependent => :destroy
 
+  validates_inclusion_of :allowed_slot, :in => Item::EquipSlots::ALL
+
   before_validation_on_create :configure_granted_abilities
 
   def spawn(attributes={})

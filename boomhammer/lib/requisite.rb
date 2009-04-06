@@ -14,7 +14,7 @@ module Requisite
     return true if requisites.include? 'any'
 
     requisites.each do |requisite|
-      return true if attributes[requisite]
+      return true if attributes.include? requisite
     end
 
     return false
