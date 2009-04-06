@@ -43,7 +43,7 @@ module ApplicationHelper
     link_to "Make #{recipe}?", {
       :controller => 'actions',
       :action => 'make_recipe',
-      :id => recipe.id
+      :recipe_id => recipe.id
     }
   end
 
