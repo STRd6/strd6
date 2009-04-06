@@ -23,4 +23,12 @@ module ApplicationHelper
   def login_area
     render :partial => 'components/login'
   end
+  
+  def intrinsic_checkbox_array(object, method, existing)
+    render :partial => 'creation/intrinsic_checkbox_array', :locals => {
+      :object => object,
+      :method => method,
+      :existing => existing,
+    }
+  end
 end
