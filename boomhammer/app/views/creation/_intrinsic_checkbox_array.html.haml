@@ -3,7 +3,6 @@
 - Intrinsic.all.each do |intrinsic|
   - id = "#{id_prefix}#{intrinsic.name}"
   .left
-    = existing.include?(intrinsic.name)
     = label_tag id, intrinsic.name
     = check_box_tag name, intrinsic.name, existing.include?(intrinsic.name), :id => id
 .clear
