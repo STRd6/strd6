@@ -2,7 +2,6 @@ class Character < ActiveRecord::Base
   include Named
 
   attr_accessor :intrinsic
-
   serialize :intrinsics
 
   belongs_to :account
@@ -29,28 +28,30 @@ class Character < ActiveRecord::Base
   end
 
   def equip(item, slot)
+    return {:status => "Cannot equip #{item}"} unless can_equip?(item, slot)
+
     perform(1) do |notifications|
-      if items.include? item
-        puts "Hi"
-        # Remove item from any slots it is in
-        unequip(item)
-        # Remove from target slot any equipped item
-        unequip_slot(slot)
+      unequip(item)
+      unequip_slot(slot)
 
-        item.slot = slot
-        item.save!
+      item.slot = slot
+      item.save!
 
-        equipped_items.reload
-      end
+      equipped_items.reload
+      notifications[:status] = "Equipped #{item}"
     end
   end
 
-  def unequip(item)
+  def can_equip?(item, slot)
+    item.allowed_slot == slot && items.include?(item)
+  end
 
+  def unequip(item)
+    #TODO: Remove item from any slots it is in
   end
 
   def unequip_slot(slot)
-
+    #TODO: Remove from target slot any equipped item
   end
 
   def take_opportunity(opportunity)
@@ -140,7 +141,7 @@ class Character < ActiveRecord::Base
   end
 
   def assign_starting_area
-    self.area = Area.random.starting.first
+    self.area ||= Area.random.starting.first
   end
   
   def set_default_intrinsics

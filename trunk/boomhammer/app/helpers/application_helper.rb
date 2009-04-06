@@ -4,16 +4,41 @@ module ApplicationHelper
     link_to image_for(item), {:controller => 'creation/item_bases', :action => 'show', :id => item.item_base_id}, :class => 'link_item'
   end
 
+  def equip_link(item)
+    if Item::EquipSlots::EQUIPPED.include? item.allowed_slot
+      link_to "Equip #{item}:#{item.allowed_slot_name}", {
+        :controller => 'actions',
+        :action => 'equip_item',
+        :item_id => item.id,
+        :item_slot => item.allowed_slot
+      }
+    else
+      nil
+    end
+  end
+
   def area_link_action_link(area_link)
-    link_to area_link.linked_area, :controller => 'characters', :action => 'take_area_link', :id => area_link.id
+    link_to area_link.linked_area, {
+      :controller => 'actions',
+      :action => 'take_area_link',
+      :area_link_id => area_link.id
+    }
   end
 
   def opportunity_action_link(opportunity)
-    link_to opportunity, {:controller => 'characters', :action => 'take_opportunity', :id => opportunity.id}
+    link_to opportunity, {
+      :controller => 'actions',
+      :action => 'take_opportunity',
+      :opportunity_id => opportunity.id
+    }
   end
 
   def recipe_action_link(recipe)
-    link_to "Make #{recipe}?", {:controller => 'characters', :action => 'make_recipe', :id => recipe.id}
+    link_to "Make #{recipe}?", {
+      :controller => 'actions',
+      :action => 'make_recipe',
+      :id => recipe.id
+    }
   end
 
   def account_badges(account)

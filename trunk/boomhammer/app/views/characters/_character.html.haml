@@ -12,4 +12,8 @@
 
   %h3 Inventory
   - character.items.each do |item|
-    = render :partial => item
+    .item
+      = image_for item
+      x
+      = item.quantity
+      = equip_link item

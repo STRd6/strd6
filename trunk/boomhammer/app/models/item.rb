@@ -10,6 +10,15 @@ class Item < ActiveRecord::Base
     EQUIPPED = [HEAD, TORSO, HANDS, LEGS, PET].freeze
 
     ALL = ([INVENTORY] + EQUIPPED).freeze
+
+    NAME_FOR = {
+      INVENTORY => "none",
+      HEAD => "head",
+      TORSO => "torso",
+      HANDS => "hands",
+      LEGS => "legs",
+      PET => "pet",
+    }
   end
 
   include Named
@@ -27,4 +36,13 @@ class Item < ActiveRecord::Base
   delegate :description, :to => :item_base
   delegate :image_file_name, :to => :item_base
   delegate :granted_abilities, :to => :item_base
+  delegate :allowed_slot, :to => :item_base
+
+  def allowed_slot_name
+    EquipSlots::NAME_FOR[allowed_slot]
+  end
+
+  def self.slot_select
+    EquipSlots::ALL.map {|slot| [slot, EquipSlots::NAME_FOR[slot]]}
+  end
 end
