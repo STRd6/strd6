@@ -7,9 +7,6 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
 
       @item_base1 = Factory :item_base
       @item_base2 = Factory :item_base
-
-      assert @item_base1.id, "Precondition: Items saved sucessfully"
-      assert @item_base2.id, "Precondition: Items saved sucessfully"
       
       @recipe = Recipe.new(:name => "Equi-outcome")
       @recipe.add_component(@ingredient, 1)
@@ -18,32 +15,29 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
       @recipe.save!
 
       @character = Factory :character
-      100.times do
+      10.times do
         @character.add_item_from_base(@ingredient)
       end
 
       ingredients = @character.items.first :conditions => {:item_base_id => @ingredient.id}
-      assert_equal 100, ingredients.quantity, "Precondition: 100 ingredients"
-      # puts "#{ingredients.name}[#{ingredients.id}] => #{ingredients.quantity}"
+      assert_equal 10, ingredients.quantity, "Precondition: 10 ingredients"
     end
 
     should "have about equal outcomes" do
-      100.times do
+      10.times do
         @character.make_recipe(@recipe)
       end
 
       first_outcome = @character.items.first :conditions => {:item_base_id => @item_base1.id}
       second_outcome = @character.items.first :conditions => {:item_base_id => @item_base2.id}
 
-      # puts @character.items.map {|i| "#{i.name}[#{i.id}] => #{i.quantity}"}
-
       assert first_outcome
       assert second_outcome
 
-      assert first_outcome.quantity < 66 && first_outcome.quantity > 33, "Not guaranteed, just highly likely"
-      assert second_outcome.quantity < 66 && second_outcome.quantity > 33, "Not guaranteed, just highly likely"
+      assert first_outcome.quantity < 9 && first_outcome.quantity > 1, "Not guaranteed, just highly likely"
+      assert second_outcome.quantity < 9 && second_outcome.quantity > 1, "Not guaranteed, just highly likely"
 
-      assert_equal 100, first_outcome.quantity + second_outcome.quantity, "Total should add up to 100"
+      assert_equal 10, first_outcome.quantity + second_outcome.quantity, "Total should add up to 10"
     end
 
     should "not succede without ingredients" do
@@ -61,9 +55,45 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
     end
   end
 
-  context "crafting a recipe that requires tools" do
+  context "crafting a recipe that requires a tool" do
     setup do
-      
+      @ingredient = Factory :item_base
+      @tool = Factory :item_base
+
+      @outcome = Factory :item_base
+
+      @recipe = Recipe.new(:name => "Equi-outcome")
+      @recipe.add_component(@ingredient, 1, 100)
+      @recipe.add_component(@tool, 1, 0)
+      @recipe.add_outcome(@outcome, 1)
+      @recipe.save!
+
+      @character = Factory :character
+      10.times do
+        @character.add_item_from_base(@ingredient)
+      end
+      @character.add_item_from_base(@tool)
+
+      ingredients = @character.items.first :conditions => {:item_base_id => @ingredient.id}
+      assert_equal 10, ingredients.quantity, "Precondition: 10 ingredients"
+
+      tool = @character.items.first :conditions => {:item_base_id => @tool.id}
+      assert_equal 1, tool.quantity, "Precondition: 1 tool"
+    end
+    
+    should "be able to reuse tool" do
+      10.times do
+        @character.make_recipe(@recipe)
+      end
+
+      outcome = @character.items.first :conditions => {:item_base_id => @outcome.id}
+      assert_equal 10, outcome.quantity
+
+      tool = @character.items.first :conditions => {:item_base_id => @tool.id}
+      assert_equal 1, tool.quantity, "tool remains"
+
+      ingredients = @character.items.first :conditions => {:item_base_id => @ingredient.id}
+      assert_equal 0, ingredients.quantity, "ingredients gone"
     end
   end
 

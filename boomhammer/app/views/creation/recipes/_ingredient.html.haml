@@ -1,9 +1,14 @@
 = label_tag form.object
 = image_for form.object
 = form.collection_select :item_base_id, ItemBase.all, :id, :name
+
 %p
   = form.label :quantity
   = form.text_field :quantity
+
+%p
+  = form.label :consume_percentage
+  = form.text_field :consume_percentage
 
 - unless form.object.new_record?
   %p

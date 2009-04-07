@@ -14,8 +14,11 @@ class Recipe < ActiveRecord::Base
     return select_from_weighted_distribution(recipe_outcomes.all).item_base
   end
 
-  def add_component(item_base, quantity=1)
-    recipe_components.build :item_base => item_base, :quantity => quantity, :recipe => self
+  def add_component(item_base, quantity=1, consume_percentage=100)
+    recipe_components.build :item_base => item_base,
+      :quantity => quantity,
+      :consume_percentage => consume_percentage,
+      :recipe => self
   end
 
   def add_outcome(item_base, weight=1)

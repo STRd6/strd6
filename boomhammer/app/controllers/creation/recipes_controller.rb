@@ -16,4 +16,20 @@ class Creation::RecipesController < Creation::CreationController
       outcome.recipe = @recipe
     end
   end
+
+  protected
+  def object
+    @object ||= Recipe.find(param, find_opts)
+  end
+
+  def collection
+    Recipe.all find_opts
+  end
+
+  def find_opts
+    {:include => [
+      {:recipe_components => {:item_base => :image}},
+      {:recipe_outcomes => {:item_base => :image}},
+    ]}
+  end
 end

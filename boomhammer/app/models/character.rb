@@ -106,7 +106,7 @@ class Character < ActiveRecord::Base
 
       else
         ingredient_component_pairs.each do |pair|
-          pair.first.quantity -= pair.last.quantity
+          pair.first.quantity -= pair.last.quantity if pair.last.consume?
           pair.first.save!
         end
 
