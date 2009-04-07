@@ -45,3 +45,12 @@ end
 Factory.define :account do |account|
   
 end
+
+Factory.define :recipe do |recipe|
+  recipe.name {Factory.next :name}
+end
+
+Factory.define :recipe_component do |component|
+  component.association :item_base
+  component.association :recipe
+end
