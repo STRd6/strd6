@@ -12,7 +12,6 @@
   = form.label :create_inverse_link
   = form.check_box :create_inverse_link
 
-%p= form.object.requisites.inspect
 %h3 This link requires any of the following abilities:
 = intrinsic_checkbox_array(:area_link, :requisites, form.object.requisites)
 
