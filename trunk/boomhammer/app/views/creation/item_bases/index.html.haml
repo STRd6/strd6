@@ -1,7 +1,7 @@
-%p
-  = link_to "New", :action => :new
+%p= link_to "New", :action => :new
 
 - @item_bases.each do |item_base|
-  = render item_base
-  %p
+  .left.item_base
+    = render item_base
     = link_to "Edit", :action => :edit, :id => item_base.id
+.clear
