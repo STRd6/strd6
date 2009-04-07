@@ -1,4 +1,5 @@
+%p= link_to "New", :action => :new
+
 = render :partial => @item_base
 
-%p
-  = link_to "Edit", :action => :edit, :id => @object.id
+%p= link_to "Edit", :action => :edit, :id => @object.id
