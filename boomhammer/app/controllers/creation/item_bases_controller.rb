@@ -3,7 +3,8 @@ class Creation::ItemBasesController < Creation::CreationController
   actions :all, :except => :destroy
 
   new_action.before do
-    @object.granted_abilities = []
+    @item_base.granted_abilities = []
+    @item_base.image_id = params[:image_id]
   end
   
   show.before do
