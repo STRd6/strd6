@@ -1,14 +1,8 @@
 - id_prefix = "#{object}_#{method}_"
 - name = "#{object}[#{method}][]"
-- Intrinsic.all.each do |intrinsic|
-  - id = "#{id_prefix}#{intrinsic.name}"
+- IntrinsicBase.all.each do |base|
+  - id = "#{id_prefix}#{base.name}"
   .left
-    = label_tag id, intrinsic.name
-    = check_box_tag name, intrinsic.name, existing.include?(intrinsic.name), :id => id
-.clear
-%h4 - or -
-- id = "#{id_prefix}any"
-.left
-  = label_tag id, "any"
-  = check_box_tag name, "any", existing.include?("any"), :id => id
+    = label_tag id, base.name
+    = check_box_tag name, base.id, existing.include?(base.id), :id => id
 .clear

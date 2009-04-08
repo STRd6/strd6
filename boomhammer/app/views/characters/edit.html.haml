@@ -5,6 +5,10 @@
     = f.label :name
     = f.text_field :name, :class => :text
 
+  %p
+    = f.label :intrinsic
+    = f.collection_select :intrinsic_base_id, IntrinsicBase.all, :id, :to_s
+
   .right
     = f.submit "Update"
 

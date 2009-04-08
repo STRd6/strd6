@@ -1,35 +1,46 @@
 # Handles models that have requisite abilities to access
-# Requires that including model have a `requisites` column in DB
+# Adds a has_many :requisites and a `requisites_met?(attributes)` method
 module Requisite
   def self.included(model)
     model.class_eval do
-      serialize :requisites
-      validates_presence_of :requisites
-      before_validation_on_create :set_default_requisites, :sanitize_requisites
+      has_many :requisites, :as => :owner, :dependent => :destroy, :class_name => "Intrinsic"
+
+      before_save :save_new_requisites
     end
   end
 
-  # Returns true if the given attributes meet the requsite for this model
-  def requisite_met?(attributes)
-    return true if requisites.include? 'any'
-
-    requisites.each do |requisite|
-      return true if attributes.include? requisite
+  # Returns true if the given attributes meet the requsites for this model
+  def requisites_met?(attributes)
+    attributes_intrinsic_base_ids = attributes.map(&:intrinsic_base_id)
+    intrinsic_base_ids.each do |id|
+      return false unless attributes_intrinsic_base_ids.include? id
     end
 
-    return false
+    return true
+  end
+  
+  def intrinsic_base_ids
+    requisites.map(&:intrinsic_base_id)
+  end
+
+  def intrinsic_base_ids=(ids)
+    @intrinsic_base_ids = ids
   end
 
   protected
-  # The DB default doesn't seem to work correctly, so we'll put this here
-  # This sets the default requisites to [:any] as in nothing special required
-  # it keeps whatever was set previously though, so chillax.
-  def set_default_requisites
-    self.requisites ||= ['any']
-  end
+  def save_new_requisites
+    if @intrinsic_base_ids
+      existing_ids, new_ids = @intrinsic_base_ids.partition {|id| intrinsic_base_ids.include? id }
 
-  def sanitize_requisites
-    self.requisites = Intrinsic.sanitize(self.requisites)
-    self.requisites << 'any' if self.requisites.size == 0
+      # Delete the old ones
+      requisites.each do |requisite|
+        requisite.destroy unless existing_ids.include? requisite.intrinsic_base_id
+      end
+
+      # Add the new ones
+      new_ids.each do |id|
+        requisites.build :intrinsic_base_id => id
+      end
+    end
   end
 end

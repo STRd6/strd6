@@ -5,7 +5,7 @@ class Creation::AreaLinksControllerTest < ActionController::TestCase
     setup do
       @area1 = Factory :area
       @area2 = Factory :area
-      Factory :intrinsic
+      Factory :intrinsic_base
       @area_link = Factory :area_link
     end
 
@@ -28,7 +28,6 @@ class Creation::AreaLinksControllerTest < ActionController::TestCase
       assert_difference "AreaLink.count" do
         post :create, "area_link" => {
           "create_inverse_link" => "0",
-          "requisites" => ["stench resistance"],
           "area_id" => @area1.id.to_s,
           "linked_area_id" => @area2.id.to_s
         }
@@ -40,7 +39,6 @@ class Creation::AreaLinksControllerTest < ActionController::TestCase
       assert_difference "AreaLink.count", 2 do
         post :create, "area_link" => {
           "create_inverse_link" => "1",
-          "requisites" => ["stench resistance"],
           "area_id" => @area1.id.to_s,
           "linked_area_id" => @area2.id.to_s
         }

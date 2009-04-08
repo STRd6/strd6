@@ -1,4 +1,4 @@
-- available_opportunities = @area.opportunities.select {|opportunity| opportunity.requisite_met? current_character.net_abilities}
+- available_opportunities = @area.opportunities.select {|opportunity| opportunity.requisites_met? current_character.net_abilities}
 
 - if available_opportunities.size > 0
   - available_opportunities.each do |opportunity|
@@ -9,7 +9,7 @@
 - else
   %h2 No Opportunities here
 
-- available_area_links = @area.area_links.select {|area_link| area_link.requisite_met? current_character.net_abilities}
+- available_area_links = @area.area_links.select {|area_link| area_link.requisites_met? current_character.net_abilities}
 
 - if available_area_links.size > 0
   %h2 Travel To

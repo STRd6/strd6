@@ -13,7 +13,7 @@
   = form.collection_select :allowed_slot, Item.slot_select, :first, :last
 
 %h3 This item grants the following abilities
-= intrinsic_checkbox_array :item_base, :granted_abilities, form.object.granted_abilities
+= intrinsic_checkbox_array :item_base, :intrinsic_base_ids, form.object.intrinsic_base_ids
 
 = image_select(form)
 
