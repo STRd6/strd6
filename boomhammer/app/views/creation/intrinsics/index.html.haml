@@ -1,7 +1,1 @@
-%p
-  = link_to "New", :action => :new
-
-- @intrinsics.each do |intrinsic|
-  = render intrinsic
-  %p
-    = link_to "Edit", :action => :edit, :id => intrinsic.id
+= chunked_index @intrinsics

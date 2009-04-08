@@ -8,4 +8,13 @@ class Creation::AreasController < Creation::CreationController
       opportunity.area = @area
     end
   end
+
+  protected
+  def object
+    @object ||= Area.find(param, :include => [:area_base, :opportunities])
+  end
+
+  def collection
+    Area.all :order => "name"
+  end
 end

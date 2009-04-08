@@ -27,9 +27,12 @@ class Creation::RecipesController < Creation::CreationController
   end
 
   def find_opts
-    {:include => [
-      {:recipe_components => {:item_base => :image}},
-      {:recipe_outcomes => {:item_base => :image}},
-    ]}
+    {
+      :include => [
+        {:recipe_components => {:item_base => :image}},
+        {:recipe_outcomes => {:item_base => :image}},
+      ],
+      :order => "`recipes`.`name` ASC",
+    }
   end
 end

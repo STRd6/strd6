@@ -12,4 +12,10 @@ class Creation::OpportunityBasesController < Creation::CreationController
       loot.opportunity_base = @opportunity_base
     end
   end
+
+  protected
+
+  def collection
+    OpportunityBase.all :order => "name"
+  end
 end
