@@ -5,3 +5,9 @@
     .left
       = "or" unless outcome == opportunity_base.loots.last
   .clear
+  %p
+    - if opportunity_base.requisites.size > 0
+      = opportunity_base.requisites.to_sentence
+    - else
+      no requisites
+  .clear

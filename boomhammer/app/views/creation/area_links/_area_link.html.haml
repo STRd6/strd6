@@ -2,3 +2,8 @@
   = area_link.area
   &raquo;
   = area_link.linked_area
+  %p
+    - if area_link.requisites.size > 0
+      = area_link.requisites.to_sentence
+    - else
+      no requisites
