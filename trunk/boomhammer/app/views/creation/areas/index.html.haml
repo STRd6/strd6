@@ -1,7 +1,1 @@
-%p
-  = link_to "New", :action => :new
-
-- @areas.each do |area|
-  = render area
-  %p
-    = link_to "Edit", :action => :edit, :id => area.id
+= chunked_index @areas

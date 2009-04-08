@@ -9,4 +9,16 @@ class Creation::ItemBasesController < Creation::CreationController
   show.before do
     @title = @item_base.name
   end
+
+  protected
+  def collection
+    ItemBase.all find_opts
+  end
+
+  def find_opts
+    {
+      :include => :image,
+      :order => "name ASC",
+    }
+  end
 end

@@ -1,0 +1,7 @@
+%p= link_to "New", :action => :new
+
+- collection.each do |object|
+  .chunk
+    = render object
+    = link_to "Edit", :action => :edit, :id => object.id
+.clear
