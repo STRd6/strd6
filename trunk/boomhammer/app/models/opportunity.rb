@@ -11,7 +11,7 @@ class Opportunity < ActiveRecord::Base
   delegate :description, :to => :opportunity_base
   delegate :requisites, :to => :opportunity_base
 
-  delegate :requisite_met?, :to => :opportunity_base
+  delegate :requisites_met?, :to => :opportunity_base
   
   def explore
     roll = rand(100) - depletion

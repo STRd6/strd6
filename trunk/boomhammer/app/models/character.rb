@@ -1,26 +1,26 @@
 class Character < ActiveRecord::Base
   include Named
 
-  attr_accessor :intrinsic
-  serialize :intrinsics
+  attr_accessor :intrinsic_base_id
 
   belongs_to :account
   belongs_to :area
 
+  has_many :intrinsics, :as => :owner, :dependent => :destroy
   has_many :items, :as => :owner, :dependent => :destroy
   has_many :equipped_items, :as => :owner, :conditions => {:slot => Item::EquipSlots::EQUIPPED}, :class_name => "Item"
 
   validates_presence_of :area
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
 
-  before_validation_on_create :assign_starting_area, 
-    :set_default_intrinsics,
-    :add_intrinsic
+  before_validation_on_create :assign_starting_area
+
+  before_validation :add_intrinsic
 
   named_scope :for_account_id, lambda {|account_id| {:conditions => {:account_id => account_id}}}
 
   def net_abilities
-    intrinsics.keys + granted_abilities
+    intrinsics + granted_abilities
   end
 
   def granted_abilities
@@ -153,14 +153,10 @@ class Character < ActiveRecord::Base
   def assign_starting_area
     self.area ||= Area.random.starting.first
   end
-  
-  def set_default_intrinsics
-    self.intrinsics ||= {}
-  end
 
   def add_intrinsic
-    if Intrinsic.legit?(intrinsic)
-      intrinsics[intrinsic] = true
+    unless intrinsic_base_id.nil?
+      intrinsics.build :intrinsic_base_id => intrinsic_base_id unless intrinsics.map(&:intrinsic_base_id).include? intrinsic_base_id.to_i
     end
   end
 end

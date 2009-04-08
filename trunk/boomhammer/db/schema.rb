@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090407010623) do
+ActiveRecord::Schema.define(:version => 20090408025135) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -32,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20090407010623) do
   create_table "area_links", :force => true do |t|
     t.integer  "area_id",        :null => false
     t.integer  "linked_area_id", :null => false
-    t.text     "requisites",     :null => false
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
@@ -71,7 +70,6 @@ ActiveRecord::Schema.define(:version => 20090407010623) do
     t.string   "name",                       :null => false
     t.integer  "area_id",                    :null => false
     t.integer  "actions",    :default => 50, :null => false
-    t.text     "intrinsics",                 :null => false
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
@@ -85,23 +83,33 @@ ActiveRecord::Schema.define(:version => 20090407010623) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "intrinsics", :force => true do |t|
+  create_table "intrinsic_bases", :force => true do |t|
     t.string   "name",       :null => false
     t.integer  "image_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
-  add_index "intrinsics", ["name"], :name => "index_intrinsics_on_name", :unique => true
+  add_index "intrinsic_bases", ["name"], :name => "index_intrinsics_on_name", :unique => true
+
+  create_table "intrinsics", :force => true do |t|
+    t.integer  "intrinsic_base_id", :null => false
+    t.integer  "owner_id",          :null => false
+    t.string   "owner_type",        :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "intrinsics", ["intrinsic_base_id", "owner_id", "owner_type"], :name => "index_intrinsics_on_intrinsic_base_id_and_owner_id_and_owner_type", :unique => true
+  add_index "intrinsics", ["owner_id", "owner_type"], :name => "index_intrinsics_on_owner_id_and_owner_type"
 
   create_table "item_bases", :force => true do |t|
-    t.string   "name",                             :null => false
-    t.text     "description",                      :null => false
+    t.string   "name",                        :null => false
+    t.text     "description",                 :null => false
     t.integer  "image_id"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
-    t.text     "granted_abilities",                :null => false
-    t.integer  "allowed_slot",      :default => 0, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "allowed_slot", :default => 0, :null => false
   end
 
   create_table "items", :force => true do |t|
@@ -161,7 +169,6 @@ ActiveRecord::Schema.define(:version => 20090407010623) do
   create_table "opportunity_bases", :force => true do |t|
     t.string   "name",        :null => false
     t.text     "description", :null => false
-    t.text     "requisites",  :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

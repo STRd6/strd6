@@ -1,20 +1,12 @@
 class Intrinsic < ActiveRecord::Base
   include Named
-  include Imageable
+  
+  belongs_to :intrinsic_base
+  belongs_to :owner, :polymorphic => true
 
-  def self.basic
-    [
-      "charisma", "see invisible", "flight",
-      "fire resistance", "cold resistance", "stench resistance",
-    ]
-  end
+  validates_presence_of :intrinsic_base
+  validates_presence_of :owner
 
-  def self.sanitize(intrinsic_array)
-    valid_intrinsics = Intrinsic.all.map(&:name)
-    return intrinsic_array.select {|e| valid_intrinsics.include? e}
-  end
-
-  def self.legit?(intrinsic)
-    Intrinsic.all.map(&:name).include?(intrinsic)
-  end
+  delegate :name, :to => :intrinsic_base
+  delegate :image_file_name, :to => :intrinsic_base
 end

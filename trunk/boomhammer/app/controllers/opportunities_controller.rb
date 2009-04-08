@@ -1,2 +1,0 @@
-class OpportunitiesController < ApplicationController
-end

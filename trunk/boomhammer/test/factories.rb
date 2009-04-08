@@ -2,8 +2,8 @@ Factory.sequence :name do |i|
   "TEST_#{i}"
 end
 
-Factory.define :intrinsic do |intrinsic|
-  intrinsic.name {Factory.next :name}
+Factory.define :intrinsic_base do |intrinsic_base|
+  intrinsic_base.name {Factory.next :name}
 end
 
 Factory.define :area_base do |area_base|

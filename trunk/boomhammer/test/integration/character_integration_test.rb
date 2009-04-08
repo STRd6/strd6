@@ -97,25 +97,26 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
     end
   end
 
-  context "abilities from equipped items" do
+  context "character with abilities from equipped items" do
     setup do
       @character = Factory :character
 
-      @granted_ability = "darkness resistance"
+      @intrinsic_base = Factory :intrinsic_base
 
-      @item_base = Factory :item_base, :granted_abilities => [@granted_ability], :allowed_slot => Item::EquipSlots::HANDS
+      @item_base = Factory :item_base, :allowed_slot => Item::EquipSlots::HANDS
+      @item_base.granted_abilities.create! :intrinsic_base => @intrinsic_base
+
       @item = Factory :item, :item_base => @item_base, :owner => @character
 
-      assert @item.granted_abilities.include?(@granted_ability)
+      assert @item.granted_abilities.map(&:intrinsic_base).include?(@intrinsic_base)
     end
 
     should "have abilities granted by equipped items" do
-      assert_equal false, @character.net_abilities.include?(@granted_ability)
+      assert_equal false, @character.net_abilities.map(&:intrinsic_base).include?(@intrinsic_base)
 
       @character.equip(@item, @item.allowed_slot)
-      #@character.reload
 
-      assert @character.net_abilities.include?(@granted_ability)
+      assert @character.net_abilities.map(&:intrinsic_base).include?(@intrinsic_base)
     end
   end
 end

@@ -8,8 +8,8 @@
   = form.label :description
   = form.text_field :description
 
-%h3 This opportunity requires any of the following abilities:
-= intrinsic_checkbox_array(:opportunity_base, :requisites, form.object.requisites)
+%h3 This opportunity requires all of the following abilities:
+= intrinsic_checkbox_array :opportunity_base, :intrinsic_base_ids, form.object.intrinsic_base_ids
 
 #outcomes
   %h3 Outcomes

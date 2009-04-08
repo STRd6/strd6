@@ -12,8 +12,8 @@
   = form.label :create_inverse_link
   = form.check_box :create_inverse_link
 
-%h3 This link requires any of the following abilities:
-= intrinsic_checkbox_array(:area_link, :requisites, form.object.requisites)
+%h3 This link requires all of the following abilities:
+= intrinsic_checkbox_array :area_link, :intrinsic_base_ids, form.object.intrinsic_base_ids
 
 .left
   = link_to "Back", creation_area_links_path
