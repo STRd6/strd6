@@ -10,8 +10,9 @@ class Creation::ImagesController < Creation::CreationController
 
   create.wants.js do
     render :update do |page|
-      link = link_to "Image #{@object.id}", creation_image_path(@image.id)
-      page.replace_html :notice, "Uploaded as #{link}"
+      link = link_to "Image #{@image.id}", creation_image_path(@image.id)
+      new_item_link = link_to "Create new item", new_creation_item_base_path(:image_id => @image.id)
+      page.replace_html :notice, "Uploaded as #{link}<br />#{new_item_link}"
     end
   end
 
