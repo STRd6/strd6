@@ -16,6 +16,6 @@ class Creation::OpportunityBasesController < Creation::CreationController
   protected
 
   def collection
-    OpportunityBase.all :order => "name"
+    OpportunityBase.all :order => "name", :include => {:loots => {:item_base => :image}}
   end
 end
