@@ -12,17 +12,13 @@ class Opportunity < ActiveRecord::Base
   delegate :requisites, :to => :opportunity_base
 
   delegate :requisite_met?, :to => :opportunity_base
-#  def requisite_met?(attributes)
-#    opportunity_base.requisite_met? attributes
-#  end
   
   def explore
-    increment! :depletion
-
     roll = rand(100) - depletion
     if roll < 0
       nil
     else
+      increment! :depletion
       opportunity_base.generate_loot_item
     end
   end
