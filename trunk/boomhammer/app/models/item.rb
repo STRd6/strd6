@@ -30,11 +30,13 @@ class Item < ActiveRecord::Base
   validates_numericality_of :quantity, :greater_than_or_equal_to => 0
   validates_inclusion_of :slot, :in => EquipSlots::ALL
 
-  delegate :name, :to => :item_base
-  delegate :description, :to => :item_base
-  delegate :image_file_name, :to => :item_base
-  delegate :granted_abilities, :to => :item_base
-  delegate :allowed_slot, :to => :item_base
+  delegate :name, 
+    :description,
+    :image_file_name,
+    :granted_abilities,
+    :allowed_slot,
+    :allowed_slot_name,
+    :to => :item_base
 
   def to_s
     if equipped?
@@ -42,11 +44,6 @@ class Item < ActiveRecord::Base
     else
       name
     end
-  end
-
-  # The string name for this item's allowed slot
-  def allowed_slot_name
-    EquipSlots::NAME_FOR[allowed_slot]
   end
 
   # Remove item from any slots it is in and call `save!`
