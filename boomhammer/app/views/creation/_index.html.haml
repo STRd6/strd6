@@ -3,5 +3,6 @@
 - collection.each do |object|
   .chunk
     = render object
+    = link_to "Show", :action => :show, :id => object.id
     = link_to "Edit", :action => :edit, :id => object.id
 .clear

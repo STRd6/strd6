@@ -1,4 +1,12 @@
-= render :partial => @area
+.area
+  %h2= @area.name
+
+  %h3 Links
+  - @area.area_links.each do |link|
+    .area_link
+      = link_to link.linked_area, [:creation, link.linked_area]
+      = link_to "Edit Link", edit_creation_area_link_path(link)
+      = link.requisites.to_sentence
 
 %p
   = link_to "Edit", :action => :edit, :id => @area.id
