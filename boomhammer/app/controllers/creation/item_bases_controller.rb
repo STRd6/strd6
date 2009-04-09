@@ -18,7 +18,7 @@ class Creation::ItemBasesController < Creation::CreationController
 
   def find_opts
     {
-      :include => :image,
+      :include => [:image, {:granted_abilities => :intrinsic_base}],
       :order => "name ASC",
     }
   end

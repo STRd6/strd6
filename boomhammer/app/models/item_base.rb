@@ -32,6 +32,11 @@ class ItemBase < ActiveRecord::Base
     @intrinsic_base_ids = ids
   end
 
+  # The string name for this item's allowed slot
+  def allowed_slot_name
+    Item::EquipSlots::NAME_FOR[allowed_slot]
+  end
+
   protected
   def save_new_granted_abilities
     if @intrinsic_base_ids

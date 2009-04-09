@@ -1,3 +1,6 @@
 .item_base
   .image= image_for item_base
   = item_base.name
+  == [#{item_base.allowed_slot_name}]
+  .abilities
+    = item_base.granted_abilities.to_sentence
