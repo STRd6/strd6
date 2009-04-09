@@ -31,7 +31,7 @@ ActionController::Routing::Routes.draw do |map|
     creation.resources :item_bases, :recipes, :images,
       :areas, :area_bases, :area_links,
       :opportunity_bases,
-      :intrinsics
+      :intrinsic_bases
 
     creation.root :controller => "creation"
   end
