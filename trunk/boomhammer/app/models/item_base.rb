@@ -11,6 +11,8 @@ class ItemBase < ActiveRecord::Base
 
   validates_inclusion_of :allowed_slot, :in => Item::EquipSlots::ALL
 
+  before_save :save_new_granted_abilities
+
   def spawn(attributes={})
     defaults = {}
     item = Item.new(attributes.reverse_merge!(defaults))
