@@ -2,6 +2,10 @@ Factory.sequence :name do |i|
   "TEST_#{i}"
 end
 
+Factory.define :image do |image|
+  
+end
+
 Factory.define :intrinsic_base do |intrinsic_base|
   intrinsic_base.name {Factory.next :name}
 end

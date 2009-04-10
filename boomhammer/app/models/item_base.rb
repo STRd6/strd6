@@ -1,6 +1,7 @@
 class ItemBase < ActiveRecord::Base
   include Named
-  include Imageable
+
+  belongs_to :image
 
   has_many :granted_abilities, :class_name => "Intrinsic", :as => :owner, :dependent => :destroy
 

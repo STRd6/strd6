@@ -11,8 +11,8 @@ class Image < ActiveRecord::Base
 
   attr_accessor :file
 
-  def image_file_name
-    file_name
+  def image
+    self
   end
 
   protected
