@@ -1,4 +1,5 @@
 class IntrinsicBase < ActiveRecord::Base
   include Named
-  include Imageable
+
+  belongs_to :image
 end

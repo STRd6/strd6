@@ -24,6 +24,8 @@ class Item < ActiveRecord::Base
   belongs_to :item_base
   belongs_to :owner, :polymorphic => true
 
+  has_one :image, :through => :item_base
+
   has_many :items, :dependent => :destroy
 
   validates_presence_of :item_base
@@ -32,7 +34,6 @@ class Item < ActiveRecord::Base
 
   delegate :name, 
     :description,
-    :image_file_name,
     :granted_abilities,
     :allowed_slot,
     :allowed_slot_name,

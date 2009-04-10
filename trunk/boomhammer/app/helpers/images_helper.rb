@@ -1,6 +1,18 @@
 module ImagesHelper
   def image_for(object)
-    image_tag "/production/images/#{object.image_file_name || 'default.png'}", :alt => object, :title => object
+    if (image = object.image)
+      image_tag "/production/images/#{image.file_name}",
+        :width => image.width,
+        :height => image.height,
+        :alt => object,
+        :title => object
+    else
+      image_tag "/production/images/default.png",
+        :width => 32,
+        :height => 32,
+        :alt => object,
+        :title => object
+    end
   end
 
   def draw_badge(badge)
