@@ -1,0 +1,5 @@
+- form_for :image, :url => {:action => :process_upload}, :html => {:multipart => true} do |form|
+  %p
+    = form.label :upload
+    = form.file_field :upload
+  = submit_tag "Upload"

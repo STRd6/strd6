@@ -10,6 +10,7 @@ class Image < ActiveRecord::Base
   after_create :save_file
 
   attr_accessor :file
+  attr_accessor :upload
 
   def image
     self
@@ -23,9 +24,17 @@ class Image < ActiveRecord::Base
 
   def save_file
     if file
-      File.open("#{Rails.root}/public/production/images/#{file_name}", 'wb') do |f|
+      File.open(file_path, 'wb') do |f|
         f << Base64.decode64(file)
       end
+    elsif upload
+      File.open(file_path, 'wb') do |f|
+        f << upload.read
+      end
     end
+  end
+
+  def file_path
+    "#{Rails.root}/public/production/images/#{file_name}"
   end
 end
