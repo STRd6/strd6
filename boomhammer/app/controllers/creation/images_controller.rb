@@ -15,6 +15,4 @@ class Creation::ImagesController < Creation::CreationController
       page.replace_html :notice, "Uploaded as #{link}<br />#{new_item_link}"
     end
   end
-
-  #skip_before_filter :verify_authenticity_token
 end

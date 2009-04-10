@@ -33,6 +33,8 @@ ActionController::Routing::Routes.draw do |map|
       :opportunity_bases,
       :intrinsic_bases
 
+    creation.connect 'image_upload/:action', :controller => "image_upload"
+
     creation.root :controller => "creation"
   end
 
