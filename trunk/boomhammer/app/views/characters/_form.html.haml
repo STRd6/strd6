@@ -1,0 +1,17 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.text_field :name, :class => :text
+
+%p
+  = form.label :intrinsic_base_id, "Intrinsic"
+  = form.collection_select :intrinsic_base_id, IntrinsicBase.all, :id, :to_s
+
+.left
+  = link_to "Back", :action => :index
+
+.right
+  = submit_tag form.object.new_record? ? "Create" : "Update"
+
+.clear
