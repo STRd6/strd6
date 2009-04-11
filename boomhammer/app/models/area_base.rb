@@ -1,4 +1,8 @@
 class AreaBase < ActiveRecord::Base
+  include Named
+  
+  belongs_to :image
+
   has_many :areas, :dependent => :destroy
 
   def spawn(attributes={})

@@ -11,6 +11,8 @@ class Area < ActiveRecord::Base
   has_many :items, :as => :owner, :dependent => :destroy
   has_many :opportunities, :dependent => :destroy
 
+  has_one :image, :through => :area_base
+
   validates_presence_of :area_base
 
   named_scope :starting, :conditions => {:starting_location => true}
