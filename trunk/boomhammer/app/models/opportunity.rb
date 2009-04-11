@@ -4,6 +4,8 @@ class Opportunity < ActiveRecord::Base
   belongs_to :opportunity_base
   belongs_to :area
 
+  has_one :image, :through => :opportunity_base
+
   validates_presence_of :opportunity_base
   validates_presence_of :area
 

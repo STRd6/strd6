@@ -22,6 +22,10 @@ class Event < ActiveRecord::Base
       character.add_item_from_base(base)
     when "OpportunityBase"
       character.area.add_opportunity(:opportunity_base => base)
+      # HAX Kind of a hack
+      opportunity = character.area.opportunities.last
+      character.add_knowledge opportunity
+      return opportunity
     else
       raise "Unable to perform event. Unknown base type: #{base_type}"
     end
@@ -34,5 +38,17 @@ class Event < ActiveRecord::Base
     )
 
     house.add_bi_directional_link_to character.area
+
+    # Gain knowledge of the new dealies
+    # HAX Kind of a hack
+    new_link = character.area.area_links.last
+    character.add_knowledge new_link
+    character.add_knowledge house
+
+    house.area_links.each do |link|
+      character.add_knowledge link
+    end
+
+    return house
   end
 end

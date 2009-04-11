@@ -1,10 +1,11 @@
 class OpportunityBase < ActiveRecord::Base
+  include Named
   include Requisite
   include Eventful
 
-  has_many :opportunities, :dependent => :destroy
+  belongs_to :image
 
-  validates_presence_of :name
+  has_many :opportunities, :dependent => :destroy
 
   def spawn(attributes={})
     opportunity = Opportunity.new(attributes)
