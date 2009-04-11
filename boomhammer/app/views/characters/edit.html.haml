@@ -1,16 +1,4 @@
-- form_for(@character) do |f|
-  = f.error_messages
-  
-  %p
-    = f.label :name
-    = f.text_field :name, :class => :text
-
-  %p
-    = f.label :intrinsic
-    = f.collection_select :intrinsic_base_id, IntrinsicBase.all, :id, :to_s
-
-  .right
-    = f.submit "Update"
+- form_for(@character) do |form|
+  = render form
 
 = link_to 'Show', @character 
-= link_to 'Back', characters_path 
