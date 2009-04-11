@@ -8,8 +8,5 @@
 
   .yields.left
     &raquo;
-  - recipe.recipe_outcomes.each do |outcome|
-    .image.left= image_for outcome
-    .left
-      = "or" unless outcome == recipe.recipe_outcomes.last
+  = events_display recipe
   .clear

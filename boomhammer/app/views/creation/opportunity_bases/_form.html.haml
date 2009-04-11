@@ -11,11 +11,7 @@
 %h3 This opportunity requires all of the following abilities:
 = intrinsic_checkbox_array :opportunity_base, :intrinsic_base_ids, form.object.intrinsic_base_ids
 
-#outcomes
-  %h3 Outcomes
-  - form.fields_for :loots do |loots_form|
-    = render :partial => 'loot', :locals => {:form => loots_form}
-= add_loot_link form
+= events_assist(form)
 
 .left
   = link_to "Back", creation_opportunity_bases_path

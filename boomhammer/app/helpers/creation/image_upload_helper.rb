@@ -1,0 +1,2 @@
+module Creation::ImageUploadHelper
+end

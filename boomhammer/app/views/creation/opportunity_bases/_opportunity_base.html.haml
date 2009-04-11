@@ -1,9 +1,6 @@
 .opportunity_base
   = opportunity_base.name
-  - opportunity_base.loots.each do |outcome|
-    .image.left= image_for outcome
-    .left
-      = "or" unless outcome == opportunity_base.loots.last
+  = events_display opportunity_base
   .clear
   %p
     - if opportunity_base.requisites.size > 0

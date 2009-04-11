@@ -10,8 +10,8 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
       
       @recipe = Recipe.new(:name => "Equi-outcome")
       @recipe.add_component(@ingredient, 1)
-      @recipe.add_outcome(@item_base1, 1)
-      @recipe.add_outcome(@item_base2, 1)
+      @recipe.add_event(@item_base1, 1)
+      @recipe.add_event(@item_base2, 1)
       @recipe.save!
 
       @character = Factory :character
@@ -65,7 +65,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
       @recipe = Recipe.new(:name => "Equi-outcome")
       @recipe.add_component(@ingredient, 1, 100)
       @recipe.add_component(@tool, 1, 0)
-      @recipe.add_outcome(@outcome, 1)
+      @recipe.add_event(@outcome, 1)
       @recipe.save!
 
       @character = Factory :character

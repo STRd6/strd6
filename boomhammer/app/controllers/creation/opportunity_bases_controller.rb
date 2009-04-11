@@ -8,14 +8,14 @@ class Creation::OpportunityBasesController < Creation::CreationController
 
   create.before do
     # HAX: Nested assignment doesn't link these mofos up
-    @opportunity_base.loots.each do |loot|
-      loot.opportunity_base = @opportunity_base
+    @opportunity_base.events.each do |event|
+      event.owner = @opportunity_base
     end
   end
 
   protected
 
   def collection
-    OpportunityBase.all :order => "name", :include => {:loots => {:item_base => :image}}
+    OpportunityBase.all :order => "name", :include => {:events => {:base => :image}}
   end
 end

@@ -1,0 +1,5 @@
+#outcomes
+  %h3 Outcomes
+  - form.fields_for :events do |events_form|
+    = render :partial => 'creation/event', :locals => {:form => events_form}
+= add_item_outcome_link form

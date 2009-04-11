@@ -33,8 +33,8 @@ class Character < ActiveRecord::Base
 
   def take_opportunity(opportunity)
     perform(1) do |notifications|
-      if (item_base = opportunity.explore)
-        notifications[:got] = [add_item_from_base(item_base)]
+      if (event = opportunity.explore)
+        notifications[:got] = [event.perform(self)]
       else
         notifications[:got] = []
       end
@@ -80,7 +80,7 @@ class Character < ActiveRecord::Base
           pair.first.save!
         end
 
-        notifications[:got] = [add_item_from_base(recipe.generate_outcome_item_base)]
+        notifications[:got] = [recipe.generate_event.perform(self)]
       end
     end
   end
