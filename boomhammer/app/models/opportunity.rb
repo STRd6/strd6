@@ -7,11 +7,12 @@ class Opportunity < ActiveRecord::Base
   validates_presence_of :opportunity_base
   validates_presence_of :area
 
-  delegate :name, :to => :opportunity_base
-  delegate :description, :to => :opportunity_base
-  delegate :requisites, :to => :opportunity_base
-
-  delegate :requisites_met?, :to => :opportunity_base
+  delegate :name,
+    :description,
+    :requisites,
+    :requisites_met?,
+    :can_be_discovered_by?,
+    :to => :opportunity_base
   
   def explore
     roll = rand(100) - depletion

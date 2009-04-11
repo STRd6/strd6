@@ -1,17 +1,22 @@
-- available_opportunities = @area.opportunities.select {|opportunity| opportunity.requisites_met? current_character.net_abilities}
-
-- if available_opportunities.size > 0
-  - available_opportunities.each do |opportunity|
+%h2 Opportunities
+- @area.opportunities.each do |opportunity|
+  - next unless current_character.has_knowledge opportunity
+  - if opportunity.requisites_met? current_character.net_abilities
     %p
       = opportunity_action_link opportunity
       = opportunity.description
+  - else
+    %p
+      = opportunity
+      = opportunity.description
 
-- else
-  %h2 No Opportunities here
-
-- available_area_links = @area.area_links.select {|area_link| area_link.requisites_met? current_character.net_abilities}
-
-- if available_area_links.size > 0
-  %h2 Travel To
-  - available_area_links.each do |area_link|
-    = area_link_action_link area_link
+%h2 Travel To
+- @area.area_links.each do |area_link|
+  - next unless current_character.has_knowledge area_link
+  - if area_link.requisites_met? current_character.net_abilities
+    %p
+      = area_link_action_link area_link
+  - else
+    %p
+      = area_link.linked_area
+      = "(requires: #{area_link.requisites.to_sentence})"
