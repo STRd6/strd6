@@ -39,6 +39,11 @@ Factory.define :opportunity_base do |opportunity_base|
   opportunity_base.description "Indescribable"
 end
 
+Factory.define :opportunity do |opportunity|
+  opportunity.association :opportunity_base
+  opportunity.association :area
+end
+
 Factory.define :character do |character|
   character.name {Factory.next :name}
   character.association :area, :starting_location => true

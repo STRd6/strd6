@@ -1,0 +1,13 @@
+- base_class = form.object.base_type.constantize
+= form.hidden_field :base_type
+
+= form.label :base_id, "#{image_for(form.object)} #{form.object}"
+= form.collection_select :base_id, base_class.all, :id, :name
+%p
+  = form.label :weight
+  = form.text_field :weight
+
+- unless form.object.new_record?
+  %p
+    = form.label :_delete, 'Remove:'
+    = form.check_box :_delete

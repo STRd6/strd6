@@ -12,8 +12,8 @@ class Creation::RecipesController < Creation::CreationController
       ingredient.recipe = @recipe
     end
     # HAX: Nested assignment doesn't link these mofos up
-    @recipe.recipe_outcomes.each do |outcome|
-      outcome.recipe = @recipe
+    @recipe.events.each do |event|
+      event.owner = @recipe
     end
   end
 
@@ -30,7 +30,7 @@ class Creation::RecipesController < Creation::CreationController
     {
       :include => [
         {:recipe_components => {:item_base => :image}},
-        {:recipe_outcomes => {:item_base => :image}},
+        {:events => {:base => :image}},
       ],
       :order => "`recipes`.`name` ASC",
     }

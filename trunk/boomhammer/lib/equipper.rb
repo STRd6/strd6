@@ -1,7 +1,13 @@
-# Requires `perform`
-# Requires `items`
+# Requires
+#   perform
+#   items
 #
-# Provides `equipped_items`
+# Provides:
+#   has_many :equipped_items
+#   #equip
+#   #can_equip?
+#   #unequip
+#   #unequip_slot
 module Equipper
   def self.included(base)
     base.class_eval do

@@ -5,7 +5,7 @@ class Creation::RecipesControllerTest < ActionController::TestCase
     setup do
       @recipe = Factory.build :recipe
       @recipe.add_component Factory(:item_base), 1, 100
-      @recipe.add_outcome Factory(:item_base)
+      @recipe.add_event Factory(:item_base)
       @recipe.save!
     end
 
