@@ -27,6 +27,16 @@ module Requisite
     @intrinsic_base_ids = ids
   end
 
+  def can_be_discovered_by?(character)
+    return true if requisites_met? character.net_abilities
+    return false if invisible?
+    return true
+  end
+
+  def invisible?
+    requisites.any? {|requisite| requisite.intrinsic_base.name == "see invisible"}
+  end
+
   protected
   def save_new_requisites
     if @intrinsic_base_ids

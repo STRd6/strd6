@@ -1,0 +1,4 @@
+- @areas.each do |area|
+  - next unless current_character.has_knowledge area
+  %p
+    = area.name

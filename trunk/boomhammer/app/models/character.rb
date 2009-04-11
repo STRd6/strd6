@@ -1,5 +1,6 @@
 class Character < ActiveRecord::Base
   include Named
+  include Equipper
 
   attr_accessor :intrinsic_base_id
 
@@ -8,7 +9,8 @@ class Character < ActiveRecord::Base
 
   has_many :intrinsics, :as => :owner, :dependent => :destroy
   has_many :items, :as => :owner, :dependent => :destroy
-  has_many :equipped_items, :as => :owner, :conditions => {:slot => Item::EquipSlots::EQUIPPED}, :class_name => "Item"
+
+  has_many :knowledges, :dependent => :destroy
 
   validates_presence_of :area
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
@@ -16,6 +18,8 @@ class Character < ActiveRecord::Base
   before_validation_on_create :assign_starting_area
 
   before_validation :add_intrinsic
+
+  after_create :add_knowledge_of_current_area
 
   named_scope :for_account_id, lambda {|account_id| {:conditions => {:account_id => account_id}}}
 
@@ -25,43 +29,6 @@ class Character < ActiveRecord::Base
 
   def granted_abilities
     equipped_items.inject([]) {|array, item| array + item.granted_abilities}
-  end
-
-  def equip(item, slot)
-    return {:status => "Cannot equip #{item}"} unless can_equip?(item, slot)
-
-    perform(1) do |notifications|
-      unequip_slot(slot)
-
-      item.slot = slot
-      item.save!
-
-      equipped_items.reload
-      notifications[:status] = "Equipped #{item}"
-    end
-  end
-
-  def can_equip?(item, slot)
-    item.allowed_slot == slot && items.include?(item)
-  end
-
-  # Remove item from any slots it is in
-  def unequip(item)
-    return {:status => "Item not equipped"} unless item.equipped?
-    
-    perform(0) do |notifications|
-      item.unequip!
-      notifications[:status] = "Unequipped #{item}"
-    end
-  end
-
-  # Remove from target slot any equipped item
-  def unequip_slot(slot)
-    if(equipped_item = equipped_items.first(:conditions => {:slot => slot}))
-      equipped_item.unequip!
-    else
-      true
-    end
   end
 
   def take_opportunity(opportunity)
@@ -77,11 +44,14 @@ class Character < ActiveRecord::Base
   def take_area_link(area_link)
     perform(1) do |notifications|
       self.area = area_link.linked_area
+      add_knowledge_of_current_area
       notifications[:travelled] = area
     end
   end
 
   def make_recipe(recipe)
+    #return unless has_knowledge recipe
+
     perform(1) do |notifications|
       ingredient_component_pairs = recipe.recipe_components.map do |component|
         [
@@ -122,6 +92,8 @@ class Character < ActiveRecord::Base
 
   # Always returns the new item
   def add_item_from_base(item_base)
+    add_knowledge(item_base)
+
     # If we've got one of the same stack it!
     if (item = items.find_by_item_base_id(item_base.id))
       # TODO: Maybe check for secret differences, like enchants, or bustiness
@@ -133,6 +105,14 @@ class Character < ActiveRecord::Base
     end
 
     return item
+  end
+
+  def add_knowledge(object)
+    knowledges.find_or_create_by_object_id_and_object_type(object.id, object.class.name)
+  end
+
+  def has_knowledge(object)
+    knowledges.find_by_object_id_and_object_type(object.id, object.class.name)
   end
 
   protected
@@ -152,6 +132,18 @@ class Character < ActiveRecord::Base
 
   def assign_starting_area
     self.area ||= Area.random.starting.first
+  end
+
+  def add_knowledge_of_current_area
+    add_knowledge area
+
+    area.opportunities.each do |opportunity|
+      add_knowledge opportunity if opportunity.can_be_discovered_by? self
+    end
+
+    area.area_links.each do |area_link|
+      add_knowledge area_link if area_link.can_be_discovered_by? self
+    end
   end
 
   def add_intrinsic
