@@ -148,7 +148,7 @@ class Character < ActiveRecord::Base
 
   def add_intrinsic
     unless intrinsic_base_id.nil?
-      intrinsics.build :intrinsic_base_id => intrinsic_base_id unless intrinsics.map(&:intrinsic_base_id).include? intrinsic_base_id.to_i
+      intrinsics.build(:intrinsic_base_id => intrinsic_base_id, :owner => self) unless intrinsics.map(&:intrinsic_base_id).include?(intrinsic_base_id.to_i)
     end
   end
 end
