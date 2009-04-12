@@ -1,3 +1,7 @@
+= image_for @area
+%p
+  = @area.description
+
 %h2 Opportunities
 - @area.opportunities.each do |opportunity|
   - next unless current_character.has_knowledge opportunity
@@ -8,7 +12,7 @@
   - else
     %p
       = opportunity
-      = opportunity.description
+      = requirements_list opportunity
 
 %h2 Travel To
 - @area.area_links.each do |area_link|
@@ -18,5 +22,5 @@
       = area_link_action_link area_link
   - else
     %p
-      = area_link.linked_area
-      = "(requires: #{area_link.requisites.to_sentence})"
+      = image_for area_link.linked_area
+      = requirements_list area_link

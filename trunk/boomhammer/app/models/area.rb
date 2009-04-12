@@ -19,6 +19,8 @@ class Area < ActiveRecord::Base
 
   accepts_nested_attributes_for :opportunities, :allow_destroy => true
 
+  delegate :description, :to => :area_base
+
   # Returns self
   def add_bi_directional_link_to(area, attributes={})
     area.area_links << AreaLink.new(attributes.merge(:linked_area => self))

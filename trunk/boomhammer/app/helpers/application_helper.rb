@@ -24,7 +24,7 @@ module ApplicationHelper
   end
 
   def area_link_action_link(area_link)
-    link_to area_link.linked_area, {
+    link_to image_for(area_link.linked_area), {
       :controller => 'actions',
       :action => 'take_area_link',
       :area_link_id => area_link.id
@@ -32,7 +32,7 @@ module ApplicationHelper
   end
 
   def opportunity_action_link(opportunity)
-    link_to opportunity, {
+    link_to image_for(opportunity), {
       :controller => 'actions',
       :action => 'take_opportunity',
       :opportunity_id => opportunity.id
@@ -61,5 +61,13 @@ module ApplicationHelper
       :method => method,
       :existing => existing,
     }
+  end
+
+  def requirements_list(object)
+    if object.requisites.size > 0
+      object.requisites.map do |requisite|
+        image_for requisite
+      end
+    end
   end
 end

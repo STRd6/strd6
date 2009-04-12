@@ -8,7 +8,8 @@
 
   %p
     Current Abilities:
-    = character.net_abilities.join ", "
+    - character.net_abilities.each do |ability|
+      = image_for ability
 
   %p
     = actions_remaining_for character
