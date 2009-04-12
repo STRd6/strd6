@@ -21,7 +21,7 @@ class Recipe < ActiveRecord::Base
       recipe.add_component(item_base, quantity || 1)
     end
 
-    outcomes_hash.each do |base, weight|
+    events_hash.each do |base, weight|
       recipe.add_event(base, weight)
     end
 
