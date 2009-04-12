@@ -1,5 +1,6 @@
 class Character < ActiveRecord::Base
   include Named
+  include ItemOwner
   include Equipper
 
   attr_accessor :intrinsic_base_id
@@ -8,7 +9,6 @@ class Character < ActiveRecord::Base
   belongs_to :area
 
   has_many :intrinsics, :as => :owner, :dependent => :destroy
-  has_many :items, :as => :owner, :dependent => :destroy
 
   has_many :knowledges, :dependent => :destroy
 
@@ -88,23 +88,6 @@ class Character < ActiveRecord::Base
   def daily_update
     self.actions = 50
     self.save
-  end
-
-  # Always returns the new item
-  def add_item_from_base(item_base)
-    add_knowledge(item_base)
-
-    # If we've got one of the same stack it!
-    if (item = items.find_by_item_base_id(item_base.id))
-      # TODO: Maybe check for secret differences, like enchants, or bustiness
-      item.quantity += 1
-      item.save!
-    else
-      item = item_base.spawn
-      items << item
-    end
-
-    return item
   end
 
   def add_knowledge(object)
