@@ -33,7 +33,7 @@ class Event < ActiveRecord::Base
 
   def construct_home(character)
     house = Area.create!(
-      :name => "#{character.name}'s House",
+      :name => "#{character.name}'s #{base}",
       :area_base => base
     )
 
