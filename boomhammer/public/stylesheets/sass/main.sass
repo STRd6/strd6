@@ -98,6 +98,14 @@ div.clear
   padding: 2em
   width: 75%
   background-color= !white
+  
+  // Fix to make #content enclose elements floated inside it 
+  &:after
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
 
   p
     margin-top: 0.4em
