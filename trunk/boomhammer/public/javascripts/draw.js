@@ -8,6 +8,8 @@ var MouseEventMapper = {
   }
 };
 
+var previousCanvas = null;
+
 var Pixel = Class.create(MouseEventMapper, {
   initialize: function(element, canvas, x, y) {
     this.element = $(element);
@@ -23,7 +25,7 @@ var Pixel = Class.create(MouseEventMapper, {
     event.stop(); 
   },
   
-  mousedown: function(event) { 
+  mousedown: function(event) {
     this.canvas.tool.mousedown(event);
   },
   
@@ -70,9 +72,9 @@ var Tool = Class.create({
   
   currentColor: function(event) {
     if(!event || event.isLeftClick()) {
-      return $F('left_color');
+      return $F('primary_color');
     } else {
-      return $F('right_color');
+      return $F('secondary_color');
     }
   },
   
@@ -106,11 +108,11 @@ var EyeDropper = Class.create(Tool, {
     color = this.parseColor(event.element().style.backgroundColor) || 'FFFFFF';
     
     if(event.isLeftClick()) {
-      $('left_color').value = color;
-      $('left_color').onblur();
+      $('primary_color').value = color;
+      $('primary_color').onblur();
     } else {
-      $('right_color').value = color;
-      $('right_color').onblur();
+      $('secondary_color').value = color;
+      $('secondary_color').onblur();
     }
 
     canvas.setTool(pencil);
@@ -306,6 +308,7 @@ var Canvas = Class.create({
   
   preview: function() {
     $('sample').style.backgroundImage = this.toDataURL();
+    $('sample').addClassName("populated");
   },
   
   saveFile: function() {
@@ -363,10 +366,15 @@ Event.observe(window, 'load', function() {
       case 70: // f
         canvas.setTool(fill);
         break;
+      case 73: // i
+        canvas.setTool(dropper);
+        break;
       case 80: // p
         canvas.setTool(pencil);
+        break;
+      case 86: // v, for preview
+        canvas.preview();
         break;
     }
   });
 });
-
