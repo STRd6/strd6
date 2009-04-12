@@ -1,6 +1,13 @@
 .area
   %h2= @area.name
 
+  %h3 Opportunities
+  - @area.opportunities.each do |opportunity|
+    .opportunity
+      = link_to opportunity.opportunity_base, [:creation, opportunity.opportunity_base]
+      = link_to "Edit Opportunity Base", edit_creation_opportunity_base_path(opportunity.opportunity_base)
+      = opportunity.requisites.to_sentence
+
   %h3 Links
   - @area.area_links.each do |link|
     .area_link
