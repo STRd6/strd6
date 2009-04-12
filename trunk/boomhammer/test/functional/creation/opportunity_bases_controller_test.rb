@@ -4,6 +4,7 @@ class Creation::OpportunityBasesControllerTest < ActionController::TestCase
   context "an opportunity base" do
     setup do
       Factory :item_base
+      Factory :area_base
       @opportunity_base = Factory :opportunity_base
     end
 
