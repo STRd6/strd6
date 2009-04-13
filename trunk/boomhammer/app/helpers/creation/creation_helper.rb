@@ -23,6 +23,10 @@ module Creation::CreationHelper
     add_event_link(form_builder, 'Add an outcome that creates an area', AreaBase)
   end
 
+  def add_event_outcome_link(form_builder)
+    add_event_link(form_builder, 'Add an outcome that creates an event', EventBase)
+  end
+
   def add_event_link(form_builder, text, base_class)
     link_to_function text do |page|
       form_builder.fields_for :events, Event.new(:base => base_class.first), :child_index => 'NEW_RECORD' do |f|

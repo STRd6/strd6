@@ -15,7 +15,7 @@ class ShopIntegrationTest < ActiveSupport::TestCase
       @sale_item = Factory :item, :quantity => @stock_quantity
       @sale_item_base = @sale_item.item_base
 
-      @shop_entry = @shop.add_sales_item(@sale_item, @price)
+      @shop_entry = @shop.add_shop_item(@sale_item, @price)
 
       @buyer = Factory :character
       @buyer.add_item_from_base(@currency, @starting_currency)

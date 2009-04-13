@@ -10,6 +10,7 @@ class Area < ActiveRecord::Base
   has_many :incoming_links, :foreign_key => :linked_area_id, :dependent => :destroy
   has_many :items, :as => :owner, :dependent => :destroy
   has_many :opportunities, :dependent => :destroy
+  has_many :shops, :dependent => :destroy
 
   has_one :image, :through => :area_base
 

@@ -14,6 +14,11 @@
       = opportunity
       = requirements_list opportunity
 
+%h2 Shops
+- @area.shops.each do |shop|
+  - next unless current_character.has_knowledge shop
+  %p= link_to shop, shop
+
 %h2 Travel To
 - @area.area_links.each do |area_link|
   - next unless current_character.has_knowledge area_link

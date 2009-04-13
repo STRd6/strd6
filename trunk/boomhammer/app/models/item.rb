@@ -26,7 +26,7 @@ class Item < ActiveRecord::Base
 
   has_one :image, :through => :item_base
 
-  has_many :items, :dependent => :destroy
+  has_many :shop_items, :dependent => :destroy
 
   validates_presence_of :item_base
   validates_numericality_of :quantity, :greater_than_or_equal_to => 0

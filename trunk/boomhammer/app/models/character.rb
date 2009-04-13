@@ -10,6 +10,8 @@ class Character < ActiveRecord::Base
 
   has_many :intrinsics, :as => :owner, :dependent => :destroy
 
+  has_many :shops, :dependent => :destroy
+
   has_many :knowledges, :dependent => :destroy
 
   validates_presence_of :area
@@ -49,39 +51,11 @@ class Character < ActiveRecord::Base
     end
   end
 
-  def make_recipe(recipe)
+  def make_recipe(recipe, params={})
     #return unless has_knowledge recipe
 
     perform(1) do |notifications|
-      ingredient_component_pairs = recipe.recipe_components.map do |component|
-        [
-          items.first(:conditions =>
-            ["quantity >= ? AND item_base_id = ?", component.quantity, component.item_base_id]
-          ),
-          component
-        ]
-      end
-
-      missing_ingredient_pairs = ingredient_component_pairs.select do |pair|
-        pair.first.nil?
-      end
-
-      if missing_ingredient_pairs.size > 0
-        # Missing one or more ingredients...
-        message = missing_ingredient_pairs.map do |pair|
-          "#{pair.last}x#{pair.last.quantity}"
-        end.join(' ')
-
-        notifications[:status] = "Insufficient ingredients... Missing: " + message
-
-      else
-        ingredient_component_pairs.each do |pair|
-          pair.first.quantity -= pair.last.quantity if pair.last.consume?
-          pair.first.save!
-        end
-
-        notifications[:got] = [recipe.generate_event.perform(self)]
-      end
+      recipe.make(self, notifications, params)
     end
   end
 

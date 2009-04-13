@@ -6,18 +6,16 @@ class Event < ActiveRecord::Base
 
   #has_one :image, :through => :base
 
-  validates_presence_of :base
+  validates_presence_of :base, :owner
   validates_numericality_of :weight, :greater_than => 0
 
   delegate :name, :image,
     :to => :base
 
-  delegate :name, :to => :base
-
-  def perform(character)
+  def perform(character, params={})
     case base_type
     when "AreaBase"
-      construct_home(character)
+      construct_area(character)
     when "ItemBase"
       character.add_item_from_base(base)
     when "OpportunityBase"
@@ -26,12 +24,21 @@ class Event < ActiveRecord::Base
       opportunity = character.area.opportunities.last
       character.add_knowledge opportunity
       return opportunity
+    when "EventBase"
+      # Delegating special events here
+      base.perform(character, params)
     else
       raise "Unable to perform event. Unknown base type: #{base_type}"
     end
   end
 
-  def construct_home(character)
+  def shop_event?
+    base_type == "EventBase" && base.event_type == EventBase::EventType::SHOP
+  end
+
+  protected
+
+  def construct_area(character)
     house = Area.create!(
       :name => "#{character.name}'s #{base}",
       :area_base => base

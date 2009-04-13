@@ -1,0 +1,36 @@
+%h2= @shop.name
+Currency
+= image_for @shop.currency
+
+- if @shop.character == current_character
+  %h2 Your Current Inventory
+  - current_character.items.each do |item|
+    - form_tag "/actions/add_shop_item" do
+      = hidden_field_tag :shop_id, @shop.id
+      = hidden_field_tag :item_id, item.id
+      %p
+        = image_for item
+        x
+        = item.quantity
+        = label_tag "price_#{item.id}", "Price (each)"
+        = text_field_tag :price, 1, :id => "price_#{item.id}"
+        = submit_tag "Add to shop"
+
+  %h2 Shop Inventory
+  - @shop.shop_items.each do |item|
+    - form_tag "/actions/remove_shop_item" do
+      = hidden_field_tag :shop_id, @shop.id
+      = hidden_field_tag :shop_item_id, item.id
+      %p
+        = image_for item
+        x
+        = item.quantity
+        = label_tag "price_#{item.item.id}", "Price (each)"
+        = item.price
+        x
+        = image_for @shop.currency
+
+        = submit_tag "Remove from shop"
+
+- else
+  Nothing to see here
