@@ -2,9 +2,7 @@
   %h3 Outcomes
   - form.fields_for :events do |events_form|
     = render :partial => 'creation/event', :locals => {:form => events_form}
-%p
-  = add_item_outcome_link form
-%p
-  = add_opportunity_outcome_link form
-%p
-  = add_area_outcome_link form
+%p= add_item_outcome_link form
+%p= add_opportunity_outcome_link form
+%p= add_area_outcome_link form
+%p= add_event_outcome_link form

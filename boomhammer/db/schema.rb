@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090412183439) do
+ActiveRecord::Schema.define(:version => 20090412204326) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -77,6 +77,14 @@ ActiveRecord::Schema.define(:version => 20090412183439) do
 
   add_index "characters", ["account_id"], :name => "index_characters_on_account_id"
   add_index "characters", ["area_id"], :name => "index_characters_on_area_id"
+
+  create_table "event_bases", :force => true do |t|
+    t.string   "name",                           :null => false
+    t.integer  "image_id"
+    t.string   "event_type", :default => "none", :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
 
   create_table "events", :force => true do |t|
     t.integer  "owner_id",                  :null => false

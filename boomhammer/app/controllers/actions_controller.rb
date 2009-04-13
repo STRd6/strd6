@@ -33,9 +33,26 @@ class ActionsController < ApplicationController
 
   def make_recipe
     recipe = Recipe.find(params[:recipe_id])
-    set_game_notice current_character.make_recipe(recipe)
+    set_game_notice current_character.make_recipe(recipe, params[:params])
 
-    redirect_to recipes_path
+    redirect_to :back
+  end
+
+  def add_shop_item
+    shop = current_character.shops.find(params[:shop_id])
+    item = current_character.items.find(params[:item_id])
+    price = params[:price].to_i
+
+    shop.add_shop_item(item, price)
+
+    redirect_to :back
+  end
+
+  def remove_shop_item
+    shop = current_character.shops.find(params[:shop_id])
+    shop.remove_shop_item(params[:shop_item_id])
+
+    redirect_to :back
   end
 
   protected

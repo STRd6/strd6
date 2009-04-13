@@ -1,4 +1,5 @@
 class Shop < ActiveRecord::Base
+  include Named
   include ItemOwner
 
   belongs_to :character
@@ -10,16 +11,26 @@ class Shop < ActiveRecord::Base
 
   validates_presence_of :character, :area, :currency
 
-  def add_sales_item(item, price)
-    added_item = add_item(item)
+  def image
+    nil
+  end
 
-    if existing_shop_item = shop_items.find_by_item_id(added_item)
-      existing_shop_item.update!(:price => price)
-      return existing_shop_item
-    else
-      new_shop_item = ShopItem.new(:item => added_item, :price => price)
-      shop_items << new_shop_item
-      return new_shop_item
+  def name
+    "#{character}'s Shop"
+  end
+
+  def add_shop_item(item, price)
+    transaction do
+      added_item = add_item(item)
+
+      if existing_shop_item = shop_items.find_by_item_id(added_item)
+        existing_shop_item.update!(:price => price)
+        return existing_shop_item
+      else
+        new_shop_item = ShopItem.new(:item => added_item, :price => price)
+        shop_items << new_shop_item
+        return new_shop_item
+      end
     end
   end
 
@@ -36,6 +47,17 @@ class Shop < ActiveRecord::Base
 
       add_item(money)
       buyer.add_item(purchased_items)
+    end
+  end
+
+  def remove_shop_item(shop_item_id)
+    transaction do
+      shop_item = shop_items.find(shop_item_id)
+
+      if shop_item
+        character.add_item shop_item.item
+        shop_item.destroy
+      end
     end
   end
 end

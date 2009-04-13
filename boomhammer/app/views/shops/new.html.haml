@@ -1,0 +1,11 @@
+- shop_recipes = Recipe.all.select(&:shop_recipe?)
+
+- shop_recipes.each do |recipe|
+  - form_tag "/actions/make_recipe" do
+    %p
+      = hidden_field_tag :recipe_id, recipe.id
+      = draw_recipe recipe
+    %p
+      = label_tag "params_currency", "Currency"
+      = collection_select :params, :currency, ItemBase.all, :id, :to_s
+    = submit_tag "Build"

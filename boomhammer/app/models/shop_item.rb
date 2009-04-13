@@ -7,6 +7,6 @@ class ShopItem < ActiveRecord::Base
   validates_presence_of :shop, :item
   validates_numericality_of :price, :only_integer => true, :greater_than_or_equal_to => 0
 
-  delegate :image, :name,
+  delegate :image, :name, :quantity,
     :to => :item
 end

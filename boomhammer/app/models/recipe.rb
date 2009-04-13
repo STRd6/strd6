@@ -14,6 +14,51 @@ class Recipe < ActiveRecord::Base
       :recipe => self
   end
 
+  def shop_recipe?
+    events.first.shop_event?
+  end
+
+  def ingredient_component_pairs(items)
+    return recipe_components.map do |component|
+      [
+        items.first(:conditions =>
+          ["quantity >= ? AND item_base_id = ?", component.quantity, component.item_base_id]
+        ),
+        component
+      ]
+    end
+  end
+
+  def missing_ingredients(items)
+    return ingredient_component_pairs(items).select do |pair|
+      pair.first.nil?
+    end
+  end
+
+  def make(character, notifications, params)
+    component_pairs = ingredient_component_pairs(character.items)
+
+    missing_ingredient_pairs = component_pairs.select do |pair|
+      pair.first.nil?
+    end
+
+    if missing_ingredient_pairs.size > 0
+      # Missing one or more ingredients...
+      message = missing_ingredient_pairs.map do |pair|
+        "#{pair.last}x#{pair.last.quantity}"
+      end.join(' ')
+
+      notifications[:status] = "Insufficient ingredients... Missing: " + message
+    else
+      component_pairs.each do |pair|
+        pair.first.quantity -= pair.last.quantity if pair.last.consume?
+        pair.first.save!
+      end
+
+      notifications[:got] = [generate_event.perform(character, params)]
+    end
+  end
+
   def self.auto_build(name, components_hash, events_hash)
     recipe = Recipe.new :name => name
 

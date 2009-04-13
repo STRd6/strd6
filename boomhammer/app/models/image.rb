@@ -12,6 +12,9 @@ class Image < ActiveRecord::Base
   attr_accessor :file
   attr_accessor :upload
 
+  named_scope :small, :conditions => {:width => 32, :height => 32}
+  named_scope :large, :conditions => {:width => 256, :height => 192}
+
   def image
     self
   end

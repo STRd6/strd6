@@ -10,6 +10,10 @@ Factory.define :intrinsic_base do |intrinsic_base|
   intrinsic_base.name {Factory.next :name}
 end
 
+Factory.define :event_base do |event_base|
+  event_base.name {Factory.next :name}
+end
+
 Factory.define :area_base do |area_base|
   area_base.name {Factory.next :name}
   area_base.description "Indescribable"

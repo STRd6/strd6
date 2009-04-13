@@ -1,0 +1,6 @@
+%h3= shop
+= shop.area
+
+- shop.shop_items.each do |shop_item|
+  = image_for shop_item
+  = shop_item
