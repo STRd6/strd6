@@ -34,30 +34,58 @@ class Shop < ActiveRecord::Base
     end
   end
 
-  def purchase(buyer, sales_item_id, quantity=1)
+  def purchase(buyer, sales_item_id, quantity=1, notifications={})
     transaction do
-      return unless shop_item = shop_items.find(sales_item_id)
+      if shop_item = shop_items.find(sales_item_id)
 
-      total_price = shop_item.price * quantity
+        total_price = shop_item.price * quantity
 
-      money = buyer.remove_item_from_base(currency, total_price)
-      purchased_items = remove_item(shop_item.item, quantity)
+        money = buyer.remove_item_from_base(currency, total_price)
+        purchased_items = remove_item(shop_item.item, quantity)
 
-      return unless money && purchased_items
-
-      add_item(money)
-      buyer.add_item(purchased_items)
+        if money && purchased_items
+          add_item(money)
+          notifications[:got] = [buyer.add_item(purchased_items)]
+        else
+          if purchased_items
+            notifications[:status] = "Insufficient money"
+          else
+            notifications[:status] = "Out of stock..."
+          end
+        end
+      else
+        notifications[:status] = "That item wasn't found here."
+      end
     end
+    return notifications
   end
 
-  def remove_shop_item(shop_item_id)
+  def remove_inventory(item_id, notifications={})
+    transaction do
+      item = items.find(item_id)
+
+      if item
+        notifications[:got] = [character.add_item(item)]
+        shop_item = shop_items.find_by_item_id(item.id)
+        shop_item.destroy if shop_item
+      else
+        notifications[:status] = "That item wasn't found here."
+      end
+    end
+    return notifications
+  end
+
+  def remove_shop_item(shop_item_id, notifications={})
     transaction do
       shop_item = shop_items.find(shop_item_id)
 
       if shop_item
-        character.add_item shop_item.item
+        notifications[:got] = [character.add_item(shop_item.item)]
         shop_item.destroy
+      else
+        notifications[:status] = "That item wasn't found here."
       end
     end
+    return notifications
   end
 end

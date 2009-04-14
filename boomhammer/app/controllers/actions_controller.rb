@@ -50,7 +50,29 @@ class ActionsController < ApplicationController
 
   def remove_shop_item
     shop = current_character.shops.find(params[:shop_id])
-    shop.remove_shop_item(params[:shop_item_id])
+    set_game_notice shop.remove_shop_item(params[:shop_item_id])
+
+    redirect_to :back
+  end
+
+  def purchase
+    shop = Shop.find(params[:shop_id])
+
+    set_game_notice(
+      if shop.area == current_character.area
+        shop.purchase(current_character, params[:shop_item_id], params[:quantity].to_i)
+      else
+        {:status => "You do not appear to have access to that shop from your current situation"}
+      end
+    )
+
+    redirect_to :back
+  end
+
+  def remove_shop_inventory
+    shop = Shop.find(params[:shop_id])
+
+    set_game_notice shop.remove_inventory(params[:item_id])
 
     redirect_to :back
   end
