@@ -36,27 +36,32 @@ class Shop < ActiveRecord::Base
 
   def purchase(buyer, sales_item_id, quantity=1, notifications={})
     transaction do
-      if shop_item = shop_items.find(sales_item_id)
+      if quantity > 0
+        if shop_item = shop_items.find_by_id(sales_item_id)
 
-        total_price = shop_item.price * quantity
+          total_price = shop_item.price * quantity
 
-        money = buyer.remove_item_from_base(currency, total_price)
-        purchased_items = remove_item(shop_item.item, quantity)
+          money = buyer.remove_item_from_base(currency, total_price)
+          purchased_items = remove_item(shop_item.item, quantity)
 
-        if money && purchased_items
-          add_item(money)
-          notifications[:got] = [buyer.add_item(purchased_items)]
-        else
-          if purchased_items
-            notifications[:status] = "Insufficient money"
+          if money && purchased_items
+            add_item(money)
+            notifications[:got] = [buyer.add_item(purchased_items)]
           else
-            notifications[:status] = "Out of stock..."
+            if purchased_items
+              notifications[:status] = "Insufficient money"
+            else
+              notifications[:status] = "Out of stock..."
+            end
           end
+        else
+          notifications[:status] = "That item wasn't found here."
         end
       else
-        notifications[:status] = "That item wasn't found here."
+        notifications[:stats] = "Can't purchase a negative amount!"
       end
     end
+
     return notifications
   end
 
