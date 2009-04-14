@@ -101,6 +101,10 @@ class Character < ActiveRecord::Base
     area.area_links.each do |area_link|
       add_knowledge area_link if area_link.can_be_discovered_by? self
     end
+
+    area.shops.each do |shop|
+      add_knowledge shop
+    end
   end
 
   def add_intrinsic
