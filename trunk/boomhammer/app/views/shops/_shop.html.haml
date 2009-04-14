@@ -1,6 +1,20 @@
-%h3= shop
-= shop.area
+- if current_character.area == shop.area
+  %h3= link_to_unless_current shop, shop
+  %p= "Location: #{shop.area}"
 
-- shop.shop_items.each do |shop_item|
-  = image_for shop_item
-  = shop_item
+  - if shop.shop_items.size > 0
+    - shop.shop_items.each do |shop_item|
+      - form_tag '/actions/purchase' do
+        = hidden_field_tag :shop_id, shop.id
+        = hidden_field_tag :shop_item_id, shop_item.id
+        %p
+          = image_for shop_item
+          = shop_item
+          = label_tag "price_#{shop_item.id}", "Price: #{shop_item.price}x#{image_for(shop.currency)}"
+        %p
+          = label_tag "quantity_#{shop_item.id}", "Quantity:"
+          = text_field_tag :quantity, 1, :id => "quantity_#{shop_item.id}"
+          = submit_tag "Purchase"
+
+  - else
+    %p No items!

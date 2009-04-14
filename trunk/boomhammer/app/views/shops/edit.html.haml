@@ -17,6 +17,17 @@ Currency
         = submit_tag "Add to shop"
 
   %h2 Shop Inventory
+  - @shop.items.each do |item|
+    - form_tag "/actions/remove_shop_inventory" do
+      = hidden_field_tag :shop_id, @shop.id
+      = hidden_field_tag :item_id, item.id
+      %p
+        = image_for item
+        x
+        = item.quantity
+        = submit_tag "Remove from shop"
+
+  %h2 Purchasable Items
   - @shop.shop_items.each do |item|
     - form_tag "/actions/remove_shop_item" do
       = hidden_field_tag :shop_id, @shop.id
