@@ -17,6 +17,10 @@ class CharactersController < ResourceController::Base
     @object = Character.new attributes
   end
 
+  create.response do |wants|
+    wants.html { redirect_to :action => :activate, :id => @character.id }
+  end
+
   def activate
     begin
       @character = current_account_characters.find(params[:id])
