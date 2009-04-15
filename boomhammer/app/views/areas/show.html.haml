@@ -13,6 +13,7 @@
     %p
       = opportunity
       = requirements_list opportunity
+      = opportunity.description
 
 %h2 Shops
 - @area.shops.each do |shop|
@@ -25,7 +26,9 @@
   - if area_link.requisites_met? current_character.net_abilities
     %p
       = area_link_action_link area_link
+      = area_link.linked_area.description
   - else
     %p
       = image_for area_link.linked_area
       = requirements_list area_link
+      = area_link.linked_area.description
