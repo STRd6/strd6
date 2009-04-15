@@ -14,7 +14,7 @@ class Image < ActiveRecord::Base
   attr_accessor :file
   attr_accessor :upload
 
-  default_scope :order => 'up_votes_count - down_votes_count DESC, id'
+  default_scope :order => '`images`.up_votes_count - `images`.down_votes_count DESC, `images`.id'
 
   named_scope :small, :conditions => {:width => 32, :height => 32}
   named_scope :large, :conditions => {:width => 256, :height => 192}
