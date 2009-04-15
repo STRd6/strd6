@@ -1,4 +1,6 @@
 class Image < ActiveRecord::Base
+  include Votable
+  
   acts_as_taggable_on :tags
   
   belongs_to :imageable, :polymorphic => true
@@ -11,6 +13,8 @@ class Image < ActiveRecord::Base
 
   attr_accessor :file
   attr_accessor :upload
+
+  default_scope :order => 'up_votes_count - down_votes_count DESC, id'
 
   named_scope :small, :conditions => {:width => 32, :height => 32}
   named_scope :large, :conditions => {:width => 256, :height => 192}

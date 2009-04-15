@@ -70,7 +70,7 @@ class ActionsController < ApplicationController
   end
 
   def remove_shop_inventory
-    shop = Shop.find(params[:shop_id])
+    shop = current_character.shops.find(params[:shop_id])
 
     set_game_notice shop.remove_inventory(params[:item_id])
 
