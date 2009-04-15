@@ -4,6 +4,7 @@ class Image < ActiveRecord::Base
   acts_as_taggable_on :tags
   
   belongs_to :imageable, :polymorphic => true
+  belongs_to :account
 
   validates_presence_of :file_name
 

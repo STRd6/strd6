@@ -6,6 +6,10 @@ class Creation::ImagesController < Creation::CreationController
     render :layout => "draw"
   end
 
+  create.before do
+    @image.account = current_account
+  end
+
   create.flash nil
 
   create.wants.js do

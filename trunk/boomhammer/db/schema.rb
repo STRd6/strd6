@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090415003629) do
+ActiveRecord::Schema.define(:version => 20090415055059) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(:version => 20090415003629) do
     t.integer  "height",           :default => 32, :null => false
     t.integer  "up_votes_count",   :default => 0,  :null => false
     t.integer  "down_votes_count", :default => 0,  :null => false
+    t.integer  "account_id"
   end
 
   create_table "intrinsic_bases", :force => true do |t|
