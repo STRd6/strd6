@@ -1,9 +1,10 @@
 %p= link_to "Draw", :action => :new
 
 - @images.each do |image|
-  = image_for(image)
   - if current_account
-    - form_tag "/meta/vote" do
+    - form_tag "/meta/vote", :class => "images" do
+      = image_for(image)
       = hidden_field_tag :image_id, image.id
-      = submit_tag "+" unless image.up_votes.find_by_account_id current_account.id
-      = submit_tag "-" unless image.down_votes.find_by_account_id current_account.id
+      .formControlsHolder
+        = submit_tag "+" unless image.up_votes.find_by_account_id current_account.id
+        = submit_tag "-" unless image.down_votes.find_by_account_id current_account.id

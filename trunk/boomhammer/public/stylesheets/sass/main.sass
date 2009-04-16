@@ -144,6 +144,25 @@ div.clear
       width: 22px
       height: 22px
       padding: 2px
+  
+  form.images
+    float: left
+    width: auto
+    margin: 5px
+    
+    .formControlsHolder
+      float: left
+      width: 25px
+      
+    img
+      float: left
+      
+    &:after
+      content: "."
+      display: block
+      height: 0
+      clear: both
+      visibility: hidden
 
 // Hack to make the window appear with floated elements inside it.
 .clear
