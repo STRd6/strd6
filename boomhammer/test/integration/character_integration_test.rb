@@ -19,6 +19,8 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         @character.add_item_from_base(@ingredient)
       end
 
+      @character.add_knowledge @recipe
+
       ingredients = @character.items.first :conditions => {:item_base_id => @ingredient.id}
       assert_equal 10, ingredients.quantity, "Precondition: 10 ingredients"
     end
@@ -73,6 +75,8 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
         @character.add_item_from_base(@ingredient)
       end
       @character.add_item_from_base(@tool)
+
+      @character.add_knowledge @recipe
 
       ingredients = @character.items.first :conditions => {:item_base_id => @ingredient.id}
       assert_equal 10, ingredients.quantity, "Precondition: 10 ingredients"
