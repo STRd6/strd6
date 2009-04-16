@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
     when "AreaBase"
       {:created => construct_area(character)}
     when "ItemBase"
-      {:got => character.add_item_from_base(base)}
+      {:got => [character.add_item_from_base(base)]}
     when "OpportunityBase"
       character.area.add_opportunity(:opportunity_base => base)
       # HAX Kind of a hack
