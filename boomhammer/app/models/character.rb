@@ -13,6 +13,7 @@ class Character < ActiveRecord::Base
   has_many :shops, :dependent => :destroy
 
   has_many :knowledges, :dependent => :destroy
+  has_many :known_recipes, :through => :knowledges, :class_name => "Recipe", :source => :object, :source_type => "Recipe"
 
   validates_presence_of :area
   validates_numericality_of :actions, :greater_than_or_equal_to => 0
@@ -36,7 +37,7 @@ class Character < ActiveRecord::Base
   def take_opportunity(opportunity)
     perform(1) do |notifications|
       if (event = opportunity.explore)
-        notifications[:got] = [event.perform(self)]
+        notifications.merge! event.perform(self)
       else
         notifications[:got] = []
       end
@@ -52,7 +53,7 @@ class Character < ActiveRecord::Base
   end
 
   def make_recipe(recipe, params={})
-    #return unless has_knowledge recipe
+    return {:status => "You don't know how to make that"} unless has_knowledge recipe
 
     perform(1) do |notifications|
       recipe.make(self, notifications, params)

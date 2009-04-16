@@ -6,4 +6,10 @@ class RecipesController < ResourceController::Base
   show.before do
     @title = "Recipes!"
   end
+
+  protected
+  
+  def collection
+    current_character.known_recipes
+  end
 end

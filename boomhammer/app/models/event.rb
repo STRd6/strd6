@@ -15,15 +15,16 @@ class Event < ActiveRecord::Base
   def perform(character, params={})
     case base_type
     when "AreaBase"
-      construct_area(character)
+      {:created => construct_area(character)}
     when "ItemBase"
-      character.add_item_from_base(base)
+      {:got => character.add_item_from_base(base)}
     when "OpportunityBase"
       character.area.add_opportunity(:opportunity_base => base)
       # HAX Kind of a hack
       opportunity = character.area.opportunities.last
       character.add_knowledge opportunity
-      return opportunity
+      
+      {:created => opportunity}
     when "EventBase"
       # Delegating special events here
       base.perform(character, params)

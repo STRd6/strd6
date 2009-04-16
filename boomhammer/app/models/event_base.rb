@@ -2,8 +2,9 @@ class EventBase < ActiveRecord::Base
   module EventType
     NONE = "none"
     SHOP = "shop"
+    RECIPE = "recipe"
 
-    ALL = [NONE, SHOP]
+    ALL = [NONE, SHOP, RECIPE]
   end
 
   include EventType
@@ -16,7 +17,10 @@ class EventBase < ActiveRecord::Base
   def perform(character, params)
     case event_type
     when SHOP
-      create_shop(character, params)
+      {:created => create_shop(character, params)}
+    when RECIPE
+      recipe_knowledge = character.add_knowledge(Recipe.random.first)
+      {:discovered => recipe_knowledge.object}
     else
       raise "Unknown event type: #{event_type}"
     end
