@@ -1,5 +1,6 @@
 class Recipe < ActiveRecord::Base
   include Named
+  include RandomScope
   include Eventful
 
   has_many :recipe_components, :dependent => :destroy
@@ -55,7 +56,7 @@ class Recipe < ActiveRecord::Base
         pair.first.save!
       end
 
-      notifications[:got] = [generate_event.perform(character, params)]
+      notifications.merge! generate_event.perform(character, params)
     end
   end
 

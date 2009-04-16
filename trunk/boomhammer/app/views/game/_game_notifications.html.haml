@@ -1,3 +1,5 @@
+- logger.info object.inspect
+
 - if object[:got]
   - if object[:got].size == 0
     = "Nothing..."
@@ -11,4 +13,11 @@
 
 - if object[:status]
   = object[:status]
+
+- if object[:created]
+  = "Created #{objet[:created]}"
+
+- if object[:discovered]
+  = "Discovered:"
+  = object[:discovered]
 
