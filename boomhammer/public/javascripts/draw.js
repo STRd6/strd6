@@ -250,6 +250,20 @@ var Canvas = Class.create({
     this.pixels[x][y] = pixel;
   },
   
+  /**
+   * Calls fx once for each pixel with arguments (pixel, x, y)
+   */
+  eachPixel: function(fx) {
+    var c = this;
+    var w = this.width;
+    var h = this.height;
+    $R(0, h - 1).each(function(y){
+      $R(0, w - 1).each(function(x) {
+        fx(c.getPixel(x,y), x, y);
+      });
+    });
+  },
+  
   /** Returns an array of the pixels who neighbor the pixel at coordinates x, y */
   getNeighbors: function(x, y) {
     return [this.getPixel(x+1, y), 
@@ -267,6 +281,17 @@ var Canvas = Class.create({
     }
     
     return null;
+  },
+
+  loadJSON: function(data) {
+    this.eachPixel(function(pixel, x, y){
+      var pos = x + y*32;
+      if(data[pos]) {
+        pixel.setColor(data[pos]);
+      } else {
+        pixel.clear();
+      }
+    });
   },
   
   mousedown: function(event) {
