@@ -23,5 +23,34 @@ class Creation::OpportunityBasesControllerTest < ActionController::TestCase
       get :show, :id => @opportunity_base.id
       assert_response :success
     end
+
+    should "POST create" do
+      assert_difference "OpportunityBase.count" do
+        post :create, {
+          "opportunity_base"=>{
+            "name"=>"test",
+            "description"=>"test"
+          }
+        }
+      end
+    end
+
+    context "logged in" do
+      setup do
+        @account = Factory :account
+        @controller.stubs(:current_account).returns(@account)
+      end
+
+      should "know the current account when creating an opportunity base" do
+        post :create, {
+          "opportunity_base"=>{
+            "name"=>"test",
+            "description"=>"test"
+          }
+        }
+
+        assert_equal @account, assigns(:opportunity_base).account
+      end
+    end
   end
 end

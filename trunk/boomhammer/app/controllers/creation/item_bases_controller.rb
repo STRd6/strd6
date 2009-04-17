@@ -11,6 +11,10 @@ class Creation::ItemBasesController < Creation::CreationController
     @title = @item_base.name
   end
 
+  create.before do
+    @item_base.account = current_account
+  end
+
   protected
   def collection
     ItemBase.all find_opts

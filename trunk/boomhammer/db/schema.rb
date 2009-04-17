@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090415055059) do
+ActiveRecord::Schema.define(:version => 20090417004315) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20090415055059) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "image_id"
+    t.integer  "account_id"
   end
 
   create_table "area_links", :force => true do |t|
@@ -147,6 +148,7 @@ ActiveRecord::Schema.define(:version => 20090415055059) do
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.integer  "allowed_slot", :default => 0, :null => false
+    t.integer  "account_id"
   end
 
   create_table "items", :force => true do |t|
@@ -219,6 +221,7 @@ ActiveRecord::Schema.define(:version => 20090415055059) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "image_id"
+    t.integer  "account_id"
   end
 
   create_table "recipe_components", :force => true do |t|
@@ -244,6 +247,7 @@ ActiveRecord::Schema.define(:version => 20090415055059) do
     t.string   "name",       :null => false
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "account_id"
   end
 
   create_table "shop_items", :force => true do |t|
