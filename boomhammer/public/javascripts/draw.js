@@ -69,6 +69,7 @@ var Tool = Class.create({
   canvasout: function(event) {  },
   cursor: "default",
   id: "",
+  _imagePath: "/images/draw/",
   
   currentColor: function(event) {
     if(!event || event.isLeftClick()) {
@@ -118,7 +119,7 @@ var EyeDropper = Class.create(Tool, {
     canvas.setTool(pencil);
   },
   
-  cursor: "url(../images/draw/dropper.png) 13 13, default", // works in Safari but not FF/OP
+  cursor: "url(/images/draw/dropper.png) 13 13, default", // works in Safari but not FF/OP
   id: "dropper"
 });
 
@@ -149,7 +150,7 @@ var Pencil = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "url(../images/draw/pencil.png) 4 14, default", // works in Safari but not FF/OP
+  cursor: "url(/images/draw/pencil.png) 4 14, default", // works in Safari but not FF/OP
   id: "pencil"
 });
 
@@ -175,7 +176,7 @@ var Eraser = Class.create(Tool, {
     this.active = false;
   },
   
-  cursor: "url(../images/draw/eraser.png) 4 11, default", // works in Safari but not FF/OP
+  cursor: "url(/images/draw/eraser.png) 4 11, default", // works in Safari but not FF/OP
   id: "eraser"
 });
 
@@ -216,7 +217,7 @@ var Fill = Class.create(Tool, {
     console.log(new Date() - t1);
   },
   
-  cursor: "url(../images/draw/fill.png) 12 13, default", // works in Safari but not FF/OP
+  cursor: "url(/images/draw/fill.png) 12 13, default", // works in Safari but not FF/OP
   id: "fill"
 });
 
