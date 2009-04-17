@@ -15,6 +15,8 @@ class Creation::RecipesController < Creation::CreationController
     @recipe.events.each do |event|
       event.owner = @recipe
     end
+
+    @recipe.account = current_account
   end
 
   protected

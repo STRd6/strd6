@@ -3,6 +3,8 @@ class Recipe < ActiveRecord::Base
   include RandomScope
   include Eventful
 
+  belongs_to :account
+
   has_many :recipe_components, :dependent => :destroy
 
   accepts_nested_attributes_for :recipe_components, :allow_destroy => true, 

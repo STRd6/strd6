@@ -11,6 +11,8 @@ class Creation::OpportunityBasesController < Creation::CreationController
     @opportunity_base.events.each do |event|
       event.owner = @opportunity_base
     end
+
+    @opportunity_base.account = current_account
   end
 
   protected

@@ -12,5 +12,32 @@ class Creation::RecipesControllerTest < ActionController::TestCase
     should "GET index" do
       get :index
     end
+
+    should "POST create" do
+      assert_difference "Recipe.count" do
+        post :create, {
+          "recipe"=>{
+            "name"=>"test",
+          }
+        }
+      end
+    end
+
+    context "logged in" do
+      setup do
+        @account = Factory :account
+        @controller.stubs(:current_account).returns(@account)
+      end
+
+      should "know the current account when creating a recipe" do
+        post :create, {
+          "recipe"=>{
+            "name"=>"test",
+          }
+        }
+
+        assert_equal @account, assigns(:recipe).account
+      end
+    end
   end
 end

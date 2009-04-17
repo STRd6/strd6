@@ -1,6 +1,7 @@
 class AreaBase < ActiveRecord::Base
   include Named
-  
+
+  belongs_to :account
   belongs_to :image
 
   has_many :areas, :dependent => :destroy

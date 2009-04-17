@@ -7,6 +7,7 @@ class Creation::ImageUploadController < ApplicationController
     image = Image.new(params[:image])
     image.width = 256
     image.height = 192
+    image.account = current_account
 
     if image.save
       flash[:notice] = "Successfully uploaded"

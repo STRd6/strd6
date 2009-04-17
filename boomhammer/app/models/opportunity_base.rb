@@ -3,6 +3,7 @@ class OpportunityBase < ActiveRecord::Base
   include Requisite
   include Eventful
 
+  belongs_to :account
   belongs_to :image
 
   has_many :opportunities, :dependent => :destroy
