@@ -24,6 +24,19 @@ class Image < ActiveRecord::Base
     self
   end
 
+  def json_data
+    image_data = Magick::Image.read(file_path).first
+
+    return image_data.get_pixels(0, 0, width, height).map do |pixel|
+      logger.info(pixel.opacity)
+      if pixel.opacity == 0
+        pixel.to_color(Magick::AllCompliance, false, 8, true)
+      else
+        nil
+      end
+    end
+  end
+
   protected
 
   def generate_file_name

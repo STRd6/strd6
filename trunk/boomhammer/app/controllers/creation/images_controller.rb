@@ -19,4 +19,11 @@ class Creation::ImagesController < Creation::CreationController
       page.replace_html :notice, "Uploaded as #{link}<br />#{new_item_link}"
     end
   end
+
+  show.wants.js do
+    render :update do |page|
+      data = @image.json_data
+      page.call("canvas.loadJSON", data)
+    end
+  end
 end

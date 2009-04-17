@@ -3,6 +3,7 @@
   = link_to_function 'Preview', 'canvas.preview()', {:title => 'Preview (v)', :class => 'tool'}
   = link_to_function 'Save to Disk', 'canvas.saveFile()', {:title => 'Download', :class => 'tool'}
   = link_to_function 'Save to Game', 'canvas.upload()', {:title => 'Upload', :class => 'tool'}
+  = link_to_function 'Load Image', "$('image_load').show()", {:title => 'Upload', :class => 'tool'}
 
 #toolbox
   = link_to_function image_tag('draw/pencil.png', :alt => 'Pencil (p)'), 'canvas.setTool(pencil)', { :title => 'Pencil (p)', :id => 'pencil', :class => 'tool'}
@@ -22,6 +23,21 @@
       .pixel{:id => id}
       
 #sample
+
+#image_load
+  - form_remote_tag :url => "/creation/images/show" do |form|
+    - Image.small.all.map do |image|
+      .image.left
+        = label_tag("id_#{image.id}", image_for(image))
+        = radio_button_tag(:id, image.id)
+    .clear
+    %p
+      .left
+        = link_to_function "Cancel", "$('image_load').hide()"
+      .right
+        = link_to_function "Load", "$(this).up('form').commit.click(); $('image_load').hide()"
+        = submit_tag 'Load', :name => 'commit', :style => 'display: none;'
+= javascript_tag "$('image_load').hide();"
   
 = javascript_tag "var canvas = new Canvas('main_canvas', #{canvas_width}, #{canvas_height});"
 - canvas_height.times do |y|
