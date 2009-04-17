@@ -28,7 +28,7 @@ class Image < ActiveRecord::Base
     image_data = Magick::Image.read(file_path).first
 
     return image_data.get_pixels(0, 0, width, height).map do |pixel|
-      logger.info(pixel.opacity)
+      #TODO: Handle full range of alpha
       if pixel.opacity == 0
         pixel.to_color(Magick::AllCompliance, false, 8, true)
       else
