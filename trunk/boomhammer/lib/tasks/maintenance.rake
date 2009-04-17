@@ -26,5 +26,11 @@ namespace :maintenance do
       # Backup images
       `tar -cf #{shared}/backups/images_#{date_string}.tar #{shared}/production/`
     end
+
+    desc "Download today's date image backup from server to 'images.tar'"
+    task :pull_images do
+      date_string = Date.today.to_date.to_s
+      `scp -P 2112 daniel@67.207.139.110:/u/apps/boomhammer/shared/backups/images_#{date_string}.tar images.tar`
+    end
   end
 end
