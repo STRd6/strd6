@@ -4,7 +4,12 @@ class Creation::ItemBasesController < Creation::CreationController
 
   new_action.before do
     @item_base.granted_abilities = []
-    @item_base.image_id = params[:image_id]
+    if params[:image_id]
+      image = Image.find params[:image_id]
+      image.tag_list << "item"
+      image.save
+      @item_base.image = image
+    end
   end
   
   show.before do

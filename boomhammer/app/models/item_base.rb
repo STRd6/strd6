@@ -15,6 +15,15 @@ class ItemBase < ActiveRecord::Base
 
   before_save :save_new_granted_abilities
 
+  def self.add_item_tag_to_all_images
+    ItemBase.all(:include => :image).each do |item_base|
+      if item_base.image
+        item_base.image.tag_list << "item"
+        item_base.image.save
+      end
+    end
+  end
+
   def spawn(attributes={})
     defaults = {}
     item = Item.new(attributes.reverse_merge!(defaults))

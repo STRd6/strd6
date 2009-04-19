@@ -15,7 +15,7 @@
 %h3 This item grants the following abilities
 = intrinsic_checkbox_array :item_base, :intrinsic_base_ids, form.object.intrinsic_base_ids
 
-= image_select(form)
+= image_select(form, :tagged => "item")
 
 .left
   = link_to "Back", creation_item_bases_path
