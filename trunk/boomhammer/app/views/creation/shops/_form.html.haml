@@ -1,0 +1,11 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.object.name
+
+= form.label "Click to position:"
+= image_submit_tag_for form.object.area
+
+.left
+  = link_to "Back", creation_area_path(form.object.area)

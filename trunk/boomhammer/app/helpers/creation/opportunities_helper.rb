@@ -1,0 +1,2 @@
+module Creation::OpportunitiesHelper
+end
