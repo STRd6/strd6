@@ -70,4 +70,8 @@ module ApplicationHelper
       end
     end
   end
+
+  def displayable_style(displayable)
+    "top: #{displayable.top}px; left: #{displayable.left}px;"
+  end
 end

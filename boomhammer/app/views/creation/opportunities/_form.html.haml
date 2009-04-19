@@ -1,0 +1,22 @@
+= form.error_messages
+
+%p
+  = form.label :name
+  = form.object.name
+
+%p
+  = form.label :description
+  = form.object.description
+
+= form.label :base_id, "Base Opportunity"
+= image_for form.object
+= form.collection_select :opportunity_base_id, OpportunityBase.all, :id, :name
+%p
+  = form.label :depletion
+  = form.text_field :depletion
+
+= form.label "Click to save and position:"
+= image_submit_tag_for form.object.area
+
+.left
+  = link_to "Back", creation_area_path(form.object.area)

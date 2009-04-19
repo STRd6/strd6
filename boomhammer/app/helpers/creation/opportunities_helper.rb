@@ -1,2 +1,0 @@
-module Creation::OpportunitiesHelper
-end

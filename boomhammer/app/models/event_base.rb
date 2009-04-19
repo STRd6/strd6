@@ -28,7 +28,12 @@ class EventBase < ActiveRecord::Base
 
   def create_shop(character, params)
     currency = ItemBase.find(params[:currency])
-    shop = Shop.create(:character => character, :area => character.area, :currency => currency)
+    shop = Shop.create(
+      :character => character,
+      :area => character.area,
+      :currency => currency,
+      :image_id => image_id
+    )
     
     character.add_knowledge shop
 

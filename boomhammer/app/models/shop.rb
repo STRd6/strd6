@@ -2,6 +2,7 @@ class Shop < ActiveRecord::Base
   include Named
   include ItemOwner
 
+  belongs_to :image
   belongs_to :character
   belongs_to :area
   belongs_to :currency, :class_name => "ItemBase"
@@ -10,10 +11,6 @@ class Shop < ActiveRecord::Base
   has_many :shop_items, :dependent => :destroy
 
   validates_presence_of :character, :area, :currency
-
-  def image
-    nil
-  end
 
   def name
     "#{character}'s Shop"
