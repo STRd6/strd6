@@ -26,4 +26,17 @@ class Creation::ImagesController < Creation::CreationController
       page.call("canvas.loadJSON", data)
     end
   end
+
+  def tag
+    load_collection
+  end
+
+  protected
+  def collection
+    if params[:tag]
+      Image.tagged_with(params[:tag], :on => :tags).all
+    else
+      Image.all
+    end
+  end
 end

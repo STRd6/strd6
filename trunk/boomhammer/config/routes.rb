@@ -28,6 +28,8 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   map.namespace :creation do |creation|
+    creation.connect 'images/tag', :controller => 'images', :action => 'tag'
+
     creation.resources :item_bases, :recipes, :images,
       :areas, :area_bases, :area_links,
       :event_bases,
