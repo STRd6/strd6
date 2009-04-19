@@ -1,34 +1,30 @@
-= image_for @area
+%div[@area]
+  = image_for @area
+
+  - @area.opportunities.each do |opportunity|
+    - next unless current_character.has_knowledge opportunity
+    .displayable{:style => displayable_style(opportunity), :title => opportunity.description}
+      - if opportunity.requisites_met? current_character.net_abilities
+        = opportunity_action_link opportunity
+      - else
+        = image_for opportunity
+
+  - @area.shops.each do |shop|
+    - next unless current_character.has_knowledge shop
+    .displayable{:style => displayable_style(shop), :title => shop.name}
+      = link_to image_for(shop), shop
 %p
   = @area.description
 
-%h2 Opportunities
-- @area.opportunities.each do |opportunity|
-  - next unless current_character.has_knowledge opportunity
-  - if opportunity.requisites_met? current_character.net_abilities
-    %p
-      = opportunity_action_link opportunity
-      = opportunity.description
-  - else
-    %p
-      = opportunity
-      = requirements_list opportunity
-      = opportunity.description
-
-%h2 Shops
-- @area.shops.each do |shop|
-  - next unless current_character.has_knowledge shop
-  %p= link_to shop, shop
-
-%h2 Travel To
-- @area.area_links.each do |area_link|
-  - next unless current_character.has_knowledge area_link
-  - if area_link.requisites_met? current_character.net_abilities
-    %p
-      = area_link_action_link area_link
-      = area_link.linked_area.description
-  - else
-    %p
-      = image_for area_link.linked_area
-      = requirements_list area_link
-      = area_link.linked_area.description
+  %h2 Travel To
+  - @area.area_links.each do |area_link|
+    - next unless current_character.has_knowledge area_link
+    - if area_link.requisites_met? current_character.net_abilities
+      %p
+        = area_link_action_link area_link
+        = area_link.linked_area.description
+    - else
+      %p
+        = image_for area_link.linked_area
+        = requirements_list area_link
+        = area_link.linked_area.description

@@ -33,10 +33,12 @@ class Creation::ImagesController < Creation::CreationController
 
   protected
   def collection
+    finder = Image
+    
     if params[:tag]
-      Image.tagged_with(params[:tag], :on => :tags).all
-    else
-      Image.all
+      finder.tagged_with(params[:tag], :on => :tags).all
     end
+
+    finder.all
   end
 end

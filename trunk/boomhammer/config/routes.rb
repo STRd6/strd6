@@ -33,8 +33,9 @@ ActionController::Routing::Routes.draw do |map|
     creation.resources :item_bases, :recipes, :images,
       :areas, :area_bases, :area_links,
       :event_bases,
-      :opportunity_bases,
-      :intrinsic_bases
+      :opportunities, :opportunity_bases,
+      :intrinsic_bases,
+      :shops
 
     creation.connect 'image_upload/:action', :controller => "image_upload"
 

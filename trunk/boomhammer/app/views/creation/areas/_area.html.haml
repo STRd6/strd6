@@ -1,2 +1,12 @@
-.area
-  = area.name
+%div[area]
+  = image_for area
+
+  - area.opportunities.each do |opportunity|
+    .displayable{:style => displayable_style(opportunity), :title => opportunity.description}
+      = link_to image_for(opportunity), edit_creation_opportunity_path(opportunity)
+
+  - area.shops.each do |shop|
+    .displayable{:style => displayable_style(shop), :title => shop.name}
+      = link_to image_for(shop), edit_creation_shop_path(shop)
+%p
+  = area.description

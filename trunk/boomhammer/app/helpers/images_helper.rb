@@ -1,13 +1,29 @@
 module ImagesHelper
   def image_for(object)
     if (image = object.image)
-      image_tag "/production/images/#{image.file_name}",
+      image_tag image_url(image),
         :width => image.width,
         :height => image.height,
         :alt => object,
         :title => object
     else
       image_tag "/production/images/default.png",
+        :width => 32,
+        :height => 32,
+        :alt => object,
+        :title => object
+    end
+  end
+
+  def image_submit_tag_for(object)
+    if (image = object.image)
+      image_submit_tag image_url(image),
+        :width => image.width,
+        :height => image.height,
+        :alt => object,
+        :title => object
+    else
+      image_submit_tag "/production/images/default.png",
         :width => 32,
         :height => 32,
         :alt => object,
@@ -32,5 +48,11 @@ module ImagesHelper
       form.label("image_id_#{image.id}", image_for(image) ) +
       form.radio_button(:image_id, image.id)
     end
+  end
+
+  protected
+
+  def image_url(image)
+    "/production/images/#{image.file_name}"
   end
 end

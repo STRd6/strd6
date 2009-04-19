@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090417004315) do
+ActiveRecord::Schema.define(:version => 20090419182238) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -74,6 +74,8 @@ ActiveRecord::Schema.define(:version => 20090417004315) do
     t.integer  "actions",    :default => 50, :null => false
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
+    t.integer  "top",        :default => 0,  :null => false
+    t.integer  "left",       :default => 0,  :null => false
   end
 
   add_index "characters", ["account_id"], :name => "index_characters_on_account_id"
@@ -159,6 +161,8 @@ ActiveRecord::Schema.define(:version => 20090417004315) do
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.integer  "slot",         :default => 0, :null => false
+    t.integer  "top",          :default => 0, :null => false
+    t.integer  "left",         :default => 0, :null => false
   end
 
   add_index "items", ["owner_id", "owner_type"], :name => "index_items_on_owner_id_and_owner_type"
@@ -211,6 +215,8 @@ ActiveRecord::Schema.define(:version => 20090417004315) do
     t.integer  "depletion",           :default => 0, :null => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
+    t.integer  "top",                 :default => 0, :null => false
+    t.integer  "left",                :default => 0, :null => false
   end
 
   add_index "opportunities", ["area_id"], :name => "index_opportunities_on_area_id"
@@ -261,11 +267,14 @@ ActiveRecord::Schema.define(:version => 20090417004315) do
   add_index "shop_items", ["shop_id"], :name => "index_shop_items_on_shop_id"
 
   create_table "shops", :force => true do |t|
-    t.integer  "character_id", :null => false
-    t.integer  "area_id",      :null => false
-    t.integer  "currency_id",  :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "character_id",                :null => false
+    t.integer  "area_id",                     :null => false
+    t.integer  "currency_id",                 :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.integer  "top",          :default => 0, :null => false
+    t.integer  "left",         :default => 0, :null => false
+    t.integer  "image_id"
   end
 
   add_index "shops", ["area_id"], :name => "index_shops_on_area_id"
