@@ -1,7 +1,9 @@
 Factory.define :quiz do |quiz|
+  quiz.author "Dimo"
   quiz.title "A Test Quiz"
   quiz.description "This quiz is all about unit testing, it's way cool."
   quiz.posted Date.today
+  quiz.summary ""
 end
 
 Factory.define :response do |r|
