@@ -9,7 +9,7 @@ xml.rss(:version=>"2.0"){
         if quiz.summary.blank?
           xml.item do
             xml.title(quiz.title)
-            xml.description(quiz.description)
+            xml.description(Maruku.new(quiz.description).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
             xml.link(quiz_path(quiz))
@@ -18,7 +18,7 @@ xml.rss(:version=>"2.0"){
         else
           xml.item do
             xml.title(quiz.title + "[Summary]")
-            xml.description(quiz.summary)
+            xml.description(Maruku.new(quiz.summary).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.summary_date.strftime("%a, %d %b %Y %H:%M:%S %z"))
             xml.link(quiz_path(quiz),"#summary")
@@ -27,7 +27,7 @@ xml.rss(:version=>"2.0"){
           
           xml.item do
             xml.title(quiz.title)
-            xml.description(quiz.description)
+            xml.description(Maruku.new(quiz.description).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
             xml.link(quiz_path(quiz))
