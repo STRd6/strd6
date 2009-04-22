@@ -1,5 +1,13 @@
 class Quiz < ActiveRecord::Base
   has_many :responses
+  named_scope :blank_summary, :conditions => {:summary => ""}, :order => "created_at DESC"
+  named_scope :has_summary, :conditions => ["summary != \"\""], :order => "id DESC"
+  
+  before_save :set_summary_date
+  
+  def self.current_quiz
+    self.blank_summary.first
+  end
   
   def self.import(filename)
     File.open(filename) do |file|
@@ -32,6 +40,14 @@ class Quiz < ActiveRecord::Base
         
         num += 1
       end
+    end
+  end
+  
+  private
+  
+  def set_summary_date
+    unless self.summary.blank?
+      self.summary_date ||= Time.now
     end
   end
 end

@@ -6,9 +6,12 @@
         %li
           = link_to response.author, response.reference
 
+  - if @current_quiz
+    %h2 Current Quiz
+    %ol
+      %li{:value => @current_quiz.id}= link_to @current_quiz.title, quiz_path(@current_quiz)
+
   %h2 Archives
   %ol
-    - Quiz.all(:order => "id DESC").each do |quiz|
+    - Quiz.has_summary.each do |quiz|
       %li{:value => quiz.id}= link_to quiz.title, quiz
-
-  
