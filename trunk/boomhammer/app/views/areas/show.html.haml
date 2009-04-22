@@ -7,7 +7,7 @@
       - if opportunity.requisites_met? current_character.net_abilities
         = opportunity_action_link opportunity
       - else
-        = image_for opportunity
+        = image_for opportunity, "#{opportunity.name} (#{opportunity.requisites.to_sentence})"
 
   - @area.shops.each do |shop|
     - next unless current_character.has_knowledge shop
@@ -22,9 +22,13 @@
     - if area_link.requisites_met? current_character.net_abilities
       %p
         = area_link_action_link area_link
+        = area_link.linked_area.name
+        == -
         = area_link.linked_area.description
     - else
       %p
         = image_for area_link.linked_area
-        = requirements_list area_link
+        = area_link.linked_area.name
+        == -
         = area_link.linked_area.description
+        == (requirements: #{ requirements_list area_link})
