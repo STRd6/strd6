@@ -18,4 +18,10 @@ class QuizzesController < ResourceController::Base
   end
   
   index.wants.rss { render :type => :builder, :template => "index.rss.builder" }
+
+  protected
+
+  def collection
+    Quiz.all :order => "id DESC"
+  end
 end
