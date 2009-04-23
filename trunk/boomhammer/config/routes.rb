@@ -31,6 +31,7 @@ ActionController::Routing::Routes.draw do |map|
     creation.connect 'images/tag', :controller => 'images', :action => 'tag'
 
     creation.resources :item_bases, :recipes, :images,
+      :activities,
       :areas, :area_bases, :area_links,
       :event_bases,
       :opportunities, :opportunity_bases,
