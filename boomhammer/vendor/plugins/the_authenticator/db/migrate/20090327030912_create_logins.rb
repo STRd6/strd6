@@ -6,6 +6,8 @@ class CreateLogins < ActiveRecord::Migration
 
       t.timestamps :null => false
     end
+
+    add_index :logins, :identity_url, :unique => true
   end
 
   def self.down
