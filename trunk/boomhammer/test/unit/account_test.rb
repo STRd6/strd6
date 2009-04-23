@@ -1,8 +1,12 @@
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  context "New account by login" do
+    should "create a new account" do
+      login = Login.new :identity_url => "example.com"
+      login.account = Account.new
+
+      login.save!
+    end
   end
 end
