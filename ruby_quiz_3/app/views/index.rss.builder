@@ -8,7 +8,7 @@ xml.rss(:version=>"2.0"){
       for quiz in @quizzes
         if quiz.summary.blank?
           xml.item do
-            xml.title(quiz.title)
+            xml.title(quiz.title_with_id)
             xml.description(Maruku.new(quiz.description).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
@@ -17,7 +17,7 @@ xml.rss(:version=>"2.0"){
           end
         else
           xml.item do
-            xml.title(quiz.title + "[Summary]")
+            xml.title(quiz.title_with_id + " [Summary]")
             xml.description(Maruku.new(quiz.summary).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.summary_date.strftime("%a, %d %b %Y %H:%M:%S %z"))
@@ -26,7 +26,7 @@ xml.rss(:version=>"2.0"){
           end
           
           xml.item do
-            xml.title(quiz.title)
+            xml.title(quiz.title_with_id)
             xml.description(Maruku.new(quiz.description).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
