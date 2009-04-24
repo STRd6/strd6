@@ -45,6 +45,6 @@ class ApplicationController < ActionController::Base
 
   # Temporary workaround until a reliable way to add `has_many :characters` to `Account` is found
   def current_account_characters
-    Character.for_account_id(current_account.id)
+    current_account.characters
   end
 end

@@ -56,7 +56,7 @@ Factory.define :character do |character|
 end
 
 Factory.define :account do |account|
-  
+  account.last_login Time.now
 end
 
 Factory.define :recipe do |recipe|

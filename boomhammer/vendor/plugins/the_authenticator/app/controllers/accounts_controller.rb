@@ -1,4 +1,6 @@
 class AccountsController < ApplicationController
+  unloadable
+
   def show
     @title = "Your Account"
     @account = current_account
