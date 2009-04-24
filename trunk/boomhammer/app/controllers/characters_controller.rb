@@ -4,11 +4,11 @@ class CharactersController < ResourceController::Base
   before_filter :character_required, :except => [:activate, :show, :index, :new, :edit, :update, :create]
 
   def collection
-    current_account_characters
+    current_account.characters
   end
 
   def object
-    @object ||= current_account_characters.find(params[:id])
+    @object ||= current_account.characters.find(params[:id])
   end
 
   def build_object
@@ -23,7 +23,7 @@ class CharactersController < ResourceController::Base
 
   def activate
     begin
-      @character = current_account_characters.find(params[:id])
+      @character = current_account.characters.find(params[:id])
       self.current_character = @character
 
       flash[:notice] = "#{@character.name} activated!"
