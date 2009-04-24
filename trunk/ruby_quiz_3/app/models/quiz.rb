@@ -4,6 +4,10 @@ class Quiz < ActiveRecord::Base
   named_scope :has_summary, :conditions => ["summary != \"\""], :order => "id DESC"
   
   before_save :set_summary_date
+
+  def title_with_id
+    "#{title} (##{id})"
+  end
   
   def self.current_quiz
     self.blank_summary.first
