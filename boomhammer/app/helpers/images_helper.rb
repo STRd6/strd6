@@ -8,7 +8,7 @@ module ImagesHelper
       :title => title_text || object
   end
 
-  def image_submit_tag_for(object)
+  def image_submit_tag_for(object, title_text=nil)
     image = object.image
     image_submit_tag image_url(image) || "/production/images/default.png",
       :width => (image.width if image),
