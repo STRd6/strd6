@@ -1,5 +1,6 @@
 - @characters.each do |character|
   %h3= character
+  = image_for character
   = actions_remaining_for character
   = link_to "View", character
   = link_to "Activate", :action => 'activate', :id => character.id
