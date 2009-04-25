@@ -1,8 +1,14 @@
 require 'test_helper'
 
 class Creation::OpportunitiesControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  context "opportunity" do
+    setup do
+      @opportunity = Factory :opportunity
+    end
+
+    should "GET edit" do
+      get :edit, :id => @opportunity.id
+      assert_response :success
+    end
   end
 end
