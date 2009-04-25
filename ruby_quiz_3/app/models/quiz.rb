@@ -12,6 +12,22 @@ class Quiz < ActiveRecord::Base
   def self.current_quiz
     self.blank_summary.first
   end
+
+  def self.update_all_solutions_after(quiz_id)
+    Quiz.all(:conditions => ["id > ?", quiz_id]).each(&:update_solutions)
+  end
+  
+  def update_solutions
+    solutions = Solutions.responses(self.id)
+    responses = Response.find_all_by_quiz_id(self.id)
+    responses.each do |response|
+      response.destroy
+    end
+
+    solutions.each do |solution|
+      self.responses.create(:author => solution[:author], :reference => solution[:link])
+    end
+  end
   
   def self.import(filename)
     File.open(filename) do |file|

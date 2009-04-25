@@ -12,9 +12,16 @@ class QuizzesController < ResourceController::Base
     @quiz = Quiz.last unless @quiz
     @title = "#{@quiz.title} (#{@quiz.id})"
   end
+
+  update.after do
+    expire_page quiz_path(@quiz)
+  end
   
   create.after do
-    #expire_page formatted_quizzes_path :format => "rss"
+    #TODO: We really should expire all pages here because the sidebar includes
+    # all quizzes.
+    expire_page quiz_path(@quiz)
+    expire_page formatted_quizzes_path(:format => "rss")
   end
   
   index.wants.rss { render :type => :builder, :template => "index.rss.builder" }
