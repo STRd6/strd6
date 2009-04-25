@@ -2,6 +2,6 @@
   - form_for [:creation, image] do |form|
     %p
       = image_for image
-      = form.label :tag_list
+      = form.label :tag_list, "Tags (comma separated)"
       = form.text_field :tag_list
       = submit_tag "Tag"
