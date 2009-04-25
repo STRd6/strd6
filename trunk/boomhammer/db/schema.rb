@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090423003032) do
+ActiveRecord::Schema.define(:version => 20090425043501) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20090423003032) do
     t.datetime "updated_at",                 :null => false
     t.integer  "top",        :default => 0,  :null => false
     t.integer  "left",       :default => 0,  :null => false
+    t.integer  "image_id"
   end
 
   add_index "characters", ["account_id"], :name => "index_characters_on_account_id"

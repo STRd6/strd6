@@ -7,6 +7,7 @@ class Character < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :area
+  belongs_to :image
 
   has_many :intrinsics, :as => :owner, :dependent => :destroy
 
