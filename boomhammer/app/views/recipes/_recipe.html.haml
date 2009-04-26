@@ -10,3 +10,7 @@
     &raquo;
   = events_display recipe
   .clear
+  %p
+    - if recipe.requisites.size > 0
+      Requires:
+      = recipe.requisites.to_sentence
