@@ -3,6 +3,7 @@ class Area < ActiveRecord::Base
   include RandomScope
   
   belongs_to :area_base
+  belongs_to :region
 
   has_many :area_links, :dependent => :destroy
   has_many :linked_areas, :through => :area_links, :class_name => 'Area'
@@ -14,7 +15,7 @@ class Area < ActiveRecord::Base
 
   has_one :image, :through => :area_base
 
-  validates_presence_of :area_base
+  validates_presence_of :area_base, :region
 
   named_scope :starting, :conditions => {:starting_location => true}
 

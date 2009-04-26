@@ -14,12 +14,17 @@ Factory.define :event_base do |event_base|
   event_base.name {Factory.next :name}
 end
 
+Factory.define :region do |region|
+  region.name {Factory.next :name}
+end
+
 Factory.define :area_base do |area_base|
   area_base.name {Factory.next :name}
   area_base.description "Indescribable"
 end
 
 Factory.define :area do |area|
+  area.association :region
   area.association :area_base
   area.name {Factory.next :name}
 end
