@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090426185637) do
+ActiveRecord::Schema.define(:version => 20090426202751) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20090426185637) do
     t.integer  "total_logins",                            :default => 0, :null => false
     t.string   "referral_code",                                          :null => false
     t.integer  "referrer_id"
+    t.integer  "energy",                                  :default => 0, :null => false
   end
 
   create_table "area_bases", :force => true do |t|
