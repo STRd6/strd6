@@ -2,6 +2,7 @@ class Recipe < ActiveRecord::Base
   include Named
   include RandomScope
   include Eventful
+  include Requisite
 
   belongs_to :account
 

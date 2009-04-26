@@ -4,6 +4,9 @@
   = form.label :name
   = form.text_field :name
 
+%h3 This recipe requires all of the following abilities:
+= intrinsic_checkbox_array :recipe, :intrinsic_base_ids, form.object.intrinsic_base_ids
+
 #ingredients
   %h3 Ingredients
   - form.fields_for :recipe_components do |ingredients_form|

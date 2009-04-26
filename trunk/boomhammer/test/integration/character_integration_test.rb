@@ -57,6 +57,40 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
     end
   end
 
+  context "crafting a recipe that requires an ability" do
+    setup do
+      @ingredient = Factory :item_base
+      @outcome = Factory :item_base
+      @requisite = Factory :intrinsic_base
+
+      @recipe = Recipe.new :name => "ability required",
+        :intrinsic_base_ids => [@requisite.id]
+      @recipe.add_component(@ingredient, 1, 100)
+      @recipe.add_event(@outcome, 1)
+      @recipe.save!
+
+      @character = Factory :character,
+        :intrinsic_base_id => @requisite.id
+      @character.add_item_from_base(@ingredient)
+
+      @character.add_knowledge @recipe
+    end
+
+    should "succede when character has required ability" do
+      @character.make_recipe(@recipe)
+      outcome = @character.items.first :conditions => {:item_base_id => @outcome.id}
+      assert_equal 1, outcome.quantity
+    end
+
+    should "not succede when character does not have required ability" do
+      @character.intrinsics.destroy_all
+
+      @character.make_recipe(@recipe)
+      outcome = @character.items.first :conditions => {:item_base_id => @outcome.id}
+      assert_equal nil, outcome
+    end
+  end
+
   context "crafting a recipe that requires a tool" do
     setup do
       @ingredient = Factory :item_base
@@ -64,7 +98,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
 
       @outcome = Factory :item_base
 
-      @recipe = Recipe.new(:name => "Equi-outcome")
+      @recipe = Recipe.new(:name => "Tool involved")
       @recipe.add_component(@ingredient, 1, 100)
       @recipe.add_component(@tool, 1, 0)
       @recipe.add_event(@outcome, 1)

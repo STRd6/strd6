@@ -55,6 +55,7 @@ class Character < ActiveRecord::Base
 
   def make_recipe(recipe, params={})
     return {:status => "You don't know how to make that"} unless has_knowledge recipe
+    return {:status => "You're lacking the skills to make that"} unless recipe.requisites_met? net_abilities
 
     perform(1) do |notifications|
       recipe.make(self, notifications, params)
