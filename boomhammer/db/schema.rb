@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090426012157) do
+ActiveRecord::Schema.define(:version => 20090426185637) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -21,7 +21,9 @@ ActiveRecord::Schema.define(:version => 20090426012157) do
     t.datetime "created_at",                                             :null => false
     t.datetime "updated_at",                                             :null => false
     t.datetime "last_login",                                             :null => false
-    t.integer  "total_logins",                            :default => 1, :null => false
+    t.integer  "total_logins",                            :default => 0, :null => false
+    t.string   "referral_code",                                          :null => false
+    t.integer  "referrer_id"
   end
 
   create_table "area_bases", :force => true do |t|
@@ -50,6 +52,8 @@ ActiveRecord::Schema.define(:version => 20090426012157) do
     t.datetime "updated_at",                           :null => false
     t.integer  "region_id",                            :null => false
   end
+
+  add_index "areas", ["region_id"], :name => "index_areas_on_region_id"
 
   create_table "badge_bases", :force => true do |t|
     t.string   "name",            :null => false

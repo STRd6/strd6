@@ -2,6 +2,10 @@
   = @account.nickname
 %p
   = @account.email
+%p
+  Your referral code:
+  = @account.referral_code
+  = link_to "Referral Link", login_url(:referral_code => @account.referral_code)
 
 %h3 Badges
 .badges
