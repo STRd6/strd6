@@ -36,6 +36,12 @@ module ImagesHelper
     end
   end
 
+  def image_tag_links
+    Image.tag_counts_on(:tags).map do |tag|
+      link_to "#{tag.name} (#{tag.count})", :tag => tag.name
+    end
+  end
+
   protected
 
   def image_url(image)
