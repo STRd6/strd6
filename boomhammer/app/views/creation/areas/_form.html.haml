@@ -1,7 +1,11 @@
 = form.error_messages
 
-= label_tag :base
-= form.collection_select :area_base_id, AreaBase.all, :id, :name
+%p
+  = form.label :area_base_id, "Type"
+  = form.collection_select :area_base_id, AreaBase.all, :id, :name
+%p
+  = form.label :region_id, "Region"
+  = form.collection_select :region_id, Region.all, :id, :name
 %p
   = form.label :name
   = form.text_field :name

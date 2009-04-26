@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090425043501) do
+ActiveRecord::Schema.define(:version => 20090426012157) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20090425043501) do
     t.boolean  "starting_location", :default => false, :null => false
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
+    t.integer  "region_id",                            :null => false
   end
 
   create_table "badge_bases", :force => true do |t|
@@ -257,6 +258,12 @@ ActiveRecord::Schema.define(:version => 20090425043501) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "account_id"
+  end
+
+  create_table "regions", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "shop_items", :force => true do |t|
