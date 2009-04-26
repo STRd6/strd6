@@ -1,9 +1,14 @@
 %p
+  = label_tag :nickname
   = @account.nickname
 %p
+  = label_tag :email
   = @account.email
 %p
-  Your referral code:
+  = label_tag :energy
+  = @account.energy
+%p
+  = label_tag :referral_code
   = @account.referral_code
   = link_to "Referral Link", login_url(:referral_code => @account.referral_code)
 
