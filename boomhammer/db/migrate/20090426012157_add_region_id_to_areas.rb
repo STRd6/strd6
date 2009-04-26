@@ -12,6 +12,8 @@ class AddRegionIdToAreas < ActiveRecord::Migration
     end
 
     change_column :areas, :region_id, :integer, :null => false
+
+    add_index :areas, :region_id
   end
 
   def self.down
