@@ -1,3 +1,5 @@
+%p= image_tag_links
+
 - @images.each do |image|
   - form_for [:creation, image] do |form|
     %p

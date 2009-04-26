@@ -1,0 +1,2 @@
+module Creation::ActivitiesHelper
+end
