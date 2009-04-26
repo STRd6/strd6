@@ -3,6 +3,7 @@ class SessionsController < ApplicationController
   unloadable
   
   def new
+    session[:referrer_code] = params[:referral_code]
   end
 
   def create
@@ -23,12 +24,16 @@ protected
         login = Login.find_or_initialize_by_identity_url(identity_url)
 
         if login.new_record?
-          login.account = Account.new :nickname => registration['nickname'],
-            :email => registration['email']
+          login.account = Account.new(
+            :nickname => registration['nickname'],
+            :email => registration['email'],
+            :referrer_code => session[:referrer_code]
+          )
           login.save!
         end
 
         self.current_account = login.account
+        current_account.track_login
 
         successful_login
       else
@@ -42,16 +47,16 @@ protected
 
     new_cookie_flag = (params[:remember_me] == "1")
     handle_remember_cookie! new_cookie_flag
-    
+
     redirect_back_or_default('/')
   end
-  
+
   def failed_login(message)
     flash[:error] = message
-    
+
     @login       = params[:login]
     @remember_me = params[:remember_me]
-    
+
     render :action => 'new'
   end
 end

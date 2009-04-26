@@ -7,6 +7,14 @@
   %p
     = form.label :email
     = form.text_field :email, :class => :text
+
+  %p
+    - if @account.referrer
+      = form.label :referrer
+      = @account.referrer
+    - else
+      = form.label :referrer_code
+      = form.text_field :referrer_code, :class => :text
   
   .right
     = submit_tag
