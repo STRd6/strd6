@@ -87,6 +87,6 @@ class Image < ActiveRecord::Base
   end
 
   def move_image_file_to_deleted
-    File.move file_path, deleted_file_path
+    FileUtils.mv file_path, deleted_file_path
   end
 end
