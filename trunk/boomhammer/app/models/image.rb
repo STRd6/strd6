@@ -20,6 +20,14 @@ class Image < ActiveRecord::Base
   named_scope :small, :conditions => {:width => 32, :height => 32}
   named_scope :large, :conditions => {:width => 256, :height => 192}
 
+  def self.remove_offensive
+    offensive_images = Image.tagged_with "offensive", :on => :tags
+
+    offensive_images.each do |image|
+      image.deal_with_offenses
+    end
+  end
+
   def image
     self
   end
@@ -35,6 +43,21 @@ class Image < ActiveRecord::Base
         nil
       end
     end
+  end
+
+  def deal_with_offenses
+    return unless over_offensive_threshold
+
+    if(account = image.account)
+      account.add_offense
+    end
+
+    image.move_image_file_to_deleted
+    image.destroy
+  end
+
+  def over_offensive_threshold
+    up_votes_count - down_votes_count <= -2
   end
 
   protected
@@ -57,5 +80,13 @@ class Image < ActiveRecord::Base
 
   def file_path
     "#{Rails.root}/public/production/images/#{file_name}"
+  end
+
+  def deleted_file_path
+    "#{Rails.root}/public/production/images/#{file_name}_DELETED"
+  end
+
+  def move_image_file_to_deleted
+    File.move file_path, deleted_file_path
   end
 end
