@@ -8,6 +8,12 @@ namespace :maintenance do
     end
   end
 
+  # 30 * * * * cd /u/apps/boomhammer/current && /usr/bin/rake RAILS_ENV=production maintenance:image_patrol
+  desc "Remove offensive images"
+  task :image_patrol => [:environment] do
+    Image.remove_offensive
+  end
+
   namespace :backup do
     desc "Backup the production database"
     task :db do

@@ -5,5 +5,9 @@ module Authentication
         has_many :characters
       end
     end
+
+    def add_offense
+      increment! :offenses
+    end
   end
 end
