@@ -2,6 +2,12 @@ class Creation::ImagesController < Creation::CreationController
   resource_controller
   actions :all, :except => :destroy
 
+  index.wants.html do
+    if params[:spartan]
+      render :partial => "spartan_index"
+    end
+  end
+
   new_action.wants.html do
     render :layout => "draw"
   end

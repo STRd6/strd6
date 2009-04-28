@@ -1,14 +1,13 @@
-%p= image_tag_links
-
 %p= link_to "Draw", :action => :new
 
-- @images.each do |image|
-  - if current_account
-    - form_tag "/meta/vote", :class => "images" do
-      = image_for(image)
-      = hidden_field_tag :image_id, image.id
-      .formControlsHolder
-        = submit_tag "+" unless image.up_votes.find_by_account_id current_account.id
-        = submit_tag "-" unless image.down_votes.find_by_account_id current_account.id
-  - else
-    = image_for(image)
+#tabs
+  %ul
+    %li= link_to "All", "#tabs-1"
+    - Image.tag_counts_on(:tags).map do |tag|
+      %li= link_to("#{tag.name} (#{tag.count})", :tag => tag.name, :spartan => true)
+
+  #tabs-1
+    = render :partial => "spartan_index"
+
+- content_for :javascript do
+  = javascript_tag '$(function() {$("#tabs").tabs();});'

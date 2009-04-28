@@ -1,0 +1,10 @@
+- @images.each do |image|
+  - if current_account
+    - form_tag "/meta/vote", :class => "images" do
+      = image_for(image)
+      = hidden_field_tag :image_id, image.id
+      .formControlsHolder
+        = submit_tag "+" unless image.up_votes.find_by_account_id current_account.id
+        = submit_tag "-" unless image.down_votes.find_by_account_id current_account.id
+  - else
+    = image_for(image)
