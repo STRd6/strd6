@@ -1,7 +1,35 @@
-%p
-  Greetings! To get started
-  = link_to "log in with your OpenID", login_path
-  == .
-%p
-  =# link_to "What's an OpenID?", ""
-  = link_to "How do I get one?", "http://openid.net/get/"
+#tabs
+  %ul
+    %li= link_to "Overview", "#tabs-1"
+    %li= link_to "About", "#tabs-2"
+    %li= link_to "Login", "#tabs-3"
+
+  #tabs-1
+    %p
+      Welcome to Boomhammer! It's a user editable online game.
+      Players can make their own areas, items, recipes, and more.
+      Kind of like a simple browser based version of Second Life.
+    %p
+      - Image.all(:conditions => "up_votes_count > 0", :limit => 5, :order => "RANDOM()").each do |image|
+        = image_for image
+    %p
+      Create images with the built in
+      = link_to "image editor!", :controller => "creation/images", :action => :new
+
+  #tabs-2
+    %p
+      Created by
+      = link_to "STRd6", "http://strd6.com"
+
+  #tabs-3
+    %p
+      To get started
+      = link_to "log in with your OpenID", login_path
+      == .
+    %p
+      = link_to "How do I get one?", "http://openid.net/get/"
+    %p
+      = link_to "What the hell are you talking about?", "http://openid.net/what/"
+
+- content_for :javascript do
+  = javascript_tag '$(function() {$("#tabs").tabs();});'
