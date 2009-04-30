@@ -35,6 +35,10 @@ class Creation::ImagesController < Creation::CreationController
 
   def tag
     load_collection
+
+    if params[:spartan]
+      render :partial => "spartan_tag"
+    end
   end
 
   protected
