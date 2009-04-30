@@ -106,15 +106,9 @@ var tools = new Array();
 
 var EyeDropper = Class.create(Tool, {
   mousedown: function(event) {
-    color = this.parseColor(event.element().style.backgroundColor) || 'FFFFFF';
+    var color = this.parseColor(event.element().style.backgroundColor) || 'FFFFFF';
     
-    if(event.isLeftClick()) {
-      $('primary_color').value = color;
-      $('primary_color').onblur();
-    } else {
-      $('secondary_color').value = color;
-      $('secondary_color').onblur();
-    }
+    setColor(color, event);
 
     canvas.setTool(pencil);
   },
@@ -349,6 +343,16 @@ var Canvas = Class.create({
       }
     });
   },
+
+  setPrimaryColor: function(color) {
+    $('primary_color').value = color;
+    $('primary_color').onblur();
+  },
+
+  setSecondaryColor: function(color) {
+    $('secondary_color').value = color;
+    $('secondary_color').onblur();
+  },
   
   setTool: function(tool) {
     this.tool = tool;
@@ -404,3 +408,13 @@ Event.observe(window, 'load', function() {
     }
   });
 });
+
+function setColor(color, event) {
+  if(event.isLeftClick()) {
+    canvas.setPrimaryColor(color);
+  } else {
+    canvas.setSecondaryColor(color);
+  }
+  
+  event.stop();
+}
