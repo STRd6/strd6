@@ -28,6 +28,10 @@ class Image < ActiveRecord::Base
     end
   end
 
+  def name
+
+  end
+
   def image
     self
   end
