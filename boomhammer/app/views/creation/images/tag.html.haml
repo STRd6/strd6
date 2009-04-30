@@ -1,9 +1,17 @@
-%p= image_tag_links
+%p
+  = link_to "Draw", :action => :new
+  = link_to "Index", :action => :index
 
-- @images.each do |image|
-  - form_for [:creation, image] do |form|
-    %p
-      = image_for image
-      = form.label :tag_list, "Tags (comma separated)"
-      = form.text_field :tag_list
-      = submit_tag "Tag"
+#tabs
+  %ul
+    %li= link_to "All", "#tab1"
+    - Image.tag_counts_on(:tags).map do |tag|
+      %li= link_to("#{tag.name} (#{tag.count})", :tag => tag.name, :spartan => true)
+
+  #tab1
+    = render :partial => "spartan_tag"
+
+- content_for :javascript do
+  = javascript_tag '$(function() {$("#tabs").tabs();});'
+
+  

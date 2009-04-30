@@ -1,12 +1,14 @@
-%p= link_to "Draw", :action => :new
+%p
+  = link_to "Draw", :action => :new
+  = link_to "Tag", :action => :tag
 
 #tabs
   %ul
-    %li= link_to "All", "#tabs-1"
+    %li= link_to "All", "#tab1"
     - Image.tag_counts_on(:tags).map do |tag|
       %li= link_to("#{tag.name} (#{tag.count})", :tag => tag.name, :spartan => true)
 
-  #tabs-1
+  #tab1
     = render :partial => "spartan_index"
 
 - content_for :javascript do
