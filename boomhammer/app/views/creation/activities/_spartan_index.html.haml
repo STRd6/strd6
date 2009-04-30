@@ -1,0 +1,4 @@
+- @activities.each do |activity|
+  .activity
+    = image_for(activity)
+    = "#{activity.name} created by #{activity.account || "Anonymous"} #{time_ago_in_words activity.created_at} ago"
