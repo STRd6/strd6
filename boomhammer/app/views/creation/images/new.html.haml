@@ -14,6 +14,10 @@
   %input#primary_color.color{:type => 'text'}
   %input#secondary_color.color{:type => 'text'}
 
+  - ["000", "FFF", "666", "CCC", "F00", "0F0", "00F", "FF0", "F0F", "0FF"].each do |color|
+    .swatch= "##{color}"
+  = javascript_tag "$$('.swatch').each(function(color){color.style.backgroundColor = color.innerHTML; color.observe('mousedown', setColor.curry(color.innerHTML)); color.innerHTML = ''; color.observe('contextmenu', function(event) {event.stop();}); });"
+
 - canvas_width = 32
 - canvas_height = 32
 #main_canvas.canvas
@@ -38,7 +42,7 @@
         = link_to_function "Load", "$(this).up('form').commit.click(); $('image_load').hide()"
         = submit_tag 'Load', :name => 'commit', :style => 'display: none;'
 = javascript_tag "$('image_load').hide();"
-  
+
 = javascript_tag "var canvas = new Canvas('main_canvas', #{canvas_width}, #{canvas_height});"
 - canvas_height.times do |y|
   - canvas_width.times do |x|
