@@ -1,4 +1,11 @@
-- @activities.each do |activity|
-  .activity
-    = image_for(activity)
-    = "#{activity.name} created by #{activity.account || "Anonymous"} #{time_ago_in_words activity.created_at} ago"
+#tabs
+  %ul
+    %li= link_to "All", "#tabs-1"
+    - Creation::ActivitiesController::LEGIT.map do |klass|
+      %li= link_to(klass.name, :type => klass.name, :spartan => true)
+
+  #tabs-1
+    = render :partial => "spartan_index"
+
+- content_for :javascript do
+  = javascript_tag '$(function() {$("#tabs").tabs();});'
