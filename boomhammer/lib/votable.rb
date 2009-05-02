@@ -14,11 +14,39 @@ module Votable
     end
   end
 
+  def level
+    up_rank - down_rank
+  end
+
   def vote_up(account)
     up_votes.create!(:account => account)
+    convert_up
   end
 
   def vote_down(account)
     down_votes.create!(:account => account)
+    convert_down
+  end
+
+  def convert_up
+    transaction do
+      votes_to_next_up = 2**(up_rank + 1)
+      if up_votes.unconverted.count >= votes_to_next_up
+        up_votes.unconverted.all(:limit => votes_to_next_up).each(&:convert!)
+        self.up_rank += 1
+        save!
+      end
+    end
+  end
+
+  def convert_down
+    transaction do
+      votes_to_next_down = 2**(down_rank + 1)
+      if down_votes.unconverted.count >= votes_to_next_down
+        down_votes.unconverted.all(:limit => votes_to_next_down).each(&:convert!)
+        self.down_rank += 1
+        save!
+      end
+    end
   end
 end
