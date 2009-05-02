@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090427052325) do
+ActiveRecord::Schema.define(:version => 20090502025240) do
 
   create_table "accounts", :force => true do |t|
     t.string   "nickname"
@@ -92,11 +92,12 @@ ActiveRecord::Schema.define(:version => 20090427052325) do
   add_index "characters", ["area_id"], :name => "index_characters_on_area_id"
 
   create_table "down_votes", :force => true do |t|
-    t.integer  "votable_id",   :null => false
-    t.string   "votable_type", :null => false
-    t.integer  "account_id",   :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "votable_id",                      :null => false
+    t.string   "votable_type",                    :null => false
+    t.integer  "account_id",                      :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "converted",    :default => false, :null => false
   end
 
   add_index "down_votes", ["account_id", "votable_id", "votable_type"], :name => "index_down_votes_on_account_id_and_votable_id_and_votable_type", :unique => true
@@ -131,6 +132,8 @@ ActiveRecord::Schema.define(:version => 20090427052325) do
     t.integer  "up_votes_count",   :default => 0,  :null => false
     t.integer  "down_votes_count", :default => 0,  :null => false
     t.integer  "account_id"
+    t.integer  "up_rank",          :default => 0,  :null => false
+    t.integer  "down_rank",        :default => 0,  :null => false
   end
 
   create_table "intrinsic_bases", :force => true do |t|
@@ -314,11 +317,12 @@ ActiveRecord::Schema.define(:version => 20090427052325) do
   end
 
   create_table "up_votes", :force => true do |t|
-    t.integer  "votable_id",   :null => false
-    t.string   "votable_type", :null => false
-    t.integer  "account_id",   :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "votable_id",                      :null => false
+    t.string   "votable_type",                    :null => false
+    t.integer  "account_id",                      :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "converted",    :default => false, :null => false
   end
 
   add_index "up_votes", ["account_id", "votable_id", "votable_type"], :name => "index_up_votes_on_account_id_and_votable_id_and_votable_type", :unique => true
