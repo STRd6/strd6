@@ -1,7 +1,7 @@
 class AddConvertedToUpVotesAndDownVotes < ActiveRecord::Migration
   def self.up
-    add_column :down_votes, :converted, :boolean, :null => false, :default => 0
-    add_column :up_votes, :converted, :boolean, :null => false, :default => 0
+    add_column :down_votes, :converted, :boolean, :null => false, :default => false
+    add_column :up_votes, :converted, :boolean, :null => false, :default => false
   end
 
   def self.down
