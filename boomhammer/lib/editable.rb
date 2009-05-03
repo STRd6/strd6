@@ -16,6 +16,7 @@ module Editable
       constantize_attribute :editability
       validates_inclusion_of :editability, :in => Editable::Editability.values
 
+      before_validation_on_create :set_editor
       validate :verify_editor
     end
   end
@@ -35,6 +36,10 @@ module Editable
 
   protected
   def verify_editor
-    errors.add_to_base "#{editor} is not allowed to edit (#{editability})" unless editable_by editor
+    errors.add_to_base "#{editor} is not allowed to edit (#{editability.name})" unless editable_by editor
+  end
+
+  def set_editor
+    self.editor ||= account
   end
 end
