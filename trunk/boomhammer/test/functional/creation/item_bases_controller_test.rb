@@ -48,6 +48,31 @@ class Creation::ItemBasesControllerTest < ActionController::TestCase
 
         assert_equal @account, assigns(:item_base).account
       end
+      
+      context "with an item base" do
+        setup do
+          @item_base = Factory :item_base, :account => @account
+        end
+        
+        should "PUT update" do
+          new_name = "new name"
+
+          put :update, :id => @item_base.id, "item_base" => {
+            "name" => new_name
+          }
+          
+          @item_base.reload
+
+          assert_equal new_name, @item_base.name
+        end
+      end
+
+      context "with an item base that is editable only by creator" do
+        setup do
+          @item_base = Factory :item_base,
+            :account => @account
+        end
+      end
     end
   end
 end

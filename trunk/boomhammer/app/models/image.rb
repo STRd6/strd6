@@ -1,5 +1,5 @@
 class Image < ActiveRecord::Base
-  include Votable
+  include PowerVote::Votable
   
   acts_as_taggable_on :tags
   
