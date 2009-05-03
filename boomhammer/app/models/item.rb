@@ -1,24 +1,21 @@
 class Item < ActiveRecord::Base
-  module EquipSlots
-    INVENTORY = 0
-    HEAD = 1
-    TORSO = 2
-    HANDS = 3
-    LEGS = 4
-    PET = 5
+  enum :EquipSlots do
+    INVENTORY("none")
+    HEAD("head")
+    TORSO("torso")
+    HANDS("hands")
+    LEGS("legs")
+    PET("pet")
 
-    EQUIPPED = [HEAD, TORSO, HANDS, LEGS, PET].freeze
+    attr_reader :display_name
 
-    ALL = ([INVENTORY] + EQUIPPED).freeze
+    def init(display_name)
+      @display_name = display_name
+    end
 
-    NAME_FOR = {
-      INVENTORY => "none",
-      HEAD => "head",
-      TORSO => "torso",
-      HANDS => "hands",
-      LEGS => "legs",
-      PET => "pet",
-    }
+    def self.equipable_slots
+      [EquipSlots::HEAD, EquipSlots::TORSO, EquipSlots::HANDS, EquipSlots::LEGS, EquipSlots::PET].map(&:to_s)
+    end
   end
 
   belongs_to :item_base
@@ -28,9 +25,11 @@ class Item < ActiveRecord::Base
 
   has_many :shop_items, :dependent => :destroy
 
+  constantize_attribute :slot
+
   validates_presence_of :item_base
   validates_numericality_of :quantity, :greater_than_or_equal_to => 0
-  validates_inclusion_of :slot, :in => EquipSlots::ALL
+  validates_inclusion_of :slot, :in => EquipSlots.values
 
   delegate :name, 
     :description,
@@ -55,12 +54,12 @@ class Item < ActiveRecord::Base
 
   # True if this item is currently equipped
   def equipped?
-    EquipSlots::EQUIPPED.include? slot
+    EquipSlots.equipable_slots.include? slot
   end
 
   # Returns an array suitable for collection select:
   # form.collection_select :field, Item.slot_select, :first, :last
   def self.slot_select
-    EquipSlots::ALL.map {|slot| [slot, EquipSlots::NAME_FOR[slot]]}
+    EquipSlots::values.map {|slot| [slot, slot.name]}
   end
 end

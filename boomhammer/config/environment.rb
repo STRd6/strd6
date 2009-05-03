@@ -11,6 +11,7 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl'
   config.gem 'ruby-openid', :lib => 'openid'
   config.gem 'rmagick', :lib => 'RMagick'
+  config.gem 'renum'
   config.gem 'mocha'
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem "mbleigh-acts-as-taggable-on", :lib => "acts-as-taggable-on", :source => "http://gems.github.com"
