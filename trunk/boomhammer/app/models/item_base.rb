@@ -11,7 +11,8 @@ class ItemBase < ActiveRecord::Base
   has_many :recipe_components, :dependent => :destroy
   has_many :recipe_outcomes, :dependent => :destroy
 
-  validates_inclusion_of :allowed_slot, :in => Item::EquipSlots::ALL
+  constantize_attribute :allowed_slot
+  validates_inclusion_of :allowed_slot, :in => Item::EquipSlots.values
 
   before_save :save_new_granted_abilities
 
@@ -45,7 +46,7 @@ class ItemBase < ActiveRecord::Base
 
   # The string name for this item's allowed slot
   def allowed_slot_name
-    Item::EquipSlots::NAME_FOR[allowed_slot]
+    allowed_slot.display_name
   end
 
   protected
