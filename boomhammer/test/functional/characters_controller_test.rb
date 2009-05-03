@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class CharactersControllerTest < ActionController::TestCase
-  context "characters" do
+  context "when logged in" do
     setup do
       @current_account = Factory :account
       CharactersController.any_instance.stubs(:login_required)
@@ -20,6 +20,17 @@ class CharactersControllerTest < ActionController::TestCase
           "name" => "AUEA",
           "intrinsic_base_id" => @intrinsic_base.id
         }
+      end
+    end
+
+    context "with a character" do
+      setup do
+        @character = Factory :character, :account => @current_account
+        @character.add_item_from_base(Factory(:item_base), 1)
+      end
+
+      should "GET show" do
+        get :show, :id => @character.id
       end
     end
   end

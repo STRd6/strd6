@@ -1,7 +1,7 @@
 class ItemBase < ActiveRecord::Base
+  include Editable
   include Named
-
-  belongs_to :account
+  
   belongs_to :image
 
   has_many :granted_abilities, :class_name => "Intrinsic", :as => :owner, :dependent => :destroy
@@ -12,7 +12,7 @@ class ItemBase < ActiveRecord::Base
   has_many :recipe_outcomes, :dependent => :destroy
 
   constantize_attribute :allowed_slot
-  validates_inclusion_of :allowed_slot, :in => Item::EquipSlots.values
+  validates_inclusion_of :allowed_slot, :in => Item::EquipSlot.values
 
   before_save :save_new_granted_abilities
 

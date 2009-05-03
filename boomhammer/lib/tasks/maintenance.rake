@@ -39,10 +39,10 @@ namespace :maintenance do
       `scp -P 2112 daniel@67.207.139.110:/u/apps/boomhammer/shared/backups/images_#{date_string}.tar images.tar`
     end
 
-    desc "Download today's date sqlite backup from server to 'production.sqlite3'"
+    desc "Download today's date sqlite backup from production server to development"
     task :pull_db do
       date_string = Date.today.to_date.to_s
-      `scp -P 2112 daniel@67.207.139.110:/u/apps/boomhammer/shared/backups/production_#{date_string}.sqlite3 production.sqlite3`
+      `scp -P 2112 daniel@67.207.139.110:/u/apps/boomhammer/shared/backups/production_#{date_string}.sqlite3 db/development.sqlite3`
     end
   end
 end

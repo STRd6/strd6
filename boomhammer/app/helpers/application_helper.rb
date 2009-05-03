@@ -11,12 +11,12 @@ module ApplicationHelper
         :action => 'unequip_item',
         :item_id => item.id,
       }
-    elsif Item::EquipSlots::EQUIPPED.include? item.allowed_slot
+    elsif Item::EquipSlot.equipable_slots.include? item.allowed_slot
       link_to "Equip #{item}:#{item.allowed_slot_name}", {
         :controller => 'actions',
         :action => 'equip_item',
         :item_id => item.id,
-        :item_slot => item.allowed_slot
+        :item_slot => item.allowed_slot.index
       }
     else
       nil

@@ -11,8 +11,8 @@
 module Equipper
   def self.included(base)
     base.class_eval do
-      has_many :equipped_items, :as => :owner, :conditions => {:slot => Item::EquipSlots.equipable_slots}, :class_name => "Item"
-      has_one :pet, :as => :owner, :class_name => "Item", :conditions => {:slot => Item::EquipSlots::PET}
+      has_many :equipped_items, :as => :owner, :conditions => {:slot => Item::EquipSlot.equipable_slot_strings}, :class_name => "Item"
+      has_one :pet, :as => :owner, :class_name => "Item", :conditions => {:slot => Item::EquipSlot::Pet.to_s}
     end
   end
 

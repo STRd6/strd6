@@ -1,11 +1,11 @@
 class Item < ActiveRecord::Base
-  enum :EquipSlots do
-    INVENTORY("none")
-    HEAD("head")
-    TORSO("torso")
-    HANDS("hands")
-    LEGS("legs")
-    PET("pet")
+  enum :EquipSlot do
+    Inventory("none")
+    Head("head")
+    Torso("torso")
+    Hands("hands")
+    Legs("legs")
+    Pet("pet")
 
     attr_reader :display_name
 
@@ -13,8 +13,16 @@ class Item < ActiveRecord::Base
       @display_name = display_name
     end
 
+    def self.default_string
+      values.first.to_s
+    end
+
     def self.equipable_slots
-      [EquipSlots::HEAD, EquipSlots::TORSO, EquipSlots::HANDS, EquipSlots::LEGS, EquipSlots::PET].map(&:to_s)
+      [EquipSlot::Head, EquipSlot::Torso, EquipSlot::Hands, EquipSlot::Legs, EquipSlot::Pet]
+    end
+
+    def self.equipable_slot_strings
+      equipable_slots.map(&:to_s)
     end
   end
 
@@ -29,7 +37,7 @@ class Item < ActiveRecord::Base
 
   validates_presence_of :item_base
   validates_numericality_of :quantity, :greater_than_or_equal_to => 0
-  validates_inclusion_of :slot, :in => EquipSlots.values
+  validates_inclusion_of :slot, :in => EquipSlot.values
 
   delegate :name, 
     :description,
@@ -48,18 +56,12 @@ class Item < ActiveRecord::Base
 
   # Remove item from any slots it is in and call `save!`
   def unequip!
-    self.slot = EquipSlots::INVENTORY
+    self.slot = EquipSlot::Inventory
     self.save!
   end
 
   # True if this item is currently equipped
   def equipped?
-    EquipSlots.equipable_slots.include? slot
-  end
-
-  # Returns an array suitable for collection select:
-  # form.collection_select :field, Item.slot_select, :first, :last
-  def self.slot_select
-    EquipSlots::values.map {|slot| [slot, slot.name]}
+    EquipSlot.equipable_slots.include? slot
   end
 end
