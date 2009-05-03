@@ -11,8 +11,9 @@
 %p
   = equip_drop_down(form)
 
-%p
-  = editability_drop_down(form)
+- if form.object.account == current_account
+  %p
+    = editability_drop_down(form)
 
 %h3 This item grants the following abilities
 = intrinsic_checkbox_array :item_base, :intrinsic_base_ids, form.object.intrinsic_base_ids

@@ -18,10 +18,14 @@ class Creation::ItemBasesController < Creation::CreationController
 
   create.before do
     @item_base.account = current_account
-    @item_base.editor = current_account
   end
 
   update.before do
+    # Prevent anyone other that the creator from setting editability
+    unless @item_base.account == current_account
+      params[:item_base].delete(:editable)
+    end
+
     @item_base.editor = current_account
   end
 

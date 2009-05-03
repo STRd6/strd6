@@ -67,10 +67,48 @@ class Creation::ItemBasesControllerTest < ActionController::TestCase
         end
       end
 
-      context "with an item base that is editable only by creator" do
+      context "with an item base that was created by other and is editable only by creator" do
         setup do
+          @other_account = Factory :account
+
           @item_base = Factory :item_base,
-            :account => @account
+            :account => @other_account,
+            :editability => Editable::Editability::Owner
+        end
+
+        should "not be editable by current account" do
+          new_name = "new name"
+          old_name = @item_base.name
+
+          put :update, :id => @item_base.id, "item_base" => {
+            "name" => new_name
+          }
+
+          @item_base.reload
+
+          assert_equal old_name, @item_base.name
+        end
+      end
+
+      context "with an item base that was created by other and is editable by public" do
+        setup do
+          @other_account = Factory :account
+
+          @item_base = Factory :item_base,
+            :account => @other_account,
+            :editability => Editable::Editability::Public
+        end
+
+        should "not be editable by current account" do
+          new_name = "new name"
+
+          put :update, :id => @item_base.id, "item_base" => {
+            "name" => new_name
+          }
+
+          @item_base.reload
+
+          assert_equal new_name, @item_base.name
         end
       end
     end
