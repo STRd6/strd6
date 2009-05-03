@@ -49,6 +49,6 @@ class Creation::ImagesController < Creation::CreationController
       finder = finder.tagged_with(params[:tag], :on => :tags)
     end
 
-    finder.all
+    finder.all(:include => [:up_votes, :down_votes])
   end
 end
