@@ -18,6 +18,11 @@ class Creation::ItemBasesController < Creation::CreationController
 
   create.before do
     @item_base.account = current_account
+    @item_base.editor = current_account
+  end
+
+  update.before do
+    @item_base.editor = current_account
   end
 
   protected

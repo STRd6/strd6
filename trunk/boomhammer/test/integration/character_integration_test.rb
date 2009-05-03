@@ -141,7 +141,7 @@ class CharacterIntegrationTest < ActiveSupport::TestCase
 
       @intrinsic_base = Factory :intrinsic_base
 
-      @item_base = Factory :item_base, :allowed_slot => Item::EquipSlots::HANDS
+      @item_base = Factory :item_base, :allowed_slot => Item::EquipSlot::Hands
       @item_base.granted_abilities.create! :intrinsic_base => @intrinsic_base
 
       @item = Factory :item, :item_base => @item_base, :owner => @character

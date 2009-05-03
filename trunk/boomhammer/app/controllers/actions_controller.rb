@@ -2,7 +2,7 @@
 class ActionsController < ApplicationController
   def equip_item
     item = Item.find(params[:item_id])
-    slot = params[:item_slot].to_i
+    slot = Item::EquipSlot.values[params[:item_slot].to_i]
 
     set_game_notice current_character.equip(item, slot)
 

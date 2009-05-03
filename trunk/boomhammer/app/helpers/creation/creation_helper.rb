@@ -35,4 +35,14 @@ module Creation::CreationHelper
       end
     end
   end
+
+  def editability_drop_down(form)
+    form.label(:editability, "Editable by") +
+    form.collection_select(:editability, Editable::Editability.values, :to_s, :name)
+  end
+
+  def equip_drop_down(form)
+    form.label(:allowed_slot, "Equip on") +
+    form.collection_select(:allowed_slot, Item::EquipSlot.values, :to_s, :display_name)
+  end
 end

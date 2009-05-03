@@ -9,8 +9,10 @@
   = form.text_area :description
 
 %p
-  = form.label :allowed_slot, "Equip On"
-  = form.collection_select :allowed_slot, Item.slot_select, :first, :last
+  = equip_drop_down(form)
+
+%p
+  = editability_drop_down(form)
 
 %h3 This item grants the following abilities
 = intrinsic_checkbox_array :item_base, :intrinsic_base_ids, form.object.intrinsic_base_ids
