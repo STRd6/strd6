@@ -1,8 +1,11 @@
 require 'test_helper'
 
 class ItemBaseTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  context "ItemBase" do
+    setup do
+      @item_base = Factory :item_base
+    end
+
+    
   end
 end
