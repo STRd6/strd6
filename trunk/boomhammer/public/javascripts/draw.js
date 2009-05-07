@@ -278,8 +278,9 @@ var Canvas = Class.create({
   },
 
   loadJSON: function(data) {
+    var width = this.width;
     this.eachPixel(function(pixel, x, y){
-      var pos = x + y*32;
+      var pos = x + y*width;
       if(data[pos]) {
         pixel.setColor(data[pos]);
       } else {
