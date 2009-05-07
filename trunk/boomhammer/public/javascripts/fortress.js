@@ -23,7 +23,7 @@
     // update method called from controller to update this cell view
     view.update = function() {
       if(changed) {
-        updateFunction();
+        updateFunction(model, view);
 
         changed = false;
       }
@@ -38,74 +38,19 @@
     };
   }
 
-  // Cell view
-  $.fn.cell = function(game, controller) {
+  $.rand = function(x) {
+	  return Math.floor(x * Math.random());
+	}
+
+  // View
+  $.fn.view = function(game, controller, modelClass, updateFunction) {
     return this.each(function() {
       var $this = $(this);
       controller.add($this);
 
       // Create model
-      var cell = new Cell(game);
-      game.add(cell);
-
-      var updateFunction = function() {
-        var pic = 'ground1.png';
-
-        switch(cell.state()) {
-          case Cell.state.stone:
-            pic = 'mountain1.png';
-            break;
-          case Cell.state.dirt:
-            pic = 'ground1.png';
-            break;
-          case Cell.state.water:
-            pic = 'water1.png';
-            break;
-        }
-
-        $this.css({background: "transparent url(/images/dungeon/"+pic+")"});
-      };
-
-      configureView(cell, $this, updateFunction)
-    });
-  };
-
-  // Item view
-  $.fn.item = function(game, controller) {
-    return this.each(function() {
-      var $this = $(this);
-      controller.add($this);
-
-      // Create model
-      var item = new Item(game);
-      game.add(item);
-
-      var updateFunction = function() {
-        var pic = 'redgem.png';
-
-        $this.css({background: "transparent url(/images/dungeon/items/"+pic+")"});
-      };
-
-      configureView(item, $this, updateFunction)
-    });
-  };
-
-  // Inventory view
-  $.fn.inventory = function(game, controller) {
-    return this.each(function() {
-      var $this = $(this);
-      controller.add($this);
-
-      // Create model
-      var inventory = new Inventory(game);
-      console.log("View created: " + inventory);
-      game.addInventory(inventory);
-
-      var updateFunction = function() {
-        
-      };
-
-      configureView(inventory, $this, updateFunction)
+      var model = new modelClass(game);
+      configureView(model, $this, updateFunction)
     });
   };
 
@@ -152,8 +97,6 @@
 
       addInventory: function(inventory) {
         inventories.push(inventory);
-        console.log(inventory);
-        console.log(inventories[0]);
       },
 
       inventories: function() {
@@ -170,7 +113,7 @@
 
   Cell = function(_game) {
     var game = _game;
-    var state = Cell.state.stone;
+    var state = Cell.state.dirt;
     var contents = [];
 
     var self = {
@@ -179,7 +122,7 @@
       },
 
       click: function() {
-        state = Cell.state.dirt;
+        state = Cell.state.water;
         $(self).trigger('changed');
       },
 
@@ -191,6 +134,8 @@
         return contents;
       }
     };
+
+    game.add(self);
 
     return self;
   };
@@ -216,10 +161,11 @@
       }
     }
 
+    game.add(self);
     return self;
   };
 
-  Inventory = function() {
+  Inventory = function(game) {
     var contents = [];
 
     var self = {
@@ -231,7 +177,7 @@
       contents: function() { return contents;},
       click: function() {}
     }
-
+    game.addInventory(self);
     return self;
   };
 
@@ -255,27 +201,98 @@
 
 })(jQuery);
 
+Plant = function(game) {
+  var contents = [];
+  var age = $.rand(50);
+  var state = Plant.state.seed;
+
+  var self = {
+    update: function() { 
+      age++;
+
+      if(age == 100) {
+        state = Plant.state.small;
+        $(self).trigger('changed');
+      } else if(age == 200) {
+        state = Plant.state.medium;
+        $(self).trigger('changed');
+      } else if(age == 300) {
+        state = Plant.state.large;
+        $(self).trigger('changed');
+      } else if(age == 400) {
+        state = Plant.state.bloom;
+        $(self).trigger('changed');
+      }
+    },
+    contents: function() { return contents; },
+    click: function(params) {
+      var inventory = params['inventory'];
+
+      if(inventory) {
+        inventory.add(self);
+      }
+    },
+    state: function() {
+      return state;
+    }
+  }
+
+  game.add(self);
+  return self;
+};
+
+Plant.state = {
+  seed: '_seed',
+  small: '0',
+  medium: '1',
+  large: '2',
+  bloom: '3'
+};
+
 function clickParameters() {
   return {
     inventory: game.inventories()[0]
   };
 };
 
-jQuery.fn.clickTest = function() {
-  return this.each(function(){
-    var $this = $(this);
-    $this.bind('click', function(){ alert('click');});
-  });
-};
-
 $(document).ready(function() {
-  mainView = new UpdateController();
+  controller = new UpdateController();
 
-  game = new Engine(mainView);
+  game = new Engine(controller);
 
-  $('.cell').cell(game, mainView);
-  $('.item').item(game, mainView);
-  $('#inventory').inventory(game, mainView);
+  $('.cell').view(game, controller, Cell, function(cell, view) {
+    var pic = 'ground1';
+
+    switch(cell.state()) {
+      case Cell.state.stone:
+        pic = 'mountain1';
+        break;
+      case Cell.state.dirt:
+        pic = 'ground1';
+        break;
+      case Cell.state.water:
+        pic = 'water1';
+        break;
+    }
+
+    view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+  });
+
+  $('.item').view(game, controller, Item, function(item, view) {
+    var pic = 'redgem';
+
+    view.css({background: "transparent url(/images/dungeon/items/"+pic+".png)"});
+  });
+
+  $('.plant').view(game, controller, Plant, function(plant, view) {
+    var pic = 'bush' + plant.state();
+
+    if(pic) {
+      view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
+    }
+  });
+  
+  $('#inventory').view(game, controller, Inventory, function() {});
 
   game.start();
 });
