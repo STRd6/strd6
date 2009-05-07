@@ -1,36 +1,56 @@
 (function($) {
-  // Cell view
-  $.fn.cell = function(game, updateController) {
-    console.log("Ahay");
+  function configureView(model, view, updateFunction) {
+    // Handle to the view so that other views can update containment relations
+    model.view = view;
 
+    // Observe changes in the model
+    var changed = true;
+    var contentsAdded = true;
+
+    $(model).bind("changed", function() {
+      changed = true;
+    });
+
+    $(model).bind("contentsAdded", function() {
+      contentsAdded = true;
+    });
+
+    // Pass click events to model
+    view.bind('click', function() {
+      model.click(clickParameters());
+    });
+
+    // update method called from controller to update this cell view
+    view.update = function() {
+      if(changed) {
+        updateFunction();
+
+        changed = false;
+      }
+
+      if(contentsAdded) {
+        $.each(model.contents(), function() {
+          view.append(this.view);
+        });
+
+        contentsAdded = false;
+      }
+    };
+  }
+
+  // Cell view
+  $.fn.cell = function(game, controller) {
     return this.each(function() {
       var $this = $(this);
-      var hasChanged = true;
+      controller.add($this);
 
       // Create model
       var cell = new Cell(game);
-      $this.cell = cell;
-
       game.add(cell);
-      updateController.add($this);
 
-      $(cell).bind("changed", function() {
-        hasChanged = true;
-      });
-
-      // Pass events to model
-      $this.bind('click', function() {
-        console.log("t1");
-        cell.click();
-      });
-
-      $this.update = function() {
-        if(!hasChanged) {
-          return;
-        }
-        
+      var updateFunction = function() {
         var pic = 'ground1.png';
-        
+
         switch(cell.state()) {
           case Cell.state.stone:
             pic = 'mountain1.png';
@@ -44,24 +64,63 @@
         }
 
         $this.css({background: "transparent url(/images/dungeon/"+pic+")"});
-
-        hasChanged = false;
       };
 
+      configureView(cell, $this, updateFunction)
+    });
+  };
+
+  // Item view
+  $.fn.item = function(game, controller) {
+    return this.each(function() {
+      var $this = $(this);
+      controller.add($this);
+
+      // Create model
+      var item = new Item(game);
+      game.add(item);
+
+      var updateFunction = function() {
+        var pic = 'redgem.png';
+
+        $this.css({background: "transparent url(/images/dungeon/items/"+pic+")"});
+      };
+
+      configureView(item, $this, updateFunction)
+    });
+  };
+
+  // Inventory view
+  $.fn.inventory = function(game, controller) {
+    return this.each(function() {
+      var $this = $(this);
+      controller.add($this);
+
+      // Create model
+      var inventory = new Inventory(game);
+      console.log("View created: " + inventory);
+      game.addInventory(inventory);
+
+      var updateFunction = function() {
+        
+      };
+
+      configureView(inventory, $this, updateFunction)
     });
   };
 
   Engine = function(updateController) {
     // Private
-    var _loopHandle = false;
-    var _period = 100;
-    var _counter = 0;
-    var _objects = [];
+    var loopHandle = false;
+    var period = 100;
+    var counter = 0;
+    var objects = [];
+    var inventories = [];
 
     var update = function() {
-      _counter++;
+      counter++;
 
-      $.each(_objects, function() {
+      $.each(objects, function() {
         this.update();
       });
 
@@ -71,26 +130,34 @@
     // Public
     var self = {
       start: function() {
-        if(_loopHandle) {
+        if(loopHandle) {
           return;
         }
 
-        _loopHandle = setInterval(function() {
+        loopHandle = setInterval(function() {
           update();
-        }, _period);
+        }, period);
       },
 
       stop: function() {
-        if(_loopHandle) {
-          clearTimeout(_loopHandle);
-          _loopHandle = false;
+        if(loopHandle) {
+          clearTimeout(loopHandle);
+          loopHandle = false;
         }
-
-        self.log("stop");
       },
 
       add: function(gameObject) {
-        _objects.push(gameObject);
+        objects.push(gameObject);
+      },
+
+      addInventory: function(inventory) {
+        inventories.push(inventory);
+        console.log(inventory);
+        console.log(inventories[0]);
+      },
+
+      inventories: function() {
+        return inventories;
       },
 
       log: function(message) {
@@ -101,30 +168,27 @@
     return self;
   };
 
-  Cell = function(game) {
-    var _game = game;
-    var _n = 0;
-    var _state = Cell.state.stone;
+  Cell = function(_game) {
+    var game = _game;
+    var state = Cell.state.stone;
+    var contents = [];
 
     var self = {
       update: function() {
-//        if(_n > 0) {
-//          _n = _n - 1;
-//          $(self).trigger('changed');
-//        }
+
       },
 
       click: function() {
-        _state = Cell.state.dirt;
+        state = Cell.state.dirt;
         $(self).trigger('changed');
       },
 
-      n: function() {
-        return _n;
+      state: function() {
+        return state;
       },
 
-      state: function() {
-        return _state;
+      contents: function() {
+        return contents;
       }
     };
 
@@ -135,6 +199,40 @@
     stone: 0,
     dirt: 1,
     water: 2
+  };
+
+  Item = function(game) {
+    var contents = [];
+    
+    var self = {
+      update: function() { },
+      contents: function() { return contents; },
+      click: function(params) {
+        var inventory = params['inventory'];
+
+        if(inventory) {
+          inventory.add(self);
+        }
+      }
+    }
+
+    return self;
+  };
+
+  Inventory = function() {
+    var contents = [];
+
+    var self = {
+      update: function() {},
+      add: function(item) {
+        contents.push(item);
+        $(self).trigger('contentsAdded');
+      },
+      contents: function() { return contents;},
+      click: function() {}
+    }
+
+    return self;
   };
 
   UpdateController = function() {
@@ -157,6 +255,12 @@
 
 })(jQuery);
 
+function clickParameters() {
+  return {
+    inventory: game.inventories()[0]
+  };
+};
+
 jQuery.fn.clickTest = function() {
   return this.each(function(){
     var $this = $(this);
@@ -170,6 +274,8 @@ $(document).ready(function() {
   game = new Engine(mainView);
 
   $('.cell').cell(game, mainView);
+  $('.item').item(game, mainView);
+  $('#inventory').inventory(game, mainView);
 
   game.start();
 });
