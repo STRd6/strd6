@@ -14,7 +14,7 @@
   %input#primary_color.color{:type => 'text'}
   %input#secondary_color.color{:type => 'text'}
 
-  - ["000", "FFF", "666", "CCC", "F00", "0F0", "00F", "FF0", "F0F", "0FF"].each do |color|
+  - ["000", "FFF", "666", "CCC", "800", "080", "008", "880", "808", "088"].each do |color|
     .swatch= "##{color}"
   = javascript_tag "$$('.swatch').each(function(color){color.style.backgroundColor = color.innerHTML; color.observe('mousedown', setColor.curry(color.innerHTML)); color.innerHTML = ''; color.observe('contextmenu', function(event) {event.stop();}); });"
 
