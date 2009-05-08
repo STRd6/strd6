@@ -248,7 +248,6 @@
       update: function() {
         if(rand(10) == 0) {
           randomMove();
-          console.log('move');
         }
         $(self).trigger('changed');
       }
@@ -298,22 +297,20 @@
       }
     });
 
-    $('.plant').hide();
+    $('.plant').view(controller, Plant.curry(game), {
+      updateFunction: function(plant, view) {
+        var pic = 'bush' + plant.state();
 
-//    $('.plant').view(controller, Plant.curry(game), {
-//      updateFunction: function(plant, view) {
-//        var pic = 'bush' + plant.state();
-//
-//        if(pic) {
-//          view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
-//        }
-//      }
-//    });
+        if(pic) {
+          view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
+        }
+      }
+    });
 
     var cell = game.cells().rand();
 
     cell.view.append(
-      $('<div class="creature sprite"></div>').view(controller, Creature.curry(game, cell), {
+      $('<div class="creature sprite abs"></div>').view(controller, Creature.curry(game, cell), {
         updateFunction: function(creature, view) {
           var pic = 'dog';
 
