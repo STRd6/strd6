@@ -14,8 +14,13 @@ Array.prototype.rand = function() {
   return this[rand(this.length)];
 };
 
-Array.prototype.removeObject = function(object) {
-  return this.slice(this.indexOf(object), 1);
+Array.prototype.remove = function(object) {
+  var index = this.indexOf(object);
+  if(index >= 0) {
+    return this.splice(index, 1)[0];
+  } else {
+    return undefined;
+  }
 };
 
 Function.prototype.curry = function() {
