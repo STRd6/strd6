@@ -1,5 +1,5 @@
 (function($) {
-  Engine = function(updateController) {
+  Engine = function() {
     // Private
     var loopHandle = false;
     var period = 100;
@@ -8,6 +8,7 @@
     var height = 16;
     var cells = [];
     var objects = [];
+    var creatures = [];
 
     // Torroidal
     var cellAtTorroidal = function(x, y) {
@@ -20,8 +21,6 @@
       $.each(objects, function() {
         this.update();
       });
-
-      updateController.update();
     };
 
     // Public
@@ -52,6 +51,11 @@
         cells.push(cell);
         return self;
       },
+
+      addCreature: function(creature) {
+        creatures.push(creature);
+        return self;
+      },
       
       cellAt: cellAtTorroidal,
 
@@ -78,6 +82,10 @@
 
       cells: function() {
         return cells;
+      },
+
+      creatures: function() {
+        return creatures;
       },
 
       objects: function() {
@@ -175,24 +183,6 @@
     return self;
   };
 
-  UpdateController = function() {
-    var viewComponents = [];
-
-    var self = {
-      add: function(component) {
-        viewComponents.push(component);
-      },
-
-      update: function() {
-        $.each(viewComponents, function() {
-          this.update();
-        });
-      }
-    };
-
-    return self;
-  }
-
   Plant = function(game) {
     var age = rand(50);
     var state = Plant.state.seed;
@@ -233,26 +223,105 @@
 
   Creature = function(game, _cell) {
     var cell = _cell;
+    var path = [];
+
+    var moveTo = function(target) {
+      if(cell) {
+        cell.remove(self);
+      }
+      target.add(self);
+      cell = target;
+    };
 
     var randomMove = function() {
       if(cell) {
-        cell.remove(self);
-        var target = cell.neighbors.rand();
+        moveTo(cell.neighbors.rand());
+      }
+    };
+    
+    var chooseBest = function(source, target, choices) {
+      var deltaX = target.x - source.x;
+      
+      var good = []
+      
+      if(deltaX > 0) {
+        good = $.grep(choices, function(choice) {
+          return choice.x - source.x > 0;
+        });
+      } else if(deltaX < 0) {
+        good = $.grep(choices, function(choice) {
+          return choice.x - source.x < 0;
+        });
+      }
+      
+      if(good.length > 0) {
+        return good[0];
+      }
+      
+      var deltaY = target.y - source.y;
+      
+      if(deltaY > 0) {
+        good = $.grep(choices, function(choice) {
+          return choice.y - source.y > 0;
+        });
+      } else if(deltaY < 0) {
+        good = $.grep(choices, function(choice) {
+          return choice.y - source.y < 0;
+        });
+      }
+      
+      if(good.length > 0) {
+        return good[0];
+      } else {
+        return null;
+      }
+    };
 
-        target.add(self);
-        cell = target;
+    var pathTo = function(target) {
+      if(!cell || cell == target) {
+        return;
+      }
+
+      path = [];
+
+      var currentCell = cell;
+      var pathCell = chooseBest(currentCell, target, currentCell.neighbors);
+
+      while(pathCell && pathCell != target) {
+        path.push(pathCell);
+        currentCell = pathCell;
+        pathCell = chooseBest(currentCell, target, currentCell.neighbors);
+      }
+    };
+
+    var followPath = function() {
+      if(!cell) {
+        return;
+      }
+
+      if(path.length > 0) {
+        var target = path.shift();
+
+        if(cell.neighbors.indexOf(target) > -1) {
+          moveTo(target);
+        } else {
+          // Path borkd!
+        }
       }
     };
 
     var self = $.extend(Item(game), {
       update: function() {
-        if(rand(10) == 0) {
+        if(path.length > 0) {
+          followPath();
+        }else if(rand(10) == 0) {
           randomMove();
         }
-        $(self).trigger('changed');
-      }
+      },
+      pathTo: pathTo
     });
 
+    game.addCreature(self);
     return self;
   }
 
@@ -263,12 +332,10 @@
   }
 
   $(document).ready(function() {
-    controller = new UpdateController();
+    game = new Engine();
 
-    game = new Engine(controller);
-
-    $('.cell').view(controller, Cell.curry(game), {
-      updateFunction: function(cell, view) {
+    $('.cell').view(Cell.curry(game), {
+      update: function(cell, view) {
         var pic = 'ground1';
 
         switch(cell.state()) {
@@ -289,16 +356,16 @@
 
     game.configureCells();
 
-    $('.item').view(controller, Item.curry(game), {
-      updateFunction: function(item, view) {
+    $('.item').view(Item.curry(game), {
+      update: function(item, view) {
         var pic = 'redgem';
 
         view.css({background: "transparent url(/images/dungeon/items/"+pic+".png)"});
       }
     });
 
-    $('.plant').view(controller, Plant.curry(game), {
-      updateFunction: function(plant, view) {
+    $('.plant').view(Plant.curry(game), {
+      update: function(plant, view) {
         var pic = 'bush' + plant.state();
 
         if(pic) {
@@ -310,8 +377,8 @@
     var cell = game.cells().rand();
 
     cell.view.append(
-      $('<div class="creature sprite abs"></div>').view(controller, Creature.curry(game, cell), {
-        updateFunction: function(creature, view) {
+      $('<div class="creature sprite abs"></div>').view(Creature.curry(game, cell), {
+        update: function(creature, view) {
           var pic = 'dog';
 
           view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});

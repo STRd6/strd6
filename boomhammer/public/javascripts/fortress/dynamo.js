@@ -41,15 +41,16 @@ Math.mod = function(n, base) {
     model.view = view;
 
     // Observe changes in the model
-    var changed = true;
-    var contentsAdded = true;
-
     $(model).bind("changed", function() {
-      changed = true;
+      settings.update(model, view);
     });
 
     $(model).bind("contentsAdded", function() {
-      contentsAdded = true;
+      $.each(model.contents(), function() {
+        if(this.view) {
+          view.append(this.view);
+        }
+      });
     });
 
     // Pass click events to model
@@ -57,28 +58,14 @@ Math.mod = function(n, base) {
       model.click(settings.clickParameters());
     });
 
-    // update method called from controller to update this cell view
-    view.update = function() {
-      if(changed) {
-        settings.updateFunction(model, view);
-
-        changed = false;
-      }
-
-      if(contentsAdded) {
-        $.each(model.contents(), function() {
-          view.append(this.view);
-        });
-
-        contentsAdded = false;
-      }
-    };
+    settings.initialize(model);
   }
 
   // View
-  $.fn.view = function(controller, constructor, options) {
+  $.fn.view = function(constructor, options) {
     var defaults = {
-      updateFunction: function() {},
+      initialize: function(model) { $(model).trigger('changed'); },
+      update: function() {},
       clickParameters: function() { return {}; }
     };
 
@@ -86,7 +73,6 @@ Math.mod = function(n, base) {
 
     return this.each(function() {
       var $this = $(this);
-      controller.add($this);
 
       // Create model
       var model = constructor();
