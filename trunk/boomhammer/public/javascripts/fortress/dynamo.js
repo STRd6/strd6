@@ -1,3 +1,5 @@
+/*global jQuery */
+
 /**
  * Returns random integers from [0, n)
  */
