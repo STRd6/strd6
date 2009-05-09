@@ -113,23 +113,122 @@
     return self;
   };
 
-  var Container = function(includer) {
-    var contents = [];
+  var Module = {
+    Container: function(includer) {
+      var contents = [];
 
-    var self = {
-      contents: function() { return contents; },
-      add: function(object) {
-        contents.push(object);
-        $(includer).trigger('contentsAdded');
-        return self;
-      },
-      remove: function(object) {
-        contents.removeObject(object);
-        return self;
-      }
-    };
+      var self = {
+        contents: function() { return contents; },
+        add: function(object) {
+          contents.push(object);
+          $(includer).trigger('contentsAdded');
+          return self;
+        },
+        remove: function(object) {
+          contents.remove(object);
+          return self;
+        }
+      };
 
-    return self;
+      return self;
+    },
+
+    Pathfinder: function(includer, startingCell) {
+      var self = includer;
+      var path = [];
+      var cell = startingCell;
+
+      $.extend(self, {
+        moveTo: function(target) {
+          if(cell) {
+            cell.remove(self);
+          }
+          target.add(self);
+          cell = target;
+        },
+
+        randomMove: function() {
+          if(cell) {
+            self.moveTo(cell.neighbors.rand());
+          }
+        },
+
+        chooseBest: function(source, target, choices) {
+          var deltaX = target.x - source.x;
+
+          var good = [];
+
+          if(deltaX > 0) {
+            good = $.grep(choices, function(choice) {
+              return choice.x - source.x > 0;
+            });
+          } else if(deltaX < 0) {
+            good = $.grep(choices, function(choice) {
+              return choice.x - source.x < 0;
+            });
+          }
+
+          if(good.length > 0) {
+            return good[0];
+          }
+
+          var deltaY = target.y - source.y;
+
+          if(deltaY > 0) {
+            good = $.grep(choices, function(choice) {
+              return choice.y - source.y > 0;
+            });
+          } else if(deltaY < 0) {
+            good = $.grep(choices, function(choice) {
+              return choice.y - source.y < 0;
+            });
+          }
+
+          if(good.length > 0) {
+            return good[0];
+          } else {
+            return null;
+          }
+        },
+
+        onPath: function() {
+          return path.length > 0;
+        },
+
+        pathTo: function(target) {
+          if(!cell || cell == target) {
+            return;
+          }
+
+          path = [];
+
+          var currentCell = cell;
+          var pathCell = self.chooseBest(currentCell, target, currentCell.neighbors);
+
+          while(pathCell && pathCell != target) {
+            path.push(pathCell);
+            currentCell = pathCell;
+            pathCell = self.chooseBest(currentCell, target, currentCell.neighbors);
+          }
+        },
+
+        followPath: function() {
+          if(!cell) {
+            return;
+          }
+
+          if(path.length > 0) {
+            var target = path.shift();
+
+            if(cell.neighbors.indexOf(target) > -1) {
+              self.moveTo(target);
+            } else {
+              // Path borkd!
+            }
+          }
+        }
+      });
+    }
   };
 
   var Cell = function(game) {
@@ -157,7 +256,7 @@
       }
     });
 
-    $.extend(self, Container(self));
+    $.extend(self, Module.Container(self));
 
     game.addCell(self);
     return self;
@@ -180,7 +279,7 @@
       }
     });
 
-    $.extend(self, Container(self));
+    $.extend(self, Module.Container(self));
 
     return self;
   };
@@ -223,106 +322,37 @@
     bloom: '3'
   };
 
-  var Creature = function(game, _cell) {
+  var Clock = function(game) {
+    var age = 0;
+
+    var self = $.extend(GameObject(game), {
+      update: function() {
+        age++;
+        $(self).trigger('changed');
+      },
+
+      age: function() {
+        return age;
+      }
+    });
+
+    return self;
+  }
+
+  var Creature = function(game, startingCell) {
     var self;
-    var cell = _cell;
-    var path = [];
-
-    var moveTo = function(target) {
-      if(cell) {
-        cell.remove(self);
-      }
-      target.add(self);
-      cell = target;
-    };
-
-    var randomMove = function() {
-      if(cell) {
-        moveTo(cell.neighbors.rand());
-      }
-    };
-    
-    var chooseBest = function(source, target, choices) {
-      var deltaX = target.x - source.x;
-      
-      var good = [];
-      
-      if(deltaX > 0) {
-        good = $.grep(choices, function(choice) {
-          return choice.x - source.x > 0;
-        });
-      } else if(deltaX < 0) {
-        good = $.grep(choices, function(choice) {
-          return choice.x - source.x < 0;
-        });
-      }
-      
-      if(good.length > 0) {
-        return good[0];
-      }
-      
-      var deltaY = target.y - source.y;
-      
-      if(deltaY > 0) {
-        good = $.grep(choices, function(choice) {
-          return choice.y - source.y > 0;
-        });
-      } else if(deltaY < 0) {
-        good = $.grep(choices, function(choice) {
-          return choice.y - source.y < 0;
-        });
-      }
-      
-      if(good.length > 0) {
-        return good[0];
-      } else {
-        return null;
-      }
-    };
-
-    var pathTo = function(target) {
-      if(!cell || cell == target) {
-        return;
-      }
-
-      path = [];
-
-      var currentCell = cell;
-      var pathCell = chooseBest(currentCell, target, currentCell.neighbors);
-
-      while(pathCell && pathCell != target) {
-        path.push(pathCell);
-        currentCell = pathCell;
-        pathCell = chooseBest(currentCell, target, currentCell.neighbors);
-      }
-    };
-
-    var followPath = function() {
-      if(!cell) {
-        return;
-      }
-
-      if(path.length > 0) {
-        var target = path.shift();
-
-        if(cell.neighbors.indexOf(target) > -1) {
-          moveTo(target);
-        } else {
-          // Path borkd!
-        }
-      }
-    };
 
     self = $.extend(Item(game), {
       update: function() {
-        if(path.length > 0) {
-          followPath();
+        if(self.onPath()) {
+          self.followPath();
         }else if(rand(10) === 0) {
-          randomMove();
+          self.randomMove();
         }
-      },
-      pathTo: pathTo
+      }
     });
+
+    $.extend(self, Module.Pathfinder(self, startingCell));
 
     game.addCreature(self);
     return self;
@@ -388,6 +418,14 @@
         }
       })
     );
+
+    $('.clock').view(Clock.curry(game), {
+      update: function(clock, view) {
+        var pic = 'mountain' + ((clock.age() % 3) + 1);
+
+        view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+      }
+    });
 
     game.start();
   });
