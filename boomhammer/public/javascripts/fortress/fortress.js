@@ -1,5 +1,7 @@
+/*global clearTimeout, console, document, game, jQuery, rand, setInterval */
+
 (function($) {
-  Engine = function() {
+  var Engine = function() {
     // Private
     var loopHandle = false;
     var period = 100;
@@ -100,7 +102,7 @@
     return self;
   };
 
-  GameObject = function(game) {
+  var GameObject = function(game) {
     var self = {
       // Empty update by default
       update: function() {},
@@ -111,7 +113,7 @@
     return self;
   };
 
-  Container = function(includer) {
+  var Container = function(includer) {
     var contents = [];
 
     var self = {
@@ -128,9 +130,9 @@
     };
 
     return self;
-  }
+  };
 
-  Cell = function(game) {
+  var Cell = function(game) {
     var state = Cell.state.dirt;
 
     // Inherit from GameObject
@@ -167,10 +169,10 @@
     water: 2
   };
 
-  Item = function(game) {
+  var Item = function(game) {
     var self = $.extend(GameObject(game), {
       click: function(params) {
-        var inventory = params['inventory'];
+        var inventory = params.inventory;
 
         if(inventory) {
           inventory.add(self);
@@ -183,7 +185,7 @@
     return self;
   };
 
-  Plant = function(game) {
+  var Plant = function(game) {
     var age = rand(50);
     var state = Plant.state.seed;
 
@@ -221,7 +223,8 @@
     bloom: '3'
   };
 
-  Creature = function(game, _cell) {
+  var Creature = function(game, _cell) {
+    var self;
     var cell = _cell;
     var path = [];
 
@@ -242,7 +245,7 @@
     var chooseBest = function(source, target, choices) {
       var deltaX = target.x - source.x;
       
-      var good = []
+      var good = [];
       
       if(deltaX > 0) {
         good = $.grep(choices, function(choice) {
@@ -310,11 +313,11 @@
       }
     };
 
-    var self = $.extend(Item(game), {
+    self = $.extend(Item(game), {
       update: function() {
         if(path.length > 0) {
           followPath();
-        }else if(rand(10) == 0) {
+        }else if(rand(10) === 0) {
           randomMove();
         }
       },
@@ -323,7 +326,7 @@
 
     game.addCreature(self);
     return self;
-  }
+  };
 
   function clickParameters() {
     return {
