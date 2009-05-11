@@ -9,6 +9,14 @@
         return best;
       },
 
+      size: function() {
+        return contents.length;
+      },
+
+      empty: function() {
+        return contents.length === 0;
+      },
+
       best: function(criteria) {
         var currentBest;
         var currentBestValue;
@@ -29,7 +37,7 @@
         }
       },
 
-      add: function(element) {
+      push: function(element) {
         return contents.push(element);
       }
     };
