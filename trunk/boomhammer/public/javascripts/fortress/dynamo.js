@@ -8,12 +8,35 @@ function rand(n) {
 }
 
 /**
+ * Ruby style mixins.
+ *
+ * var Foo = function() {
+ *   this.include(Bar);
+ * };
+ *
+Object.prototype.include = function(module) {
+  if(!module || !module.apply) {
+    return undefined;
+  } else {
+    return module.apply(this);
+  }
+};
+
+Doesn't seem to work... strange interactions and hidden errors.
+*/
+
+/**
  * Return a random element from an array
  */
 Array.prototype.rand = function() {
   return this[rand(this.length)];
 };
 
+/**
+ * Remove the given object from the array if it is present and return the
+ * removed object.
+ * If the abject is not present in the array return undefined.
+ */
 Array.prototype.remove = function(object) {
   var index = this.indexOf(object);
   if(index >= 0) {
@@ -43,6 +66,12 @@ Math.mod = function(n, base) {
 };
 
 (function($) {
+  var defaults = {
+    initialize: function(model) { $(model).trigger('changed'); },
+    update: function() {},
+    clickParameters: function() { return {}; }
+  };
+
   function configureView(model, view, settings) {
     // Handle to the view so that other views can update containment relations
     model.view = view;
@@ -53,9 +82,9 @@ Math.mod = function(n, base) {
     });
 
     $(model).bind("contentsAdded", function() {
-      $.each(model.contents(), function() {
-        if(this.view) {
-          view.append(this.view);
+      $.each(model.contents(), function(i, object) {
+        if(object.view) {
+          view.append(object.view);
         }
       });
     });
@@ -65,18 +94,12 @@ Math.mod = function(n, base) {
       model.click(settings.clickParameters());
     });
 
-    settings.initialize(model);
+    settings.initialize(model, view);
   }
 
   // View
   $.fn.view = function(constructor, options) {
-    var defaults = {
-      initialize: function(model) { $(model).trigger('changed'); },
-      update: function() {},
-      clickParameters: function() { return {}; }
-    };
-
-    var settings = $.extend(defaults, options);
+    var settings = $.extend({}, defaults, options);
 
     return this.each(function() {
       var $this = $(this);
