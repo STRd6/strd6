@@ -5,7 +5,7 @@
     var state = Cell.state.dirt;
 
     // Inherit from GameObject
-    var self = $.extend(GameObject(game), {
+    var self = $.extend(GameObject(game, 'cell'), {
       click: function() {
         self.setState(Cell.state.water);
 
@@ -20,11 +20,13 @@
 
       setState: function(newState) {
         state = newState;
-        $(self).trigger('changed');
+        $self.trigger('changed');
       }
     });
 
-    $.extend(self, Module.Container(self));
+    var $self = $(self);
+
+    Module.Container(self);
 
     game.addCell(self);
     return self;
@@ -36,7 +38,7 @@
     water: 2
   };
 
-  Item = function(game) {
+  Item = function(game, container) {
     var self = $.extend(GameObject(game), {
       click: function(params) {
         var inventory = params.inventory;
@@ -47,8 +49,7 @@
       }
     });
 
-    Module.Contianable(self);
-    Module.Container(self);
+    Module.Containable(self, container);
 
     return self;
   };
@@ -56,13 +57,8 @@
   Plant = function(game, startingCell) {
     var age = rand(50);
     var state = Plant.state.seed;
-    
-    var setState = function(newState) {
-      state = newState;
-      $(self).trigger('changed');
-    };
 
-    var self = $.extend(new Item(game), {
+    var self = $.extend(Item(game, startingCell), {
       update: function() {
         age++;
 
@@ -81,8 +77,40 @@
         return state;
       }
     });
+    
+    var $self = $(self);
 
-    startingCell.add(self);
+    var setState = function(newState) {
+      state = newState;
+      $self.trigger('changed');
+    };
+
+    var makeSeed = function() {
+      var seed = Item(self.game(), self.container());
+
+      $('<div class="item sprite"></div>').view(function(){
+        return seed;
+      }, {
+        update: function(item, view) {
+          var pic = 'bush_seed';
+
+          view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
+        }
+      });
+    };
+
+    var die = function() {
+      // Make one seed
+      makeSeed();
+
+      // Remove from cell / add to discard
+
+
+      // Remove from game
+      self.game().remove(self);
+    };
+
+    game.add(self, 'plant');
 
     return self;
   };
@@ -101,13 +129,16 @@
     var self = $.extend(GameObject(game), {
       update: function() {
         age++;
-        $(self).trigger('changed');
+        $self.trigger('changed');
       },
 
       age: function() {
         return age;
       }
     });
+
+    var $self = $(self);
+    game.add(self, 'clock');
 
     return self;
   }
@@ -121,7 +152,7 @@
       }
     };
 
-    self = $.extend(Item(game), {
+    self = $.extend(Item(game, startingCell), {
       update: function() {
         if(self.cell().contents().length > 1) {
           $.each(self.cell().contents(), function(i, object) {
@@ -137,8 +168,8 @@
       }
     });
 
-    Module.Pathfinder(self, startingCell);
-    startingCell.add(self);
+    Module.Container(self);
+    Module.Pathfinder(self);
 
     game.addCreature(self);
     return self;

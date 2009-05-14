@@ -2,69 +2,82 @@
   $(document).ready(function() {
     game = new Engine();
 
-    $('.cell').view(Cell.curry(game), {
-      update: function(cell, view) {
-        var pic = 'ground1';
+    var cellUpdate = function(cell, view) {
+      var pic = 'ground1';
 
-        switch(cell.state()) {
-          case Cell.state.stone:
-            pic = 'mountain1';
-            break;
-          case Cell.state.dirt:
-            pic = 'ground1';
-            break;
-          case Cell.state.water:
-            pic = 'water1';
-            break;
-        }
+      switch(cell.state()) {
+        case Cell.state.stone:
+          pic = 'mountain1';
+          break;
+        case Cell.state.dirt:
+          pic = 'ground1';
+          break;
+        case Cell.state.water:
+          pic = 'water1';
+          break;
+      }
 
-        view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+      view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+    };
+
+    var itemUpdate = function(item, view) {
+      var pic = 'redgem';
+      view.css({background: "transparent url(/images/dungeon/items/"+pic+".png)"});
+    };
+
+    var plantUpdate = function(plant, view) {
+      var pic = 'bush' + plant.state();
+      view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
+    };
+
+    var creatureUpdate = function(creature, view) {
+      var pic = 'dog';
+      view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+    };
+
+    var clockUpdate = function(clock, view) {
+      var pic = 'mountain' + ((clock.age() % 3) + 1);
+      view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+    };
+
+    function createView(object, type, update) {
+      return $('<div class="'+ type +' sprite"></div>').view(function() {
+        return object;
+      }, {
+        update: update
+      });
+    }
+
+    $(game).bind('objectAdded', function(e, object, type) {
+      switch(type) {
+        case 'cell':
+          $('#region').append(createView(object, type, cellUpdate));
+          break;
+        case 'item':
+          createView(object, type, itemUpdate);
+          break;
+        case 'plant':
+          createView(object, type, plantUpdate);
+          break;
+        case 'clock':
+          $('#panel').append(createView(object, type, clockUpdate));
+          break;
+        case 'creature':
+          createView(object, type, creatureUpdate);
+          break;
       }
     });
+
+    for(var i = 0; i < 256; i++) {
+      var cell = Cell(game);
+      Plant(game, cell);
+    }
 
     game.configureCells();
 
-    $('.item').view(Item.curry(game), {
-      update: function(item, view) {
-        var pic = 'redgem';
+    Creature(game, game.cells().rand());
 
-        view.css({background: "transparent url(/images/dungeon/items/"+pic+".png)"});
-      }
-    });
-
-    $.each(game.cells(), function() {
-      $('<div class="plant sprite"></div>').view(Plant.curry(game, this), {
-        update: function(plant, view) {
-          var pic = 'bush' + plant.state();
-          view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
-        },
-
-        initialize: function(model, view) {
-          $(model).trigger('changed');
-          $(model.container()).trigger('contentsAdded');
-        }
-      });
-    });
-
-    var cell = game.cells().rand();
-
-    cell.view.append(
-      $('<div class="creature sprite"></div>').view(Creature.curry(game, cell), {
-        update: function(creature, view) {
-          var pic = 'dog';
-
-          view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
-        }
-      })
-    );
-
-    $('.clock').view(Clock.curry(game), {
-      update: function(clock, view) {
-        var pic = 'mountain' + ((clock.age() % 3) + 1);
-
-        view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
-      }
-    });
+    Clock(game);
 
     game.start();
   });

@@ -42,17 +42,20 @@
         }
       },
 
-      add: function(gameObject) {
+      add: function(gameObject, type) {
         objects.push(gameObject);
+        $self.trigger('objectAdded', [gameObject, type]);
         return self;
       },
 
       addCell: function(cell) {
+        self.add(cell, 'cell');
         cells.push(cell);
         return self;
       },
 
       addCreature: function(creature) {
+        self.add(creature, 'creature');
         creatures.push(creature);
         return self;
       },
@@ -92,10 +95,16 @@
         return objects;
       },
 
+      remove: function(object) {
+        return objects.remove(object);
+      },
+
       log: function(message) {
         console.log(message);
       }
     };
+
+    var $self = $(self);
 
     return self;
   };
@@ -104,10 +113,9 @@
     var self = {
       // Empty update by default
       update: function() {},
-      click: function() {}
+      click: function() {},
+      game: function() {return game;}
     };
-
-    game.add(self);
     return self;
   };
 })(jQuery);

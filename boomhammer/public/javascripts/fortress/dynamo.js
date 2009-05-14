@@ -67,7 +67,12 @@ Math.mod = function(n, base) {
 
 (function($) {
   var defaults = {
-    initialize: function(model) { $(model).trigger('changed'); },
+    initialize: function(model) { 
+      $(model).trigger('changed');
+      if(model.container && model.container()) {
+        $(model.container()).trigger('contentsAdded', [model]);
+      }
+    },
     update: function() {},
     clickParameters: function() { return {}; }
   };
@@ -81,12 +86,10 @@ Math.mod = function(n, base) {
       settings.update(model, view);
     });
 
-    $(model).bind("contentsAdded", function() {
-      $.each(model.contents(), function(i, object) {
-        if(object.view) {
-          view.append(object.view);
-        }
-      });
+    $(model).bind("contentsAdded", function(e, object) {
+      if(object && object.view) {
+        view.append(object.view);
+      }
     });
 
     // Pass click events to model
