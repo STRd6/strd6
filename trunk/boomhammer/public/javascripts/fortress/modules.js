@@ -2,6 +2,7 @@
   Module = {
     Container: function(includer) {
       var self = includer;
+      var $self = $(self);
       var contents = [];
 
       return $.extend(self, {
@@ -13,7 +14,7 @@
 
           contents.push(object);
           object.setContainer(self);
-          $(self).trigger('contentsAdded');
+          $self.trigger('contentsAdded', [object]);
           return self;
         },
         remove: function(object) {
@@ -22,11 +23,11 @@
       });
     },
 
-    Contianable: function(includer, startingContainer) {
+    Containable: function(includer, startingContainer) {
       var self = includer;
       var container = startingContainer;
 
-      return $.extend(self, {
+      $.extend(self, {
         container: function() {
           return container;
         },
@@ -36,6 +37,12 @@
           return self;
         }
       });
+      
+      if(container) {
+        container.add(self);
+      }
+
+      return self;
     },
 
     Pathfinder: function(includer) {
