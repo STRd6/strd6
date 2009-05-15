@@ -1,4 +1,6 @@
+/*global jQuery */
 (function($) {
+  /*global Module */
   Module = {
     Container: function(includer) {
       var self = includer;
