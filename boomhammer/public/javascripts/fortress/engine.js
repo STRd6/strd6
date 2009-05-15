@@ -1,4 +1,6 @@
+/*global jQuery */
 (function($) {
+  /*global Engine */
   Engine = function() {
     // Private
     var loopHandle = false;
@@ -9,6 +11,7 @@
     var cells = [];
     var objects = [];
     var creatures = [];
+    var $self;
 
     // Torroidal
     var cellAtTorroidal = function(x, y) {
@@ -104,11 +107,12 @@
       }
     };
 
-    var $self = $(self);
+    $self = $(self);
 
     return self;
   };
-  
+
+  /*global GameObject */
   GameObject = function(game) {
     var self = {
       // Empty update by default

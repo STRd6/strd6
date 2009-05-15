@@ -1,4 +1,6 @@
+/*global jQuery */
 (function($) {
+  /*global PriorityQueue */
   PriorityQueue = function() {
     var contents = [];
 
