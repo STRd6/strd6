@@ -1,4 +1,6 @@
+/*global jQuery */
 (function($) {
+  /*global AdjustableQueue */
   AdjustableQueue = function() {
     var contents = [];
 

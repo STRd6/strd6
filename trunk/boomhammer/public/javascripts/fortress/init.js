@@ -21,7 +21,7 @@
     };
 
     var itemUpdate = function(item, view) {
-      var pic = 'redgem';
+      var pic = item.image();
       view.css({background: "transparent url(/images/dungeon/items/"+pic+".png)"});
     };
 
