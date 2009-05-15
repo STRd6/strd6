@@ -1,7 +1,9 @@
-/*global console, document, game, jQuery, rand */
+/*global Module, GameObject, jQuery, rand */
 
 (function($) {
+  /*global Cell */
   Cell = function(game) {
+    var $self;
     var state = Cell.state.dirt;
 
     // Inherit from GameObject
@@ -24,7 +26,7 @@
       }
     });
 
-    var $self = $(self);
+    $self = $(self);
 
     Module.Container(self);
 
@@ -38,6 +40,7 @@
     water: 2
   };
 
+  /*global Item */
   Item = function(game, container) {
     var self = $.extend(GameObject(game), {
       click: function(params) {
@@ -46,6 +49,10 @@
         if(inventory) {
           inventory.add(self);
         }
+      },
+
+      image: function() {
+        return 'redgem';
       }
     });
 
@@ -54,31 +61,12 @@
     return self;
   };
 
+  /*global Plant */
   Plant = function(game, startingCell) {
+    var self;
+    var $self;
     var age = rand(50);
     var state = Plant.state.seed;
-
-    var self = $.extend(Item(game, startingCell), {
-      update: function() {
-        age++;
-
-        if(age == 100) {
-          setState(Plant.state.small);
-        } else if(age == 200) {
-          setState(Plant.state.medium);
-        } else if(age == 300) {
-          setState(Plant.state.large);
-        } else if(age == 400) {
-          setState(Plant.state.bloom);
-        }
-      },
-
-      state: function() {
-        return state;
-      }
-    });
-    
-    var $self = $(self);
 
     var setState = function(newState) {
       state = newState;
@@ -87,16 +75,7 @@
 
     var makeSeed = function() {
       var seed = Item(self.game(), self.container());
-
-      $('<div class="item sprite"></div>').view(function(){
-        return seed;
-      }, {
-        update: function(item, view) {
-          var pic = 'bush_seed';
-
-          view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
-        }
-      });
+      self.game().add(seed, 'item');
     };
 
     var die = function() {
@@ -110,8 +89,32 @@
       self.game().remove(self);
     };
 
-    game.add(self, 'plant');
+    self = $.extend(Item(game, startingCell), {
+      update: function() {
+        age++;
 
+        if (age == 10) {
+          makeSeed();
+        } else if(age == 100) {
+          setState(Plant.state.small);
+        } else if(age == 200) {
+          setState(Plant.state.medium);
+        } else if(age == 300) {
+          setState(Plant.state.large);
+        } else if(age == 400) {
+          setState(Plant.state.bloom);
+        } else if(age == 500) {
+          die();
+        }
+      },
+
+      state: function() {
+        return state;
+      }
+    });
+    
+    $self = $(self);
+    game.add(self, 'plant');
     return self;
   };
 
@@ -123,7 +126,9 @@
     bloom: '3'
   };
 
+  /*global Clock */
   Clock = function(game) {
+    var $self;
     var age = 0;
 
     var self = $.extend(GameObject(game), {
@@ -137,12 +142,13 @@
       }
     });
 
-    var $self = $(self);
+    $self = $(self);
     game.add(self, 'clock');
 
     return self;
-  }
+  };
 
+  /*global Creature */
   Creature = function(game, startingCell) {
     var self;
 
