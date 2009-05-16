@@ -48,6 +48,9 @@
         case 'clock':
           $('#panel').append(createView(object, type, clockUpdate));
           break;
+        case 'inventory':
+          $('#inventories').append(createView(object, type, function(){}));
+          break;
         case 'creature':
         case 'item':
         case 'plant':
