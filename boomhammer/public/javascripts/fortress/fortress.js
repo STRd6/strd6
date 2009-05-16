@@ -5,6 +5,7 @@
   Cell = function(game) {
     var $self;
     var state = Cell.state.ground;
+    var variety = rand(3) + 1;
 
     // Inherit from GameObject
     var self = $.extend(GameObject(game, 'cell'), {
@@ -26,7 +27,7 @@
       },
 
       image: function() {
-        return 'terrain/' + state + '1';
+        return 'terrain/' + state + variety;
       }
     });
 
