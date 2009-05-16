@@ -118,15 +118,22 @@
     return self;
   };
 
-  /*global GameObject */
-  GameObject = function(game) {
-    var self = {
-      // Empty update by default
-      update: function() {},
-      click: function() {},
-      game: function() {return game;},
-      image: function() {}
+  (function() {
+    var id = 0;
+
+    /*global GameObject */
+    GameObject = function(game) {
+      id += 1;
+
+      var self = {
+        // Empty update by default
+        update: function() {},
+        click: function() {},
+        game: function() {return game;},
+        image: function() {},
+        toString: function(myId) {return function() {return myId};}('#<GameObject:' + id + '>')
+      };
+      return self;
     };
-    return self;
-  };
+  })();
 })(jQuery);
