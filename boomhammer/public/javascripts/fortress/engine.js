@@ -99,7 +99,13 @@
       },
 
       remove: function(object) {
-        return objects.remove(object);
+        var removedObject = objects.remove(object);
+
+        if(removedObject !== undefined) {
+          $self.trigger('objectRemoved', [removedObject]);
+        }
+
+        return removedObject;
       },
 
       log: function(message) {
