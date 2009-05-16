@@ -22,18 +22,8 @@
       view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
     };
 
-    var itemUpdate = function(item, view) {
-      var pic = item.image();
-      view.css({background: "transparent url(/images/dungeon/items/"+pic+".png)"});
-    };
-
-    var plantUpdate = function(plant, view) {
-      var pic = 'bush' + plant.state();
-      view.css({background: "transparent url(/images/dungeon/plants/"+pic+".png)"});
-    };
-
-    var creatureUpdate = function(creature, view) {
-      var pic = 'dog';
+    var spriteUpdate = function(object, view) {
+      var pic = object.image();
       view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
     };
 
@@ -55,17 +45,14 @@
         case 'cell':
           $('#region').append(createView(object, type, cellUpdate));
           break;
-        case 'item':
-          createView(object, type, itemUpdate);
-          break;
-        case 'plant':
-          createView(object, type, plantUpdate);
-          break;
         case 'clock':
           $('#panel').append(createView(object, type, clockUpdate));
           break;
         case 'creature':
-          createView(object, type, creatureUpdate);
+        case 'item':
+        case 'plant':
+        default: 
+          createView(object, type, spriteUpdate);
           break;
       }
     });

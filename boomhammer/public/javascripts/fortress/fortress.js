@@ -52,7 +52,7 @@
       },
 
       image: function() {
-        return 'redgem';
+        return 'items/redgem';
       }
     });
 
@@ -93,9 +93,7 @@
       update: function() {
         age++;
 
-        if (age == 10) {
-          makeSeed();
-        } else if(age == 100) {
+        if(age == 100) {
           setState(Plant.state.small);
         } else if(age == 200) {
           setState(Plant.state.medium);
@@ -106,6 +104,10 @@
         } else if(age == 500) {
           die();
         }
+      },
+
+      image: function() {
+        return 'plants/bush' + state;
       },
 
       state: function() {
@@ -149,8 +151,11 @@
   };
 
   /*global Creature */
-  Creature = function(game, startingCell) {
+  Creature = function(game, startingCell, options) {
     var self;
+    var settings = $.extend({
+      type: 'dog'
+    }, options);
 
     var pickUp = function(object) {
       if(object && object != self) {
@@ -171,6 +176,10 @@
         } else if(rand(10) === 0) {
           self.randomMove();
         }
+      },
+
+      image: function() {
+        return 'creatures/' + settings.type;
       }
     });
 
