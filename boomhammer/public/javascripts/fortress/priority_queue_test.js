@@ -1,4 +1,4 @@
-/*global document, jQuery, rand, ok, test */
+/*global document, jQuery, ok, test */
 
 (function($) {
   $(document).ready(function() {
@@ -7,16 +7,24 @@
 
       queue.push(2, 5);
 
-      ok(queue.size() === 1, "queue.size()")
-      ok(!queue.empty(), "!queue.empty()")
+      ok(queue.size() === 1, "queue.size()");
+      ok(!queue.empty(), "!queue.empty()");
+    });
+
+    test("PriorityQueue#includes", function() {
+      var queue = PriorityQueue();
+
+      queue.push(5, 0);
+
+      equals(queue.includes(5), true);
+      equals(queue.includes(0), false);
     });
 
     test("PriorityQueue#empty", function() {
       var queue = PriorityQueue();
 
       ok(queue.size() === 0, "queue.size() === 0");
-      ok(queue.empty(), "queue.empty()")
-
+      ok(queue.empty(), "queue.empty()");
     });
 
     test("PriorityQueue#pop", function() {
