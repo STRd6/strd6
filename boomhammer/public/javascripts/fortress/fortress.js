@@ -4,7 +4,7 @@
   /*global Cell */
   Cell = function(game) {
     var $self;
-    var state = Cell.state.dirt;
+    var state = Cell.state.ground;
 
     // Inherit from GameObject
     var self = $.extend(GameObject(game, 'cell'), {
@@ -23,6 +23,10 @@
       setState: function(newState) {
         state = newState;
         $self.trigger('changed');
+      },
+
+      image: function() {
+        return 'terrain/' + state + '1';
       }
     });
 
@@ -35,9 +39,9 @@
   };
 
   Cell.state = {
-    stone: 0,
-    dirt: 1,
-    water: 2
+    ground: 'ground',
+    mountain: 'mountain',
+    water: 'water'
   };
 
   /*global Item */
@@ -141,6 +145,10 @@
 
       age: function() {
         return age;
+      },
+
+      image: function() {
+        return 'terrain/mountain' + ((age % 3) + 1);
       }
     });
 
