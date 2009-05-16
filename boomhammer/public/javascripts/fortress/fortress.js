@@ -2,10 +2,15 @@
 
 (function($) {
   /*global Cell */
-  Cell = function(game) {
+  Cell = function(game, options) {
     var $self;
-    var state = Cell.state.ground;
-    var variety = rand(3) + 1;
+    
+    var settings = $.extend({
+      variety: rand(3) + 1,
+      state: Cell.state.ground
+    }, options);
+
+    var state = settings.state;
 
     // Inherit from GameObject
     var self = $.extend(GameObject(game, 'cell'), {
@@ -27,7 +32,7 @@
       },
 
       image: function() {
-        return 'terrain/' + state + variety;
+        return 'terrain/' + state + settings.variety;
       }
     });
 
