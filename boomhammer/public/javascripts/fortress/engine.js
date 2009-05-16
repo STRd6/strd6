@@ -124,7 +124,8 @@
       // Empty update by default
       update: function() {},
       click: function() {},
-      game: function() {return game;}
+      game: function() {return game;},
+      image: function() {}
     };
     return self;
   };

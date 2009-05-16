@@ -4,7 +4,7 @@
   for(var i = 0; i < 256; i++) {
     cellData.push({
       variety: rand(3) + 1,
-      state: [Cell.state.ground, Cell.state.ground, Cell.state.ground, Cell.state.mountain, Cell.state.water].rand()
+      state: [Cell.State.ground, Cell.State.ground, Cell.State.ground, Cell.State.mountain, Cell.State.water].rand()
     });
   }
 
@@ -18,30 +18,30 @@
       view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
     };
 
-    function createView(object, type, update) {
+    function createView(object, type) {
       return $('<div class="'+ type +' sprite"></div>').view(function() {
         return object;
       }, {
-        update: update
+        update: spriteUpdate
       });
     }
 
     $(game).bind('objectAdded', function(e, object, type) {
       switch(type) {
         case 'cell':
-          $('#region').append(createView(object, type, spriteUpdate));
+          $('#region').append(createView(object, type));
           break;
         case 'clock':
-          $('#panel').append(createView(object, type, spriteUpdate));
+          $('#panel').append(createView(object, type));
           break;
         case 'inventory':
-          $('#inventories').append(createView(object, type, function(){}));
+          $('#inventories').append(createView(object, type));
           break;
         case 'creature':
         case 'item':
         case 'plant':
         default: 
-          createView(object, type, spriteUpdate);
+          createView(object, type);
           break;
       }
     });
@@ -55,8 +55,8 @@
     for(var i = 0; i < 256; i++) {
       var cell = Cell(game, cellData[i]);
 
-      if(cell.state() == Cell.state.ground && rand(3) === 0) {
-        Plant(game, cell);
+      if(cell.state() == Cell.State.ground && rand(3) === 0) {
+        Plant(game, cell, {type: [Plant.Type.bush, Plant.Type.tree].rand()});
       }
     }
 
