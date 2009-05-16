@@ -12,6 +12,15 @@
     $('#trash').hide();
 
     game = new Engine();
+    
+    var selectedCreature;
+
+    var clickParameters = function() {
+      return {
+        action: 'path',
+        creature: selectedCreature
+      };
+    };
 
     var spriteUpdate = function(object, view) {
       var pic = object.image();
@@ -22,7 +31,8 @@
       return $('<div class="'+ type +' sprite"></div>').view(function() {
         return object;
       }, {
-        update: spriteUpdate
+        update: spriteUpdate,
+        clickParameters: clickParameters
       });
     }
 
@@ -62,7 +72,7 @@
 
     game.configureCells();
 
-    Creature(game, game.cells().rand());
+    selectedCreature = Creature(game, game.cells().rand());
 
     Clock(game);
 

@@ -1,4 +1,4 @@
-/*global jQuery */
+/*global jQuery, aStar */
 (function($) {
   /*global Module */
   Module = {
@@ -62,45 +62,7 @@
 
         randomMove: function() {
           if(self.container()) {
-            self.moveTo(self.container().neighbors.rand());
-          }
-        },
-
-        chooseBest: function(source, target, choices) {
-          var deltaX = target.x - source.x;
-
-          var good = [];
-
-          if(deltaX > 0) {
-            good = $.grep(choices, function(choice) {
-              return choice.x - source.x > 0;
-            });
-          } else if(deltaX < 0) {
-            good = $.grep(choices, function(choice) {
-              return choice.x - source.x < 0;
-            });
-          }
-
-          if(good.length > 0) {
-            return good[0];
-          }
-
-          var deltaY = target.y - source.y;
-
-          if(deltaY > 0) {
-            good = $.grep(choices, function(choice) {
-              return choice.y - source.y > 0;
-            });
-          } else if(deltaY < 0) {
-            good = $.grep(choices, function(choice) {
-              return choice.y - source.y < 0;
-            });
-          }
-
-          if(good.length > 0) {
-            return good[0];
-          } else {
-            return null;
+            self.moveTo(self.container().neighbors().rand());
           }
         },
 
@@ -109,20 +71,8 @@
         },
 
         pathTo: function(target) {
-          if(!self.container() || self.container() == target) {
-            return;
-          }
-
-          path = [];
-
-          var currentCell = self.container();
-          var pathCell = self.chooseBest(currentCell, target, currentCell.neighbors);
-
-          while(pathCell && pathCell != target) {
-            path.push(pathCell);
-            currentCell = pathCell;
-            pathCell = self.chooseBest(currentCell, target, currentCell.neighbors);
-          }
+          var searchPath = aStar(self.cell(), target, self.game().heuristic);
+          path = searchPath || [];
         },
 
         followPath: function() {
@@ -133,7 +83,7 @@
           if(path.length > 0) {
             var target = path.shift();
 
-            if(self.container().neighbors.indexOf(target) > -1) {
+            if(self.container().neighbors().indexOf(target) > -1) {
               self.moveTo(target);
             } else {
               // Path borkd!

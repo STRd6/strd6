@@ -19,15 +19,23 @@
       }, options);
 
       var state = settings.state;
+      var neighbors = [];
 
       // Inherit from GameObject
       var self = $.extend(GameObject(game, 'cell'), {
-        click: function() {
-          self.setState(State.water);
+        click: function(params) {
 
-          $.each(self.neighbors, function(i, object) {
-            object.setState(State.water);
-          });
+          if(params.action == 'water') {
+            self.setState(State.water);
+
+            $.each(self.neighbors, function(i, object) {
+              object.setState(State.water);
+            });
+          } else if(params.action == 'path') {
+            if(params.creature) {
+              params.creature.pathTo(self);
+            }
+          }
         },
 
         state: function() {
@@ -37,6 +45,14 @@
         setState: function(newState) {
           state = newState;
           $self.trigger('changed');
+        },
+
+        neighbors: function() {
+          return neighbors;
+        },
+
+        setNeighbors: function(newNeighbors) {
+          neighbors = newNeighbors;
         },
 
         image: function() {
