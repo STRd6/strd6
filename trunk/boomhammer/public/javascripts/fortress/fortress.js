@@ -1,54 +1,60 @@
 /*global Module, GameObject, jQuery, rand */
 
 (function($) {
-  /*global Cell */
-  Cell = function(game, options) {
-    var $self;
-    
-    var settings = $.extend({
-      variety: rand(3) + 1,
-      state: Cell.state.ground
-    }, options);
 
-    var state = settings.state;
+  (function() {
+    var State = {
+      ground: 'ground',
+      mountain: 'mountain',
+      water: 'water'
+    };
 
-    // Inherit from GameObject
-    var self = $.extend(GameObject(game, 'cell'), {
-      click: function() {
-        self.setState(Cell.state.water);
+    /*global Cell */
+    Cell = function(game, options) {
+      var $self;
 
-        $.each(self.neighbors, function(i, object) {
-          object.setState(Cell.state.water);
-        });
-      },
+      var settings = $.extend({
+        variety: rand(3) + 1,
+        state: State.ground
+      }, options);
 
-      state: function() {
-        return state;
-      },
+      var state = settings.state;
 
-      setState: function(newState) {
-        state = newState;
-        $self.trigger('changed');
-      },
+      // Inherit from GameObject
+      var self = $.extend(GameObject(game, 'cell'), {
+        click: function() {
+          self.setState(State.water);
 
-      image: function() {
-        return 'terrain/' + state + settings.variety;
-      }
-    });
+          $.each(self.neighbors, function(i, object) {
+            object.setState(State.water);
+          });
+        },
 
-    $self = $(self);
+        state: function() {
+          return state;
+        },
 
-    Module.Container(self);
+        setState: function(newState) {
+          state = newState;
+          $self.trigger('changed');
+        },
 
-    game.addCell(self);
-    return self;
-  };
+        image: function() {
+          return 'terrain/' + state + settings.variety;
+        }
+      });
 
-  Cell.state = {
-    ground: 'ground',
-    mountain: 'mountain',
-    water: 'water'
-  };
+      $self = $(self);
+
+      Module.Container(self);
+
+      game.addCell(self);
+      return self;
+    };
+
+    Cell.State = State;
+
+  })();
 
   /*global Item */
   Item = function(game, container) {
@@ -71,72 +77,92 @@
     return self;
   };
 
-  /*global Plant */
-  Plant = function(game, startingCell) {
-    var self;
-    var $self;
-    var age = rand(50);
-    var state = Plant.state.seed;
-
-    var setState = function(newState) {
-      state = newState;
-      $self.trigger('changed');
+  (function() {
+    var State = {
+      seed: '_seed',
+      small: '0',
+      medium: '1',
+      large: '2',
+      bloom: '3'
     };
 
-    var makeSeed = function() {
-      var seed = Item(self.game(), self.container());
-      self.game().add(seed, 'item');
+    var Type = {
+      bush: 'bush',
+      tree: 'tree'
     };
 
-    var die = function() {
-      // Make one seed
-      makeSeed();
+    /*global Plant */
+    Plant = function(game, startingCell, options) {
+      var self;
+      var $self;
+      var state;
 
-      // Remove from cell
-      self.container().remove(self);
+      var settings = $.extend({
+        age: rand(50),
+        state: State.seed,
+        type: Type.bush
+      }, options);
 
-      // Remove from game
-      self.game().remove(self);
-    };
+      var age = settings.age;
+      var type = settings.type;
 
-    self = $.extend(Item(game, startingCell), {
-      update: function() {
-        age++;
-
-        if(age == 100) {
-          setState(Plant.state.small);
-        } else if(age == 200) {
-          setState(Plant.state.medium);
-        } else if(age == 300) {
-          setState(Plant.state.large);
-        } else if(age == 400) {
-          setState(Plant.state.bloom);
-        } else if(age == 500) {
-          die();
+      var setState = function(newState) {
+        if(state != newState) {
+          state = newState;
+          $self.trigger('changed');
         }
-      },
+      };
 
-      image: function() {
-        return 'plants/bush' + state;
-      },
+      var makeSeed = function() {
+        var seed = Item(self.game(), self.container());
+        self.game().add(seed, 'item');
+      };
 
-      state: function() {
-        return state;
-      }
-    });
-    
-    $self = $(self);
-    game.add(self, 'plant');
-    return self;
-  };
+      var die = function() {
+        // Make one seed
+        makeSeed();
 
-  Plant.state = {
-    seed: '_seed',
-    small: '0',
-    medium: '1',
-    large: '2',
-    bloom: '3'
-  };
+        // Remove from cell
+        self.container().remove(self);
+
+        // Remove from game
+        self.game().remove(self);
+      };
+
+      self = $.extend(Item(game, startingCell), {
+        update: function() {
+          age++;
+
+          if(age <= 100) {
+            setState(State.small);
+          } else if(age <= 200) {
+            setState(State.medium);
+          } else if(age <= 300) {
+            setState(State.large);
+          } else if(age <= 400) {
+            setState(State.bloom);
+          } else if(age <= 500) {
+            die();
+          }
+        },
+
+        image: function() {
+          return 'plants/' + type + state;
+        },
+
+        state: function() {
+          return state;
+        }
+      });
+
+      $self = $(self);
+      game.add(self, 'plant');
+      return self;
+    };
+
+    Plant.State = State;
+    Plant.Type = Type;
+  })();
 
   /*global Clock */
   Clock = function(game) {
