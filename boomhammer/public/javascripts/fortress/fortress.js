@@ -152,14 +152,17 @@
 
   /*global Creature */
   Creature = function(game, startingCell, options) {
-    var self;
     var settings = $.extend({
       type: 'dog'
     }, options);
 
+    var inventory = Module.Container(GameObject());
+    game.add(inventory, 'inventory');
+
+    var self;
     var pickUp = function(object) {
       if(object && object != self) {
-        self.add(object);
+        inventory.add(object);
       }
     };
 
@@ -183,7 +186,6 @@
       }
     });
 
-    Module.Container(self);
     Module.Pathfinder(self);
 
     game.addCreature(self);
