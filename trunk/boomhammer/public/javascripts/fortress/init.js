@@ -4,31 +4,8 @@
 
     game = new Engine();
 
-    var cellUpdate = function(cell, view) {
-      var pic = 'ground1';
-
-      switch(cell.state()) {
-        case Cell.state.stone:
-          pic = 'mountain1';
-          break;
-        case Cell.state.dirt:
-          pic = 'ground1';
-          break;
-        case Cell.state.water:
-          pic = 'water1';
-          break;
-      }
-
-      view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
-    };
-
     var spriteUpdate = function(object, view) {
       var pic = object.image();
-      view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
-    };
-
-    var clockUpdate = function(clock, view) {
-      var pic = 'mountain' + ((clock.age() % 3) + 1);
       view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
     };
 
@@ -43,10 +20,10 @@
     $(game).bind('objectAdded', function(e, object, type) {
       switch(type) {
         case 'cell':
-          $('#region').append(createView(object, type, cellUpdate));
+          $('#region').append(createView(object, type, spriteUpdate));
           break;
         case 'clock':
-          $('#panel').append(createView(object, type, clockUpdate));
+          $('#panel').append(createView(object, type, spriteUpdate));
           break;
         case 'inventory':
           $('#inventories').append(createView(object, type, function(){}));
