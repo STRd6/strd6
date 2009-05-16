@@ -82,8 +82,8 @@
       // Make one seed
       makeSeed();
 
-      // Remove from cell / add to discard
-
+      // Remove from cell
+      self.container().remove(self);
 
       // Remove from game
       self.game().remove(self);

@@ -1,5 +1,7 @@
 (function($) {
   $(document).ready(function() {
+    $('#trash').hide();
+
     game = new Engine();
 
     var cellUpdate = function(cell, view) {
@@ -65,6 +67,12 @@
         case 'creature':
           createView(object, type, creatureUpdate);
           break;
+      }
+    });
+
+    $(game).bind('objectRemoved', function(e, object) {
+      if(object && object.view) {
+        $('#trash').append(object.view);
       }
     });
 
