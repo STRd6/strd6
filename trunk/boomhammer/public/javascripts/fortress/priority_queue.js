@@ -1,16 +1,27 @@
 (function() {
+  var prioritySortLow = function(a, b) {
+    return b.priority - a.priority;
+  };
+
+  var prioritySortHigh = function(a, b) {
+    return a.priority - b.priority;
+  };
+
   /*global PriorityQueue */
-  PriorityQueue = function() {
+  PriorityQueue = function(options) {
     var contents = [];
 
     var sorted = false;
+    var sortStyle;
 
-    var prioritySort = function(a, b) {
-      return a.priority - b.priority;
-    };
+    if(options && options.low) {
+      sortStyle = prioritySortLow;
+    } else {
+      sortStyle = prioritySortHigh;
+    }
 
     var sort = function() {
-      contents.sort(prioritySort);
+      contents.sort(sortStyle);
       sorted = true;
     };
 

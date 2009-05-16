@@ -18,6 +18,21 @@
       return cells[Math.mod(y, height)*width + Math.mod(x, width)];
     };
 
+    var heuristicTorroidal = function(a, b) {
+      var x = Math.abs(a.x - b.x);
+      var y = Math.abs(a.y - b.y);
+
+      if(width - x < x) {
+        x = width - x;
+      }
+
+      if(height - y < y) {
+        y = height - y;
+      }
+
+      return x + y;
+    }
+
     var update = function() {
       counter++;
 
@@ -64,6 +79,7 @@
       },
 
       cellAt: cellAtTorroidal,
+      heuristic: heuristicTorroidal,
 
       neighborsAt: function(x, y) {
         return [
@@ -81,7 +97,7 @@
           var y = Math.floor(index / width);
           cell.x = x;
           cell.y = y;
-          cell.neighbors = self.neighborsAt(x, y);
+          cell.setNeighbors(self.neighborsAt(x, y));
         });
         return self;
       },
@@ -123,15 +139,16 @@
 
     /*global GameObject */
     GameObject = function(game) {
-      id += 1;
-
       var self = {
         // Empty update by default
         update: function() {},
         click: function() {},
         game: function() {return game;},
         image: function() {},
-        toString: function(myId) {return function() {return myId};}('#<GameObject:' + id + '>')
+        objectId: '#<GameObject:' + (id++) + '>',
+        toString: function() {
+          return self.objectId;
+        }
       };
       return self;
     };
