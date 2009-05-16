@@ -1,4 +1,13 @@
 (function($) {
+  var cellData = [];
+
+  for(var i = 0; i < 256; i++) {
+    cellData.push({
+      variety: rand(3) + 1,
+      state: [Cell.state.ground, Cell.state.ground, Cell.state.ground, Cell.state.mountain, Cell.state.water].rand()
+    });
+  }
+
   $(document).ready(function() {
     $('#trash').hide();
 
@@ -44,8 +53,11 @@
     });
 
     for(var i = 0; i < 256; i++) {
-      var cell = Cell(game);
-      Plant(game, cell);
+      var cell = Cell(game, cellData[i]);
+
+      if(cell.state() == Cell.state.ground && rand(3) === 0) {
+        Plant(game, cell);
+      }
     }
 
     game.configureCells();
