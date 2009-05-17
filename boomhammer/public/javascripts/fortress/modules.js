@@ -57,7 +57,9 @@
         },
 
         moveTo: function(target) {
-          target.add(self);
+          if(target.state() == Cell.State.ground) {
+            target.add(self);
+          }
         },
 
         randomMove: function() {
@@ -71,7 +73,7 @@
         },
 
         pathTo: function(target) {
-          var searchPath = aStar(self.cell(), target, self.game().heuristic);
+          var searchPath = aStar(self.cell(), target, self.game().heuristic, self.cellCost);
           path = searchPath || [];
         },
 

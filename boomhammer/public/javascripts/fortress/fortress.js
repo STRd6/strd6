@@ -260,6 +260,18 @@
         }
       },
 
+      cellCost: function(cell) {
+        switch(cell.state()) {
+          case Cell.State.ground:
+            return 1;
+            break;
+          default:
+            // undefined because: (undefined >= 0) === false
+            return undefined;
+            break;
+        }
+      },
+
       image: function() {
         return 'creatures/' + settings.type;
       }
