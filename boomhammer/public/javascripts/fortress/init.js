@@ -9,7 +9,28 @@
   }
 
   $(document).ready(function() {
+    var action = 'path';
+
     $('#trash').hide();
+
+    $('#panel .action').each(function() {
+      var $this = $(this);
+      var myAction = $this.html();
+
+      if(myAction == action) {
+        $this.addClass('selected');
+      }
+      
+      $this
+        .click(function() {
+          action = myAction;
+          $('#panel .action').removeClass('selected');
+          $this.addClass('selected');
+        })
+        .css({backgroundImage: "url(/images/dungeon/"+ $this.html() +".png)"})
+        .html('');
+    });
+
 
     game = new Engine();
     
@@ -17,14 +38,14 @@
 
     var clickParameters = function() {
       return {
-        action: 'path',
+        action: action,
         creature: selectedCreature
       };
     };
 
     var spriteUpdate = function(object, view) {
       var pic = object.image();
-      view.css({background: "transparent url(/images/dungeon/"+pic+".png)"});
+      view.css({backgroundImage: "url(/images/dungeon/"+pic+".png)"});
     };
 
     function createView(object, type) {

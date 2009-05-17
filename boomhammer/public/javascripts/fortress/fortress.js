@@ -20,6 +20,8 @@
 
       var state = settings.state;
       var neighbors = [];
+      var buried = Module.Container(GameObject(game));
+      game.add(buried);
 
       // Inherit from GameObject
       var self = $.extend(GameObject(game, 'cell'), {
@@ -35,6 +37,21 @@
             if(params.creature) {
               params.creature.pathTo(self);
             }
+          } else if(params.action == 'dig') {
+            self.dig();
+          }
+        },
+
+        bury: function(object) {
+          buried.add(object);
+        },
+
+        dig: function() {
+          if(state == State.mountain && rand(5) == 0) {
+            self.setState(State.ground);
+            $.each(buried.contents(), function(i, object) {
+              self.add(object);
+            });
           }
         },
 
@@ -43,8 +60,10 @@
         },
 
         setState: function(newState) {
-          state = newState;
-          $self.trigger('changed');
+          if(newState != state) {
+            state = newState;
+            $self.trigger('changed');
+          }
         },
 
         neighbors: function() {
@@ -73,7 +92,11 @@
   })();
 
   /*global Item */
-  Item = function(game, container) {
+  Item = function(game, container, options) {
+    var settings = $.extend({
+      image: 'redgem'
+    }, options)
+
     var self = $.extend(GameObject(game), {
       click: function(params) {
         var inventory = params.inventory;
@@ -84,7 +107,7 @@
       },
 
       image: function() {
-        return 'items/redgem';
+        return 'items/' + settings.image;
       }
     });
 
@@ -130,7 +153,7 @@
       };
 
       var makeSeed = function() {
-        var seed = Item(self.game(), self.container());
+        var seed = Item(self.game(), self.container(), {image: type + '_seed'});
         self.game().add(seed, 'item');
       };
 
@@ -212,7 +235,7 @@
       type: 'dog'
     }, options);
 
-    var inventory = Module.Container(GameObject());
+    var inventory = Module.Container(GameObject(game));
     game.add(inventory, 'inventory');
 
     var self;
