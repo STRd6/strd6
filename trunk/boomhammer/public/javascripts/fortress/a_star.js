@@ -4,6 +4,10 @@
     return 0;
   };
 
+  var oneCost = function() {
+    return 1;
+  }
+
   function reconstructPath(cameFrom, currentNode) {
     if(cameFrom[currentNode]) {
       var path = reconstructPath(cameFrom, cameFrom[currentNode]);
@@ -30,8 +34,9 @@
    * The `heuristic` must be admissible. The estimated cost must
    * always be less than or equal to the actual cost of reaching the goal state.
    */
-  aStar = function(start, goal, heuristic) {
+  aStar = function(start, goal, heuristic, cost) {
     heuristic = heuristic || zeroHeuristic;
+    cost = cost || oneCost;
 
     var openSet = new PriorityQueue({low: true}); // The set of tentative nodes to be evaluated.
     var closedSet = {};
@@ -63,22 +68,25 @@
         if(neighbor in closedSet) {
           // next
         } else {
-          var distanceToNeighbor = 1;
-          var gScoreTentative = gScore[currentNode] + distanceToNeighbor;
-          var tentativeIsBetter = false;
+          var costToNeighbor = cost(neighbor);
 
-          if(!openSet.includes(neighbor)) {
-            hScore[neighbor] = heuristic(neighbor, goal);
-            tentativeIsBetter = true;
-          } else if(gScoreTentative < gScore[neighbor]) {
-            tentativeIsBetter = true;
-          }
+          if(costToNeighbor >= 0) {
+            var gScoreTentative = gScore[currentNode] + costToNeighbor;
+            var tentativeIsBetter = false;
 
-          if(tentativeIsBetter === true) {
-            cameFrom[neighbor] = currentNode;
-            gScore[neighbor] = gScoreTentative;
-            fScore[neighbor] = gScore[neighbor] + hScore[neighbor];
-            openSet.push(neighbor, fScore[neighbor]);
+            if(!openSet.includes(neighbor)) {
+              hScore[neighbor] = heuristic(neighbor, goal);
+              tentativeIsBetter = true;
+            } else if(gScoreTentative < gScore[neighbor]) {
+              tentativeIsBetter = true;
+            }
+
+            if(tentativeIsBetter === true) {
+              cameFrom[neighbor] = currentNode;
+              gScore[neighbor] = gScoreTentative;
+              fScore[neighbor] = gScore[neighbor] + hScore[neighbor];
+              openSet.push(neighbor, fScore[neighbor]);
+            }
           }
         }
       }
