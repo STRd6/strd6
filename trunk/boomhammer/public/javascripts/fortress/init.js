@@ -89,7 +89,7 @@
       if(cell.state() == Cell.State.ground && rand(3) === 0) {
         Plant(game, cell, {type: [Plant.Type.bush, Plant.Type.tree].rand()});
       } else if(cell.state() == Cell.State.mountain && rand(5) === 0) {
-        var item = Item(game, cell, {image: ['redgem', 'bluegem', 'greengem'].rand()});
+        var item = Item(game, cell, {type: 'gem', kind: ['ruby', 'sapphire', 'emerald', 'gold'].rand()});
         cell.bury(item);
         game.add(item);
       }
