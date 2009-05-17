@@ -94,8 +94,12 @@
   /*global Item */
   Item = function(game, container, options) {
     var settings = $.extend({
-      image: 'redgem'
+      type: 'gem',
+      kind: 'ruby'
     }, options)
+
+    var type = settings.type;
+    var kind = settings.kind;
 
     var self = $.extend(GameObject(game), {
       click: function(params) {
@@ -107,7 +111,7 @@
       },
 
       image: function() {
-        return 'items/' + settings.image;
+        return 'items/' + type + '/' + kind;
       }
     });
 
@@ -153,7 +157,7 @@
       };
 
       var makeSeed = function() {
-        var seed = Item(self.game(), self.container(), {image: type + '_seed'});
+        var seed = Item(self.game(), self.container(), {type: 'seed', kind: type});
         self.game().add(seed, 'item');
       };
 
