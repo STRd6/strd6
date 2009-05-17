@@ -1,4 +1,5 @@
-(function($) {
+/*global PriorityQueue */
+(function() {
   function reconstructPath(cameFrom, currentNode) {
     if(cameFrom[currentNode]) {
       var path = reconstructPath(cameFrom, cameFrom[currentNode]);
@@ -11,8 +12,8 @@
 
   /*global aStar */
   aStar = function(start, goal, heuristic) {
-    var closedSet = new Set();                    // The set of nodes already evaluated.
     var openSet = new PriorityQueue({low: true}); // The set of tentative nodes to be evaluated.
+    var closedSet = {};
     var cameFrom = {};
 
     var gScore = {};
@@ -29,17 +30,17 @@
       var currentNode = openSet.top();
       
       if(currentNode === goal) {
-        //console.log(gScore);
         return reconstructPath(cameFrom, goal);
       }
 
       openSet.pop();
-      closedSet.add(currentNode);
+      closedSet[currentNode] = true;
 
-      //console.log(currentNode.neighbors());
+      var neighbors = currentNode.neighbors();
+      for(var index = 0, len = neighbors.length; index < len; ++index) {
+        var neighbor = neighbors[index];
 
-      $.each(currentNode.neighbors(), function(i, neighbor) {
-        if(closedSet.includes(neighbor)) {
+        if(neighbor in closedSet) {
           // next
         } else {
           var distanceToNeighbor = 1;
@@ -53,15 +54,15 @@
             tentativeIsBetter = true;
           }
 
-          if(tentativeIsBetter == true) {
+          if(tentativeIsBetter === true) {
             cameFrom[neighbor] = currentNode;
             gScore[neighbor] = gScoreTentative;
             fScore[neighbor] = gScore[neighbor] + hScore[neighbor];
             openSet.push(neighbor, fScore[neighbor]);
           }
         }
-      });
+      }
     }
     return null;
   };
-})(jQuery);
+})();
