@@ -119,6 +119,7 @@
 
         if(removedObject !== undefined) {
           $self.trigger('objectRemoved', [removedObject]);
+          $(removedObject).trigger('removedFromGame');
         }
 
         return removedObject;

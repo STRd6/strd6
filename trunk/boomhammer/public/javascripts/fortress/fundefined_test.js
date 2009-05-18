@@ -55,6 +55,18 @@
       equals(null <= null, true);
     });
 
+    test("NaN a na", function() {
+      equals(NaN == null, false);
+      equals(NaN == undefined, false);
+      equals(NaN == true, false);
+      equals(NaN == false, false);
+      equals(NaN == 0, false);
+      equals(NaN == '', false);
+
+      equals(NaN == NaN, false, "!!");
+      equals(NaN === NaN, false, "!!!");
+    });
+
     /**
      * It turns out that `true` is 'essentially' 1 and `false` is 'essentially' 0.
      */
@@ -143,6 +155,12 @@
       x = 0;
       if(x) { ifX = true; } else { ifX = false; }
       equals(ifX, false);
+
+      x = NaN;
+      if(x) { ifX = true; } else { ifX = false; }
+      equals(ifX, false);
+      if(x != false) { ifX = true; } else { ifX = false; }
+      equals(ifX, true, "!!");
 
       x = '';
       if(x) { ifX = true; } else { ifX = false; }

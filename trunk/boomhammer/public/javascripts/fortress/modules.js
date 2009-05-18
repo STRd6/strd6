@@ -44,6 +44,12 @@
         container.add(self);
       }
 
+      $(self).bind('removedFromGame', function() {
+        if(self.container()) {
+          self.container().remove(self);
+        }
+      });
+
       return self;
     },
 

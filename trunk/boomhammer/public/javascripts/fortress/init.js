@@ -86,12 +86,18 @@
     for(var i = 0; i < 256; i++) {
       var cell = Cell(game, cellData[i]);
 
-      if(cell.state() == Cell.State.ground && rand(3) === 0) {
-        Plant(game, cell, {type: [Plant.Type.bush, Plant.Type.tree].rand()});
+      if(cell.state() == Cell.State.ground) {
+        var roll = rand(4);
+        if(roll === 0) {
+          Plant(game, cell, {type: [Plant.Type.bush, Plant.Type.tree].rand()});
+        } else if(roll === 1) {
+          var seed = Item(game, cell, {type: 'seed', kind: [Plant.Type.bush, Plant.Type.tree].rand()});
+          game.add(seed, 'item');
+        }
       } else if(cell.state() == Cell.State.mountain && rand(5) === 0) {
         var item = Item(game, cell, {type: 'gem', kind: ['ruby', 'sapphire', 'emerald', 'gold'].rand()});
-        cell.bury(item);
         game.add(item);
+        cell.bury(item);
       }
     }
 

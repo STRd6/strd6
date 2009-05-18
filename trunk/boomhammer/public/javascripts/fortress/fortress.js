@@ -43,7 +43,7 @@
         },
 
         bury: function(object) {
-          buried.add(object);
+          $(object).trigger('buried', [self, buried]);
         },
 
         dig: function() {
@@ -101,6 +101,10 @@
     var type = settings.type;
     var kind = settings.kind;
 
+    var makePlant = function(cell) {
+      Plant(game, cell, {type: kind});
+    };
+
     var self = $.extend(GameObject(game), {
       click: function(params) {
         var inventory = params.inventory;
@@ -116,6 +120,17 @@
     });
 
     Module.Containable(self, container);
+
+    $(self).bind('buried', function(e, cell, underground) {
+      console.log('burried');
+      console.log(underground);
+      if(type == 'seed') {
+        makePlant(cell);
+        game.remove(self);
+      } else {
+        underground.add(self);
+      }
+    });
 
     return self;
   };
@@ -165,9 +180,6 @@
         // Make one seed
         makeSeed();
 
-        // Remove from cell
-        self.container().remove(self);
-
         // Remove from game
         self.game().remove(self);
       };
@@ -195,7 +207,8 @@
 
         state: function() {
           return state;
-        }
+        },
+        planted: true // TODO: Improve
       });
 
       $self = $(self);
@@ -249,18 +262,44 @@
       }
     };
 
+    var bury = function() {
+      console.log(self.cell());
+
+      var item = inventory.contents().rand();
+
+      if(item) {
+        self.cell().bury(item);
+      }
+    };
+
     self = $.extend(Item(game, startingCell), {
       update: function() {
         if(self.cell().contents().length > 1) {
           $.each(self.cell().contents(), function(i, object) {
-            pickUp(object);
+            // TODO: Improve
+            if(object && !object.planted) {
+              pickUp(object);
+            }
+
+            if(object == undefined) {
+              // TODO: Get to the bottom of things...
+              console.log('undefined object');
+              console.log(self.cell());
+              console.log(self.cell().contents());
+            }
           });
         }
 
         if(self.onPath()) {
           self.followPath();
-        } else if(rand(10) === 0) {
-          self.randomMove();
+        } else {
+          var roll = rand(10)
+          if(roll === 0) {
+            self.randomMove();
+          } else if(roll < 5) {
+            console.log('bury');
+            bury();
+          }
         }
       },
 
