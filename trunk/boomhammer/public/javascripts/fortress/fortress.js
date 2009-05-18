@@ -263,11 +263,10 @@
     };
 
     var bury = function() {
-      console.log(self.cell());
-
       var item = inventory.contents().rand();
 
       if(item) {
+        console.log('bury');
         self.cell().bury(item);
       }
     };
@@ -294,10 +293,9 @@
           self.followPath();
         } else {
           var roll = rand(10)
-          if(roll === 0) {
+          if(roll <= 2) {
             self.randomMove();
-          } else if(roll < 5) {
-            console.log('bury');
+          } else if(roll === 3) {
             bury();
           }
         }
