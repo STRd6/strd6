@@ -84,6 +84,24 @@
       equals(true <= false, false);
     });
 
+    test("true and false math", function() {
+      equals(5 + true, 6, true);
+      equals(5 * true, 5, true);
+      equals(5 - true, 4, true);
+
+      equals(5 + false, 5, true);
+      equals(5 * false, 0, true);
+      equals(5 - false, 5, true);
+
+      equals(false + false, 0, true);
+      equals(true + false, 1, true);
+      equals(true + true, 2, true);
+
+      equals(false * false, 0, true);
+      equals(true * false, 0, true);
+      equals(true * true, 1, true);
+    });
+
     test("false idols", function() {
       equals(0 == false, true);
       equals('' == false, true);
@@ -94,6 +112,9 @@
       equals([''] == false, true);
       equals(['0'] == false, true);
       equals([[]] == false, true);
+      equals([false] != false, true, "!!!");
+      equals([null] == false, true);
+      equals([undefined] == false, true);
 
       // It goes on like that
       equals([[[[[[[[[0]]]]]]]]] == false, true);
