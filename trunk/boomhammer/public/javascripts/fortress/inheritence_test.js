@@ -6,6 +6,8 @@
       equals({}.constructor, Object, "{}.constructor");
       equals([].constructor, Array, "[].constructor");
       equals(''.constructor, String, "''.constructor");
+      equals((0).constructor, Number, "(0).constructor");
+      equals((1.2).constructor, Number, "(1.2).constructor");
       equals(true.constructor, Boolean, "true.constructor");
       equals(false.constructor, Boolean, "false.constructor");
       equals((function(){}).constructor, Function, "anonymous function constructor");
