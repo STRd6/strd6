@@ -9,3 +9,8 @@
   %a{:name => 'summary'}
   %h3 Summary
   = preserve Maruku.new(@quiz.summary).to_html
+
+%hr
+%small 
+  posted
+  = @quiz.created_at.to_s(:article)
