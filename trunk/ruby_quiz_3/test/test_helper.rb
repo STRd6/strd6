@@ -36,3 +36,11 @@ class Test::Unit::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+def login_as(user)
+  @request.session[:user] = user ? users(user).id : nil
+end
+
+def logout
+  @request.session[:user] = nil
+end
