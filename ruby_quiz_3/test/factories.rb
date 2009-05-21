@@ -11,3 +11,9 @@ Factory.define :response do |r|
   r.author "Testy McTestersons"
   r.body "My solution was really great, you have to see it to believe it"
 end
+
+Factory.define :user do |r|
+  r.login "quentin"
+  r.password "test"
+  r.email "quentin@example.com"
+end

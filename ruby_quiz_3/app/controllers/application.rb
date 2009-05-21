@@ -11,11 +11,12 @@ class ApplicationController < ActionController::Base
   # from your application log (in this case, all fields with names like "password"). 
   # filter_parameter_logging :password
   
-  private
-  
-  def authenticate
-    authenticate_or_request_with_http_basic do |user_name, password|
-      user_name == USER_NAME && password == PASSWORD
-    end
-  end
+  include AuthenticatedSystem
+  # private
+  # 
+  # def authenticate
+  #   authenticate_or_request_with_http_basic do |user_name, password|
+  #     user_name == USER_NAME && password == PASSWORD
+  #   end
+  # end
 end
