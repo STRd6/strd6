@@ -25,7 +25,7 @@
     %div
       Source:
       %br
-      %textarea#srcArea{:rows => "15", :style =>"width:100%"}= "# jQuery Helper\ndef j(*args) $native.jQuery(*args); end\n\n# hashes work\ncss = {:color => 'blue'}\n\n# jQuery Demo\nj('h1').append('!').css(css)"
+      %textarea#srcArea{:rows => "15", :style =>"width:100%"}= "# jQuery Helper\ndef j(*args) $native.jQuery(*args) end\n\n# hashes work\ncss = {:color => 'blue'}\n\n# jQuery Demo\nj('h1').append('!').css(css)"
       %br
       <input type="button" onclick="javascript:run()" value="Run"></input>
 
