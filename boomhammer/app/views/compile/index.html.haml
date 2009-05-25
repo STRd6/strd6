@@ -25,10 +25,15 @@
     %div
       Source:
       %br
-      <textarea id="srcArea" rows="15" style="width:100%"></textarea><br />
+      %textarea#srcArea{:rows => "15", :style =>"width:100%"}= "# jQuery Helper\ndef j(*args) $native.jQuery(*args); end\n\n# hashes work\ncss = {:color => 'blue'}\n\n# jQuery Demo\nj('h1').append('!').css(css)"
+      %br
       <input type="button" onclick="javascript:run()" value="Run"></input>
 
-    %br
+    %div
+      %p
+        Use: <code>$native.jQuery()</code> to access jQuery
+      %p
+        <code>def j(*args) $native.jQuery(*args); end</code> may also be helpful.
 
     = render :partial => "components/analytics"
 
