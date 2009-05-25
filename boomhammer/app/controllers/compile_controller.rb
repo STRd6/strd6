@@ -11,7 +11,7 @@ class CompileController < ApplicationController
   end
 
   def create
-    tempfile = Tempfile.new('code', Rails.root + 'tmp')
+    tempfile = Tempfile.new('code', Rails.root)
 
     tempfile.puts params[:src]
     tempfile.close
