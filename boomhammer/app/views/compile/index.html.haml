@@ -1,0 +1,33 @@
+%html
+  %head
+    %title Do It Yourself - HotRuby - Ruby on JavaScript
+    = stylesheet_link_tag 'hotruby/prettify'
+    = javascript_include_tag 'hotruby/prettify'
+    = javascript_include_tag 'hotruby/ext-base'
+    = javascript_include_tag 'hotruby/hotruby'
+    = javascript_include_tag 'jquery'
+
+    <script type="text/javascript">
+    jQuery.noConflict();
+
+    function run() {
+    var src = document.getElementById("srcArea").value;
+    new HotRuby().compileAndRun("/compile", src);
+    }
+    </script>
+
+  %body
+    %h1 Do It Yourself - HotRuby(Ruby on JavaScript)
+    %div Result:
+    #debug.result
+    %br
+
+    %div
+      Source:
+      %br
+      <textarea id="srcArea" rows="15" style="width:100%"></textarea><br />
+      <input type="button" onclick="javascript:run()" value="Run"></input>
+
+    %br
+
+
