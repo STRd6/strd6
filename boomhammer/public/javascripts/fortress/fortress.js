@@ -202,6 +202,9 @@
             setState(State.large);
           } else if(age <= 400) {
             setState(State.bloom);
+            if(rand(50) == 0) {
+              game.add(Item(game, startingCell, {type: 'food', kind: 'fruit'}));
+            }
           } else if(age <= 500) {
             die();
           }
@@ -279,29 +282,51 @@
       var item = inventory.contents().rand();
 
       if(item) {
-        //console.log('bury');
         self.cell().bury(item);
+      }
+    };
+
+    var fullLevel = 500;
+    var foodLevel = 300;
+    var hungerLevel = 100;
+    
+    var hungry = function() {
+      return foodLevel < hungerLevel;
+    };
+    
+    var hasFood = function() {
+      var foodCount = 0;
+      
+      inventory.contents().eachWithIndex(function(item) {
+        if(item.type == "food") {
+          foodCount++;
+        }
+      });
+      
+      return foodCount > 0;
+    };
+    
+    var eatFood = function() {
+      
+    };
+
+    var thinkAndAct = function() {
+      if(hungry()) {
+        if(hasFood()) {
+          eatFood();
+        } else {
+          findFood();
+        }
+      } else {
+        plantSeed();
       }
     };
 
     self = $.extend(Item(game, startingCell), {
       update: function() {
         if(self.cell().contents().length > 1) {
-          var toPickUp = [];
-
-          $.each(self.cell().contents(), function(i, object) {
-            // TODO: Improve
-            if(object && !object.planted) {
-              toPickUp.push(object);
-            }
-
-            if(object == undefined) {
-              debugger;
-              // TODO: Get to the bottom of things...
-              console.log('undefined object');
-              console.log(self.cell());
-              console.log(self.cell().contents());
-            }
+          var toPickUp = self.cell().contents().select(function(object) {
+            return (object && !object.planted)
           });
 
           toPickUp.eachWithIndex(function(object, index) {
@@ -312,7 +337,7 @@
         if(self.onPath()) {
           self.followPath();
         } else {
-          var roll = rand(10)
+          var roll = rand(10);
           if(roll <= 2) {
             self.randomMove();
           } else if(roll === 3) {
