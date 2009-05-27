@@ -2,6 +2,8 @@
 
 /**
  * Returns random integers from [0, n)
+ *
+ * @param {Number} n
  */
 function rand(n) {
   return Math.floor(n * Math.random());
@@ -36,6 +38,8 @@ Array.prototype.rand = function() {
  * Remove the given object from the array if it is present and return the
  * removed object.
  * If the abject is not present in the array return undefined.
+ * 
+ * @param {Object} object
  */
 Array.prototype.remove = function(object) {
   var index = this.indexOf(object);
@@ -46,6 +50,19 @@ Array.prototype.remove = function(object) {
   }
 };
 
+/**
+ * Call the given iterator once for each element in the array,
+ * passing in the element as the first argument and the index as the second.
+ *
+ * @param {Function} iterator
+ */
+Array.prototype.eachWithIndex = function(iterator) {
+  for(var i = 0; i < this.length; i++) {
+    iterator(this[i], i);
+  }
+  return this;
+}
+
 Function.prototype.curry = function() {
   var fn = this, args = Array.prototype.slice.call(arguments);
 
@@ -54,7 +71,13 @@ Function.prototype.curry = function() {
   };
 };
 
-// Fixing modulo operator (positive base only)
+/**
+ * Returns a mod useful for array wrapping.
+ * Produces incorrect results if base and n are negative.
+ *
+ * @param {Number} n
+ * @param {Number} base
+ */
 Math.mod = function(n, base) {
   var result = n % base;
 

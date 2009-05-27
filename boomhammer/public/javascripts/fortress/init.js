@@ -10,30 +10,6 @@
 
   $(document).ready(function() {
     var action = 'path';
-
-    $('#trash').hide();
-
-    $('#panel .action').each(function() {
-      var $this = $(this);
-      var myAction = $this.html();
-
-      if(myAction == action) {
-        $this.addClass('selected');
-      }
-      
-      $this
-        .click(function() {
-          action = myAction;
-          $('#panel .action').removeClass('selected');
-          $this.addClass('selected');
-        })
-        .css({backgroundImage: "url(/images/dungeon/"+ $this.html() +".png)"})
-        .html('');
-    });
-
-
-    game = new Engine();
-    
     var selectedCreature;
 
     var clickParameters = function() {
@@ -56,6 +32,28 @@
         clickParameters: clickParameters
       });
     }
+
+    $('#panel .action').each(function() {
+      var $this = $(this);
+      var myAction = $this.html();
+
+      if(myAction == action) {
+        $this.addClass('selected');
+      }
+      
+      $this
+        .click(function() {
+          action = myAction;
+          $('#panel .action').removeClass('selected');
+          $this.addClass('selected');
+        })
+        .css({backgroundImage: "url(/images/dungeon/"+ $this.html() +".png)"})
+        .html('');
+    });
+    
+    $('#trash').hide();
+
+    game = new Engine();
 
     $(game).bind('objectAdded', function(e, object, type) {
       switch(type) {
@@ -104,6 +102,12 @@
     game.configureCells();
 
     selectedCreature = Creature(game, game.cells().rand());
+
+    Creature(game, game.cells().rand(), {type: 'raccoon'});
+    Creature(game, game.cells().rand(), {type: 'raccoon'});
+    Creature(game, game.cells().rand(), {type: 'raccoon'});
+    Creature(game, game.cells().rand(), {type: 'raccoon'});
+    Creature(game, game.cells().rand(), {type: 'raccoon'});
 
     Clock(game);
 
