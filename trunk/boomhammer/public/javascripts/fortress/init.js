@@ -105,9 +105,9 @@
 
     Creature(game, game.cells().rand(), {type: 'raccoon'});
     Creature(game, game.cells().rand(), {type: 'raccoon'});
-    Creature(game, game.cells().rand(), {type: 'raccoon'});
-    Creature(game, game.cells().rand(), {type: 'raccoon'});
-    Creature(game, game.cells().rand(), {type: 'raccoon'});
+    Creature(game, game.cells().rand(), {type: 'chipmunk'});
+    Creature(game, game.cells().rand(), {type: 'chipmunk'});
+    Creature(game, game.cells().rand(), {type: 'chipmunk'});
 
     Clock(game);
 
