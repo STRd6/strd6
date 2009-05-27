@@ -28,18 +28,20 @@ Doesn't seem to work... strange interactions and hidden errors.
 */
 
 /**
- * Return a random element from an array
+ * Randomly select an element from the array.
+ *
+ * @return a random element from an array
  */
 Array.prototype.rand = function() {
   return this[rand(this.length)];
 };
 
 /**
- * Remove the given object from the array if it is present and return the
- * removed object.
- * If the abject is not present in the array return undefined.
+ * Remove the first occurance of the given object from the array if it is
+ * present.
  * 
- * @param {Object} object
+ * @param {Object} object The object to remove from the array if present.
+ * @returns The removed object if present otherwise undefined.
  */
 Array.prototype.remove = function(object) {
   var index = this.indexOf(object);
@@ -51,17 +53,36 @@ Array.prototype.remove = function(object) {
 };
 
 /**
+ * Select the elements of the array for which iterator returns true.
+ *
+ * @param {Function} iterator
+ * @param [context] Optional context parameter in which to call iterator.
+ * @return The selected elements.
+ */
+Array.prototype.select = function(iterator, context) {
+  var results = [];
+  for(var i = 0; i < this.length; i++) {
+    if (iterator.call(context, this[i], i)) {
+      results.push(this[i]);
+    }
+  }
+  return results;
+};
+
+/**
  * Call the given iterator once for each element in the array,
  * passing in the element as the first argument and the index as the second.
  *
  * @param {Function} iterator
+ * @param [context] Optional context parameter in which to call iterator.
+ * @return this for chaining.
  */
-Array.prototype.eachWithIndex = function(iterator) {
+Array.prototype.eachWithIndex = function(iterator, context) {
   for(var i = 0; i < this.length; i++) {
-    iterator(this[i], i);
+    iterator.call(context, this[i], i);
   }
   return this;
-}
+};
 
 Function.prototype.curry = function() {
   var fn = this, args = Array.prototype.slice.call(arguments);
