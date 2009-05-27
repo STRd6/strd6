@@ -10,8 +10,12 @@
     var height = 16;
     var cells = [];
     var objects = [];
+    var activeObjects = [];
     var creatures = [];
     var $self;
+
+    // TODO: use a better control mechanism
+    var updating = false;
 
     // Torroidal
     var cellAtTorroidal = function(x, y) {
@@ -34,11 +38,18 @@
     }
 
     var update = function() {
-      counter++;
+      if(!updating) {
+        updating = true;
+        counter++;
 
-      $.each(objects, function(i, object) {
-        object.update();
-      });
+        for(var index = 0, len = activeObjects.length; index < len; ++index) {
+          var obj = activeObjects[index];
+          if(obj) {
+            obj.update();
+          }
+        }
+        updating = false;
+      }
     };
 
     // Public
@@ -60,20 +71,25 @@
         }
       },
 
-      add: function(gameObject, type) {
+      add: function(gameObject, type, active) {
         objects.push(gameObject);
         $self.trigger('objectAdded', [gameObject, type]);
+
+        if(active) {
+          activeObjects.push(gameObject);
+        }
+        
         return self;
       },
 
       addCell: function(cell) {
-        self.add(cell, 'cell');
+        self.add(cell, 'cell', false);
         cells.push(cell);
         return self;
       },
 
       addCreature: function(creature) {
-        self.add(creature, 'creature');
+        self.add(creature, 'creature', true);
         creatures.push(creature);
         return self;
       },
@@ -115,6 +131,7 @@
       },
 
       remove: function(object) {
+        activeObjects.remove(object);
         var removedObject = objects.remove(object);
 
         if(removedObject !== undefined) {

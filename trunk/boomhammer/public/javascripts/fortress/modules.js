@@ -10,6 +10,10 @@
       return $.extend(self, {
         contents: function() { return contents; },
         add: function(object) {
+          if(!object) {
+            debugger;
+          }
+
           if(object.container && object.container()) {
             object.container().remove(object);
           }
@@ -69,7 +73,7 @@
         },
 
         randomMove: function() {
-          if(self.container()) {
+          if(self.container() && self.container().neighbors) {
             self.moveTo(self.container().neighbors().rand());
           }
         },

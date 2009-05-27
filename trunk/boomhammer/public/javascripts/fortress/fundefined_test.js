@@ -23,10 +23,13 @@
       equals(undefined == undefined, true);
       equals(undefined >= undefined, false, "!");
       equals(undefined <= undefined, false, "!");
+
+      equals((function(){})() === undefined, true);
     });
 
     /**
-     * null is pretty weird. It's almost like zero but not equal to false.
+     * null is pretty weird. It's almost like zero but not equal to false,
+     * and <= and >= many strange things.
      */
     test("null", function() {
       equals(null > 0, false);
@@ -53,9 +56,13 @@
       equals(null == null, true);
       equals(null >= null, true);
       equals(null <= null, true);
+
+      equals((function(){})() == null, true);
+      equals((function(){})() === null, false, "It's actually `undefined`");
     });
 
-    test("NaN a na", function() {
+    test("NaN a na na", function() {
+      equals(typeof NaN, "number");
       equals(NaN == null, false);
       equals(NaN == undefined, false);
       equals(NaN == true, false);
@@ -114,22 +121,74 @@
       equals(true * true, 1, true);
     });
 
+    /**
+     * The secret to Array equality is that it gets converted to a string when compared with non-arrays.
+     */
     test("false idols", function() {
       equals(0 == false, true);
       equals('' == false, true);
+      equals(' ' == false, true);
       equals('0' == false, true);
       equals([] == false, true);
+      
+      equals(null == false, false, "!");
+      equals(undefined == false, false, "!");
+    });
 
+    test("false Arrays", function() {
       equals([0] == false, true);
       equals([''] == false, true);
+      equals([' '] == false, true);
       equals(['0'] == false, true);
       equals([[]] == false, true);
-      equals([false] != false, true, "!!!");
+      equals([false] != false, true, "!!! The `toString()` is 'false'");
       equals([null] == false, true);
       equals([undefined] == false, true);
 
-      // It goes on like that
+      // It goes on like that, the toString ends up as '0'
       equals([[[[[[[[[0]]]]]]]]] == false, true);
+
+      // This adds weight to the toString hypothesis
+      equals([{toString: function() {return '';}}] == false, true);
+      equals([{toString: function() {return '0';}}] == false, true);
+    });
+
+    test("false Strings", function() {
+      equals('                        ' == false, true);
+      equals('            0.          ' == false, true);
+      equals('0.0000000000000000000000' == false, true);
+    });
+
+    test("Boolean Goolean", function() {
+      equals(Boolean(0) == false, true);
+      equals(Boolean('') == false, true);
+      equals(Boolean(' ') != false, true, "!!");
+      equals(Boolean('0') != false, true, "!!");
+      equals(Boolean([]) != false, true, "!!");
+      equals(Boolean(null) == false, true, "!!");
+      equals(Boolean(undefined) == false, true, "!!");
+      equals(Boolean(NaN) == false, true, "!!");
+      equals(Boolean(Boolean(false)) == false, true);
+      equals(Boolean(new Boolean(false)) == true, true, "!!!");
+
+      equals(new Boolean(0) == false, true);
+      equals(new Boolean('') == false, true);
+      equals(new Boolean(' ') != false, true);
+      equals(new Boolean('0') != false, true);
+      equals(new Boolean([]) != false, true);
+      equals(new Boolean(null) == false, true);
+      equals(new Boolean(undefined) == false, true);
+      equals(new Boolean(new Boolean(false)) == true, true, "!!!");
+    });
+
+    test("Objects with toString methods defined that are equivalent to false", function() {
+      equals({toString: function(){return false}} == false, true, "!!");
+      equals({toString: function(){return null;}} == false, true, "!!");
+      equals({toString: function(){return 0}} == false, true, "!!");
+      equals({toString: function(){return '';}} == false, true, "!!");
+      equals({toString: function(){return '0'}} == false, true, "!!");
+      equals({toString: function(){return 'false'}} != false, true, "!!");
+      equals({toString: function(){return undefined}} != false, true, "!!");
     });
 
     test("if statements", function() {
@@ -152,6 +211,10 @@
       if(x) { ifX = true; } else { ifX = false; }
       equals(ifX, false);
 
+      x = true;
+      if(x) { ifX = true; } else { ifX = false; }
+      equals(ifX, true)
+
       x = 0;
       if(x) { ifX = true; } else { ifX = false; }
       equals(ifX, false);
@@ -166,15 +229,21 @@
       if(x) { ifX = true; } else { ifX = false; }
       equals(ifX, false);
 
+      x = ' ';
+      if(x) { ifX = true; } else { ifX = false; }
+      equals(ifX, true);
+      if(x != false) { ifX = true; } else { ifX = false; }
+      equals(ifX, false, "!!");
+
       x = '0';
       if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true, "!!");
+      equals(ifX, true, "!");
       if(x != false) { ifX = true; } else { ifX = false; }
       equals(ifX, false, "!!");
 
       x = [];
       if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true, "!!");
+      equals(ifX, true, "!");
       if(x != false) { ifX = true; } else { ifX = false; }
       equals(ifX, false, "!!");
 
@@ -182,9 +251,15 @@
       if(x) { ifX = true; } else { ifX = false; }
       equals(ifX, true);
 
-      x = true;
+      x = {toString: function(){return '';}};
       if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true)
+      equals(ifX, true);
+
+      x = new Boolean(false);
+      if(x) { ifX = true; } else { ifX = false; }
+      equals(ifX, true, "!!!")
+      if(x != false) { ifX = true; } else { ifX = false; }
+      equals(ifX, false, "!")
     });
 
     test("strings and numbers", function() {
@@ -219,190 +294,6 @@
       equals(0 == '-0.0000000000000000000000001', false, "!");
 
       equals('0' == '-0', false);
-    });
-
-    test('x is undefined', function(){
-      var x;
-      equals(x === undefined, true);
-
-      equals(x == null, true);
-      equals(x == undefined, true);
-      equals(x == true, false);
-      equals(x == false, false);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, false);
-    });
-
-    test('x is null', function(){
-      var x = null;
-      equals(x === null, true);
-
-      equals(x == null, true);
-      equals(x == undefined, true);
-      equals(x == true, false);
-      equals(x == false, false);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, false);
-    });
-
-    test('x is zero', function(){
-      var x = 0;
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, false);
-    });
-
-    test('x is empty object', function() {
-      var x = {};
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, false);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is empty array', function() {
-      var x = [];
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is array contiaining only empty string', function() {
-      var x = [''];
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is array contiaining only empty array', function() {
-      var x = [[]];
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is array contiaining only zero', function() {
-      var x = [0];
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is array contiaining only two empty arrays', function() {
-      var x = [[], []];
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, false);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is empty string', function() {
-      var x = '';
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, false, "!!");
-    });
-
-    test('x is string containing zero', function() {
-      var x = '0';
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true, "!");
-    });
-
-    test('x is string containing only multiple zeros', function() {
-      var x = '000';
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, true, "!");
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is string containing 1', function() {
-      var x = '1';
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, true);
-      equals(x == false, false);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
-    });
-
-    test('x is string containing 5', function() {
-      var x = '5';
-
-      equals(x == null, false);
-      equals(x == undefined, false);
-      equals(x == true, false);
-      equals(x == false, false);
-
-      var ifX;
-      if(x) { ifX = true; } else { ifX = false; }
-      equals(ifX, true);
     });
   });
 })(jQuery);

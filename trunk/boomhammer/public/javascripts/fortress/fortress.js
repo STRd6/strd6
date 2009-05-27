@@ -116,20 +116,26 @@
 
       image: function() {
         return 'items/' + type + '/' + kind;
+      },
+
+      bury: function(cell, underground) {
+        if(type == 'seed') {
+          makePlant(cell);
+          game.remove(self);
+        } else {
+          underground.add(self);
+        }
+      },
+      
+      gettableBy: function(getter) {
+        return true;
       }
     });
 
     Module.Containable(self, container);
 
     $(self).bind('buried', function(e, cell, underground) {
-      console.log('burried');
-      console.log(underground);
-      if(type == 'seed') {
-        makePlant(cell);
-        game.remove(self);
-      } else {
-        underground.add(self);
-      }
+      self.bury(cell, underground);
     });
 
     return self;
@@ -208,11 +214,14 @@
         state: function() {
           return state;
         },
-        planted: true // TODO: Improve
+
+        gettableBy: function(getter) {
+          return false;
+        }
       });
 
       $self = $(self);
-      game.add(self, 'plant');
+      game.add(self, 'plant', true);
       return self;
     };
 
@@ -241,7 +250,7 @@
     });
 
     $self = $(self);
-    game.add(self, 'clock');
+    game.add(self, 'clock', true);
 
     return self;
   };
@@ -257,8 +266,12 @@
 
     var self;
     var pickUp = function(object) {
-      if(object && object != self) {
-        inventory.add(object);
+      if(object) {
+        if(!object.gettableBy) {
+          debugger;
+        } else if (object.gettableBy(self)) {
+          inventory.add(object);
+        }
       }
     };
 
@@ -266,7 +279,7 @@
       var item = inventory.contents().rand();
 
       if(item) {
-        console.log('bury');
+        //console.log('bury');
         self.cell().bury(item);
       }
     };
@@ -274,18 +287,25 @@
     self = $.extend(Item(game, startingCell), {
       update: function() {
         if(self.cell().contents().length > 1) {
+          var toPickUp = [];
+
           $.each(self.cell().contents(), function(i, object) {
             // TODO: Improve
             if(object && !object.planted) {
-              pickUp(object);
+              toPickUp.push(object);
             }
 
             if(object == undefined) {
+              debugger;
               // TODO: Get to the bottom of things...
               console.log('undefined object');
               console.log(self.cell());
               console.log(self.cell().contents());
             }
+          });
+
+          toPickUp.eachWithIndex(function(object, index) {
+            pickUp(object);
           });
         }
 
@@ -315,6 +335,14 @@
 
       image: function() {
         return 'creatures/' + settings.type;
+      },
+
+      bury: function(cell, underground) {
+        cell.add(self);
+      },
+
+      gettableBy: function(getter) {
+        return false;
       }
     });
 
