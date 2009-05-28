@@ -27,7 +27,8 @@ class AuthStoriesTest < ActionController::IntegrationTest
     quiz = Factory.build(:quiz)
     post_via_redirect quizzes_path, :author => quiz.author, :title => quiz.title, :description => quiz.description
     assert_response :success
-    assert_equal(quiz_path(1), path)
+    assert assigns(:quiz)
+    assert_equal(quiz_path(assigns(:quiz).id), path)
     assert_equal("Successfully created!", flash[:notice])
   end
   
