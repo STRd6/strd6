@@ -14,14 +14,11 @@ class QuizzesController < ResourceController::Base
   end
 
   update.after do
-    expire_page quiz_path(@quiz)
+    remove_cache_files(@quiz)
   end
   
   create.after do
-    #TODO: We really should expire all pages here because the sidebar includes
-    # all quizzes.
-    expire_page quiz_path(@quiz)
-    expire_page formatted_quizzes_path(:format => "rss")
+    remove_cache_files(@quiz)
   end
   
   index.wants.rss { render :type => :builder, :template => "index.rss.builder" }
@@ -30,5 +27,17 @@ class QuizzesController < ResourceController::Base
 
   def collection
     Quiz.all :order => "id DESC"
+  end
+  
+  def remove_cache_files(quiz)
+    #TODO: We really should expire all pages here because the sidebar includes
+    # all quizzes.
+    expire_page quiz_path(quiz)
+    expire_page formatted_quizzes_path(:format => "rss")
+    
+    #Add any other static pages to expire here
+    expire_page(:action=>"about", :controller=>"site")
+    expire_page(quizzes_path)
+    expire_page(root_path)
   end
 end

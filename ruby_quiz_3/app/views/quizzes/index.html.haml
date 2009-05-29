@@ -3,3 +3,5 @@
     - @quizzes.each do |quiz|
       %li{:value => quiz.id}
         = link_to quiz.title, quiz
+        - if session[:user_id]
+          %small= link_to "edit", edit_quiz_path(quiz)
