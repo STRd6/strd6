@@ -14,6 +14,6 @@ class SiteController < ApplicationController
   end
   
   def expire_cache
-    expire_page :action => "about", :controller => "site"
+    expire_page :action => "about"
   end
 end
