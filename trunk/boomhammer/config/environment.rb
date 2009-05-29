@@ -10,7 +10,7 @@ Rails::Initializer.run do |config|
   config.gem 'thoughtbot-shoulda', :lib => 'shoulda'
   config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl'
   config.gem 'ruby-openid', :lib => 'openid'
-#  config.gem 'rmagick', :lib => 'RMagick'
+  config.gem 'rmagick', :lib => 'RMagick'
   config.gem 'renum'
   config.gem 'mocha'
   config.gem 'mislav-will_paginate', :lib => 'will_paginate', :source => 'http://gems.github.com'
