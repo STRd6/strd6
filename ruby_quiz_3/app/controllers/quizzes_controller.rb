@@ -1,12 +1,13 @@
-class QuizzesController < ResourceController::Base
+class QuizzesController < ResourceController::Base #< ApplicationController #
+  include AuthenticatedSystem
   caches_page :show, :index
-  
+
   before_filter :login_required, :except => [ :show, :index ]
-  
+
   index.before do
-     @current_quiz = Quiz.current_quiz unless @current_quiz
+    @current_quiz = Quiz.current_quiz unless @current_quiz
   end
-  
+   
   show.before do
     @current_quiz = Quiz.current_quiz unless @current_quiz
     @quiz = Quiz.last unless @quiz
@@ -16,11 +17,11 @@ class QuizzesController < ResourceController::Base
   update.after do
     remove_cache_files(@quiz)
   end
-  
+   
   create.after do
     remove_cache_files(@quiz)
   end
-  
+   
   index.wants.rss { render :type => :builder, :template => "index.rss.builder" }
 
   protected
