@@ -350,11 +350,9 @@
         switch(cell.state()) {
           case Cell.State.ground:
             return 1;
-            break;
           default:
             // undefined because: (undefined >= 0) === false
             return undefined;
-            break;
         }
       },
 
@@ -368,6 +366,10 @@
 
       gettableBy: function(getter) {
         return false;
+      },
+
+      click: function() {
+        $(self.view).addClass('ghost');
       }
     });
 
