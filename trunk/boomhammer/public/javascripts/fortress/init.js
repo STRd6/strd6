@@ -1,10 +1,30 @@
 (function($) {
   var cellData = [];
 
+  var cellHeights = DiamondSquare(4);
+
+  var totalHeight = cellHeights.map(function(row) {
+    return row.sum();
+  }).sum();
+
+  var avgHeight = totalHeight / 256;
+
+  var state;
+  var z = 0.2;
+
   for(var i = 0; i < 256; i++) {
+    var cellHeight = cellHeights[i%16][Math.floor(i/16)];
+    if(cellHeight > avgHeight + z) {
+      state = Cell.State.mountain;
+    } else if(cellHeight < avgHeight - z) {
+      state = Cell.State.water;
+    } else {
+      state = Cell.State.ground;
+    }
+
     cellData.push({
       variety: rand(3) + 1,
-      state: [Cell.State.ground, Cell.State.ground, Cell.State.ground, Cell.State.mountain, Cell.State.water].rand()
+      state: state
     });
   }
 
@@ -108,6 +128,7 @@
     Creature(game, game.cells().rand(), {type: 'chipmunk'});
     Creature(game, game.cells().rand(), {type: 'chipmunk'});
     Creature(game, game.cells().rand(), {type: 'chipmunk'});
+    Creature(game, game.cells().rand(), {type: 'farmer'});
 
     Clock(game);
 
