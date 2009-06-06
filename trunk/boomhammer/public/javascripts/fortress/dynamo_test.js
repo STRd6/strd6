@@ -1,11 +1,13 @@
 /*global document, jQuery, rand, ok, test */
 
 (function($) {
-  $(document).ready(function() {
+  $(function() {
     test("#rand", function() {
       var n = rand(2);
-
       ok(n === 0 || n === 1, "rand(2) gives 0 or 1");
+
+      var f = rand();
+      ok(f <= 1 || f >= 0, "rand() gives numbers between 0 and 1");
     });
 
     test("Array#rand", function() {
@@ -28,10 +30,20 @@
       ok(array.length === 1, "array = [1,3]; array.remove(3); array.length === 1");
     });
 
+    test("Array#map", function() {
+      ok([1].map(function(x) { return x + 1} )[0] == 2);
+    });
+
     test("Math.mod", function() {
       ok(Math.mod(0, 16) === 0, "0 mod 16 === 0");
       ok(Math.mod(15, 16) === 15, "15 mod 16 === 15");
       ok(Math.mod(-1, 16) === 15, "-1 mod 16 === 15");
+    });
+
+    test("Number#times", function() {
+      var count = 0;
+      (3).times(function(){ count++; });
+      equals(3, count);
     });
 
     test("Function#curry", function() {

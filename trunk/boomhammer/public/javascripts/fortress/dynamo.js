@@ -1,12 +1,17 @@
 /*global jQuery */
 
 /**
- * Returns random integers from [0, n)
+ * Returns random integers from [0, n) if n is given.
+ * Otherwise returns random float between 0 and 1.
  *
  * @param {Number} n
  */
 function rand(n) {
-  return Math.floor(n * Math.random());
+  if(n) {
+    return Math.floor(n * Math.random());
+  } else {
+    return Math.random();
+  }
 }
 
 /**
@@ -70,6 +75,36 @@ Array.prototype.select = function(iterator, context) {
 };
 
 /**
+ * Map the elements of the array to the return value of the iterator.
+ *
+ * @param {Function} iterator
+ * @param [context] Optional context parameter in which to call iterator.
+ * @return The mapped elements.
+ */
+Array.prototype.map = function(iterator, context) {
+  var results = [];
+  for(var i = 0; i < this.length; i++) {
+    results.push(iterator.call(context, this[i], i));
+  }
+  return results;
+};
+
+/**
+ * Map the elements of the array to the return value of the iterator. Operate
+ * _in place_. The D stands for destructive.
+ *
+ * @param {Function} iterator
+ * @param [context] Optional context parameter in which to call iterator.
+ * @return The mapped elements.
+ */
+Array.prototype.mapD = function(iterator, context) {
+  for(var i = 0; i < this.length; i++) {
+    this[i] = (iterator.call(context, this[i], i));
+  }
+  return this;
+};
+
+/**
  * Call the given iterator once for each element in the array,
  * passing in the element as the first argument and the index as the second.
  *
@@ -83,6 +118,13 @@ Array.prototype.eachWithIndex = function(iterator, context) {
   }
   return this;
 };
+
+Number.prototype.times = function(iterator, context) {
+  for(var i = 0; i < this; i++) {
+    iterator.call(context, i);
+  }
+  return i;
+}
 
 Function.prototype.curry = function() {
   var fn = this, args = Array.prototype.slice.call(arguments);
