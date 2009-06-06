@@ -11,6 +11,7 @@
     var cells = [];
     var objects = [];
     var activeObjects = [];
+    var slowObjects = [];
     var creatures = [];
     var $self;
 
@@ -48,6 +49,16 @@
             obj.update();
           }
         }
+
+        if(counter % 10 === 0) {
+          for(var index = 0, len = slowObjects.length; index < len; ++index) {
+            var obj = slowObjects[index];
+            if(obj) {
+              obj.update();
+            }
+          }
+        }
+
         updating = false;
       }
     };
@@ -75,15 +86,17 @@
         objects.push(gameObject);
         $self.trigger('objectAdded', [gameObject, type]);
 
-        if(active) {
+        if(active == 1) {
           activeObjects.push(gameObject);
+        } else if(active == 10) {
+          slowObjects.push(gameObject);
         }
         
         return self;
       },
 
       addCell: function(cell) {
-        self.add(cell, 'cell', false);
+        self.add(cell, 'cell', 10);
         cells.push(cell);
         return self;
       },

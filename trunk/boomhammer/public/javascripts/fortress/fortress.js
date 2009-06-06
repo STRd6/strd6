@@ -76,6 +76,13 @@
 
         image: function() {
           return 'terrain/' + state + settings.variety;
+        },
+
+        update: function() {
+          if(state == State.water) {
+            settings.variety = rand(3) + 1;
+            $self.trigger('changed');
+          }
         }
       });
 
