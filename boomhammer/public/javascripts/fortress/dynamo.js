@@ -105,6 +105,18 @@ Array.prototype.mapD = function(iterator, context) {
 };
 
 /**
+ * Sum the elements of the array.
+ * @return The sum of the elements.
+ */
+Array.prototype.sum = function() {
+  var sum = 0; // Identity element for + operator
+  for(var i = 0; i < this.length; i++) {
+    sum += this[i];
+  }
+  return sum;
+};
+
+/**
  * Call the given iterator once for each element in the array,
  * passing in the element as the first argument and the index as the second.
  *
