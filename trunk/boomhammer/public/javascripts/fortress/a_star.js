@@ -1,13 +1,33 @@
 /*global PriorityQueue */
 (function() {
+  /**
+   * A method that always returns zero. Useful as a default heuristic to make
+   * the search algorithm Djikstra's algorithm when no other heuristic is given.
+   * @private
+   * @returns 0
+   */
   var zeroHeuristic = function() {
     return 0;
   };
 
+  /**
+   * A method tha always returns one. Useful as the default cost to move through
+   * a node if no other cost function is given.
+   * @private
+   * @returns 1
+   */
   var oneCost = function() {
     return 1;
   }
 
+  /**
+   * A helper method to reconstruct the optimal path to the goal node.
+   *
+   * @private
+   * @param cameFrom The node immediately previous to the current node.
+   * @param currentNode The current node to reconstruct the path to.
+   * @returns An array containing the path to and including currentNode.
+   */
   function reconstructPath(cameFrom, currentNode) {
     if(cameFrom[currentNode]) {
       var path = reconstructPath(cameFrom, cameFrom[currentNode]);
