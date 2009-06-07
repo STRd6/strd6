@@ -75,36 +75,6 @@ Array.prototype.select = function(iterator, context) {
 };
 
 /**
- * Map the elements of the array to the return value of the iterator.
- *
- * @param {Function} iterator
- * @param [context] Optional context parameter in which to call iterator.
- * @return The mapped elements.
- */
-Array.prototype.map = function(iterator, context) {
-  var results = [];
-  for(var i = 0; i < this.length; i++) {
-    results.push(iterator.call(context, this[i], i));
-  }
-  return results;
-};
-
-/**
- * Map the elements of the array to the return value of the iterator. Operate
- * _in place_. The D stands for destructive.
- *
- * @param {Function} iterator
- * @param [context] Optional context parameter in which to call iterator.
- * @return The mapped elements.
- */
-Array.prototype.mapD = function(iterator, context) {
-  for(var i = 0; i < this.length; i++) {
-    this[i] = (iterator.call(context, this[i], i));
-  }
-  return this;
-};
-
-/**
  * Sum the elements of the array.
  * @return The sum of the elements.
  */
