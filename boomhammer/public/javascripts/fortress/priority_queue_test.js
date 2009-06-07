@@ -41,5 +41,20 @@
       equals(queue.pop(), decent, "then next best");
       equals(queue.pop(), bad, "then next");
     });
+
+    test("PriorityQueue#pop with low => true", function() {
+      var queue = PriorityQueue({low: true});
+      var good = {benefit: 6};
+      var decent = {benefit: 3};
+      var bad = {benefit: 1};
+
+      queue.push(good, 1);
+      queue.push(decent, 5);
+      queue.push(bad, 10);
+
+      equals(queue.pop(), good, "Start with best");
+      equals(queue.pop(), decent, "then next best");
+      equals(queue.pop(), bad, "then next");
+    });
   });
 })(jQuery);
