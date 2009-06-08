@@ -135,4 +135,3 @@
     game.start();
   });
 })(jQuery);
-})(jQuery, STRd6.Fortress);
