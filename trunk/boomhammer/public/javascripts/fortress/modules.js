@@ -83,7 +83,7 @@
         },
 
         pathTo: function(target) {
-          var searchPath = aStar(self.cell(), target, self.game().heuristic, self.cellCost);
+          var searchPath = aStar(self.cell(), target, self.heuristic, self.cellCost);
           path = searchPath || [];
         },
 
