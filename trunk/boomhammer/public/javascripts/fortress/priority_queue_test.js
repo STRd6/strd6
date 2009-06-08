@@ -1,4 +1,4 @@
-/*global document, jQuery, ok, test */
+/*global document, jQuery, ok, equals, test */
 
 (function($) {
   $(function() {

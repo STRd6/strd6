@@ -20,11 +20,11 @@
 
       var state = settings.state;
       var neighbors = [];
-      var buried = Module.Container(GameObject(game));
+      var buried = Module.Container(GameObject());
       game.add(buried);
 
       // Inherit from GameObject
-      var self = $.extend(GameObject(game, 'cell'), {
+      var self = $.extend(GameObject(), {
         click: function(params) {
 
           if(params.action == 'water') {
@@ -112,7 +112,7 @@
       Plant(game, cell, {type: kind});
     };
 
-    var self = $.extend(GameObject(game), {
+    var self = $.extend(GameObject(), {
       click: function(params) {
         var inventory = params.inventory;
 
@@ -128,7 +128,7 @@
       bury: function(cell, underground) {
         if(type == 'seed') {
           makePlant(cell);
-          game.remove(self);
+          $(self).trigger("remove");
         } else {
           underground.add(self);
         }
@@ -185,8 +185,8 @@
       };
 
       var makeSeed = function() {
-        var seed = Item(self.game(), self.container(), {type: 'seed', kind: type});
-        self.game().add(seed, 'item');
+        var seed = Item(game, self.container(), {type: 'seed', kind: type});
+        game.add(seed, {eventOptions: 'item'});
       };
 
       var die = function() {
@@ -194,7 +194,7 @@
         makeSeed();
 
         // Remove from game
-        self.game().remove(self);
+        $self.trigger("remove");
       };
 
       self = $.extend(Item(game, startingCell), {
@@ -210,7 +210,7 @@
           } else if(age <= 400) {
             setState(State.bloom);
             if(rand(50) == 0) {
-              game.add(Item(game, startingCell, {type: 'food', kind: 'fruit'}));
+              game.add(Item(game, startingCell, {type: 'food', kind: 'fruit'}), {eventOptions: 'item'});
             }
           } else if(age <= 500) {
             die();
@@ -231,7 +231,7 @@
       });
 
       $self = $(self);
-      game.add(self, 'plant', true);
+      game.add(self, {eventOptions: 'plant', updatable: true});
       return self;
     };
 
@@ -244,7 +244,7 @@
     var $self;
     var age = 0;
 
-    var self = $.extend(GameObject(game), {
+    var self = $.extend(GameObject(), {
       update: function() {
         age++;
         $self.trigger('changed');
@@ -260,7 +260,7 @@
     });
 
     $self = $(self);
-    game.add(self, 'clock', true);
+    game.add(self, {eventOptions: 'clock', updatable: true});
 
     return self;
   };
@@ -271,7 +271,7 @@
       type: 'dog'
     }, options);
 
-    var inventory = Module.Container(GameObject(game));
+    var inventory = Module.Container(GameObject());
     game.add(inventory, 'inventory');
 
     var self;
