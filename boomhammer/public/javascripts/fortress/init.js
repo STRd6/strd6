@@ -110,11 +110,11 @@
           Plant(game, cell, {type: [Plant.Type.bush, Plant.Type.tree].rand()});
         } else if(roll === 1) {
           var seed = Item(game, cell, {type: 'seed', kind: [Plant.Type.bush, Plant.Type.tree].rand()});
-          game.add(seed, 'item');
+          game.add(seed, {eventOptions: 'item'});
         }
       } else if(cell.state() == Cell.State.mountain && rand(5) === 0) {
         var item = Item(game, cell, {type: 'gem', kind: ['ruby', 'sapphire', 'emerald', 'gold'].rand()});
-        game.add(item);
+        game.add(item, {eventOptions: 'item'});
         cell.bury(item);
       }
     }

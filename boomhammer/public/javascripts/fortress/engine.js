@@ -11,7 +11,7 @@
     var cells = [];
     var objects = [];
     var activeObjects = [];
-    var slowObjects = [];
+    var toRemove = [];
     var creatures = [];
     var $self;
 
@@ -36,7 +36,19 @@
       }
 
       return x + y;
-    }
+    };
+
+    var remove = function(object) {
+      activeObjects.remove(object);
+      var removedObject = objects.remove(object);
+
+      if(removedObject !== undefined) {
+        $self.trigger("objectRemoved", [removedObject]);
+        $(removedObject).trigger('removedFromGame');
+      }
+
+      return removedObject;
+    };
 
     var update = function() {
       if(!updating) {
@@ -45,19 +57,12 @@
 
         for(var index = 0, len = activeObjects.length; index < len; ++index) {
           var obj = activeObjects[index];
-          if(obj) {
-            obj.update();
-          }
+          obj.update();
         }
 
-        if(counter % 10 === 0) {
-          for(var index = 0, len = slowObjects.length; index < len; ++index) {
-            var obj = slowObjects[index];
-            if(obj) {
-              obj.update();
-            }
-          }
-        }
+        $.each(toRemove, function(index, object) {
+          remove(object);
+        });
 
         updating = false;
       }
@@ -82,27 +87,33 @@
         }
       },
 
-      add: function(gameObject, type, active) {
-        objects.push(gameObject);
-        $self.trigger('objectAdded', [gameObject, type]);
+      update: update,
 
-        if(active == 1) {
+      add: function(gameObject, options) {
+        options = options || {};
+
+        $(gameObject).bind("remove", function() {
+          toRemove.push(gameObject);
+        });
+
+        objects.push(gameObject);
+        $self.trigger('objectAdded', [gameObject, options.eventOptions]);
+
+        if(options.updatable) {
           activeObjects.push(gameObject);
-        } else if(active == 10) {
-          slowObjects.push(gameObject);
         }
         
         return self;
       },
 
       addCell: function(cell) {
-        self.add(cell, 'cell', 10);
+        self.add(cell, {updatable: false, eventOptions: 'cell'});
         cells.push(cell);
         return self;
       },
 
       addCreature: function(creature) {
-        self.add(creature, 'creature', true);
+        self.add(creature, {updatable: true, eventOptions: 'creature'});
         creatures.push(creature);
         return self;
       },
@@ -143,18 +154,6 @@
         return objects;
       },
 
-      remove: function(object) {
-        activeObjects.remove(object);
-        var removedObject = objects.remove(object);
-
-        if(removedObject !== undefined) {
-          $self.trigger('objectRemoved', [removedObject]);
-          $(removedObject).trigger('removedFromGame');
-        }
-
-        return removedObject;
-      },
-
       log: function(message) {
         console.log(message);
       }
@@ -169,12 +168,11 @@
     var id = 0;
 
     /*global GameObject */
-    GameObject = function(game) {
+    GameObject = function() {
       var self = {
         // Empty update by default
         update: function() {},
         click: function() {},
-        game: function() {return game;},
         image: function() {},
         objectId: '#<GameObject:' + (id++) + '>',
         toString: function() {
