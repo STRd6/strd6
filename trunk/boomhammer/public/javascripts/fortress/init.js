@@ -28,7 +28,7 @@
     });
   }
 
-  $(document).ready(function() {
+  $(function() {
     var action = 'path';
     var selectedCreature;
 
@@ -135,3 +135,4 @@
     game.start();
   });
 })(jQuery);
+})(jQuery, STRd6.Fortress);
