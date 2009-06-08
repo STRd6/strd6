@@ -190,5 +190,30 @@
       equals(bar.getProtoVal(), 2, "No shared proto value");
       equals(bar.getMyVal(), 2);
     });
+
+    test("this context", function(){
+      function Foo() {
+        this.x = 1;
+      }
+
+      Foo.prototype.t = 't';
+
+      function Bar() {
+        this.y = 'a';
+        Foo.apply(this);
+      }
+
+      Bar.prototype = new Foo();
+      Bar.prototype.b = 'b';
+
+      var bar = new Bar();
+
+      equals(bar.x, 1);
+      equals(bar.y, 'a');
+      equals(bar.t, 't');
+      equals(bar.b, 'b');
+      equals(bar.constructor, Foo);
+
+    });
   });
 })(jQuery);
