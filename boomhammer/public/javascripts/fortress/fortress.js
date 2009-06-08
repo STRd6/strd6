@@ -47,7 +47,7 @@
         },
 
         dig: function() {
-          if(state == State.mountain && rand(5) == 0) {
+          if(state == State.mountain && rand(5) === 0) {
             self.setState(State.ground);
             $.each(buried.contents(), function(i, object) {
               self.add(object);
@@ -103,7 +103,7 @@
     var settings = $.extend({
       type: 'gem',
       kind: 'ruby'
-    }, options)
+    }, options);
 
     var type = settings.type;
     var kind = settings.kind;
@@ -209,7 +209,7 @@
             setState(State.large);
           } else if(age <= 400) {
             setState(State.bloom);
-            if(rand(50) == 0) {
+            if(rand(50) === 0) {
               game.add(Item(game, startingCell, {type: 'food', kind: 'fruit'}), {eventOptions: 'item'});
             }
           } else if(age <= 500) {
@@ -272,13 +272,13 @@
     }, options);
 
     var inventory = Module.Container(GameObject());
-    game.add(inventory, 'inventory');
+    game.add(inventory, {eventOptions: 'inventory'});
 
     var self;
     var pickUp = function(object) {
       if(object) {
         if(!object.gettableBy) {
-          debugger;
+          //debugger;
         } else if (object.gettableBy(self)) {
           inventory.add(object);
         }
@@ -313,9 +313,13 @@
       return foodCount > 0;
     };
     
-    var eatFood = function() {
+    function eatFood() {
       
-    };
+    }
+    
+    function findFood() {
+      
+    }
 
     var thinkAndAct = function() {
       if(hungry()) {
@@ -333,7 +337,7 @@
       update: function() {
         if(self.cell().contents().length > 1) {
           var toPickUp = self.cell().contents().select(function(object) {
-            return (object && !object.planted)
+            return (object && !object.planted);
           });
 
           toPickUp.eachWithIndex(function(object, index) {
@@ -354,14 +358,15 @@
       },
 
       cellCost: function(cell) {
-        switch(cell.state()) {
-          case Cell.State.ground:
-            return 1;
-          default:
-            // undefined because: (undefined >= 0) === false
-            return undefined;
+        if(cell.state() === Cell.State.ground) {
+          return 1;
+        } else {
+          // undefined because: (undefined >= 0) === false
+          return undefined;
         }
       },
+
+      heuristic: game.heuristic,
 
       image: function() {
         return 'creatures/' + settings.type;
