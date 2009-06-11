@@ -1,41 +1,49 @@
 (function($) {
-  var cellData = [];
+  function generateCellData() {
+    var cellData = [];
 
-  var cellHeights = DiamondSquare(4);
+    var cellHeights = DiamondSquare(4);
 
-  var totalHeight = cellHeights.map(function(row) {
-    return row.sum();
-  }).sum();
+    var totalHeight = cellHeights.map(function(row) {
+      return row.sum();
+    }).sum();
 
-  var avgHeight = totalHeight / 256;
+    var avgHeight = totalHeight / 256;
 
-  var state;
-  var z = 0.2;
+    var state;
+    var z = 0.2;
 
-  for(var i = 0; i < 256; i++) {
-    var cellHeight = cellHeights[i%16][Math.floor(i/16)];
-    if(cellHeight > avgHeight + z) {
-      state = Cell.State.mountain;
-    } else if(cellHeight < avgHeight - z) {
-      state = Cell.State.water;
-    } else {
-      state = Cell.State.ground;
+    for(var i = 0; i < 256; i++) {
+      var cellHeight = cellHeights[i%16][Math.floor(i/16)];
+      if(cellHeight > avgHeight + z) {
+        state = Cell.State.mountain;
+      } else if(cellHeight < avgHeight - z) {
+        state = Cell.State.water;
+      } else {
+        state = Cell.State.ground;
+      }
+
+      cellData.push({
+        variety: rand(3) + 1,
+        state: state
+      });
     }
 
-    cellData.push({
-      variety: rand(3) + 1,
-      state: state
-    });
+    return cellData;
   }
+
+  var cellData = generateCellData();
 
   $(function() {
     var action = 'path';
     var selectedCreature;
+    digQueue = [];
 
     var clickParameters = function() {
       return {
         action: action,
-        creature: selectedCreature
+        creature: selectedCreature,
+        digQueue: digQueue
       };
     };
 

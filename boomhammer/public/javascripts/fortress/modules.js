@@ -75,6 +75,9 @@
         randomMove: function() {
           if(self.container() && self.container().neighbors) {
             self.moveTo(self.container().neighbors().rand());
+            return true;
+          } else {
+            return false;
           }
         },
 
@@ -88,8 +91,8 @@
         },
 
         followPath: function() {
-          if(!self.container()) {
-            return;
+          if(!self.container() || !self.onPath()) {
+            return false;
           }
 
           if(path.length > 0) {
@@ -97,9 +100,13 @@
 
             if(self.container().neighbors().indexOf(target) > -1) {
               self.moveTo(target);
+              return true;
             } else {
               // Path borkd!
+              return false;
             }
+          } else {
+            return false;
           }
         }
       });

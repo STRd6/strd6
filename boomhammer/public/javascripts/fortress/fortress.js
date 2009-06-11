@@ -26,19 +26,24 @@
       // Inherit from GameObject
       var self = $.extend(GameObject(), {
         click: function(params) {
+          switch(params.action) {
+            case 'water':
+              self.setState(State.water);
 
-          if(params.action == 'water') {
-            self.setState(State.water);
-
-            $.each(self.neighbors, function(i, object) {
-              object.setState(State.water);
-            });
-          } else if(params.action == 'path') {
-            if(params.creature) {
-              params.creature.pathTo(self);
-            }
-          } else if(params.action == 'dig') {
-            self.dig();
+              $.each(self.neighbors, function(i, object) {
+                object.setState(State.water);
+              });
+              break;
+            case 'path':
+              if(params.creature) {
+                params.creature.pathTo(self);
+              }
+              break;
+            case 'dig':
+              if(state == State.mountain) {
+                params.digQueue.push(self);
+              }
+              break;
           }
         },
 
@@ -135,7 +140,11 @@
       },
       
       gettableBy: function(getter) {
-        return true;
+        if(self.container() == getter.container()) {
+          return true;
+        } else {
+          return false;
+        }
       }
     });
 
@@ -209,7 +218,7 @@
             setState(State.large);
           } else if(age <= 400) {
             setState(State.bloom);
-            if(rand(50) === 0) {
+            if(rand(100) === 0) {
               game.add(Item(game, startingCell, {type: 'food', kind: 'fruit'}), {eventOptions: 'item'});
             }
           } else if(age <= 500) {
@@ -275,23 +284,34 @@
     game.add(inventory, {eventOptions: 'inventory'});
 
     var self;
-    var pickUp = function(object) {
-      if(object) {
-        if(!object.gettableBy) {
-          //debugger;
-        } else if (object.gettableBy(self)) {
-          inventory.add(object);
-        }
-      }
-    };
 
-    var bury = function() {
+    function pickUp(object) {
+      if(object) {
+        if(object.gettableBy(self)) {
+          inventory.add(object);
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }
+
+    function bury() {
       var item = inventory.contents().rand();
 
-      if(item) {
+      if(item && rand(inventory.contents().length + 2) > 1) {
         self.cell().bury(item);
+        return true;
+      } else {
+        return false;
       }
-    };
+    }
+
+    function wait() {
+      return rand(4) === 0;
+    }
 
     var fullLevel = 500;
     var foodLevel = 300;
@@ -335,25 +355,16 @@
 
     self = $.extend(Item(game, startingCell), {
       update: function() {
-        if(self.cell().contents().length > 1) {
-          var toPickUp = self.cell().contents().select(function(object) {
-            return (object && !object.planted);
-          });
+        if(pickUp(self.cell().contents().rand())) {
 
-          toPickUp.eachWithIndex(function(object, index) {
-            pickUp(object);
-          });
-        }
+        } else if(wait()) {
 
-        if(self.onPath()) {
-          self.followPath();
-        } else {
-          var roll = rand(10);
-          if(roll <= 2) {
-            self.randomMove();
-          } else if(roll === 3) {
-            bury();
-          }
+        } else if(self.followPath()) {
+
+        } else if(bury()) {
+
+        } else if(self.randomMove()) {
+
         }
       },
 
