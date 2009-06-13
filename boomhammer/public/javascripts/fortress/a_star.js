@@ -45,7 +45,7 @@
    * Requires `PriorityQueue`.
    *
    * `start` and `goal` are nodes that must adhere to the following:
-   *   unique toString() method for each instance.
+   *   unique toString() method for each node instance.
    *   neighbors method that returns nodes neighbors
    *
    * The optional `heuristic` must accept two nodes as parameters and return a
@@ -113,4 +113,71 @@
     }
     return null;
   };
+
+  /*global uniformCostSearch */
+  /**
+   * Uniform Cost Search implementation.
+   *
+   * Requires `PriorityQueue`.
+   *
+   * `start` is a node that must adhere to the following:
+   *   unique toString() method for each node instance.
+   *   neighbors method that returns nodes neighbors
+   *
+   * @param start The cell to start the search from.
+   * @param goal {Function} Returns true if when passed a cell that cell is a goal cell.
+   * @param cost {Function} Returns the cost of entering the passed in cell.
+   */
+  uniformCostSearch = function(start, goal, cost) {
+    cost = cost || oneCost;
+
+    var openSet = new PriorityQueue({low: true}); // The set of tentative nodes to be evaluated.
+    var closedSet = {};
+    var cameFrom = {};
+
+    var gScore = {};
+
+    gScore[start] = 0;
+
+    openSet.push(start, gScore[start]);
+
+    while(!openSet.empty()) {
+      var currentNode = openSet.pop();
+
+      if(goal(currentNode)) {
+        return reconstructPath(cameFrom, currentNode);
+      }
+
+      closedSet[currentNode] = true;
+
+      var neighbors = currentNode.neighbors();
+      for(var index = 0, len = neighbors.length; index < len; ++index) {
+        var neighbor = neighbors[index];
+
+        if(neighbor in closedSet) {
+          // next
+        } else {
+          var costToNeighbor = cost(neighbor);
+
+          if(costToNeighbor >= 0) {
+            var gScoreTentative = gScore[currentNode] + costToNeighbor;
+            var tentativeIsBetter = false;
+
+            if(!openSet.includes(neighbor)) {
+              tentativeIsBetter = true;
+            } else if(gScoreTentative < gScore[neighbor]) {
+              tentativeIsBetter = true;
+            }
+
+            if(tentativeIsBetter === true) {
+              cameFrom[neighbor] = currentNode;
+              gScore[neighbor] = gScoreTentative;
+              openSet.push(neighbor, gScore[neighbor]);
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
 })();
