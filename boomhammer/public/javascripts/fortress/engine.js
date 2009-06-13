@@ -167,18 +167,26 @@
   (function() {
     var id = 0;
 
+    /** Empty default methods */
+    var defaults = {
+      update: function() {},
+      click: function() {},
+      image: function() {}
+    };
+
     /*global GameObject */
     GameObject = function() {
-      var self = {
-        // Empty update by default
-        update: function() {},
-        click: function() {},
-        image: function() {},
+      var self = $.extend({
         objectId: '#<GameObject:' + (id++) + '>',
         toString: function() {
           return self.objectId;
-        }
-      };
+        },
+        /**
+         * Housing for instance variables
+         */
+        I: {}
+      }, defaults);
+
       return self;
     };
   })();

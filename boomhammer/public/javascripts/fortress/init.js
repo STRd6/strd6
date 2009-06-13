@@ -1,38 +1,5 @@
-(function($) {
-  function generateCellData() {
-    var cellData = [];
-
-    var cellHeights = DiamondSquare(4);
-
-    var totalHeight = cellHeights.map(function(row) {
-      return row.sum();
-    }).sum();
-
-    var avgHeight = totalHeight / 256;
-
-    var state;
-    var z = 0.2;
-
-    for(var i = 0; i < 256; i++) {
-      var cellHeight = cellHeights[i%16][Math.floor(i/16)];
-      if(cellHeight > avgHeight + z) {
-        state = Cell.State.mountain;
-      } else if(cellHeight < avgHeight - z) {
-        state = Cell.State.water;
-      } else {
-        state = Cell.State.ground;
-      }
-
-      cellData.push({
-        variety: rand(3) + 1,
-        state: state
-      });
-    }
-
-    return cellData;
-  }
-
-  var cellData = generateCellData();
+(function($, F) {
+  var cellData = F.generateCellData();
 
   $(function() {
     var action = 'path';
@@ -129,17 +96,17 @@
 
     game.configureCells();
 
-    selectedCreature = Creature(game, game.cells().rand());
+    selectedCreature = F.Creature(game, game.cells().rand());
 
-    Creature(game, game.cells().rand(), {type: 'raccoon'});
-    Creature(game, game.cells().rand(), {type: 'raccoon'});
-    Creature(game, game.cells().rand(), {type: 'chipmunk'});
-    Creature(game, game.cells().rand(), {type: 'chipmunk'});
-    Creature(game, game.cells().rand(), {type: 'chipmunk'});
-    Creature(game, game.cells().rand(), {type: 'farmer'});
+    F.Creature(game, game.cells().rand(), {type: 'raccoon'});
+    F.Creature(game, game.cells().rand(), {type: 'raccoon'});
+    F.Creature(game, game.cells().rand(), {type: 'chipmunk'});
+    F.Creature(game, game.cells().rand(), {type: 'chipmunk'});
+    F.Creature(game, game.cells().rand(), {type: 'chipmunk'});
+    F.Creature(game, game.cells().rand(), {type: 'farmer'});
 
     Clock(game);
 
     game.start();
   });
-})(jQuery);
+})(jQuery, STRd6.Fortress);
