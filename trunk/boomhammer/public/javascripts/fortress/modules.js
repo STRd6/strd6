@@ -25,6 +25,9 @@
         },
         remove: function(object) {
           return contents.remove(object);
+        },
+        rand: function() {
+          return contents.rand();
         }
       });
     },
