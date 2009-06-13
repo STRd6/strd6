@@ -1,19 +1,20 @@
 /*global jQuery, STRd6 */
 STRd6.Fortress.Creature = (function($, F) {
   var Creature = function(game, startingCell, options) {
-    var settings = $.extend({
+    var self = Item(game, startingCell);
+    var I = self.I;
+
+    $.extend(I, {
       type: 'dog'
     }, options);
 
-    var inventory = Module.Container(GameObject());
-    game.add(inventory, {eventOptions: 'inventory'});
-
-    var self;
+    I.inventory = Module.Container(GameObject());
+    game.add(I.inventory, {eventOptions: 'inventory'});
 
     function pickUp(object) {
       if(object) {
         if(object.gettableBy(self)) {
-          inventory.add(object);
+          I.inventory.add(object);
           return true;
         } else {
           return false;
@@ -24,7 +25,7 @@ STRd6.Fortress.Creature = (function($, F) {
     }
 
     function bury(item) {
-      if(item && STRd6.rand(inventory.contents().length + 2) > 1) {
+      if(item && STRd6.rand(I.inventory.contents().length + 2) > 1) {
         self.cell().bury(item);
         return true;
       } else {
@@ -36,55 +37,15 @@ STRd6.Fortress.Creature = (function($, F) {
       return STRd6.rand(4) !== 0;
     }
 
-    var fullLevel = 500;
-    var foodLevel = 300;
-    var hungerLevel = 100;
-
-    var hungry = function() {
-      return foodLevel < hungerLevel;
-    };
-
-    var hasFood = function() {
-      var foodCount = 0;
-
-      inventory.contents().eachWithIndex(function(item) {
-        if(item.type == "food") {
-          foodCount++;
-        }
-      });
-
-      return foodCount > 0;
-    };
-
-    function eatFood() {
-
-    }
-
-    function findFood() {
-
-    }
-
-    var thinkAndAct = function() {
-      if(hungry()) {
-        if(hasFood()) {
-          eatFood();
-        } else {
-          findFood();
-        }
-      } else {
-        plantSeed();
-      }
-    };
-
-    self = $.extend(Item(game, startingCell), {
+    $.extend(self, {
       update: function() {
-        if(pickUp(self.cell().contents().rand())) {
+        if(pickUp(self.cell().rand())) {
 
         } else if(wait()) {
 
         } else if(self.followPath()) {
 
-        } else if(bury(inventory.contents().rand())) {
+        } else if(bury(I.inventory.rand())) {
 
         } else if(self.randomMove()) {
 
@@ -103,7 +64,7 @@ STRd6.Fortress.Creature = (function($, F) {
       heuristic: game.heuristic,
 
       image: function() {
-        return 'creatures/' + settings.type;
+        return 'creatures/' + I.type;
       },
 
       bury: function(cell, underground) {
