@@ -9,14 +9,13 @@
   - if @current_quiz
     %h2 Current Quiz
     %ol
-      %li{:value => @current_quiz.id}
-        = link_to @current_quiz.title, quiz_path(@current_quiz)
-        %small= link_to "edit", edit_quiz_path(@current_quiz) if session[:user_id]
+      %li{:value => @latest_quiz.id}
+        = link_to @latest_quiz.title, quiz_path(@latest_quiz)
+        %small= link_to "edit", edit_quiz_path(@latest_quiz) if false #session[:user_id]
 
   %h2 Archives
-  %ol
-    - Quiz.has_summary.each do |quiz|
+  %ol#archives
+    - Quiz.all_live.has_summary.each do |quiz|
       %li{:value => quiz.id}
         = link_to quiz.title, quiz
-        - if session[:user_id]
-          %small= link_to "edit", edit_quiz_path(quiz)
+        %small= link_to "edit", edit_quiz_path(quiz) if false

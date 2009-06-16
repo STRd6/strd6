@@ -1,0 +1,13 @@
+.quizzes
+  %h4
+    = link_to "Create a new quiz", new_admin_quiz_path
+    |
+    = link_to "Logout", logout_path
+  %ol
+    - @quizzes.each do |quiz|
+      %li{:value => quiz.id}
+        = admin_quiz_link(quiz)
+        - if session[:user_id]
+          %small
+            =link_to "edit", edit_admin_quiz_path(quiz)  
+            =# link_to "Destroy", quiz, :confirm => 'Are you sure?', :method => :delete

@@ -1,0 +1,6 @@
+= link_to "back to quiz listing", admin_quizzes_path
+
+- form_for @quiz, :url => { :controller=>"admin/quizzes", :method => :post, :action => :create } do |form|
+  = render :partial => form
+  %br
+  = submit_tag "Create"
