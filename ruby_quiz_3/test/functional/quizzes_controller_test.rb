@@ -72,11 +72,8 @@ class QuizzesControllerTest < ActionController::TestCase
       @controller = QuizzesController.new
       @request    = ActionController::TestRequest.new
       @response   = ActionController::TestResponse.new
+      @live_quiz = Factory(:quiz, :summary => "summary here", :live => true)
       login_as("quentin")
-    end
-    
-    should_eventually "redirect to admin controller counterpart" do
-      get :edit, :id => Quiz.first
     end
   end
 end
