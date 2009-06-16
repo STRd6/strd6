@@ -38,7 +38,7 @@ class Test::Unit::TestCase
 end
 
 def login_as(user)
-  @request.session[:user] = user ? users(user).id : nil
+  @request.session[:user_id] = user ? users(user).id : nil
 end
 
 def logout

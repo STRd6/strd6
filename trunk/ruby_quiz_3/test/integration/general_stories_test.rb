@@ -1,10 +1,10 @@
 require 'test_helper'
 
 class GeneralStoriesTest  < ActionController::IntegrationTest
-  context "Show a site page" do
+  context "When viewing a site page it" do
     setup do
-      Factory(:quiz, :summary => "Foo")
-      Factory(:quiz, :title => "Blah", :summary => "Bar")
+      Factory(:quiz, :summary => "Foo", :live => true)
+      Factory(:quiz, :title => "Blah", :summary => "Bar", :live => true)
     end
     
     teardown do
@@ -15,6 +15,13 @@ class GeneralStoriesTest  < ActionController::IntegrationTest
       verify_sidebar_for_path("/about")
       verify_sidebar_for_path("/site/about")
     end
+    
+    should "GET /" do
+      get root_path
+      assert_response :success
+      assert assigns(:quiz)
+      assert_kind_of(Quiz, assigns(:quiz))
+    end
   end
   
   private
@@ -22,10 +29,10 @@ class GeneralStoriesTest  < ActionController::IntegrationTest
   def verify_sidebar_for_path(page)
     get page
     assert_response :success, "Cannot load #{page}"
-    assert_equal(2, Quiz.has_summary.length)
+    #assert_equal(2, Quiz.has_summary.length)
     
     assert_select 'div#sidebar' do 
-      assert_select 'ol' do
+      assert_select 'ol#archives' do
         assert_select 'li', 2
       end
     end

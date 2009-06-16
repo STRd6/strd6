@@ -16,13 +16,18 @@ ActionController::Routing::Routes.draw do |map|
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   map.resources :products
-  map.resources :quizzes
+  map.resources :quizzes, :has_many => :responses
+  map.namespace :admin do |admin|
+    admin.resources :quizzes
+  end
+  
   
   map.root :controller => "quizzes", :action => "show"
   
-  map.connect 'about', :controller => 'site', :action => 'about'
+  map.about 'about', :controller => 'site', :action => 'about'
   map.suggestions 'suggestions', :controller => 'site', :action => 'suggestions'
-
+  map.admin 'admin', :controller => 'admin/quizzes', :action => 'index'
+  
   # Sample resource route with options:
   #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
 

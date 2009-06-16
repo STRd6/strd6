@@ -1,0 +1,22 @@
+= link_to "back to quiz listing", admin_quizzes_path
+%br
+%br
+%h2
+  = @quiz.id
+  = @quiz.title
+  %small
+    \- 
+    = link_to "edit", edit_admin_quiz_url(@quiz)
+
+%h3 Description
+= preserve Maruku.new(@quiz.description).to_html
+
+- unless @quiz.summary.blank?
+  %a{:name => 'summary'}
+  %h3 Summary
+  = preserve Maruku.new(@quiz.summary).to_html
+
+%hr
+%small 
+  posted
+  = @quiz.created_at.to_s(:article)
