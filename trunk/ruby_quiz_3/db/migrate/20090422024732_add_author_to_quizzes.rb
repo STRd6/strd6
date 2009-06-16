@@ -4,14 +4,22 @@ class AddAuthorToQuizzes < ActiveRecord::Migration
 
     Quiz.reset_column_information
 
-    Quiz.find(Array(157..188)).each do |quiz|
-      quiz.author = "Matthew Moss"
-      quiz.save
+    begin
+      Quiz.find(Array(157..188)).each do |quiz|
+        quiz.author = "Matthew Moss"
+        quiz.save
+      end
+    rescue
+      print "An error occurred: ",$!, "\n"
     end
-
-    Quiz.all(:conditions => "id > 188").each do |quiz|
-      quiz.author = "Daniel Moore"
-      quiz.save
+    
+    begin
+      Quiz.all(:conditions => "id > 188").each do |quiz|
+        quiz.author = "Daniel Moore"
+        quiz.save
+      end
+    rescue
+      print "An error occurred: ",$!, "\n"
     end
   end
 
