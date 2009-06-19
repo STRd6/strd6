@@ -48,7 +48,7 @@
   var tools = {
     pencil: {
       name: "Pencil",
-      hotkeys: [],
+      hotkeys: ['P'],
       icon: "/images/draw/pencil.png",
       cursor: "url(/images/draw/pencil.png) 4 14, default",
       mousedown: function(e, color) {
@@ -61,7 +61,7 @@
 
     dropper: {
       name: "Dropper",
-      hotkeys: [],
+      hotkeys: ['I'],
       icon: "/images/draw/dropper.png",
       cursor: "url(/images/draw/dropper.png) 13 13, default",
       mousedown: function(e, currentColor, mode) {
@@ -72,7 +72,7 @@
 
     eraser: {
       name: "Eraser",
-      hotkeys: [],
+      hotkeys: ['E'],
       icon: "/images/draw/eraser.png",
       cursor: "url(/images/draw/eraser.png) 4 11, default",
       mousedown: function() {
@@ -85,7 +85,7 @@
 
     fill: {
       name: "Fill",
-      hotkeys: [],
+      hotkeys: ['F'],
       icon: "/images/draw/fill.png",
       cursor: "url(/images/draw/fill.png) 12 13, default",
       mousedown: function(e, newColor, mode, pixel) {
@@ -143,7 +143,7 @@
       
       function addAction(action) {
         actionsMenu.append(
-          $("<a href='#'>"+ action.name +"</a>")
+          $("<a href='#' title='"+ action.name +"'>"+ action.name +"</a>")
             .addClass('tool')
             .bind("mousedown", function(e) {
               action.perform(canvas);
@@ -195,12 +195,18 @@
       function addTool(tool) {
         var alt = tool.name;
 
-        if(this.hotkeys) {
-          tool.alt += " ("+ tool.hotkeys +")";
+        if(tool.hotkeys) {
+          alt += " ("+ tool.hotkeys +")";
+
+          $(window).keydown(function(e) {
+            if(tool.hotkeys[0].charCodeAt(0) == e.keyCode) {
+              setTool(tool);
+            }
+          });
         }
 
         toolbar.append(
-          $("<img src='"+ tool.icon +"' alt='"+ alt +"'></img>")
+          $("<img src='"+ tool.icon +"' alt='"+ alt +"' title='"+ alt +"'></img>")
             .addClass('tool')
             .bind('mousedown', function(e) {
               setTool(tool);
