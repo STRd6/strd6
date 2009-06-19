@@ -132,6 +132,7 @@
     options = options || {};
     var width = options.width || 16;
     var height = options.height || 16;
+    var initializer = options.initializer;
 
     return this.each(function() {
       var pixie = $(div).addClass('pixie');
@@ -333,6 +334,10 @@
             primaryColorPicker[0].onblur();
           }
         },
+        
+        addAction: addAction,
+
+        addTool: addTool,
 
         setTool: setTool,
 
@@ -359,6 +364,10 @@
           return 'url(data:image/png;base64,' + this.toBase64() + ')';
         }
       });
+
+      if(initializer) {
+        initializer(canvas);
+      }
 
       pixie
         .bind('contextmenu', falseFn)

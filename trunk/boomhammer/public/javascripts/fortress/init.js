@@ -2,9 +2,26 @@
   var cellData = F.generateCellData();
 
   $(function() {
+    $('#pixie').append('<input type="text" id="img_path"></input>');
+    var gameObjects = [];
+    var images = {};
     var action = 'path';
     var selectedCreature;
     digQueue = [];
+
+    jQuery("#pixie-jq").pixie({
+      initializer: function(canvas) {
+        canvas.addAction({
+          name: "Save to Creature",
+          perform: function(canvas) {
+            images[$('#img_path').val()] = canvas.toDataURL();
+            $.each(gameObjects, function() {
+              $(this).trigger('changed');
+            });
+          }
+        });
+      }
+    });
 
     var clickParameters = function() {
       return {
@@ -16,7 +33,12 @@
 
     var spriteUpdate = function(object, view) {
       var pic = object.image();
-      view.css({backgroundImage: "url(/images/dungeon/"+pic+".png)"});
+
+      if(images[pic]) {
+        view.css({backgroundImage: images[pic]});
+      } else {
+        view.css({backgroundImage: "url(/images/dungeon/"+pic+".png)"});
+      }
     };
 
     function createView(object, type) {
@@ -68,6 +90,8 @@
           createView(object, type);
           break;
       }
+
+      gameObjects.push(object);
     });
 
     $(game).bind('objectRemoved', function(e, object) {
