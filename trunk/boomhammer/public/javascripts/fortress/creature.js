@@ -24,10 +24,22 @@ STRd6.Fortress.Creature = (function($, F) {
       }
     }
 
+    function pickUpRandom() {
+      return pickUp(self.cell().rand());
+    }
+
     function bury(item) {
-      if(item && STRd6.rand(I.inventory.contents().length + 2) > 1) {
+      if(item) {
         self.cell().bury(item);
         return true;
+      } else {
+        return false;
+      }
+    }
+
+    function buryRandom() {
+      if(STRd6.rand(I.inventory.size() + 2) > 1) {
+        return bury(I.inventory.rand());
       } else {
         return false;
       }
@@ -37,19 +49,20 @@ STRd6.Fortress.Creature = (function($, F) {
       return STRd6.rand(4) !== 0;
     }
 
+    var AI;
+
     $.extend(self, {
       update: function() {
-        if(pickUp(self.cell().rand())) {
+        var i = 0;
 
-        } else if(wait()) {
-
-        } else if(self.followPath()) {
-
-        } else if(bury(I.inventory.rand())) {
-
-        } else if(self.randomMove()) {
-
+        while(i < AI.length) {
+          if(AI[i].call(self)) {
+            return true;
+          }
+          i++;
         }
+
+        return false;
       },
 
       cellCost: function(cell) {
@@ -81,6 +94,8 @@ STRd6.Fortress.Creature = (function($, F) {
     });
 
     Module.Pathfinder(self);
+
+    AI = [pickUpRandom, self.followPath, wait, buryRandom, self.randomMove];
 
     game.addCreature(self);
     return self;
