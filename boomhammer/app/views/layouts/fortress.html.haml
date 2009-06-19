@@ -6,20 +6,32 @@
     = stylesheet_link_tag :all, :cache => true
     = stylesheet_link_tag 'start/jquery-ui'
     = javascript_include_tag 'jquery', 'jquery-ui', :cache => 'jq'
+    = javascript_tag "jQuery.noConflict();"
     = javascript_include_tag 'fortress/dynamo'
-    = javascript_include_tag 'fortress/set'
+    = javascript_include_tag 'fortress/strd6'
     = javascript_include_tag 'fortress/priority_queue'
     = javascript_include_tag 'fortress/a_star'
     = javascript_include_tag 'fortress/engine'
     = javascript_include_tag 'fortress/modules'
     = javascript_include_tag 'fortress/fortress'
+    = javascript_include_tag 'fortress/creature'
     = javascript_include_tag 'fortress/diamond_square'
+    = javascript_include_tag 'pixie/pixie'
+    = javascript_include_tag 'prototype', 'Pnglet', 'jqcolor'
     = javascript_include_tag 'fortress/init'
 
   %body
     #page
       #content
-        = yield
+        #tabs
+          %ul
+            %li= link_to "Game", "#game"
+            %li= link_to "Editor", "#pixie"
+          #game
+            = yield
+          #pixie
+            #pixie-jq
 
     = render :partial => "components/analytics"
+    = javascript_tag 'jQuery(function() {jQuery("#tabs").tabs(); jQuery("input.color").colorPicker();});'
     = yield :javascript
