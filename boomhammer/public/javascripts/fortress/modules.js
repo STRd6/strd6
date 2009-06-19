@@ -28,6 +28,9 @@
         },
         rand: function() {
           return contents.rand();
+        },
+        size: function() {
+          return contents.length;
         }
       });
     },
