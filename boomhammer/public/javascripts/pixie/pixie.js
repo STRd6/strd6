@@ -872,6 +872,8 @@
    *
    ************************************************************************/
 
+  var imageDir = "../images/pixie/";
+
   var actions = {
     clear: {
       name: "Clear Canvas",
@@ -896,8 +898,8 @@
     return {
       name: "Clone",
       hotkeys: ['C'],
-      icon: "/images/draw/clone.png",
-      cursor: "url(/images/draw/clone.png) 0 0, default",
+      icon: imageDir + "clone.png",
+      cursor: "url("+ imageDir +"clone.png) 0 0, default",
       mousedown: function(e) {
         if(e.shiftKey) {
           cloneX = this.x;
@@ -928,8 +930,8 @@
     pencil: {
       name: "Pencil",
       hotkeys: ['P'],
-      icon: "/images/draw/pencil.png",
-      cursor: "url(/images/draw/pencil.png) 4 14, default",
+      icon: imageDir + "pencil.png",
+      cursor: "url(" + imageDir + "pencil.png) 4 14, default",
       mousedown: function(e, color) {
         this.color(color);
       },
@@ -941,8 +943,8 @@
     brush: {
       name: "Brush",
       hotkeys: ['B'],
-      icon: "/images/draw/paintbrush.png",
-      cursor: "url(/images/draw/paintbrush.png) 4 14, default",
+      icon: imageDir + "paintbrush.png",
+      cursor: "url(" + imageDir + "paintbrush.png) 4 14, default",
       mousedown: function(e, color) {
         this.color(color);
 
@@ -966,8 +968,8 @@
     dropper: {
       name: "Dropper",
       hotkeys: ['I'],
-      icon: "/images/draw/dropper.png",
-      cursor: "url(/images/draw/dropper.png) 13 13, default",
+      icon: imageDir + "dropper.png",
+      cursor: "url(" + imageDir + "dropper.png) 13 13, default",
       mousedown: function() {
         this.canvas.color(this.color());
         this.canvas.setTool(tools.pencil);
@@ -977,8 +979,8 @@
     eraser: {
       name: "Eraser",
       hotkeys: ['E'],
-      icon: "/images/draw/eraser.png",
-      cursor: "url(/images/draw/eraser.png) 4 11, default",
+      icon: imageDir + "eraser.png",
+      cursor: "url(" + imageDir + "eraser.png) 4 11, default",
       mousedown: function() {
         this.color(null);
       },
@@ -990,8 +992,8 @@
     fill: {
       name: "Fill",
       hotkeys: ['F'],
-      icon: "/images/draw/fill.png",
-      cursor: "url(/images/draw/fill.png) 12 13, default",
+      icon: imageDir + "fill.png",
+      cursor: "url(" + imageDir + "fill.png) 12 13, default",
       mousedown: function(e, newColor, pixel) {
         // Store original pixel's color here
         var originalColor = this.color();
@@ -1064,7 +1066,6 @@
       var currentTool = undefined;
       var active = false;
       var mode = undefined;
-      var primaryColor="#000000", secondaryColor="#000000";
       var primaryColorPicker = ColorPicker();
       var secondaryColorPicker = ColorPicker();
 
@@ -1131,7 +1132,6 @@
           if(target.is(".swatch")) {
             canvas.color(target.css('backgroundColor'), e.button !== 0);
           }
-          e.preventDefault();
         })
         .bind("mouseup", function(e) {
           active = false;
@@ -1172,16 +1172,12 @@
                 } else {
                   mode = "S";
                 }
+
+                e.preventDefault();
               })
               .bind("mousedown mouseup mouseenter", function(e) {
                 if(active && currentTool && currentTool[e.type]) {
-                  var color;
-                  if(mode == "P") {
-                    color = primaryColor;
-                  } else {
-                    color = secondaryColor;
-                  }
-                  currentTool[e.type].call(pixel, e, color, pixel);
+                  currentTool[e.type].call(pixel, e, canvas.color(), pixel);
                 }
               });
 
@@ -1247,10 +1243,14 @@
           // Handle cases where nothing, or only true or false is passed in
           // i.e. when getting the alternate color `canvas.color(true)`
           if(arguments.length === 0 || color === false) {
-            return mode == "S" ? secondaryColor : primaryColor;
+            return mode == "S" ? 
+              secondaryColorPicker.css('backgroundColor') :
+              primaryColorPicker.css('backgroundColor');
           } else if(color === true) {
             // Switch color choice when alterate is true
-            return mode == "S" ? primaryColor : secondaryColor;
+            return mode == "S" ?
+              primaryColorPicker.css('backgroundColor') :
+              secondaryColorPicker.css('backgroundColor');
           }
 
           var parsedColor;
@@ -1263,11 +1263,9 @@
           if((mode == "S") ^ alternate) {
             secondaryColorPicker.val(parsedColor);
             secondaryColorPicker[0].onblur();
-            secondaryColor = color;
           } else {
             primaryColorPicker.val(parsedColor);
             primaryColorPicker[0].onblur();
-            primaryColor = color;
           }
 
           return this;
