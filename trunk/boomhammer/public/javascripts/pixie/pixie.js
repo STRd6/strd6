@@ -969,7 +969,7 @@
       icon: "/images/draw/dropper.png",
       cursor: "url(/images/draw/dropper.png) 13 13, default",
       mousedown: function() {
-        this.canvas.setColor(this.color());
+        this.canvas.color(this.color());
         this.canvas.setTool(tools.pencil);
       }
     },
@@ -1129,13 +1129,9 @@
           var target = $(e.target);
           
           if(target.is(".swatch")) {
-            if(e.button === 0) {
-              mode = "P";
-            } else {
-              mode = "S";
-            }
-            canvas.setColor(target.css('backgroundColor'));
+            canvas.color(target.css('backgroundColor'), e.button !== 0);
           }
+          e.preventDefault();
         })
         .bind("mouseup", function(e) {
           active = false;
@@ -1247,7 +1243,16 @@
           ].join('').toUpperCase();
         },
 
-        setColor: function(color) {
+        color: function(color, alternate) {
+          // Handle cases where nothing, or only true or false is passed in
+          // i.e. when getting the alternate color `canvas.color(true)`
+          if(arguments.length === 0 || color === false) {
+            return mode == "S" ? secondaryColor : primaryColor;
+          } else if(color === true) {
+            // Switch color choice when alterate is true
+            return mode == "S" ? primaryColor : secondaryColor;
+          }
+
           var parsedColor;
           if(color[0] != "#") {
             parsedColor = "#" + (this.parseColor(color) || "FFFFFF");
@@ -1255,7 +1260,7 @@
             parsedColor = color;
           }
 
-          if(mode == "S") {
+          if((mode == "S") ^ alternate) {
             secondaryColorPicker.val(parsedColor);
             secondaryColorPicker[0].onblur();
             secondaryColor = color;
@@ -1264,6 +1269,8 @@
             primaryColorPicker[0].onblur();
             primaryColor = color;
           }
+
+          return this;
         },
         
         addAction: addAction,
@@ -1280,7 +1287,8 @@
               p.point(p.color(0, 0, 0, 0), x, y);
             } else {
               var rgb = rgbParser.exec(pixel.css('backgroundColor'));
-              p.point(p.color(rgb[1], rgb[2], rgb[3]), x, y);
+              var alpha = 255;
+              p.point(p.color(rgb[1], rgb[2], rgb[3], alpha), x, y);
             }
           });
 
