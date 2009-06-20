@@ -11,11 +11,45 @@
     },
 
     save: {
-      name: "Save To Disk",
+      name: "Download Image",
       perform: function(canvas) {
         document.location.href = 'data:image/octet-stream;base64,' + canvas.toBase64();
       }
     }
+  };
+
+  var CloneTool = function() {
+    var cloneX, cloneY, targetX, targetY;
+
+    return {
+      name: "Clone",
+      hotkeys: ['C'],
+      icon: "/images/draw/clone.png",
+      cursor: "url(/images/draw/clone.png) 0 0, default",
+      mousedown: function(e) {
+        if(e.shiftKey) {
+          cloneX = this.x;
+          cloneY = this.y;
+        } else {
+          targetX = this.x;
+          targetY = this.y;
+          var selection = this.canvas.getPixel(cloneX, cloneY);
+
+          if(selection) {
+            this.color(selection.color());
+          }
+        }
+      },
+      mouseenter: function(e) {
+        var deltaX = this.x - targetX;
+        var deltaY = this.y - targetY;
+        var selection = this.canvas.getPixel(cloneX + deltaX, cloneY + deltaY);
+
+        if(selection) {
+          this.color(selection.color());
+        }
+      }
+    };
   };
 
   var tools = {
@@ -40,7 +74,7 @@
       mousedown: function(e, color) {
         this.color(color);
 
-        $.each(e.data.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
+        $.each(this.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
           if(neighbor) {
             neighbor.color(color);
           }
@@ -49,7 +83,7 @@
       mouseenter: function(e, color) {
         this.color(color);
 
-        $.each(e.data.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
+        $.each(this.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
           if(neighbor) {
             neighbor.color(color);
           }
@@ -63,8 +97,8 @@
       icon: "/images/draw/dropper.png",
       cursor: "url(/images/draw/dropper.png) 13 13, default",
       mousedown: function(e, currentColor, mode) {
-        e.data.canvas.setColor(this.color(), mode);
-        e.data.canvas.setTool(tools.pencil);
+        this.canvas.setColor(this.color(), mode);
+        this.canvas.setTool(tools.pencil);
       }
     },
 
@@ -87,8 +121,6 @@
       icon: "/images/draw/fill.png",
       cursor: "url(/images/draw/fill.png) 12 13, default",
       mousedown: function(e, newColor, mode, pixel) {
-        var canvas = e.data.canvas;
-
         // Store original pixel's color here
         var originalColor = this.color();
 
@@ -105,7 +137,7 @@
           pixel = q.pop();
 
           // Add neighboring pixels to the queue
-          var neighbors = canvas.getNeighbors(pixel.x, pixel.y);
+          var neighbors = this.canvas.getNeighbors(pixel.x, pixel.y);
 
           $.each(neighbors, function(index, neighbor) {
             if(neighbor && neighbor.css("backgroundColor") === originalColor) {
@@ -115,7 +147,9 @@
           });
         }
       }
-    }
+    },
+
+    clone: CloneTool()
   };
 
   var falseFn = function() {return false};
@@ -232,6 +266,7 @@
           $.extend(pixel, {
             x: col,
             y: row,
+            canvas: canvas,
             color: function(color) {
               if(arguments.length >= 1) {
                 this.css("background-color", color);
@@ -248,14 +283,6 @@
       for(row = 0; row < height; row++) {
         for(col = 0; col < width; col++) {
           (function(pixel) {
-            var data = {
-              canvas: canvas,
-              x: col,
-              y: row,
-              row: row,
-              col: col
-            };
-
             pixel.bind("mousedown", function(e){
               active = true;
               if(e.button === 0) {
@@ -270,7 +297,7 @@
               mode = undefined;
             });
 
-            pixel.bind("mousedown mouseup mouseenter", data, function(e) {
+            pixel.bind("mousedown mouseup mouseenter", function(e) {
               if(active && currentTool && currentTool[e.type]) {
                 var color;
                 if(mode == "P") {
