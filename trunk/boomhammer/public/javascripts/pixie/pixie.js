@@ -968,8 +968,8 @@
       hotkeys: ['I'],
       icon: "/images/draw/dropper.png",
       cursor: "url(/images/draw/dropper.png) 13 13, default",
-      mousedown: function(e, currentColor, mode) {
-        this.canvas.setColor(this.color(), mode);
+      mousedown: function() {
+        this.canvas.setColor(this.color());
         this.canvas.setTool(tools.pencil);
       }
     },
@@ -992,7 +992,7 @@
       hotkeys: ['F'],
       icon: "/images/draw/fill.png",
       cursor: "url(/images/draw/fill.png) 12 13, default",
-      mousedown: function(e, newColor, mode, pixel) {
+      mousedown: function(e, newColor, pixel) {
         // Store original pixel's color here
         var originalColor = this.color();
 
@@ -1064,6 +1064,7 @@
       var currentTool = undefined;
       var active = false;
       var mode = undefined;
+      var primaryColor="#000000", secondaryColor="#000000";
       var primaryColorPicker = ColorPicker();
       var secondaryColorPicker = ColorPicker();
 
@@ -1078,13 +1079,6 @@
           $(div)
             .addClass('swatch')
             .css({backgroundColor: color})
-            .bind('mousedown', function(e) {
-              if(e.button === 0) {
-                canvas.setColor(color, "P");
-              } else {
-                canvas.setColor(color, "S");
-              }
-            })
         );
       }
 
@@ -1129,6 +1123,25 @@
         addTool(tool);
       });
 
+      pixie
+        .bind('contextmenu', falseFn)
+        .bind("mousedown", function(e){
+          var target = $(e.target);
+          
+          if(target.is(".swatch")) {
+            if(e.button === 0) {
+              mode = "P";
+            } else {
+              mode = "S";
+            }
+            canvas.setColor(target.css('backgroundColor'));
+          }
+        })
+        .bind("mouseup", function(e) {
+          active = false;
+          mode = undefined;
+        });
+
       var pixels = [];
 
       for(var row = 0; row < height; row++) {
@@ -1141,10 +1154,10 @@
             canvas: canvas,
             color: function(color) {
               if(arguments.length >= 1) {
-                this.css("background-color", color);
+                this.css("backgroundColor", color);
                 return this;
               } else {
-                return this.css("background-color");
+                return this.css("backgroundColor");
               }
             }
           });
@@ -1155,31 +1168,26 @@
       for(row = 0; row < height; row++) {
         for(col = 0; col < width; col++) {
           (function(pixel) {
-            pixel.bind("mousedown", function(e){
-              active = true;
-              if(e.button === 0) {
-                mode = "P";
-              } else {
-                mode = "S";
-              }
-            });
-
-            pixel.bind("mouseup", function(e) {
-              active = false;
-              mode = undefined;
-            });
-
-            pixel.bind("mousedown mouseup mouseenter", function(e) {
-              if(active && currentTool && currentTool[e.type]) {
-                var color;
-                if(mode == "P") {
-                  color = primaryColorPicker.css('backgroundColor');
+            pixel
+              .bind("mousedown", function(e){
+                active = true;
+                if(e.button === 0) {
+                  mode = "P";
                 } else {
-                  color = secondaryColorPicker.css('backgroundColor');
+                  mode = "S";
                 }
-                currentTool[e.type].call(pixel, e, color, mode, pixel);
-              }
-            });
+              })
+              .bind("mousedown mouseup mouseenter", function(e) {
+                if(active && currentTool && currentTool[e.type]) {
+                  var color;
+                  if(mode == "P") {
+                    color = primaryColor;
+                  } else {
+                    color = secondaryColor;
+                  }
+                  currentTool[e.type].call(pixel, e, color, pixel);
+                }
+              });
 
             canvas.append(pixel);
           })(pixels[row][col]);
@@ -1239,17 +1247,22 @@
           ].join('').toUpperCase();
         },
 
-        setColor: function(color, mode) {
+        setColor: function(color) {
+          var parsedColor;
           if(color[0] != "#") {
-            color = this.parseColor(color) || "FFF";
+            parsedColor = "#" + (this.parseColor(color) || "FFFFFF");
+          } else {
+            parsedColor = color;
           }
 
           if(mode == "S") {
-            secondaryColorPicker.val(color);
+            secondaryColorPicker.val(parsedColor);
             secondaryColorPicker[0].onblur();
+            secondaryColor = color;
           } else {
-            primaryColorPicker.val(color);
+            primaryColorPicker.val(parsedColor);
             primaryColorPicker[0].onblur();
+            primaryColor = color;
           }
         },
         
@@ -1288,7 +1301,6 @@
       }
 
       pixie
-        .bind('contextmenu', falseFn)
         .append(actionsMenu)
         .append(toolbar)
         .append(canvas)
