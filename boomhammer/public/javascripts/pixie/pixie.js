@@ -5,7 +5,7 @@
       name: "Clear Canvas",
       perform: function(canvas) {
         canvas.eachPixel(function(pixel) {
-          pixel.css({backgroundColor: null});
+          pixel.color(null);
         });
       }
     },
@@ -18,33 +18,6 @@
     }
   };
 
-  var extraTools = {
-    brush: {
-      name: "Brush",
-      hotkeys: [],
-      //icon: "/images/draw/pencil.png",
-      //cursor: "url(/images/draw/pencil.png) 4 14, default",
-      mousedown: function(e, color) {
-        this.css({backgroundColor: color});
-
-        $.each(e.data.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
-          if(neighbor) {
-            neighbor.css({backgroundColor: color});
-          }
-        });
-      },
-      mouseenter: function(e, color, mode) {
-        this.css({backgroundColor: color});
-
-        $.each(e.data.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
-          if(neighbor) {
-            neighbor.css({backgroundColor: color});
-          }
-        });
-      }
-    }
-  };
-
   var tools = {
     pencil: {
       name: "Pencil",
@@ -52,10 +25,35 @@
       icon: "/images/draw/pencil.png",
       cursor: "url(/images/draw/pencil.png) 4 14, default",
       mousedown: function(e, color) {
-        this.css({backgroundColor: color});
+        this.color(color);
       },
       mouseenter: function(e, color) {
-        this.css({backgroundColor: color});
+        this.color(color);
+      }
+    },
+    
+    brush: {
+      name: "Brush",
+      hotkeys: ['B'],
+      icon: "/images/draw/paintbrush.png",
+      cursor: "url(/images/draw/paintbrush.png) 4 14, default",
+      mousedown: function(e, color) {
+        this.color(color);
+
+        $.each(e.data.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
+          if(neighbor) {
+            neighbor.color(color);
+          }
+        });
+      },
+      mouseenter: function(e, color) {
+        this.color(color);
+
+        $.each(e.data.canvas.getNeighbors(this.x, this.y), function(i, neighbor) {
+          if(neighbor) {
+            neighbor.color(color);
+          }
+        });
       }
     },
 
@@ -65,7 +63,7 @@
       icon: "/images/draw/dropper.png",
       cursor: "url(/images/draw/dropper.png) 13 13, default",
       mousedown: function(e, currentColor, mode) {
-        e.data.canvas.setColor(this.css("backgroundColor"), mode);
+        e.data.canvas.setColor(this.color(), mode);
         e.data.canvas.setTool(tools.pencil);
       }
     },
@@ -76,10 +74,10 @@
       icon: "/images/draw/eraser.png",
       cursor: "url(/images/draw/eraser.png) 4 11, default",
       mousedown: function() {
-        this.css({backgroundColor: null});
+        this.color(null);
       },
       mouseenter: function() {
-        this.css({backgroundColor: null});
+        this.color(null);
       }
     },
 
@@ -92,26 +90,27 @@
         var canvas = e.data.canvas;
 
         // Store original pixel's color here
-        var originalColor = this.css("backgroundColor");
+        var originalColor = this.color();
 
         // Return if original color is same as currentColor
-        if(newColor === canvas.parseColor(originalColor)) {
+        if(newColor === originalColor) {
           return;
         }
 
         var q = new Array();
+        pixel.color(newColor);
         q.push(pixel);
 
         while(q.length > 0) {
           pixel = q.pop();
-          pixel.css({backgroundColor: newColor});
 
           // Add neighboring pixels to the queue
           var neighbors = canvas.getNeighbors(pixel.x, pixel.y);
 
           $.each(neighbors, function(index, neighbor) {
             if(neighbor && neighbor.css("backgroundColor") === originalColor) {
-               q.push(neighbor);
+              neighbor.color(newColor);
+              q.push(neighbor);
             }
           });
         }
@@ -189,7 +188,11 @@
 
       function setTool(tool) {
         currentTool = tool;
-        pixie.css({cursor: tool.cursor});
+        if(tool.cursor) {
+          pixie.css({cursor: tool.cursor});
+        } else {
+          pixie.css({cursor: "pointer"});
+        }
       }
 
       function addTool(tool) {
@@ -226,8 +229,18 @@
         pixels[row] = [];
         for(var col = 0; col < width; col++) {
           var pixel = $(div).addClass('pixel');
-          pixel.x = col;
-          pixel.y = row;
+          $.extend(pixel, {
+            x: col,
+            y: row,
+            color: function(color) {
+              if(arguments.length >= 1) {
+                this.css("background-color", color);
+                return this;
+              } else {
+                return this.css("background-color");
+              }
+            }
+          });
           pixels[row][col] = pixel;
         }
       }
