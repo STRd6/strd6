@@ -886,6 +886,7 @@
 
     undo: {
       name: "Undo",
+      undoable: false,
       perform: function(canvas) {
         canvas.undo();
       }
@@ -893,6 +894,7 @@
 
     redo: {
       name: "Redo",
+      undoable: false,
       perform: function(canvas) {
         canvas.redo();
       }
@@ -1291,6 +1293,9 @@
             $("<a href='#' title='"+ action.name +"'>"+ action.name +"</a>")
               .addClass('tool')
               .bind("mousedown", function(e) {
+                if(action.undoable !== false) {
+                  undoStack.next();
+                }
                 action.perform(canvas);
               })
               .click(falseFn)
