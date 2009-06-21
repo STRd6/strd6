@@ -884,6 +884,20 @@
       }
     },
 
+    undo: {
+      name: "Undo",
+      perform: function(canvas) {
+        canvas.undo();
+      }
+    },
+
+    redo: {
+      name: "Redo",
+      perform: function(canvas) {
+        canvas.redo();
+      }
+    },
+
     save: {
       name: "Download Image",
       perform: function(canvas) {
@@ -1033,6 +1047,56 @@
   };
 
   var rgbParser = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/;
+
+  var UndoStack = function() {
+    var undos = [];
+    var redos = [];
+    var empty = true;
+
+    return {
+      popUndo: function() {
+        var undo = undos.pop();
+
+        if(undo) {
+          redos.push(undo);
+        }
+
+        return undo;
+      },
+
+      popRedo: function() {
+        var undo = redos.pop();
+
+        if(undo) {
+          undos.push(undo);
+        }
+
+        return undo;
+      },
+
+      next: function() {
+        var last = undos[undos.length - 1];
+        if(!last || !empty) {
+          undos.push({});
+          empty = true;
+          // New future, no more redos
+          redos = [];
+        }
+      },
+
+      add: function(object, data) {
+        var last = undos[undos.length - 1];
+
+        // Only store this objects data if it is not already present.
+        if(!last[object]) {
+          last[object] = data;
+          empty = false;
+        }
+
+        return this;
+      }
+    };
+  };
   
   $.fn.pixie = function(options) {
     
@@ -1047,6 +1111,8 @@
       var canvas = $(div).addClass('canvas');
       var toolbar = $(div).addClass('toolbar');
       var colorbar = $(div).addClass('toolbar');
+
+      var undoStack = UndoStack();
 
       var currentTool = undefined;
       var active = false;
@@ -1089,6 +1155,7 @@
             },
             color: function(color) {
               if(arguments.length >= 1) {
+                undoStack.add(this, {pixel: this, color: this.css("backgroundColor")});
                 this.css("backgroundColor", color);
                 return this;
               } else {
@@ -1105,6 +1172,7 @@
           (function(pixel) {
             pixel
               .bind("mousedown", function(e){
+                undoStack.next();
                 active = true;
                 if(e.button === 0) {
                   mode = "P";
@@ -1282,6 +1350,32 @@
 
         toDataURL: function() {
           return 'url(data:image/png;base64,' + this.toBase64() + ')';
+        },
+
+        undo: function() {
+          var data = undoStack.popUndo();
+          var swap;
+
+          if(data) {
+            $.each(data, function() {
+              swap = this.color;
+              this.color = this.pixel.css('backgroundColor');
+              this.pixel.css('backgroundColor', (swap));
+            });
+          }
+        },
+
+        redo: function() {
+          var data = undoStack.popRedo();
+          var swap;
+
+          if(data) {
+            $.each(data, function() {
+              swap = this.color;
+              this.color = this.pixel.css('backgroundColor');
+              this.pixel.css('backgroundColor', (swap));
+            });
+          }
         }
       });
 
