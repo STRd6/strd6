@@ -872,7 +872,7 @@
    *
    ************************************************************************/
 
-  var imageDir = "../images/pixie/";
+  var imageDir = "/images/pixie/";
 
   var actions = {
     undo: {
