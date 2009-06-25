@@ -22,14 +22,23 @@ class Creation::ImagesController < Creation::CreationController
     render :update do |page|
       link = link_to "Image #{@image.id}", creation_image_path(@image.id)
       new_item_link = link_to "Create new item", new_creation_item_base_path(:image_id => @image.id)
-      page.replace_html :notice, "Uploaded as #{link}<br />#{new_item_link}"
+
+      page.call "$('#notice').html", "Uploaded as #{link}<br />#{new_item_link}"
+      #page.replace_html :notice, "Uploaded as #{link}<br />#{new_item_link}"
     end
   end
 
   show.wants.js do
     render :update do |page|
       data = @image.json_data
-      page.call("canvas.loadJSON", data)
+      page.call "loadJSON", data
+    end
+  end
+
+  index.wants.js do
+    render :update do |page|
+      data = object.json_data
+      page.call "loadJSON", data
     end
   end
 
