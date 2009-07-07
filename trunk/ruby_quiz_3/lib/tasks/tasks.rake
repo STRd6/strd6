@@ -9,9 +9,8 @@ task :clear_cache do
   `rm public/quizzes/*.html`
 end
 
-desc "create a new user."
-task :create_user, [:login, :password, :email] do |t, args|
-  code="u = User.create(:login => \"#{args.login}\", :password => \"#{args.password}\", :password_confirmation => \"#{args.password}\", :email => \"#{args.email}\" );"
-  command = File.dirname(__FILE__) + "/../../script/runner -e #{RAILS_ENV} '#{code}'"
-  puts `#{command}`
+desc "Create a new user: create_user[login,password,email]"
+task :create_user, [:login, :password, :email] => :environment do |t, args|
+  u = User.create(:login => args.login, :password => args.password, :password_confirmation => args.password, :email => args.email);
+  puts u.inspect
 end
