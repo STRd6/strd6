@@ -26,7 +26,6 @@ class QuizzesController < ResourceController::Base
   private
 
   def collection
-    Quiz.all_live :order => "id DESC" unless session[:user_id]
-    Quiz.all :order => "id DESC"
+    Quiz.all_live :order => "id DESC"
   end
 end
