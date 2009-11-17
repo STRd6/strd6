@@ -1,0 +1,397 @@
+<html>
+  <head>
+    <script src="jquery-1.3.2.js"></script>
+    <script src="power_canvas.jquery.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas" width="250" height="250">
+      <p> Get a better browser</p>
+    </canvas>
+    <img id="sprite" src="earthbound1.png" alt="earthbound"/>
+
+    <script>
+      $(function() {
+        var RADIANS_PER_DEGREE = (2*Math.PI)/360;
+
+        /**
+         * Select the elements of the array for which iterator returns true.
+         *
+         * @param {Function} iterator
+         * @param [context] Optional context parameter in which to call iterator.
+         * @return The selected elements.
+         */
+        Array.prototype.select = function(iterator, context) {
+          var results = [];
+          for(var i = 0; i < this.length; i++) {
+            if (iterator.call(context, this[i], i)) {
+              results.push(this[i]);
+            }
+          }
+          return results;
+        };
+
+        /**
+         * Returns a mod useful for array wrapping.
+         * Produces incorrect results if base and n are negative.
+         *
+         * @param {Number} n
+         * @param {Number} base
+         */
+        Math.mod = function(n, base) {
+          var result = n % base;
+
+          if(result < 0) {
+            result += base;
+          }
+
+          return result;
+        };
+
+        //TODO: Fix
+        function midpointDisplacement(n) {
+          
+          var range = 0.5;
+          var factor = 0.8;
+          var heights = [0.5, 0.5];
+
+          for(var i = 0; i < n; i++) {
+            var newHeights = [];
+            for(var j = 0; j < heights.length - 1; j++) {
+              newHeights.push(heights[i], (heights[i] + heights[i+1])/2 + Math.random()*range);
+            }
+            newHeights.push(heights[i+1]);
+            range *= factor;
+            heights = newHeights;
+          }
+
+          return heights;
+        }
+
+        function rand(n) {
+          return Math.floor(Math.random()*n);
+        }
+      
+        var canvas;
+        var running = true;
+        var gravity = 0.98;
+
+        var ground = (function() {
+          var heights = midpointDisplacement(8);
+
+          return {
+            heightAt: function(x) {
+              return 125 - x/2;
+            }
+          };
+        })();
+        
+        var Sprite = function(image, baseX, baseY, cellWidth, cellHeight, frameCount) {
+          var step = 0;
+          var duration = 2;
+          var frame = 0;
+
+          var gap = 0;
+
+          var self = {
+            update: function() {
+              step++;
+
+              if(step == duration) {
+                frame = Math.mod(frame + 1, frameCount);
+                step = 0;
+              }
+            },
+
+            draw: function(canvas, x, y) {
+              canvas.drawImage(image,
+                baseX + frame*(cellWidth + gap),
+                baseY,
+                cellWidth,
+                cellHeight,
+                x,
+                y,
+                cellWidth,
+                cellHeight
+              );
+            }
+          };
+
+          return self;
+        };
+      
+        var Tank = function(x, y, color) {
+          var width = 10;
+          var height = 10;
+
+          var barrelSize = 10;
+          var angle = -135;
+          var power = 10;
+
+          var barrelPosition = function () {
+            return {x: x + Math.cos(angle*RADIANS_PER_DEGREE)*barrelSize, y: y + Math.sin(angle*RADIANS_PER_DEGREE)*barrelSize}
+          };
+
+          var centerPoint = function() {
+            return {x: x + width/2, y: y + height/2};
+          }
+
+          var self = {
+            update: function() {
+              
+            },
+            
+            draw: function(canvas) {
+              canvas.fillColor(color);
+              canvas.fillRect(x, y, width, height);
+
+              var barrelPos = barrelPosition();
+              canvas.strokeColor(color);
+              canvas.drawLine(x, y, barrelPos.x, barrelPos.y);
+
+              canvas.fillColor("#FFF").fillText("P: " + power + "; D: " + angle, x, y - 10);
+            },
+
+            boundingBox: function() {
+              return {x: x, y: y, w: width, h: height};
+            },
+
+            adjustAngle: function(byDegrees) {
+              angle += byDegrees;
+            },
+
+            adjustPower: function(byAmount) {
+              power += byAmount;
+            },
+
+            centerPoint: centerPoint,
+
+            explode: function() {
+              var point = centerPoint();
+              explosions.push(Explosion(point.x, point.y));
+            },
+
+            fire: function() {
+              var barrelPos = barrelPosition();
+              bullets.push(
+                Bullet(
+                  barrelPos.x,
+                  barrelPos.y,
+                  Math.cos(angle*RADIANS_PER_DEGREE)*power,
+                  Math.sin(angle*RADIANS_PER_DEGREE)*power
+                )
+              );
+            },
+
+            barrelPosition: barrelPosition,
+            
+            x: function() {return x;},
+            y: function() {return y;},
+            w: function() {return width;},
+            h: function() {return height;}
+          };
+          
+          return self;
+        };
+        
+        var Bullet = function(x, y, vx, vy) {
+          var active = true;
+          var width = 2;
+          var height = 2;
+        
+          var self = {
+            active: function() {
+              return active;
+            },
+            
+            update: function() {
+              x += vx;
+              y += vy;
+              
+              vy += gravity;
+            },
+            
+            draw: function() {
+              canvas.fillColor("#EEE");
+              canvas.fillRect(x, y, width, height);
+            },
+
+            explodeOn: function(tank) {
+              tank.explode();
+              active = false;
+            },
+
+            boundingBox: function() {
+              return {x: x, y: y, w: width, h: height};
+            },
+            
+            x: function() {return x;},
+            y: function() {return y;},
+            w: function() {return width;},
+            h: function() {return height;}
+          };
+          
+          return self;
+        }
+
+        var Explosion = function(x, y) {
+          var maxRadius = 25;
+          var radius = 0;
+          var phase = 0;
+
+          return {
+            update: function() {
+              switch(phase) {
+                case 0:
+                  if(radius < maxRadius/2) {
+                    radius += 1;
+                  } else {
+                    phase = 1;
+                  }
+                  break;
+                case 1:
+                  if(radius > 0) {
+                    radius -= 2;
+                  } else {
+                    phase = 2
+                  }
+                  break;
+                case 2:
+                  if(radius < maxRadius) {
+                    radius += 2;
+                  } else {
+                    radius = 0;
+                    phase = 3;
+                  }
+                  break;
+              }
+            },
+
+            active: function() {
+              return phase < 3;
+            },
+
+            draw: function() {
+              canvas.fillCircle(x, y, radius, "#F00");
+            }
+          };
+        }
+
+        var tanks = [];
+        var currentPlayer = 0;
+
+        var bullets = [];
+        var explosions = [];
+
+        var testSprites = [
+          Sprite($("#sprite").get(0), 8, 16, 18, 28, 16),
+          Sprite($("#sprite").get(0), 8, 44, 18, 28, 16),
+          Sprite($("#sprite").get(0), 8, 72, 18, 28, 16),
+          Sprite($("#sprite").get(0), 8, 100, 18, 28, 16),
+          Sprite($("#sprite").get(0), 8, 128, 18, 28, 16)
+        ];
+
+        var ts = 0;
+        
+        $('canvas').powerCanvas({init: function(_canvas) {
+          canvas = _canvas;
+
+          var p1 = rand(250);
+          var p2 = rand(250);
+          tanks[0] = Tank(p1, canvas.height() - ground.heightAt(p1) - 10, "#F0F");
+          tanks[1] = Tank(p2, canvas.height() - ground.heightAt(p2) - 10, "#FF0");
+
+          console.log(canvas.height() - ground.heightAt(0));
+
+          var canvasWidth = canvas.width();
+          var canvasHeight = canvas.height();
+        
+          function draw() {
+            canvas.fill("#0F0").fillColor("#000");
+
+            for(var i = 0; i < canvasWidth; i++)
+              canvas.fillRect(i, 0, 1, canvasHeight - ground.heightAt(i));
+            ;
+          };
+          
+          function collision(bullet, tank) {
+            var b = bullet.boundingBox();
+            var t = tank.boundingBox();
+          
+            var xOverlap = (b.x < t.x && b.x + b.w >= t.x) ||
+              (t.x < b.x && t.x + t.w >= b.x);
+            var yOverlap = (b.y < t.y && b.y + b.h >= t.y) ||
+              (t.y < b.y && t.y + t.h >= b.y);
+              
+            if(xOverlap && yOverlap) {
+              bullet.explodeOn(tank);
+            }
+          }
+
+          setInterval(function() {
+            if(running) {
+              draw();
+              
+              $.each(bullets, function(index, bullet) {
+                bullet.update();
+                bullet.draw(canvas);
+
+                $.each(tanks, function() {
+                  collision(bullet, this);
+                });
+              });
+
+              bullets = bullets.select(function(bullet) {
+                return bullet.active() && bullet.y() < canvasHeight;
+              });
+
+              $.each(tanks, function(index, tank) {
+                tank.draw(canvas);
+              });
+
+              $.each(explosions, function() {
+                this.update();
+                this.draw(canvas);
+              });
+
+              explosions = explosions.select(function(explosion) {
+                return explosion.active();
+              });
+
+              canvas.fillColor("#FFF")
+                .fillText("Bullets: " + bullets.length, 0, 10)
+                .fillText("Explosions: " + explosions.length, 0, 20)
+              ;
+
+              testSprites[ts].draw(canvas, 50, 50);
+              testSprites[ts].update();
+            }
+          }, 100);
+        }});
+        
+        $(document).keypress(function(e) {
+          console.log(e);
+          var tank = tanks[currentPlayer % tanks.length];
+
+          if(e.keyCode == 37) {
+            tank.adjustAngle(-2);
+          } else if(e.keyCode == 39) {
+            tank.adjustAngle(2);
+          } else if(e.keyCode == 38) {
+            tank.adjustPower(0.5);
+          } else if(e.keyCode == 40) {
+            tank.adjustPower(-0.5);
+          } else if(e.charCode == 32) {
+            tank.fire();
+            currentPlayer += 1;
+          }
+
+          if(e.charCode == 43) {
+            ts++;
+          } else if(e.charCode == 45) {
+            ts--;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
