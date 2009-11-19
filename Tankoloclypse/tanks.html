@@ -104,7 +104,7 @@
               }
             },
 
-            draw: function(canvas, x, y) {
+            draw: function(canvas, x, y, options) {
               canvas.drawImage(image,
                 baseX + frame*(cellWidth + gap),
                 baseY,
@@ -113,7 +113,8 @@
                 x,
                 y,
                 cellWidth,
-                cellHeight
+                cellHeight,
+                options
               );
             }
           };
@@ -448,11 +449,11 @@
     			  if (alt >= 0 && alt < 2) {
     			  Slashing[0].draw(canvas, 40 + hSteps, 70 + vSteps);	
     			  } else if (alt >= 2 && alt < 4) {
-    			  Slashing[0].draw(canvas, 65 + hSteps, 70 + vSteps);
+    			  Slashing[0].draw(canvas, 65 + hSteps, 70 + vSteps, {hFlip: true});
     			  } else if (alt >= 4 && alt < 6) {
     			  Slashing[0].draw(canvas, 60 + hSteps, 50 + vSteps);
     			  } else if (alt >= 6 && alt < 8) {
-    			  Slashing[0].draw(canvas, 58 + hSteps, 85 + vSteps);
+    			  Slashing[0].draw(canvas, 50 + hSteps, 90 + vSteps, {hFlip: true, vFlip: true});
     		 	  }
     		  }          
 

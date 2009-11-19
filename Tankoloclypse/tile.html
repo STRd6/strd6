@@ -47,13 +47,21 @@
           console.log("draw");
           canvas0.clear();
 
+          // Horizontal flip
+          //canvas0.transform(-1, 0, 0, 1, width, 0);
+          // Vertical flip
+          //canvas0.transform(1, 0, 0, -1, 0, height);
+
           canvas0.drawImage(image,
             0, 0, iWidth, iHeight,
-            0, 0, width, height
+            0, 0, width, height,
+            {hFlip: false, vFlip: true}
           );
 
           drawGrid();
           drawSelection();
+
+          
         }
 
         function drawGrid() {
