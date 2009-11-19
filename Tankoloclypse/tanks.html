@@ -350,8 +350,33 @@
         */
         var testSprites = [
           Composite([
+            {tile: Tile(slashes, 0, 0, 16, 16), x: 0, y: 0},
+            {tile: Tile(slashes, 16, 0, 16, 16), x: 0, y: 16}
+          ]),
+          Composite([
+            {tile: Tile(slashes, 32, 0, 16, 16), x: 0, y: 0},
+            {tile: Tile(slashes, 48, 0, 16, 16), x: 0, y: 16}
+          ]),
+          Tile(slashes, 64, 0, 16, 16),
+          Composite([
+            {tile: Tile(slashes, 80, 0, 32, 16), x: 0, y: 0},
+            {tile: Tile(slashes, 112, 0, 16, 16), x: 16, y: 16}
+          ]),
+          Composite([
+            {tile: Tile(slashes, 0, 16, 16, 16), x: 0, y: 0},
+            {tile: Tile(slashes, 16, 16, 16, 16), x: 0, y: 16}
+          ]),
+          Composite([
+            {tile: Tile(slashes, 32, 16, 16, 16), x: 0, y: 0},
+            {tile: Tile(slashes, 48, 16, 16, 16), x: 0, y: 16}
+          ]),
+          Composite([
             {tile: Tile(slashes, 64, 32, 16, 16), x: 0, y: 0},
             {tile: Tile(slashes, 80, 32, 32, 16), x: 0, y: 16}
+          ]),
+          Composite([
+            {tile: Tile(slashes, 112, 32, 16, 16), x: 0, y: 0},
+            {tile: Tile(slashes, 0, 48, 16, 16), x: 0, y: 16}
           ]),
           Sprite($("#sprite").get(0), 8, 16, 18, 28, 16),
           Sprite($("#sprite").get(0), 8, 44, 18, 28, 16),
