@@ -1,11 +1,12 @@
 (function($){
   $.fn.powerCanvas = function(options) {
-    return this.each(function() {
-      var canvas = this;
+    options = options || {};
+
+      var canvas = this.get(0);
       var context;
-      
+
       var colorStack = [];
-      
+
       function pushStyle(color) {
         colorStack.push(context.fillStyle);
         context.fillStyle = color;
@@ -16,8 +17,10 @@
       }
 
       var $canvas = $(canvas).extend({
-        drawLine: function(x1, y1, x2, y2) {
-          context.lineWidth = 3;
+        drawLine: function(x1, y1, x2, y2, width) {
+          width = width || 3;
+
+          context.lineWidth = width;
           context.beginPath();
           context.moveTo(x1, y1);
           context.lineTo(x2, y2);
@@ -27,6 +30,10 @@
         
         drawImage: function(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) {
           context.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+        },
+
+        clear: function() {
+          context.clearRect(0, 0, canvas.width, canvas.height);
         },
 
         fill: function(color) {
@@ -92,7 +99,11 @@
         if(options.init) {
           options.init($canvas);
         }
+
+        return $canvas;
+      } else {
+        return false;
       }
-    });
+
   };
 })(jQuery);

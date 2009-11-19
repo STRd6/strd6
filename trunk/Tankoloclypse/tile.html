@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <script src="jquery-1.3.2.js"></script>
+    <script src="power_canvas.jquery.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var canvas0 = $("#canvas0").powerCanvas();
+        var canvas1 = $("#canvas1").powerCanvas();
+
+        var selRow = 0;
+        var selCol = 0;
+
+        var zoom = 1;
+        var tileSize = 16;
+        var blockSize = tileSize * zoom;
+        var width = 96;
+        var height = 96;
+
+        var image;
+        var iWidth = 48;
+        var iHeight = 48;
+
+        var gridColor = "#000";
+        var selectionColor = "#0A0";
+
+        function loadImage(url) {
+          console.log("Loading: " + url);
+          image = new Image();
+          image.src = url;
+
+          iWidth = image.width;
+          iHeight = image.height;
+
+          width = iWidth*zoom;
+          height = iHeight*zoom;
+
+          // + 1 for the outer border
+          $("#canvases canvas").attr({
+            width: width + 1,
+            height: height + 1
+          });
+
+          draw();
+        }
+
+        function draw() {
+          console.log("draw");
+          canvas0.clear();
+
+          canvas0.drawImage(image,
+            0, 0, iWidth, iHeight,
+            0, 0, width, height
+          );
+
+          drawGrid();
+          drawSelection();
+        }
+
+        function drawGrid() {
+          console.log("drawGrid");
+          canvas1.strokeColor(gridColor);
+
+          for(var i = 0; i <= width / (blockSize); i++) {
+            canvas1.drawLine(i * blockSize + 0.5, 0, i * blockSize + 0.5, height, 1);
+          }
+
+          for(var i = 0; i <= height / (blockSize); i++) {
+            canvas1.drawLine(0, i * blockSize + 0.5, width, i * blockSize + 0.5, 1);
+          }
+        }
+
+        function drawSelection() {
+          var x = selCol * blockSize;
+          var y = selRow * blockSize;
+          canvas1.strokeColor(selectionColor);
+          canvas1.drawLine(x + 0.5 + blockSize, y + 0.5, x + 0.5, y + 0.5, 1);
+          canvas1.drawLine(x + 0.5, y + 0.5 + blockSize, x + 0.5, y + 0.5, 1);
+          canvas1.drawLine(x + 0.5 + blockSize, y + 0.5, x + 0.5 + blockSize, y + 0.5 + blockSize, 1);
+          canvas1.drawLine(x + 0.5, y + 0.5 + blockSize, x + 0.5 + blockSize, y + 0.5 + blockSize, 1);
+        }
+
+        $('#loader').submit(function() {
+          var url = $(".imageURL", this).val();
+
+          try {
+            loadImage(url);
+          } catch(e) {
+            console.log(e);
+          }
+
+          return false;
+        });
+
+        $("#canvas1").click(function(e) {
+          var x = e.pageX - $(this).offset().left;
+          var y = e.pageY - $(this).offset().top;
+
+          console.log(x + ", " + y);
+
+          selCol = Math.floor(x / blockSize);
+          selRow = Math.floor(y / blockSize);
+          draw();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="canvases" style="position: relative;">
+      <canvas id="canvas0" width="250" height="250" style ="position: absolute; left: 0; top: 0;">
+        <p> Get a better browser</p>
+      </canvas>
+      <canvas id="canvas1" width="250" height="250" style ="position: absolute; left: 0; top: 0;">
+        <p> Get a better browser</p>
+      </canvas>
+    </div>
+
+    <form id="loader" style="position: fixed; left: 525; top: 96;">
+      <input type="text" class="imageURL"/>
+    </form>
+
+    <div id="imageStable">
+    </div>
+  </body>
+</html>

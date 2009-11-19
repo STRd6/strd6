@@ -119,6 +119,53 @@
 
           return self;
         };
+
+        var Tile = function(image, baseX, baseY, cellWidth, cellHeight) {
+          var self = {
+            update: function() {},
+
+            draw: function(canvas, x, y) {
+              canvas.drawImage(image,
+                baseX,
+                baseY,
+                cellWidth,
+                cellHeight,
+                x,
+                y,
+                cellWidth,
+                cellHeight
+              );
+            }
+          };
+
+          return self;
+        };
+
+        var Composite = function(_tileData) {
+          var tileData = _tileData;
+          var tileCount = tileData.length;
+
+          console.log(tileData);
+
+          var self = {
+            update: function() {
+              for(var i = 0; i < tileCount; i++) {
+                tileData[i].tile.update();
+              }
+            },
+
+            draw: function(canvas, x, y) {
+              var datum;
+
+              for(var i = 0; i < tileCount; i++) {
+                datum = tileData[i];
+                datum.tile.draw(canvas, x + datum.x, y + datum.y);
+              };
+            }
+          };
+
+          return self;
+        }
       
         var Tank = function(x, y, color) {
           var width = 10;
@@ -282,6 +329,8 @@
 
         var bullets = [];
         var explosions = [];
+
+        var slashes = $("#slashes").get(0);
 
         var testSprites = [
 		  /*
