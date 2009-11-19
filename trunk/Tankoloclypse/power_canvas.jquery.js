@@ -28,8 +28,32 @@
           context.stroke();
         },
         
-        drawImage: function(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) {
-          context.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+        drawImage: function(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, options) {
+          context.save();
+
+          context.translate(dx, dy);
+
+          if(options) {
+            if(options.hFlip) {
+              context.transform(-1, 0, 0, 1, dWidth, 0);
+            }
+
+            if(options.vFlip) {
+              context.transform(1, 0, 0, -1, 0, dHeight);
+            }
+          }
+
+          context.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, dWidth, dHeight);
+          
+          context.restore();
+
+          return this;
+        },
+
+        transform: function(m11, m12, m21, m22, dx, dy) {
+          context.transform(m11, m12, m21, m22, dx, dy);
+
+          return this;
         },
 
         clear: function() {
