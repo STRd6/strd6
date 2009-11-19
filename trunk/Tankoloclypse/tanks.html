@@ -8,7 +8,8 @@
       <p> Get a better browser</p>
     </canvas>
     <img id="sprite" src="earthbound1.png" alt="earthbound"/>
-	<img id="slashes" src="slashes.png" "chrono slashes">
+    <img id="slashes" src="slashes.png" alt="chrono slashes"/>
+    <img id="damageFont" src="damage_font.png" alt="damage font"/>
 
     <script>
       $(function() {
@@ -331,6 +332,18 @@
         var explosions = [];
 
         var slashes = $("#slashes").get(0);
+        var damageNumbers = (function() {
+          var font = $("#damageFont").get(0);
+          var nums = [];
+          var size = 8
+
+          for(var i = 0; i <= 9; i++) {
+            nums[i] = Tile(font, i * size, 0, size, size);
+          }
+
+          return nums;
+        })();
+        console.log(damageNumbers);
 
         /*
         Sprite = function(image, baseX, baseY, cellWidth, cellHeight, frameCount)
@@ -444,6 +457,10 @@
               testSprites[ts].update();
 
 			  walkSprites[alt].draw(canvas, 60 + hSteps, 60 + vSteps);
+
+              $.each(damageNumbers, function(i, damageNumber) {
+                damageNumber.draw(canvas, 75 + 8*i, 8);
+              });
             }
           }, 100);
         }});
