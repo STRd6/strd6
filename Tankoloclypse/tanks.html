@@ -8,6 +8,7 @@
       <p> Get a better browser</p>
     </canvas>
     <img id="sprite" src="earthbound1.png" alt="earthbound"/>
+	<img id="slashes" src="slashes.png" "chrono slashes">
 
     <script>
       $(function() {
@@ -283,6 +284,9 @@
         var explosions = [];
 
         var testSprites = [
+		  /*
+		  Sprite = function(image, baseX, baseY, cellWidth, cellHeight, frameCount)
+		  */
           Sprite($("#sprite").get(0), 8, 16, 18, 28, 16),
           Sprite($("#sprite").get(0), 8, 44, 18, 28, 16),
           Sprite($("#sprite").get(0), 8, 72, 18, 28, 16),
@@ -291,7 +295,28 @@
         ];
 
         var ts = 0;
-        
+		var hSteps = 0;
+		var vSteps = 0;
+		var alt = 6;
+		
+		var walkSprites = [
+		  /*
+		  Sprite = function(image, baseX, baseY, cellWidth, cellHeight, frameCount)
+		  */ 
+		  Sprite($("#sprite").get(0), 96, 16, 18, 28, 1), /*Left facing foot extended*/
+		  Sprite($("#sprite").get(0), 80, 16, 18, 28, 1), /*Left facing feet together*/
+		  Sprite($("#sprite").get(0), 224, 16, 18, 28, 1), /*Right facing foot extended*/
+		  Sprite($("#sprite").get(0), 241, 16, 18, 28, 1), /*Right facing feet together*/
+		  Sprite($("#sprite").get(0), 152, 16, 18, 28, 1), /*Forward facing left foot forward*/
+		  Sprite($("#sprite").get(0), 170, 16, 18, 28, 1), /*Right facing feet together */
+		  Sprite($("#sprite").get(0), 8, 16, 18, 28, 1), /*Downward facing right foot forward*/
+		  Sprite($("#sprite").get(0), 26, 16, 18, 28, 1) /*Downward facing left foot forward*/
+		];
+		
+		var Slashing = [
+		  Sprite($("#slashes").get(0), 0, 30, 31, 15, 1)
+		];
+		
         $('canvas').powerCanvas({init: function(_canvas) {
           canvas = _canvas;
 
@@ -364,6 +389,8 @@
 
               testSprites[ts].draw(canvas, 50, 50);
               testSprites[ts].update();
+
+			  walkSprites[alt].draw(canvas, 60 + hSteps, 60 + vSteps);
             }
           }, 100);
         }});
@@ -372,18 +399,67 @@
           console.log(e);
           var tank = tanks[currentPlayer % tanks.length];
 
-          if(e.keyCode == 37) {
+		  function lwalk() {
+			hSteps -= 4;
+			alt += 1;
+			alt = alt % 2;
+		  }
+		
+		  function rwalk() {
+			hSteps += 4;
+			alt += 1;
+			alt = alt % 2;
+			alt += 2;
+		  }
+		
+		  function uwalk() {
+	        vSteps -= 4;
+			alt += 1;
+			alt = alt % 2;
+			alt += 4;
+		  }
+
+		  function dwalk() {
+			vSteps += 4;
+			alt += 1;
+			alt = alt % 2;
+		    alt += 6;
+		  }
+		
+		  function attack() {
+			if (alt >= 0 && alt < 2) {	
+			} else if (alt >= 2 && alt < 4) {
+			Slashing[0].draw(canvas, 65 + hSteps, 60 + vSteps);
+			} else if (alt >= 4 && alt < 6) {
+			Slashing[0].draw(canvas, 60 + hSteps, 55 + vSteps);
+			} else if (alt >= 6 && alt < 8) {
+			Slashing[0].draw(canvas, 60 + hSteps, 65 + vSteps);
+			}
+		  } 
+
+          if/*(e.keyCode == 37) {
             tank.adjustAngle(-2);
           } else if(e.keyCode == 39) {
             tank.adjustAngle(2);
           } else if(e.keyCode == 38) {
             tank.adjustPower(0.5);
-          } else if(e.keyCode == 40) {
+		  }*/ (e.keyCode == 39) {
+			rwalk();
+		  } else if(e.keyCode == 37) {
+			lwalk();
+		  } else if(e.keyCode == 38) {
+		    uwalk();	
+		  } else if (e.keyCode == 40) {
+			dwalk();
+		  } else if (e.keyCode == 32) {
+			attack();
+		  }
+		  /*else if(e.keyCode == 40) {
             tank.adjustPower(-0.5);
           } else if(e.charCode == 32) {
             tank.fire();
             currentPlayer += 1;
-          }
+          }*/
 
           if(e.charCode == 43) {
             ts++;
