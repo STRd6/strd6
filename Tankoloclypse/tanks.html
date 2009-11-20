@@ -334,6 +334,7 @@
         var explosions = [];
 
         var slashes = $("#slashes").get(0);
+        var sprites = $("#sprites").get(0);
         var damageNumbers = (function() {
           var font = $("#damageFont").get(0);
           var nums = [];
@@ -408,7 +409,7 @@
 		];
 		
 		var Slashing = [
-		  Sprite($("#slashes").get(0), 0, 30, 31, 15, 1)
+		  Tile(slashes, 0, 30, 31, 15)
 		];
 		
         $('canvas').powerCanvas({init: function(_canvas) {
@@ -495,7 +496,7 @@
 
               testSprites[ts].draw(canvas, 50, 50);
               testSprites[ts].update();
-
+              
         if (attackSw == 1) {
         attack();
         }
