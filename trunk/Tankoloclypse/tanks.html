@@ -21,6 +21,14 @@
         });
       
         var canvas;
+        var action = "default";
+
+        var Action = {
+          RIGHT: 'r',
+          LEFT: 'l',
+          UP: 'u',
+          DOWN: 'd'
+        };
 
         var slashes = $("#slashes").get(0);
         var spriteSheet = $("#sprite").get(0);
@@ -37,6 +45,39 @@
           }
 
           return Animation(tiles);
+        })();
+
+        var nessActor = (function() {
+          var states = {};
+          states['default'] = Tile(spriteSheet, 8 + 2*18, 16, 18, 28);
+          states[Action.LEFT] = Animation([
+            Tile(spriteSheet, 8 + 4*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 4*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 5*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 5*18, 16, 18, 28)
+          ]);
+          states[Action.RIGHT] = Animation([
+            Tile(spriteSheet, 8 + 12*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 12*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 13*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 13*18, 16, 18, 28)
+          ]);
+          states[Action.UP] = Animation([
+            Tile(spriteSheet, 8 + 8*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 8*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 9*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 9*18, 16, 18, 28)
+          ]);
+          states[Action.DOWN] = Animation([
+            Tile(spriteSheet, 8 + 0*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 0*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 1*18, 16, 18, 28),
+            Tile(spriteSheet, 8 + 1*18, 16, 18, 28)
+          ]);
+
+          return Actor(states, "default", 25, 25, function(state) {
+            this.state(action);
+          });
         })();
 
         var damageNumbers = (function() {
@@ -73,6 +114,7 @@
         Sprite = function(image, baseX, baseY, cellWidth, cellHeight, frameCount)
         */
         var testSprites = [
+          nessActor,
           damageToGraphic(rand(999)),
           nessAnimation,
           Composite([
@@ -166,7 +208,7 @@
           }, 100);
         }});
         
-        $(document).keypress(function(e) {
+        $(document).keydown(function(e) {
           console.log(e);
 
           function lwalk() {
@@ -204,19 +246,17 @@
             alt = 6;
           }
 
-          if/*(e.keyCode == 37) {
-              tank.adjustAngle(-2);
-              } else if(e.keyCode == 39) {
-                tank.adjustAngle(2);
-              } else if(e.keyCode == 38) {
-                tank.adjustPower(0.5);
-          }*/ (e.keyCode == 39) {
+          if(e.keyCode == 39) {
+            action = Action.RIGHT;
             rwalk();
           } else if(e.keyCode == 37) {
+            action = Action.LEFT;
             lwalk();
           } else if(e.keyCode == 38) {
+            action = Action.UP;
             uwalk();
           } else if (e.keyCode == 40) {
+            action = Action.DOWN;
             dwalk();
           } else if (e.keyCode == 13) {
             attackSw += 1;
@@ -224,9 +264,9 @@
             teleport();
           }
 
-          if(e.charCode == 43) {
+          if(e.keyCode == 107) {
             ts++;
-          } else if(e.charCode == 45) {
+          } else if(e.keyCode == 109) {
             ts--;
           }
         });
