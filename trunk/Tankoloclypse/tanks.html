@@ -2,6 +2,7 @@
   <head>
     <script src="jquery-1.3.2.js"></script>
     <script src="power_canvas.jquery.js"></script>
+    <script src="sprites.strd6.js"></script>
   </head>
   <body>
     <canvas id="canvas" width="250" height="250">
@@ -129,54 +130,6 @@
 
           return self;
         };
-
-        var Tile = function(image, baseX, baseY, cellWidth, cellHeight) {
-          var self = {
-            update: function() {},
-
-            draw: function(canvas, x, y, options) {
-              canvas.drawImage(image,
-                baseX,
-                baseY,
-                cellWidth,
-                cellHeight,
-                x,
-                y,
-                cellWidth,
-                cellHeight,
-                options
-              );
-            }
-          };
-
-          return self;
-        };
-
-        var Composite = function(_tileData) {
-          var tileData = _tileData;
-          var tileCount = tileData.length;
-
-          console.log(tileData);
-
-          var self = {
-            update: function() {
-              for(var i = 0; i < tileCount; i++) {
-                tileData[i].tile.update();
-              }
-            },
-
-            draw: function(canvas, x, y, options) {
-              var datum;
-
-              for(var i = 0; i < tileCount; i++) {
-                datum = tileData[i];
-                datum.tile.draw(canvas, x + datum.x, y + datum.y, options);
-              };
-            }
-          };
-
-          return self;
-        }
       
         var Tank = function(x, y, color) {
           var width = 10;
@@ -333,7 +286,7 @@
               canvas.fillCircle(x, y, radius, "#F00");
             }
           };
-        }
+        };
 
         var tanks = [];
         var currentPlayer = 0;
@@ -342,7 +295,19 @@
         var explosions = [];
 
         var slashes = $("#slashes").get(0);
-        var sprites = $("#sprites").get(0);
+        var earthbound = $("#sprite").get(0);
+        var nessTiles = (function(){
+          var tiles = [];
+
+          for(var i = 0; i < 16; i++) {
+            // Double to slow frame rate
+            tiles[tiles.length] = Tile(earthbound, 8 + i*18, 16, 18, 28);
+            tiles[tiles.length] = Tile(earthbound, 8 + i*18, 16, 18, 28);
+          }
+
+          return tiles;
+        })();
+
         var damageNumbers = (function() {
           var font = $("#damageFont").get(0);
           var nums = [];
@@ -360,6 +325,7 @@
         Sprite = function(image, baseX, baseY, cellWidth, cellHeight, frameCount)
         */
         var testSprites = [
+          Animation(nessTiles),
           Composite([
             {tile: Tile(slashes, 0, 0, 16, 16), x: 0, y: 0},
             {tile: Tile(slashes, 16, 0, 16, 16), x: 0, y: 16}
