@@ -7,9 +7,9 @@
     <canvas id="canvas" width="250" height="250">
       <p> Get a better browser</p>
     </canvas>
-    <img id="sprite" src="earthbound1.png" alt="earthbound"/>
+    <img id="sprite" class="btn-slide" src="earthbound1.png" alt="earthbound"/>
     <img id="slashes" src="slashes.png" alt="chrono slashes"/>
-    <img id="damageFont" src="damage_font.png" alt="damage font"/>
+    <div id="panel"><img id="damageFont" src="damage_font.png" alt="damage font"/></div>
 
     <script>
       $(function() {
@@ -72,6 +72,14 @@
         function rand(n) {
           return Math.floor(Math.random()*n);
         }
+        $(document).ready(function(){
+
+        	$(".btn-slide").click(function(){
+        	  $("#panel").slideToggle("slow");
+        	  $(this).toggleClass("active");
+        	});
+
+        });
       
         var canvas;
         var running = true;
