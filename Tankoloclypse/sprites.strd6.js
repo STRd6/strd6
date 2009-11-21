@@ -1,17 +1,17 @@
-var Tile = function(image, baseX, baseY, cellWidth, cellHeight) {
+var Tile = function(image, sourceX, sourceY, width, height) {
   var self = {
     update: function() {},
 
     draw: function(canvas, x, y, options) {
       canvas.drawImage(image,
-        baseX,
-        baseY,
-        cellWidth,
-        cellHeight,
+        sourceX,
+        sourceY,
+        width,
+        height,
         x,
         y,
-        cellWidth,
-        cellHeight,
+        width,
+        height,
         options
       );
     }
@@ -50,6 +50,30 @@ var Animation = function(frameData) {
 
     draw: function(canvas, x, y, options) {
       frameData[currentFrame].draw(canvas, x, y, options);
+    }
+  };
+};
+
+var Actor = function(states, defaultState, x, y, updateCallback) {
+  var state = defaultState || "default";
+
+  return {
+    update: function() {
+      states[state].update();
+      updateCallback.call(this, state);
+    },
+
+    draw: function(canvas, options) {
+      states[state].draw(canvas, x, y, options);
+    },
+
+    state: function(newState) {
+      if(newState === undefined) {
+        return state;
+      } else {
+        state = newState;
+        return this;
+      }
     }
   };
 };
