@@ -5,17 +5,6 @@
       var canvas = this.get(0);
       var context;
 
-      var colorStack = [];
-
-      function pushStyle(color) {
-        colorStack.push(context.fillStyle);
-        context.fillStyle = color;
-      }
-
-      function popStyle() {
-        context.fillStyle = colorStack.pop();
-      }
-
       var $canvas = $(canvas).extend({
         drawLine: function(x1, y1, x2, y2, width) {
           width = width || 3;
@@ -63,9 +52,7 @@
         },
 
         fill: function(color) {
-          pushStyle(color);
           context.fillRect(0, 0, canvas.width, canvas.height);
-          popStyle();
 
           return this;
         },
