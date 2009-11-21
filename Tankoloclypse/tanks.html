@@ -5,11 +5,11 @@
     <script src="strd6.js"></script>
     <script src="sprites.strd6.js"></script>
   </head>
-  <body style="overflow:none">   
-    <canvas id="canvas" width="400" height="400">
+  <body style="overflow:auto">   
+    <canvas id="canvas" width="300" height="300">
       <p> Get a better browser</p>
     </canvas>
-    <div id="panel" class="btn-slide" style="width: 400px; height:20px; background-color:black; cursor:pointer;"></div>
+    <div id="panel" class="btn-slide" style="width: 300px; height:20px; background-color:black; cursor:pointer;"></div>
     <div id="panel" class="btn-slide" style="width:40px; height:10px; background-color:black; cursor:pointer;">
       <div style="font-size:9px; text-align:center; color:white; cursor:pointer;">inventory</div>
     </div>
@@ -246,8 +246,8 @@
           function teleport() {
             hSteps = 0;
             vSteps = 0;
-            hStart = rand(380);
-            vStart = rand(380);
+            hStart = rand(280);
+            vStart = rand(280);
             alt = 6;
           }
 
