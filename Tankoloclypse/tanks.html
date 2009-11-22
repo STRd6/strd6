@@ -45,7 +45,8 @@
           LEFT: 'l',
           UP: 'u',
           DOWN: 'd',
-          TELEPORT: 't'
+          TELEPORT: 't',
+          ATTACK: 'a'
         };
 
         var slashSheet = $("#slashes").get(0);
@@ -103,6 +104,12 @@
             Tile(spriteSheet, 8 + 12*18, 16, 18, 28),
             Tile(spriteSheet, 8 + 14*18, 16, 18, 28)
           ]);
+          states[Action.ATTACK] = Animation([
+            Composite([
+              {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+              {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+            ])
+          ]);
 
 
           return Actor(states, "default", 25, 25, function(state) {
@@ -122,6 +129,9 @@
                 this.changePosition(0, moveSpeed);
                 break;
               case Action.TELEPORT:
+                this.changePosition(0, 0);
+                break;
+              case Action.ATTACK:
                 this.changePosition(0, 0);
                 break;
             }
@@ -313,7 +323,8 @@
           } else if (e.keyCode == 40) {
             action = Action.DOWN;
             //dwalk();
-          //} else if (e.keyCode == 13) {
+          } else if (e.keyCode == 13) {
+            action = Action.ATTACK;
             //attackSw += 1;
           } else if (e.keyCode == 8) {
             action = Action.TELEPORT;
