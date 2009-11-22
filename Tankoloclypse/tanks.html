@@ -5,7 +5,7 @@
     <script src="strd6.js"></script>
     <script src="sprites.strd6.js"></script>
   </head>
-  <body style="overflow:none">   
+  <body style="overflow: hidden;">
     <canvas id="canvas" width="300" height="300">
       <p> Get a better browser</p>
     </canvas>
@@ -19,7 +19,39 @@
     <img id="damageFont" src="damage_font.png" alt="damage font"/>
 
     <script>
-    
+      function loadSpriteData(url, callback) {
+        $.getJSON(url, function(data) {
+          var img = new Image();
+          img.src = data.file;
+
+          var size = data.size;
+          var width = img.width;
+          var height = img.height;
+          var rows = Math.floor(height / size);
+          var cols = Math.floor(width / size);
+
+          var tiles = [];
+
+          for(var row = 0; row < rows; row++) {
+            for(var col = 0; col < cols; col++) {
+              tiles[tiles.length] = Tile(img, col * size, row * size, size, size);
+            }
+          }
+
+          var composites = [];
+
+          for(var i = 0; i < data.composites.length; i++) {
+            var dataComposite = data.composites[i];
+
+            composites[i] = Composite(dataComposite.map(function(tileDatum) {
+              return {tile: tiles[tileDatum.tile], x: tileDatum.x, y: tileDatum.y};
+            }));
+          }
+
+          callback(tiles, composites);
+        });
+      }
+
       var inventoryToggle = 0;
       
       $(function() {
@@ -138,6 +170,14 @@
             }
           });
         })();
+
+        var loadedComposites = [];
+        var loadedTiles = [];
+
+        loadSpriteData("slashes.tilemap.json", function(tiles, composites) {
+          loadedComposites = composites;
+          loadedTiles = tiles;
+        });
 
         var damageNumbers = (function() {
           var font = $("#damageFont").get(0);
@@ -269,6 +309,10 @@
 
             $.each(damageNumbers, function(i, damageNumber) {
               damageNumber.draw(canvas, 75 + 8*i, 8);
+            });
+
+            $.each(loadedComposites, function(i, composite) {
+              composite.draw(canvas, 75 + 16*i, 32);
             });
 
           }, 100);
