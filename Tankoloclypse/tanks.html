@@ -53,6 +53,8 @@
         })();
 
         var nessActor = (function() {
+          var moveSpeed = 2;
+
           var states = {};
           states['default'] = Tile(spriteSheet, 8 + 2*18, 16, 18, 28);
           states[Action.LEFT] = Animation([
@@ -82,6 +84,21 @@
 
           return Actor(states, "default", 25, 25, function(state) {
             this.state(action);
+
+            switch(action) {
+              case Action.RIGHT:
+                this.changePosition(moveSpeed, 0);
+                break;
+              case Action.LEFT:
+                this.changePosition(-moveSpeed, 0);
+                break;
+              case Action.UP:
+                this.changePosition(0, -moveSpeed);
+                break;
+              case Action.DOWN:
+                this.changePosition(0, moveSpeed);
+                break;
+            }
           });
         })();
 
@@ -197,6 +214,9 @@
           setInterval(function() {
             canvas.clear().fill("#8A8");
 
+            // Gather Input
+
+
             testSprites[ts].draw(canvas, 50, 50);
             testSprites[ts].update();
 
@@ -274,6 +294,10 @@
           } else if(e.keyCode == 109) {
             ts--;
           }
+        });
+
+        $(document).keyup(function(e) {
+          action = "default";
         });
       });
     </script> 
