@@ -79,6 +79,11 @@ var Actor = function(states, defaultState, x, y, updateCallback) {
     changePosition: function(byX, byY) {
       x += byX;
       y += byY;
-    }
+    },
+
+	newPosition: function (newX, newY) {
+	  x = newX;
+	  y = newY;
+	}
   };
 };
