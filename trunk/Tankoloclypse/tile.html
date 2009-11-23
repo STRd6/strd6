@@ -2,131 +2,72 @@
   <head>
     <script src="jquery-1.3.2.js"></script>
     <script src="power_canvas.jquery.js"></script>
-    <script type="text/javascript">
+    <script src="sprites.strd6.js"></script>
+  </head>
+  <body style="overflow: hidden;">
+    <canvas id="canvas" width="300" height="300">
+      <p> Get a better browser</p>
+    </canvas>
+
+    <script>
       $(function() {
-        var canvas0 = $("#canvas0").powerCanvas();
-        var canvas1 = $("#canvas1").powerCanvas();
+        function loadSpriteData(url, callback) {
+          $.getJSON(url, function(data) {
+            var img = new Image();
+            img.src = data.file;
 
-        var selRow = 0;
-        var selCol = 0;
+            var size = data.size;
+            var width = img.width;
+            var height = img.height;
+            var rows = Math.floor(height / size);
+            var cols = Math.floor(width / size);
 
-        var zoom = 1;
-        var tileSize = 16;
-        var blockSize = tileSize * zoom;
-        var width = 96;
-        var height = 96;
+            var tiles = [];
 
-        var image;
-        var iWidth = 48;
-        var iHeight = 48;
+            for(var row = 0; row < rows; row++) {
+              for(var col = 0; col < cols; col++) {
+                tiles[tiles.length] = Tile(img, col * size, row * size, size, size);
+              }
+            }
 
-        var gridColor = "#000";
-        var selectionColor = "#0A0";
+            var composites = [];
 
-        function loadImage(url) {
-          console.log("Loading: " + url);
-          image = new Image();
-          image.src = url;
+            for(var i = 0; i < data.composites.length; i++) {
+              var dataComposite = data.composites[i];
 
-          iWidth = image.width;
-          iHeight = image.height;
+              composites[i] = Composite(dataComposite.map(function(tileDatum) {
+                return {tile: tiles[tileDatum.tile], x: tileDatum.x, y: tileDatum.y};
+              }));
+            }
 
-          width = iWidth*zoom;
-          height = iHeight*zoom;
-
-          // + 1 for the outer border
-          $("#canvases canvas").attr({
-            width: width + 1,
-            height: height + 1
+            callback(tiles, composites);
           });
-
-          draw();
         }
 
-        function draw() {
-          console.log("draw");
-          canvas0.clear();
+        var loadedComposites = [];
+        var loadedTiles = [];
 
-          // Horizontal flip
-          //canvas0.transform(-1, 0, 0, 1, width, 0);
-          // Vertical flip
-          //canvas0.transform(1, 0, 0, -1, 0, height);
-
-          canvas0.drawImage(image,
-            0, 0, iWidth, iHeight,
-            0, 0, width, height,
-            {hFlip: false, vFlip: true}
-          );
-
-          drawGrid();
-          drawSelection();
-
-          
-        }
-
-        function drawGrid() {
-          console.log("drawGrid");
-          canvas1.strokeColor(gridColor);
-
-          for(var i = 0; i <= width / (blockSize); i++) {
-            canvas1.drawLine(i * blockSize + 0.5, 0, i * blockSize + 0.5, height, 1);
-          }
-
-          for(var i = 0; i <= height / (blockSize); i++) {
-            canvas1.drawLine(0, i * blockSize + 0.5, width, i * blockSize + 0.5, 1);
-          }
-        }
-
-        function drawSelection() {
-          var x = selCol * blockSize;
-          var y = selRow * blockSize;
-          canvas1.strokeColor(selectionColor);
-          canvas1.drawLine(x + 0.5 + blockSize, y + 0.5, x + 0.5, y + 0.5, 1);
-          canvas1.drawLine(x + 0.5, y + 0.5 + blockSize, x + 0.5, y + 0.5, 1);
-          canvas1.drawLine(x + 0.5 + blockSize, y + 0.5, x + 0.5 + blockSize, y + 0.5 + blockSize, 1);
-          canvas1.drawLine(x + 0.5, y + 0.5 + blockSize, x + 0.5 + blockSize, y + 0.5 + blockSize, 1);
-        }
-
-        $('#loader').submit(function() {
-          var url = $(".imageURL", this).val();
-
-          try {
-            loadImage(url);
-          } catch(e) {
-            console.log(e);
-          }
-
-          return false;
+        loadSpriteData("slashes.tilemap.json", function(tiles, composites) {
+          loadedComposites = composites;
+          loadedTiles = tiles;
         });
 
-        $("#canvas1").click(function(e) {
-          var x = e.pageX - $(this).offset().left;
-          var y = e.pageY - $(this).offset().top;
+        $('canvas').powerCanvas({init: function(canvas) {
 
-          console.log(x + ", " + y);
+          setInterval(function() {
+            canvas.clear();
 
-          selCol = Math.floor(x / blockSize);
-          selRow = Math.floor(y / blockSize);
-          draw();
-        });
+            $.each(loadedTiles, function(i, tile) {
+              tile.draw(canvas, 16*(i%8), 16 * Math.floor(i/8));
+            });
+
+            $.each(loadedComposites, function(i, composite) {
+              composite.draw(canvas, 144 + 16*i, 0);
+            });
+
+          }, 100);
+        }});
       });
     </script>
-  </head>
-  <body>
-    <div id="canvases" style="position: relative;">
-      <canvas id="canvas0" width="250" height="250" style ="position: absolute; left: 0; top: 0;">
-        <p> Get a better browser</p>
-      </canvas>
-      <canvas id="canvas1" width="250" height="250" style ="position: absolute; left: 0; top: 0;">
-        <p> Get a better browser</p>
-      </canvas>
-    </div>
-
-    <form id="loader" style="position: fixed; left: 525; top: 96;">
-      <input type="text" class="imageURL"/>
-    </form>
-
-    <div id="imageStable">
-    </div>
   </body>
 </html>
