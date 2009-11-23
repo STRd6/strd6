@@ -152,18 +152,46 @@
               case Action.RIGHT:
                 this.changePosition(moveSpeed, 0);
                 states['default'] = Tile(spriteSheet, 8 + 13*18, 16, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 13*18, 16, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: 10, y: 4},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: 10, y: 20}
+                  ])
+                ]);
                 break;
               case Action.LEFT:
                 this.changePosition(-moveSpeed, 0);
                 states['default'] = Tile(spriteSheet, 8 + 4*18, 16, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 4*18, 16, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: -9, y: 4},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: -9, y: 20}
+                  ])
+                ]);
                 break;
               case Action.UP:
                 this.changePosition(0, -moveSpeed);
                 states['default'] = Tile(spriteSheet, 8 + 8*18, 16, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 8*18, 16, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                  ])
+                ]);
                 break;
               case Action.DOWN:
                 this.changePosition(0, moveSpeed);
                 states['default'] = Tile(spriteSheet, 8 + 0*18, 16, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 0*18, 16, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                  ])
+                ]);
                 break;
               case Action.TELEPORT:
                 this.newPosition(rand(280), rand(280));
@@ -264,6 +292,8 @@
 
             testSprites[ts].draw(canvas, 50, 50);
             testSprites[ts].update();
+            
+            testSprites[2].draw(canvas, 70, 70, {hFlip: true});
 
             $.each(damageNumbers, function(i, damageNumber) {
               damageNumber.draw(canvas, 75 + 8*i, 8);
