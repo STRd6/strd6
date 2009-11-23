@@ -151,15 +151,19 @@
             switch(action) {
               case Action.RIGHT:
                 this.changePosition(moveSpeed, 0);
+                states['default'] = Tile(spriteSheet, 8 + 13*18, 16, 18, 28);
                 break;
               case Action.LEFT:
                 this.changePosition(-moveSpeed, 0);
+                states['default'] = Tile(spriteSheet, 8 + 4*18, 16, 18, 28);
                 break;
               case Action.UP:
                 this.changePosition(0, -moveSpeed);
+                states['default'] = Tile(spriteSheet, 8 + 8*18, 16, 18, 28);
                 break;
               case Action.DOWN:
                 this.changePosition(0, moveSpeed);
+                states['default'] = Tile(spriteSheet, 8 + 0*18, 16, 18, 28);
                 break;
               case Action.TELEPORT:
                 this.newPosition(rand(280), rand(280));
