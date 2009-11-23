@@ -30,6 +30,18 @@
             if(options.vFlip) {
               context.transform(1, 0, 0, -1, 0, dHeight);
             }
+
+			      if(options.rot90) { //counterclockwise
+			        context.transform(0, -1, 1, 0, 0, 0);
+			      }
+			      
+			      if(options.rot180) { 
+			        context.transform(-1, 0, 0, -1, 0, 0);
+		        }
+		        
+			      if(options.rot270) { 			        
+              context.transform(0, 1, -1, 0, 0, 0); 
+			      }
           }
 
           context.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, dWidth, dHeight);
