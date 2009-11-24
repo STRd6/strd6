@@ -292,6 +292,11 @@
 
             testSprites[ts].draw(canvas, 50, 50);
             testSprites[ts].update();
+            
+            Composite([
+            {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+            {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+            ]).draw(canvas, 70, 70, {rot90:true});
 
             $.each(damageNumbers, function(i, damageNumber) {
               damageNumber.draw(canvas, 75 + 8*i, 8);
