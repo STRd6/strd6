@@ -292,14 +292,6 @@
 
             testSprites[ts].draw(canvas, 50, 50);
             testSprites[ts].update();
-            
-            /**
-            * Rotation Testing
-            testSprites[2].draw(canvas, 70, 70);
-            testSprites[2].draw(canvas, 70, 70, {rot90: true});
-            testSprites[2].draw(canvas, 70, 70, {rot180: true});
-            testSprites[2].draw(canvas, 70, 70, {rot270: true});
-            */
 
             $.each(damageNumbers, function(i, damageNumber) {
               damageNumber.draw(canvas, 75 + 8*i, 8);
