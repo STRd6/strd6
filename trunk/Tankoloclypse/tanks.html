@@ -203,6 +203,111 @@
           });
         })();
 
+        var jeffActor = (function() {
+          var moveSpeed = 6;
+
+          var states = {};
+          states['default'] = Tile(spriteSheet, 8 + 2*18, 100, 18, 28);
+          states[Action.LEFT] = Animation([
+            Tile(spriteSheet, 8 + 4*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 4*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 5*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 5*18, 100, 18, 28)
+          ]);
+          states[Action.RIGHT] = Animation([
+            Tile(spriteSheet, 8 + 12*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 12*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 13*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 13*18, 100, 18, 28)
+          ]);
+          states[Action.UP] = Animation([
+            Tile(spriteSheet, 8 + 8*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 8*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 9*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 9*18, 100, 18, 28)
+          ]);
+          states[Action.DOWN] = Animation([
+            Tile(spriteSheet, 8 + 0*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 0*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 1*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 1*18, 100, 18, 28)
+          ]);
+          states[Action.TELEPORT] = Animation([
+            Tile(spriteSheet, 8 + 2*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 4*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 6*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 8*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 10*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 12*18, 100, 18, 28),
+            Tile(spriteSheet, 8 + 14*18, 100, 18, 28)
+          ]);
+          states[Action.ATTACK] = Animation([
+            Composite([
+              {tile: Tile(spriteSheet, 8 + 2*18, 100, 18, 28), x: 0, y: 0},
+              {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+              {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+            ])
+          ]);
+
+
+          return Actor(states, "default", 25, 25, function(state) {
+            this.state(action);
+
+            switch(action) {
+              case Action.RIGHT:
+                this.changePosition(moveSpeed, 0);
+                states['default'] = Tile(spriteSheet, 8 + 13*18, 100, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 13*18, 100, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: 10, y: 4},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: 10, y: 20}
+                  ])
+                ]);
+                break;
+              case Action.LEFT:
+                this.changePosition(-moveSpeed, 0);
+                states['default'] = Tile(spriteSheet, 8 + 4*18, 100, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 4*18, 100, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: -9, y: 4},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: -9, y: 20}
+                  ])
+                ]);
+                break;
+              case Action.UP:
+                this.changePosition(0, -moveSpeed);
+                states['default'] = Tile(spriteSheet, 8 + 8*18, 100, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 8*18, 100, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                  ])
+                ]);
+                break;
+              case Action.DOWN:
+                this.changePosition(0, moveSpeed);
+                states['default'] = Tile(spriteSheet, 8 + 0*18, 100, 18, 28);
+                states[Action.ATTACK] = Animation([
+                  Composite([
+                    {tile: Tile(spriteSheet, 8 + 0*18, 100, 18, 28), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+                    {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                  ])
+                ]);
+                break;
+              case Action.TELEPORT:
+                this.newPosition(rand(280), rand(280));
+                break;
+              case Action.ATTACK:
+                this.changePosition(0, 0);
+                break;
+            }
+          });
+        })();
+
         var loadedComposites = [];
         var loadedTiles = [];
 
@@ -246,6 +351,7 @@
         */
         var testSprites = [
           nessActor,
+          jeffActor,
           damageToGraphic(rand(999)),
           nessAnimation,
           Composite([
@@ -292,11 +398,6 @@
 
             testSprites[ts].draw(canvas, 50, 50);
             testSprites[ts].update();
-            
-            Composite([
-            {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
-            ]).draw(canvas, 70, 70, {rot90:true});
 
             $.each(damageNumbers, function(i, damageNumber) {
               damageNumber.draw(canvas, 75 + 8*i, 8);
