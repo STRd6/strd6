@@ -59,7 +59,9 @@ var Actor = function(states, defaultState, callbacks) {
 
   return {
     update: function() {
-      states[state].update();
+      if(states[state]) {
+        states[state].update();
+      }
       callbacks.update.call(this, state);
     },
 
