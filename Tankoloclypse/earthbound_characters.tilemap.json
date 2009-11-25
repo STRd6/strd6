@@ -1,0 +1,20 @@
+{
+  "file": "earthbound_characters.png",
+  "tileWidth": 18,
+  "tileHeight": 28,
+  "composites": [],
+  "animations": {
+    "walkUp": [
+      8, 8, 9, 9
+    ],
+    "walkDown": [
+      0, 0, 1, 1
+    ],
+    "walkLeft": [
+      4, 4, 5, 5
+    ],
+    "walkRight": [
+      12, 12, 13, 13
+    ]
+  }
+}
