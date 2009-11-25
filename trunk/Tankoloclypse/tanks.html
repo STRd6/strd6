@@ -25,16 +25,18 @@
           img.src = data.file;
 
           var size = data.size;
+          var tileWidth = size || data.tileWidth;
+          var tileHeight = size || data.tileHeight;
           var width = img.width;
           var height = img.height;
-          var rows = Math.floor(height / size);
-          var cols = Math.floor(width / size);
+          var rows = Math.floor(height / tileHeight);
+          var cols = Math.floor(width / tileWidth);
 
           var tiles = [];
 
           for(var row = 0; row < rows; row++) {
             for(var col = 0; col < cols; col++) {
-              tiles[tiles.length] = Tile(img, col * size, row * size, size, size);
+              tiles[tiles.length] = Tile(img, col * tileWidth, row * tileHeight, tileWidth, tileHeight);
             }
           }
 
@@ -48,7 +50,14 @@
             }));
           }
 
-          callback(tiles, composites);
+          var animations = {};
+          if(data.animations) {
+            $.each(data.animations, function(name, animationTiles) {
+              animations[name] = Animation(animationTiles.map(function(n){ return tiles[n] }));
+            });
+          }
+
+          callback(tiles, composites, animations);
         });
       }
 
@@ -347,10 +356,14 @@
 
         var loadedComposites = [];
         var loadedTiles = [];
+        var loadedAnimations = {};
 
-        loadSpriteData("slashes.tilemap.json", function(tiles, composites) {
+        loadSpriteData("earthbound_characters.tilemap.json", function(tiles, composites, animations) {
           loadedComposites = composites;
           loadedTiles = tiles;
+          console.log(tiles);
+          loadedAnimations = animations;
+          console.log(loadedAnimations);
         });
 
         var damageNumbers = (function() {
@@ -439,6 +452,11 @@
             $.each(damageNumbers, function(i, damageNumber) {
               damageNumber.draw(canvas, 75 + 8*i, 8);
             });
+
+            if(loadedAnimations.walkLeft) {
+              loadedAnimations.walkLeft.update();
+              loadedAnimations.walkLeft.draw(canvas, 100, 100);
+            }
 
             $.each(loadedComposites, function(i, composite) {
               composite.draw(canvas, 75 + 16*i, 32);
