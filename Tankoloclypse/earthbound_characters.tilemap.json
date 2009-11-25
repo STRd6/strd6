@@ -2,7 +2,18 @@
   "file": "earthbound_characters.png",
   "tileWidth": 18,
   "tileHeight": 28,
+  "characters": {
+    "Ness": 0,
+    "Kid": 1,
+    "Girl": 2,
+    "Jeff": 3,
+    "Pu": 4
+  },
   "animations": {
+    "standUp": [8],
+    "standDown": [0],
+    "standLeft": [4],
+    "standRight": [12],
     "walkUp": [
       8, 8, 9, 9
     ],
