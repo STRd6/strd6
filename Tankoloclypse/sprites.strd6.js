@@ -54,18 +54,16 @@ var Animation = function(frameData) {
   };
 };
 
-var Actor = function(states, defaultState, x, y, updateCallback) {
+var Actor = function(states, defaultState, callbacks) {
   var state = defaultState || "default";
 
   return {
     update: function() {
       states[state].update();
-      updateCallback.call(this, state);
+      callbacks.update.call(this, state);
     },
 
-    draw: function(canvas, options) {
-      states[state].draw(canvas, x, y, options);
-    },
+    draw: callbacks.draw,
 
     state: function(newState) {
       if(newState === undefined) {
@@ -74,16 +72,6 @@ var Actor = function(states, defaultState, x, y, updateCallback) {
         state = newState;
         return this;
       }
-    },
-
-    changePosition: function(byX, byY) {
-      x += byX;
-      y += byY;
-    },
-
-    newPosition: function (newX, newY) {
-      x = newX;
-      y = newY;
     }
   };
 };
