@@ -13,10 +13,11 @@
     <div id="inventoryBox" class="btn-slide" style="width:40px; height:10px; background-color:black; cursor:pointer; visibility:visible;">
       <div id="inventoryText" style="font-size:9px; text-align:center; color:white; cursor:pointer; visibility:visible;">inventory</div>
     </div>
-    
+
     <img id="sprite" src="earthbound1.png" alt="earthbound"/>
     <img id="slashes" src="slashes.png" alt="chrono slashes"/>
     <img id="damageFont" src="damage_font.png" alt="damage font"/>
+    <img id="brick" src="brick.png" alt="brick"/>
 
     <script>
       function loadSpriteData(url, callback) {
@@ -93,6 +94,7 @@
         var slashSheet = $("#slashes").get(0);
         var spriteSheet = $("#sprite").get(0);
         var damageSheet = $("#damageFont").get(0);
+        var brickImage = $("#brick").get(0);
 
         var nullTile = Tile(damageSheet, 0, 0, 8, 8);
       
@@ -316,12 +318,30 @@
         ];
 
         var ts = 0;
+
+        var tiledBackground = (function(img, tileWidth, tileHeight, bgWidth, bgHeight) {
+
+          var tileData = [];
+
+          for(var row = 0; row < bgHeight / tileHeight; row++) {
+            for(var col = 0; col < bgWidth / tileWidth; col++) {
+              tileData.push({
+                tile: Tile(img, 0, 0, tileWidth, tileHeight),
+                x: col * tileWidth,
+                y: row * tileHeight
+              });
+            }
+          }
+
+          return Composite(tileData);
+        })(brickImage, 32, 32, 320, 320);
 		
         $('canvas').powerCanvas({init: function(_canvas) {
           canvas = _canvas;
 
           setInterval(function() {
-            canvas.clear().fill("#8A8");
+            canvas.clear();
+            tiledBackground.draw(canvas, 0, 0);
 
             // Gather Input
 
