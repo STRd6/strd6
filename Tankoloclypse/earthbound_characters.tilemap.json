@@ -2,7 +2,6 @@
   "file": "earthbound_characters.png",
   "tileWidth": 18,
   "tileHeight": 28,
-  "composites": [],
   "animations": {
     "walkUp": [
       8, 8, 9, 9

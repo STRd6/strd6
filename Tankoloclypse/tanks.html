@@ -41,13 +41,14 @@
           }
 
           var composites = [];
+          if(data.composites) {
+            for(var i = 0; i < data.composites.length; i++) {
+              var dataComposite = data.composites[i];
 
-          for(var i = 0; i < data.composites.length; i++) {
-            var dataComposite = data.composites[i];
-
-            composites[i] = Composite(dataComposite.map(function(tileDatum) {
-              return {tile: tiles[tileDatum.tile], x: tileDatum.x, y: tileDatum.y};
-            }));
+              composites[i] = Composite(dataComposite.map(function(tileDatum) {
+                return {tile: tiles[tileDatum.tile], x: tileDatum.x, y: tileDatum.y};
+              }));
+            }
           }
 
           var animations = {};
@@ -77,21 +78,24 @@
           }
           $(this).toggleClass("active");
         });
+
+        var slashSheet = $("#slashes").get(0);
+        var spriteSheet = $("#sprite").get(0);
+        var damageSheet = $("#damageFont").get(0);
+
+        var nullTile = Tile(damageSheet, 0, 0, 8, 8);
       
         var canvas;
         var action = "default";
 
         var Action = {
-          RIGHT: 'r',
-          LEFT: 'l',
-          UP: 'u',
-          DOWN: 'd',
-          TELEPORT: 't',
-          ATTACK: 'a'
+          RIGHT: 'walkRight',
+          LEFT: 'walkLeft',
+          UP: 'walkUp',
+          DOWN: 'walkDown',
+          TELEPORT: 'teleport',
+          ATTACK: 'attack'
         };
-
-        var slashSheet = $("#slashes").get(0);
-        var spriteSheet = $("#sprite").get(0);
 
         var nessAnimation = (function() {
           var tiles = [];
@@ -112,30 +116,10 @@
 
           var states = {};
           states['default'] = Tile(spriteSheet, 8 + 2*18, 16, 18, 28);
-          states[Action.LEFT] = Animation([
-            Tile(spriteSheet, 8 + 4*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 4*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 5*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 5*18, 16, 18, 28)
-          ]);
-          states[Action.RIGHT] = Animation([
-            Tile(spriteSheet, 8 + 12*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 12*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 13*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 13*18, 16, 18, 28)
-          ]);
-          states[Action.UP] = Animation([
-            Tile(spriteSheet, 8 + 8*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 8*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 9*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 9*18, 16, 18, 28)
-          ]);
-          states[Action.DOWN] = Animation([
-            Tile(spriteSheet, 8 + 0*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 0*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 1*18, 16, 18, 28),
-            Tile(spriteSheet, 8 + 1*18, 16, 18, 28)
-          ]);
+          states[Action.LEFT] = nullTile;
+          states[Action.RIGHT] = nullTile;
+          states[Action.UP] = nullTile;
+          states[Action.DOWN] = nullTile;
           states[Action.TELEPORT] = Animation([
             Tile(spriteSheet, 8 + 2*18, 16, 18, 28),
             Tile(spriteSheet, 8 + 4*18, 16, 18, 28),
@@ -152,6 +136,12 @@
               {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
             ])
           ]);
+
+          loadSpriteData('earthbound_characters.tilemap.json', function(tiles, composites, animations) {
+            $.each(animations, function(key, value) {
+              states[key] = value;
+            });
+          });
 
           var x = 25;
           var y = 25;
