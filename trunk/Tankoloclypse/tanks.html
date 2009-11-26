@@ -110,20 +110,6 @@
           ATTACK: 'attack'
         };
 
-        var nessAnimation = (function() {
-          var tiles = [];
-          var tileWidth = 18;
-          var tileHeight = 28;
-
-          for(var i = 0; i < 16; i++) {
-            // Double to slow frame rate
-            tiles[tiles.length] = Tile(spriteSheet, 8 + i*18, 16, tileWidth, tileHeight);
-            tiles[tiles.length] = Tile(spriteSheet, 8 + i*18, 16, tileWidth, tileHeight);
-          }
-
-          return Animation(tiles);
-        })();
-
         var actors = (function() {
           var x = 25;
           var y = 25;
@@ -245,6 +231,11 @@
           loadedAnimation = data.characters.Kid.walkLeft;
         });
 
+        var loadedComposites = [];
+        loadSpriteData("slashes.tilemap.json", function(data) {
+          loadedComposites = data.composites;
+        });
+
         var damageNumbers = (function() {
           var font = $("#damageFont").get(0);
           var nums = [];
@@ -284,37 +275,7 @@
           actors.Jeff,
           actors.Girl,
           actors.Pu,
-          damageToGraphic(rand(999)),
-          nessAnimation,
-          Composite([
-            {tile: Tile(slashSheet, 0, 0, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 16, 0, 16, 16), x: 0, y: 16}
-          ]),
-          Composite([
-            {tile: Tile(slashSheet, 32, 0, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 48, 0, 16, 16), x: 0, y: 16}
-          ]),
-          Tile(slashSheet, 64, 0, 16, 16),
-          Composite([
-            {tile: Tile(slashSheet, 80, 0, 32, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 112, 0, 16, 16), x: 16, y: 16}
-          ]),
-          Composite([
-            {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
-          ]),
-          Composite([
-            {tile: Tile(slashSheet, 32, 16, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 48, 16, 16, 16), x: 0, y: 16}
-          ]),
-          Composite([
-            {tile: Tile(slashSheet, 64, 32, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 80, 32, 32, 16), x: 0, y: 16}
-          ]),
-          Composite([
-            {tile: Tile(slashSheet, 112, 32, 16, 16), x: 0, y: 0},
-            {tile: Tile(slashSheet, 0, 48, 16, 16), x: 0, y: 16}
-          ]),
+          damageToGraphic(rand(999))
         ];
 
         var ts = 0;
@@ -353,9 +314,13 @@
               damageNumber.draw(canvas, 75 + 8*i, 8);
             });
 
+            $.each(loadedComposites, function(i, composite) {
+              composite.draw(canvas, (i%4) * 32, Math.floor(i/4) * 32);
+            });
+
             if(loadedAnimation) {
               loadedAnimation.update();
-              loadedAnimation.draw(canvas, 100, 100);
+              loadedAnimation.draw(canvas, 100, 190);
             }
 
           }, 100);
