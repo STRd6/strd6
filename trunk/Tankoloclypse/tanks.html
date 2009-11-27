@@ -160,6 +160,16 @@
                   case Action.RIGHT:
                     changePosition(moveSpeed, 0);
                     states['default'] = states.standRight;
+                    if (name == "Kid") {
+                    states[Action.ATTACK] = Animation([
+                      Composite([
+                        {tile: Tile(spriteSheet, 8 + 13*18, 44, 18, 28), x: 0, y: 0},
+                        {tile: Tile(slashSheet, 0, 16, 16, 16), x: 10, y: 4},
+                        {tile: Tile(slashSheet, 16, 16, 16, 16), x: 10, y: 20}
+                      ])
+                    ]);
+                    break;
+                    } else {
                     states[Action.ATTACK] = Animation([
                       Composite([
                         {tile: Tile(spriteSheet, 8 + 13*18, 16, 18, 28), x: 0, y: 0},
@@ -168,6 +178,7 @@
                       ])
                     ]);
                     break;
+                    }
                   case Action.LEFT:
                     changePosition(-moveSpeed, 0);
                     states['default'] = states.standLeft;
