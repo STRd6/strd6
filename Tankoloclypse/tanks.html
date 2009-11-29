@@ -9,12 +9,11 @@
     <canvas id="canvas" width="300" height="300">
       <p> Get a better browser</p>
     </canvas>
-    <div id="panel" class="btn-slide" style="width: 300px; height:20px; background-color:black; cursor:pointer;"></div>
-    <div id="inventoryBox" class="btn-slide" style="width:40px; height:10px; background-color:black; cursor:pointer; visibility:visible;">
-      <div id="inventoryText" style="font-size:9px; text-align:center; color:white; cursor:pointer; visibility:visible;">inventory</div>
+    <div id="panel" class="btn-slide" style="width: 300px; height:20px; background-color:green; cursor:pointer;"></div>
+    <div id="inventoryBox" class="btn-slide" style="width:40px; height:10px; background-color:green; cursor:pointer; visibility:hidden;">
+      <div id="inventoryText" style="font-size:9px; text-align:center; color:white; cursor:pointer; visibility:hidden;">inventory</div>
     </div>
 
-    <img id="sprite" src="earthbound1.png" alt="earthbound"/>
     <img id="slashes" src="slashes.png" alt="chrono slashes"/>
     <img id="damageFont" src="damage_font.png" alt="damage font"/>
     <img id="brick" src="brick.png" alt="brick"/>
@@ -41,15 +40,13 @@
             }
           }
 
-          var composites = [];
+          var composites = {};
           if(data.composites) {
-            for(var i = 0; i < data.composites.length; i++) {
-              var dataComposite = data.composites[i];
-
-              composites[i] = Composite(dataComposite.map(function(tileDatum) {
+            $.each(data.composites, function(name, dataComposite) {
+              composites[name] = Composite(dataComposite.map(function(tileDatum) {
                 return {tile: tiles[tileDatum.tile], x: tileDatum.x, y: tileDatum.y};
               }));
-            }
+            });
           }
 
           var characters = {};
@@ -72,6 +69,15 @@
             characters: characters
           });
         });
+      }
+      
+      function GameObject(drawable, x, y) {
+        return {
+          draw: function(canvas, dummy1, dummy2, options) {
+            drawable.draw(canvas, x, y, options);
+          },
+          update: function(){ }
+        };
       }
 
       var inventoryToggle = 0;
@@ -126,65 +132,64 @@
 
           function loadActor(name, moveSpeed) {
             var states = {};
-
-            states[Action.TELEPORT] = Animation([
-              Tile(spriteSheet, 8 + 2*18, 16, 18, 28),
-              Tile(spriteSheet, 8 + 4*18, 16, 18, 28),
-              Tile(spriteSheet, 8 + 6*18, 16, 18, 28),
-              Tile(spriteSheet, 8 + 8*18, 16, 18, 28),
-              Tile(spriteSheet, 8 + 10*18, 16, 18, 28),
-              Tile(spriteSheet, 8 + 12*18, 16, 18, 28),
-              Tile(spriteSheet, 8 + 14*18, 16, 18, 28)
-            ]);
-            states[Action.ATTACK] = Animation([
-              Composite([
-                {tile: Tile(spriteSheet, 8 + 2*18, 16, 18, 28), x: 0, y: 0},
-                {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-                {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
-              ])
-            ]);
+            var isTeleporting = false;
 
             loadSpriteData('earthbound_characters.tilemap.json', function(data) {
               $.each(data.characters[name], function(key, value) {
                 states[key] = value;
               });
 
+            loadSpriteData('slashes.tilemap.json', function(data) {
+              $.each(data.composites[name], function(key, value) {
+                states[key] = value;
+              });
+
               states['default'] = data.characters[name].standDown;
+              states[Action.TELEPORT] = Animation([
+                states.standDown,
+                states.standSW,
+                states.standLeft,
+                states.standNW,
+                states.standUp,
+                states.standNE,
+                states.standRight,
+                states.standSE
+              ]);
+              states[Action.ATTACK] = Animation([
+                Composite([
+                  {tile: states.standDown, x: 0, y: 0},
+                  {tile: states.slash2, x: 0, y: 0}
+                  //{tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+                  //{tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                ])
+              ]);
             });
 
             return Actor(states, "default", {
               update: function(state) {
+                
+                if (isTeleporting) {return;}
+                
                 this.state(action);
 
                 switch(action) {
                   case Action.RIGHT:
                     changePosition(moveSpeed, 0);
                     states['default'] = states.standRight;
-                    if (name == "Kid") {
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: Tile(spriteSheet, 8 + 13*18, 44, 18, 28), x: 0, y: 0},
+                        {tile: states.standRight, x: 0, y: 0},
                         {tile: Tile(slashSheet, 0, 16, 16, 16), x: 10, y: 4},
                         {tile: Tile(slashSheet, 16, 16, 16, 16), x: 10, y: 20}
                       ])
                     ]);
                     break;
-                    } else {
-                    states[Action.ATTACK] = Animation([
-                      Composite([
-                        {tile: Tile(spriteSheet, 8 + 13*18, 16, 18, 28), x: 0, y: 0},
-                        {tile: Tile(slashSheet, 0, 16, 16, 16), x: 10, y: 4},
-                        {tile: Tile(slashSheet, 16, 16, 16, 16), x: 10, y: 20}
-                      ])
-                    ]);
-                    break;
-                    }
                   case Action.LEFT:
                     changePosition(-moveSpeed, 0);
                     states['default'] = states.standLeft;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: Tile(spriteSheet, 8 + 4*18, 16, 18, 28), x: 0, y: 0},
+                        {tile: states.standLeft, x: 0, y: 0},
                         {tile: Tile(slashSheet, 0, 16, 16, 16), x: -9, y: 4},
                         {tile: Tile(slashSheet, 16, 16, 16, 16), x: -9, y: 20}
                       ])
@@ -195,7 +200,7 @@
                     states['default'] = states.standUp;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: Tile(spriteSheet, 8 + 8*18, 16, 18, 28), x: 0, y: 0},
+                        {tile: states.standUp, x: 0, y: 0},
                         {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
                         {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
                       ])
@@ -206,29 +211,35 @@
                     states['default'] = states.standDown;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: Tile(spriteSheet, 8 + 0*18, 16, 18, 28), x: 0, y: 0},
+                        {tile: states.standDown, x: 0, y: 0},
                         {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
                         {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
                       ])
                     ]);
                     break;
                   case Action.TELEPORT:
-                    newPosition(rand(280), rand(280));
+                    isTeleporting = true;
+                    this.addTimedEvent(8, function(){
+                      newPosition(rand(280), rand(280));
+                      isTeleporting = false;
+                    });
                     break;
                   case Action.ATTACK:
-                    changePosition(0, 0);
+                    var dmg = rand(100);
+                    kidHit += dmg;
+                    gameObjects.push(GameObject(damageToGraphic(dmg), x, y));
                     break;
                 }
               },
 
-              draw: function(canvas, options) {
+              draw: function(canvas, dum1, dum2, options) {
                 (states[this.state()] || nullTile).draw(canvas, x, y, options);
               }
             });
           }
 
           return {
-            Ness: loadActor("Ness", 4),
+            Ness: loadActor("Ness", 8),
             Kid: loadActor("Kid", 3),
             Jeff: loadActor("Jeff", 6),
             Girl: loadActor("Girl", 4),
@@ -237,14 +248,14 @@
         })();
 
         var loadedAnimation = {};
-
         loadSpriteData("earthbound_characters.tilemap.json", function(data) {
           loadedAnimation = data.characters.Kid.walkLeft;
         });
 
-        var loadedComposites = [];
+        var loadedComposites = {};
         loadSpriteData("slashes.tilemap.json", function(data) {
           loadedComposites = data.composites;
+          console.log(loadedComposites);
         });
 
         var damageNumbers = (function() {
@@ -288,6 +299,12 @@
           actors.Pu,
           damageToGraphic(rand(999))
         ];
+        
+        var gameObjects = [];
+        
+        var kidHit = 0;
+        var kidX = 100;
+        var kidY = 190;
 
         var ts = 0;
 
@@ -325,14 +342,21 @@
               damageNumber.draw(canvas, 75 + 8*i, 8);
             });
 
-            $.each(loadedComposites, function(i, composite) {
+            var i = 0;
+
+            $.each(loadedComposites, function(name, composite) {
               composite.draw(canvas, (i%4) * 32, Math.floor(i/4) * 32);
+              i++;
             });
 
             if(loadedAnimation) {
               loadedAnimation.update();
-              loadedAnimation.draw(canvas, 100, 190);
+              loadedAnimation.draw(canvas, kidX, kidY, {rotation: kidHit});
             }
+            
+            $.each(gameObjects, function(i, gameObject) {
+              gameObject.draw(canvas);
+            });
 
           }, 100);
         }});
