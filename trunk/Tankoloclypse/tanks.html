@@ -139,11 +139,6 @@
                 states[key] = value;
               });
 
-            loadSpriteData('slashes.tilemap.json', function(data) {
-              $.each(data.composites[name], function(key, value) {
-                states[key] = value;
-              });
-
               states['default'] = data.characters[name].standDown;
               states[Action.TELEPORT] = Animation([
                 states.standDown,
@@ -158,9 +153,8 @@
               states[Action.ATTACK] = Animation([
                 Composite([
                   {tile: states.standDown, x: 0, y: 0},
-                  {tile: states.slash2, x: 0, y: 0}
-                  //{tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-                  //{tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                  {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
+                  {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
                 ])
               ]);
             });
@@ -303,7 +297,7 @@
         var gameObjects = [];
         
         var kidHit = 0;
-        var kidX = 100;
+        var kidX = 100; // where is KidA???
         var kidY = 190;
 
         var ts = 0;
