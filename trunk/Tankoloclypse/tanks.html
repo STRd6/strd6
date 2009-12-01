@@ -137,10 +137,15 @@
             var states = {};
             var isTeleporting = false;
 
-            loadSpriteData('earthbound_characters.tilemap.json', function(data) {
+            loadSpriteData("earthbound_characters.tilemap.json", function(data) {
               $.each(data.characters[name], function(key, value) {
                 states[key] = value;
               });
+              
+            var loadedSlashes = {};
+            loadSpriteData("slashes.tilemap.json", function(data) {
+              loadedSlashes = data.composites;
+            });
 
               states['default'] = data.characters[name].standDown;
               states[Action.TELEPORT] = Animation([
@@ -387,6 +392,7 @@
           action = "default";
         });
 
+/*
         var music = new Audio();
         music.src = "Karma Police.ogg";
 
@@ -395,8 +401,9 @@
         };
 
         music.play();
+*/
       });
     </script>
-    <audio src="Karma Police.ogg"> </audio>
+    <!--<audio src="Karma Police.ogg"> </audio>-->
   </body>
 </html>
