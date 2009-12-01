@@ -120,6 +120,9 @@
           var x = 25;
           var y = 25;
 
+          var swordSound = new Audio();
+          swordSound.src = "sword.mp3";
+
           function changePosition(byX, byY) {
             x += byX;
             y += byY;
@@ -219,6 +222,7 @@
                     });
                     break;
                   case Action.ATTACK:
+                    swordSound.play();
                     var dmg = rand(100);
                     kidHit += dmg;
                     gameObjects.push(GameObject(damageToGraphic(dmg), x, y));
@@ -382,7 +386,17 @@
         $(document).keyup(function(e) {
           action = "default";
         });
+
+        var music = new Audio();
+        music.src = "Karma Police.ogg";
+
+        playIt = function() {
+          music.play();
+        };
+
+        music.play();
       });
-    </script> 
+    </script>
+    <audio src="Karma Police.ogg"> </audio>
   </body>
 </html>
