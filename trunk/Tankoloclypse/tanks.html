@@ -135,14 +135,14 @@
 
           function loadActor(name, moveSpeed) {
             var states = {};
+            var loadedSlashes = {};
             var isTeleporting = false;
 
             loadSpriteData("earthbound_characters.tilemap.json", function(data) {
               $.each(data.characters[name], function(key, value) {
                 states[key] = value;
               });
-              
-            var loadedSlashes = {};
+                            
             loadSpriteData("slashes.tilemap.json", function(data) {
               loadedSlashes = data.composites;
             });
