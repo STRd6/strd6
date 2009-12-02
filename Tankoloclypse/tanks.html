@@ -138,14 +138,14 @@
             var loadedSlashes = {};
             var isTeleporting = false;
 
+            loadSpriteData("slashes.tilemap.json", function(data) {
+              loadedSlashes = data.composites;
+            });
+
             loadSpriteData("earthbound_characters.tilemap.json", function(data) {
               $.each(data.characters[name], function(key, value) {
                 states[key] = value;
               });
-                            
-            loadSpriteData("slashes.tilemap.json", function(data) {
-              loadedSlashes = data.composites;
-            });
 
               states['default'] = data.characters[name].standDown;
               states[Action.TELEPORT] = Animation([
@@ -161,8 +161,7 @@
               states[Action.ATTACK] = Animation([
                 Composite([
                   {tile: states.standDown, x: 0, y: 0},
-                  {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-                  {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                  {tile: loadedSlashes.slash1, x: 0, y: 0}
                 ])
               ]);
             });
@@ -181,8 +180,7 @@
                     states[Action.ATTACK] = Animation([
                       Composite([
                         {tile: states.standRight, x: 0, y: 0},
-                        {tile: Tile(slashSheet, 0, 16, 16, 16), x: 10, y: 4},
-                        {tile: Tile(slashSheet, 16, 16, 16, 16), x: 10, y: 20}
+                        {tile: loadedSlashes.slash5, x: 6, y: 6}
                       ])
                     ]);
                     break;
@@ -192,8 +190,7 @@
                     states[Action.ATTACK] = Animation([
                       Composite([
                         {tile: states.standLeft, x: 0, y: 0},
-                        {tile: Tile(slashSheet, 0, 16, 16, 16), x: -9, y: 4},
-                        {tile: Tile(slashSheet, 16, 16, 16, 16), x: -9, y: 20}
+                        {tile: loadedSlashes.slash5, x: -9, y: 6}
                       ])
                     ]);
                     break;
@@ -203,8 +200,7 @@
                     states[Action.ATTACK] = Animation([
                       Composite([
                         {tile: states.standUp, x: 0, y: 0},
-                        {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-                        {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                        {tile: loadedSlashes.slash5, x: 0, y: -5}
                       ])
                     ]);
                     break;
@@ -214,8 +210,7 @@
                     states[Action.ATTACK] = Animation([
                       Composite([
                         {tile: states.standDown, x: 0, y: 0},
-                        {tile: Tile(slashSheet, 0, 16, 16, 16), x: 0, y: 0},
-                        {tile: Tile(slashSheet, 16, 16, 16, 16), x: 0, y: 16}
+                        {tile: loadedSlashes.slash5, x: 0, y: 5}
                       ])
                     ]);
                     break;
@@ -229,7 +224,7 @@
                   case Action.ATTACK:
                     swordSound.play();
                     var dmg = rand(100);
-                    kidHit += dmg;
+                    kidHit = dmg;
                     gameObjects.push(GameObject(damageToGraphic(dmg), x, y));
                     break;
                 }
