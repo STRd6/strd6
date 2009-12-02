@@ -160,8 +160,8 @@
               ]);
               states[Action.ATTACK] = Animation([
                 Composite([
-                  {tile: states.standDown, x: 0, y: 0},
-                  {tile: loadedSlashes.slash1, x: 0, y: 0}
+                  {tile: loadedSlashes.slash20, x: 3, y: 15},
+                  {tile: states.standDown, x: 0, y: 0}
                 ])
               ]);
             });
@@ -179,8 +179,8 @@
                     states['default'] = states.standRight;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: states.standRight, x: 0, y: 0},
-                        {tile: loadedSlashes.slash5, x: 6, y: 6}
+                        {tile: loadedSlashes.slash19, x: 6, y: 3},
+                        {tile: states.standRight, x: 0, y: 0}
                       ])
                     ]);
                     break;
@@ -189,8 +189,8 @@
                     states['default'] = states.standLeft;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: states.standLeft, x: 0, y: 0},
-                        {tile: loadedSlashes.slash5, x: -9, y: 6}
+                        {tile: loadedSlashes.slash5, x: -9, y: 6},
+                        {tile: states.standLeft, x: 0, y: 0}
                       ])
                     ]);
                     break;
@@ -199,8 +199,8 @@
                     states['default'] = states.standUp;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: states.standUp, x: 0, y: 0},
-                        {tile: loadedSlashes.slash5, x: 0, y: -5}
+                        {tile: loadedSlashes.slash3, x: -2, y: -5},
+                        {tile: states.standUp, x: 0, y: 0}
                       ])
                     ]);
                     break;
@@ -209,8 +209,8 @@
                     states['default'] = states.standDown;
                     states[Action.ATTACK] = Animation([
                       Composite([
-                        {tile: states.standDown, x: 0, y: 0},
-                        {tile: loadedSlashes.slash5, x: 0, y: 5}
+                        {tile: loadedSlashes.slash20, x: 3, y: 15},
+                        {tile: states.standDown, x: 0, y: 0}
                       ])
                     ]);
                     break;
@@ -224,7 +224,7 @@
                   case Action.ATTACK:
                     swordSound.play();
                     var dmg = rand(100);
-                    kidHit = dmg;
+                    kidHit += dmg;
                     gameObjects.push(GameObject(damageToGraphic(dmg), x, y));
                     break;
                 }
