@@ -5,7 +5,38 @@
       var canvas = this.get(0);
       var context;
 
+      function withState(x, y, options, block) {
+        context.save();
+
+        context.translate(x, y);
+
+        if(options) {
+          if(options.hFlip) {
+            context.transform(-1, 0, 0, 1, 0, 0);
+          }
+
+          if(options.vFlip) {
+            context.transform(1, 0, 0, -1, 0, 0);
+          }
+
+          if(options.rotation) {
+            var theta = options.rotation;
+            context.transform(
+              Math.cos(theta), Math.sin(-theta),
+              Math.sin(theta), Math.cos(theta),
+              0, 0
+            );
+          }
+        }
+
+        block();
+
+        context.restore();
+      }
+
       var $canvas = $(canvas).extend({
+        withState: withState,
+
         drawLine: function(x1, y1, x2, y2, width) {
           width = width || 3;
 
@@ -16,34 +47,11 @@
           context.closePath();
           context.stroke();
         },
-        
+
         drawImage: function(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, options) {
-          context.save();
-
-          context.translate(dx, dy);
-
-          if(options) {
-            if(options.hFlip) {
-              context.transform(-1, 0, 0, 1, dWidth, 0);
-            }
-
-            if(options.vFlip) {
-              context.transform(1, 0, 0, -1, 0, dHeight);
-            }
-            
-            if(options.rotation) {
-              var theta = options.rotation;
-              context.transform(
-                Math.cos(theta), Math.sin(-theta),
-                Math.sin(theta), Math.cos(theta),
-                0, 0
-              );
-            }
-          }
-
-          context.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, dWidth, dHeight);
-          
-          context.restore();
+          withState(dx, dy, options, function() {
+            context.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, dWidth, dHeight);
+          });
 
           return this;
         },

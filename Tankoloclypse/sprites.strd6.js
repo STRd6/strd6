@@ -31,7 +31,10 @@ var Composite = function(tileData) {
 
       for(var i = 0; i < tileCount; i++) {
         datum = tileData[i];
-        datum.tile.draw(canvas, x + datum.x, y + datum.y, options);
+
+        canvas.withState(x, y, options, function() {
+          datum.tile.draw(canvas, datum.x, datum.y, datum.options);
+        });
       }
     }
   };
