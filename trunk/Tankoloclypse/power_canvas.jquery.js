@@ -30,19 +30,15 @@
             if(options.vFlip) {
               context.transform(1, 0, 0, -1, 0, dHeight);
             }
-
-            /* The following rotations are all counterclockwise */
-			      if(options.rot90) { 
-			        context.transform(0, -1, 1, 0, 0, dHeight);
-			      }
-			      
-			      if(options.rot180) { 
-			        context.transform(-1, 0, 0, -1, dWidth, dHeight);
-		        }
-		        
-			      if(options.rot270) { 			        
-              context.transform(0, 1, -1, 0, dWidth, 0); 
-			      }
+            
+            if(options.rotation) {
+              var theta = options.rotation;
+              context.transform(
+                Math.cos(theta), Math.sin(-theta),
+                Math.sin(theta), Math.cos(theta),
+                0, 0
+              );
+            }
           }
 
           context.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, dWidth, dHeight);
