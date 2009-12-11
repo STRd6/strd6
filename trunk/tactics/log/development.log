@@ -1,0 +1,844 @@
+
+
+Processing Rails::InfoController#properties (for 127.0.0.1 at 2009-12-08 22:11:45) [GET]
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+Completed in 80ms (View: 11, DB: 1) | 200 OK [http://localhost/rails/info/properties]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 19:56:07) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/world" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 19:56:49) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/world" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 19:59:12) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/world" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 19:59:16) [GET]
+Rendering treeworlds/index
+Completed in 42ms (View: 39, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 19:59:30) [GET]
+Rendering treeworlds/index
+Completed in 9ms (View: 6, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 19:59:55) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 20:00:20) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 11ms (View: 8, DB: 0) | 200 OK [http://localhost/treeworlds]
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (2.8ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (1.9ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (2.1ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (1.9ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM "schema_migrations"[0m
+  [4;36;1mSQL (1.5ms)[0m   [0;1mINSERT INTO "schema_migrations" (version) VALUES ('0')[0m
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 20:14:05) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 83ms (View: 80, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:09:24) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 12ms (View: 9, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:19:19) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:19:55) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:21:53) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 12ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:24:52) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:26:54) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:28:45) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:31:43) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:32:09) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:33:38) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:33:48) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 17ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:35:55) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:38:41) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:40:01) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:40:03) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:40:06) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:41:16) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:41:36) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 17ms (View: 14, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:44:25) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:45:40) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 15ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:46:35) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:47:03) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:47:37) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:48:39) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:48:58) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:49:35) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:49:59) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:50:13) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 3, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:51:36) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:54:17) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 22:57:34) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 80ms (View: 77, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 22:57:34) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/plants/tree_large.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:00:15) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:00:16) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/plants/tree_large.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:00:49) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 10, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:00:50) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/plants/tree_large.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:01:55) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:01:55) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/plants/tree_large.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:04:58) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:04:58) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/plants/tree_large.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:05:10) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 3, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:05:10) [GET]
+
+ActionController::RoutingError (No route matches "/treeworld/plants/tree_large.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:06:28) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:06:44) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:06:55) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:07:17) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:07:54) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 21ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:08:49) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:09:10) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:09:23) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 15ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:09:42) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:10:13) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:10:22) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+
+ActionView::TemplateError (Illegal nesting: nesting within a tag that already has content is illegal.) on line #24 of app/views/layouts/application.html.haml:
+21: 
+22:         powerCanvas.fill("#000");
+23: //        setTimeout(function() {
+24:           treeTile.draw(powerCanvas, 25, 25);
+25: //        }, 1000);
+26:       });
+
+    app/views/layouts/application.html.haml:24
+    haml (2.2.3) lib/haml/precompiler.rb:775:in `render_comment'
+    haml (2.2.3) lib/haml/precompiler.rb:205:in `process_line'
+    haml (2.2.3) lib/haml/precompiler.rb:168:in `precompile'
+    haml (2.2.3) lib/haml/engine.rb:112:in `initialize'
+    haml (2.2.3) rails/./lib/haml/template/plugin.rb:21:in `new'
+    haml (2.2.3) rails/./lib/haml/template/plugin.rb:21:in `compile'
+    haml (2.2.3) lib/haml/helpers/action_view_mods.rb:13:in `render'
+    haml (2.2.3) lib/haml/helpers/action_view_mods.rb:13:in `render'
+    haml (2.2.3) rails/./lib/sass/plugin/rails.rb:19:in `process'
+
+Rendered rescues/_trace (63.0ms)
+Rendered rescues/_request_and_response (15.7ms)
+Rendering rescues/layout (internal_server_error)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:10:30) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:10:50) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 22ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:11:17) [GET]
+
+ActionController::RoutingError (No route matches "/javascripts/prototype.js" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:11:17) [GET]
+
+ActionController::RoutingError (No route matches "/javascripts/effects.js" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:11:27) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:11:38) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 15ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:11:52) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:16:46) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 37ms (View: 34, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:17:15) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:17:18) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 3, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:17:21) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:20:13) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 13ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:20:17) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:26:42) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 16ms (View: 14, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:30:18) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:33:33) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:33:47) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:33:48) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 3, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:33:49) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:33:55) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:34:03) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:34:14) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:34:15) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_meduim.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:34:17) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:34:18) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_meduim.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:34:35) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 16ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:34:40) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:34:41) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:35:06) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:35:34) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:35:50) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 6ms (View: 3, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:44:09) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 18ms (View: 15, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:09) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_0.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:09) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_1.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:09) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_2.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:09) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_3.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:44:29) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 15ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:29) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_0.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:29) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_1.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:29) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_2.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:44:30) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_3.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:45:05) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 15ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:06) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_0.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:06) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_1.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:06) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_2.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:06) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_3.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:45:32) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 16ms (View: 14, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:32) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_0.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:32) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_1.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:33) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_2.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing ApplicationController#index (for 127.0.0.1 at 2009-12-10 23:45:33) [GET]
+
+ActionController::RoutingError (No route matches "/images/treeworld/plants/tree_3.png" with {:method=>:get}):
+  
+
+Rendering rescues/layout (not_found)
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:45:44) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 17ms (View: 13, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:48:00) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 12, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:48:23) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 14ms (View: 11, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:55:51) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-10 23:56:35) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 17ms (View: 14, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-11 00:17:24) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 5ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]
+
+
+Processing TreeworldsController#index (for 127.0.0.1 at 2009-12-11 00:18:12) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 11ms (View: 2, DB: 0) | 200 OK [http://localhost/treeworlds]

@@ -1,0 +1,2 @@
+class TreeworldsController < ApplicationController
+end
