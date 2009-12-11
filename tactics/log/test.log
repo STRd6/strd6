@@ -1,0 +1,6 @@
+
+
+Processing TreeworldsController#index (for 0.0.0.0 at 2009-12-10 20:03:54) [GET]
+Rendering template within layouts/application
+Rendering treeworlds/index
+Completed in 27ms (View: 23, DB: 0) | 200 OK [http://test.host/treeworlds]
