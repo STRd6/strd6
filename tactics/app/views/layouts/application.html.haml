@@ -9,23 +9,3 @@
     = javascript_include_tag "treeworld"
   %body
     = yield
-    = image_tag "treeworld/plants/tree_large.png", :id => "tree", :size => "16x16"
-    %canvas#treeworld
-
-    :javascript
-      $(function() {
-        // Loading via proxy objects
-        var treeTiles = $.map(['sprout', 'small', 'medium', 'large'], function(name, i) {
-          return loadImageTile("/images/treeworld/plants/tree_" + name + ".png");
-        });
-
-        var powerCanvas = $("#treeworld").powerCanvas();
-
-        setInterval(function() {
-          powerCanvas.fill("#000");
-
-          $.each(treeTiles, function(i, tile) {
-            tile.draw(powerCanvas, 25*i, 25);
-          });
-        }, 250);
-      });

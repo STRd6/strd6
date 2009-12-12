@@ -9,6 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20091212043832) do
+
+  create_table "trees", :force => true do |t|
+    t.integer  "treeworld_id",                :null => false
+    t.integer  "x",                           :null => false
+    t.integer  "y",                           :null => false
+    t.integer  "age",          :default => 0, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  create_table "treeworlds", :force => true do |t|
+    t.integer  "width",      :default => 32, :null => false
+    t.integer  "height",     :default => 32, :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
 
 end

@@ -1,0 +1,37 @@
+%canvas#treeworld
+
+- data = object.to_json(:include => :trees)
+
+= debug data
+
+:javascript
+  $(function() {
+    var tileWidth = 16;
+    var tileHeight = 16;
+    var data = #{data};
+    var trees = data.treeworld.trees;
+    // Loading via proxy objects
+    var treeTiles = $.map(['sprout', 'small', 'medium', 'large'], function(name, i) {
+      return loadImageTile("/images/treeworld/plants/tree_" + name + ".png");
+    });
+
+    var groundTile = loadImageTile("/images/treeworld/terrain/ground1.png");
+
+    var powerCanvas = $("#treeworld").powerCanvas();
+
+    setInterval(function() {
+      powerCanvas.fill("#000");
+
+      for(var row = 0; row < 32; row++) {
+        for(var col = 0; col < 32; col++) {
+          groundTile.draw(powerCanvas, col * tileWidth, row * tileHeight)
+        }
+      }
+
+      $.each(trees, function() {
+        treeTiles[3].draw(powerCanvas, this.x * tileWidth, this.y * tileHeight);
+      });
+    }, 250);
+
+    console.log(#{data});
+  });
