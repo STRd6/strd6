@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  player: 
+  state: MyString
+  command_type: MyString
+  x: 1
+  y: 1
+
+two:
+  player: 
+  state: MyString
+  command_type: MyString
+  x: 1
+  y: 1

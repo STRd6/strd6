@@ -15,7 +15,7 @@ class TreeworldsController < ResourceController::Base
 
   def chat
     render :juggernaut do |page|
-      page.call :alert, "<b>#{current_player.name}:</b> #{h params[:message]}"
+      page.call :receiveChat, "<b>#{current_player.display_name}:</b> #{h params[:message]}"
     end
 
     render :nothing => true
