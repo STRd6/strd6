@@ -1,23 +1,44 @@
-%canvas#treeworld
+- tile_size = 16
 
-- data = object.to_json(:include => :trees)
+= juggernaut(:channels => [object.channel])
 
-= debug data
+%canvas#treeworld{:width => object.width*tile_size, :height => object.height*tile_size}
+
+- data = object.world_data
 
 :javascript
+  function sendChat(message) {
+    $.post("chat", {
+      message: message
+    });
+  }
+
   $(function() {
-    var tileWidth = 16;
-    var tileHeight = 16;
+    var tileWidth = #{tile_size};
+    var tileHeight = #{tile_size};
     var data = #{data};
     var trees = data.treeworld.trees;
+    var players = data.treeworld.players;
+    var commands = [];
+
     // Loading via proxy objects
     var treeTiles = $.map(['sprout', 'small', 'medium', 'large'], function(name, i) {
       return loadImageTile("/images/treeworld/plants/tree_" + name + ".png");
     });
 
+    var playerTile = loadImageTile("/images/treeworld/creatures/farmer.png");
+
     var groundTile = loadImageTile("/images/treeworld/terrain/ground1.png");
 
+    var highlights = $.map(['yellow', 'white', 'cyan', 'red', 'purple'], function(name, i) {
+      return loadImageTile("/images/treeworld/highlights/" + name + ".png");
+    });
+
     var powerCanvas = $("#treeworld").powerCanvas();
+
+    function drawObject(object, tile) {
+      tile.draw(powerCanvas, object.x * tileWidth, object.y * tileHeight);
+    }
 
     setInterval(function() {
       powerCanvas.fill("#000");
@@ -29,9 +50,31 @@
       }
 
       $.each(trees, function() {
-        treeTiles[3].draw(powerCanvas, this.x * tileWidth, this.y * tileHeight);
+        drawObject(this, treeTiles[3]);
+      });
+
+      $.each(players, function() {
+        drawObject(this, playerTile);
+      });
+
+      $.each(commands, function() {
+        drawObject(this, highlights[0]);
       });
     }, 250);
+
+    $("#treeworld").bind('click', function(e) {
+      var x = Math.floor((e.pageX - this.offsetLeft) / tileWidth);
+      var y = Math.floor((e.pageY - this.offsetTop) / tileHeight);
+
+      $.post("command", {
+        "command[command_type]": "move",
+        "command[x]": x,
+        "command[y]": y
+      });
+
+      commands.push({x: x, y: y});
+      console.log("Click: " + x + ", " + y);
+    });
 
     console.log(#{data});
   });

@@ -1,3 +1,7 @@
 class Tree < ActiveRecord::Base
-  belongs_to :treeworld
+  include Treeworldly
+
+  def step
+    
+  end
 end

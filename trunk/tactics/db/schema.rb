@@ -9,7 +9,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091212043832) do
+ActiveRecord::Schema.define(:version => 20091213210741) do
+
+  create_table "commands", :force => true do |t|
+    t.integer  "player_id",    :null => false
+    t.string   "state",        :null => false
+    t.string   "command_type", :null => false
+    t.integer  "x",            :null => false
+    t.integer  "y",            :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "commands", ["player_id"], :name => "index_commands_on_player_id"
+
+  create_table "players", :force => true do |t|
+    t.integer  "treeworld_id", :null => false
+    t.string   "name"
+    t.integer  "x",            :null => false
+    t.integer  "y",            :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "players", ["treeworld_id"], :name => "index_players_on_treeworld_id"
 
   create_table "trees", :force => true do |t|
     t.integer  "treeworld_id",                :null => false
@@ -19,6 +42,8 @@ ActiveRecord::Schema.define(:version => 20091212043832) do
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
   end
+
+  add_index "trees", ["treeworld_id"], :name => "index_trees_on_treeworld_id"
 
   create_table "treeworlds", :force => true do |t|
     t.integer  "width",      :default => 32, :null => false
