@@ -8,6 +8,8 @@ class CreateTrees < ActiveRecord::Migration
 
       t.timestamps :null => false
     end
+
+    add_index :trees, :treeworld_id
   end
 
   def self.down
