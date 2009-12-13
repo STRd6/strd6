@@ -13,6 +13,10 @@
     });
   }
 
+  function receiveChat(message) {
+    $('body').append(message);
+  }
+
   $(function() {
     var tileWidth = #{tile_size};
     var tileHeight = #{tile_size};
