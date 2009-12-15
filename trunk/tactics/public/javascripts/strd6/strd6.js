@@ -19,6 +19,10 @@ Array.prototype.select = function(iterator, context) {
   return results;
 };
 
+Array.prototype.clampedGet = function(index) {
+  return this[Math.clamp(index, 0, this.length - 1)];
+};
+
 /**
  * Returns a mod useful for array wrapping.
  * Produces incorrect results if base and n are negative.
@@ -34,6 +38,13 @@ Math.mod = function(n, base) {
   }
 
   return result;
+};
+
+/**
+ * Clamps the value to be within [min, max]
+ */
+Math.clamp = function(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 };
 
 /**

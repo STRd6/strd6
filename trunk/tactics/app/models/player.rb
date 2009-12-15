@@ -8,16 +8,16 @@ class Player < ActiveRecord::Base
   end
 
   def active_command
-    commands.first(:conditions => {:state => "active"})
+    commands.last(:conditions => {:state => "active"})
   end
 
   def step
-    puts("STEP")
-    puts("START: #{x}, #{y}")
     if active_command
       move_towards(active_command.x, active_command.y)
+      return true
     end
-    puts("END: #{x}, #{y}")
+
+    return false
   end
 
   def move_towards(x, y)
@@ -26,7 +26,7 @@ class Player < ActiveRecord::Base
 
     if delta_x != 0 && delta_y != 0
       r = rand(delta_x.abs + delta_y.abs)
-      if r < delta_x
+      if r < delta_x.abs
         self.x += (delta_x <=> 0)
       else
         self.y += (delta_y <=> 0)
