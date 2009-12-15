@@ -8,7 +8,9 @@ class TreeworldsController < ResourceController::Base
   show.wants.json { render :json => object.world_data }
 
   def command
-    current_player.commands.create(params[:command].merge(:state => "active"))
+    Command.transaction do
+      current_player.commands.create(params[:command].merge(:state => "active"))
+    end
 
     render :nothing => true
   end

@@ -20,12 +20,18 @@ class Treeworld < ActiveRecord::Base
   end
 
   def step
-    trees.each(&:step)
+    changed_trees = trees.select(&:step)
 
-    players.each(&:step)
+    changed_players = players.select(&:step)
+
+    update_channel(changed_trees + changed_players)
   end
 
   def channel
     :"treeworld_#{id}"
+  end
+
+  def update_channel(changed_objects)
+    Juggernaut.send_to_channel("updateWorld(#{changed_objects.to_json});", channel)
   end
 end

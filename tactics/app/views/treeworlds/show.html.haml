@@ -21,12 +21,35 @@
     var tileWidth = #{tile_size};
     var tileHeight = #{tile_size};
     var data = #{data};
-    var trees = data.treeworld.trees;
-    var players = data.treeworld.players;
+
+    var treeIndex = {};
+    $.each(data.treeworld.trees, function(i, tree) {
+      treeIndex[tree.id] = tree;
+    });
+
+    var playerIndex = {};
+    $.each(data.treeworld.players, function(i, player) {
+      playerIndex[player.id] = player;
+    });
+
     var commands = [];
 
+    window["updateWorld"] = function(changedObjects) {
+      $.each(changedObjects, function(i, object) {
+        console.log(this);
+        $.each(object, function(type, data) {
+          console.log(type);
+          if(type == "tree") {
+            treeIndex[data.id] = data;
+          } else if(type == "player") {
+            playerIndex[data.id] = data;
+          }
+        });
+      });
+    };
+
     // Loading via proxy objects
-    var treeTiles = $.map(['sprout', 'small', 'medium', 'large'], function(name, i) {
+    var treeTiles = $.map(['sprout', 'small', 'medium', 'large', 'dead'], function(name, i) {
       return loadImageTile("/images/treeworld/plants/tree_" + name + ".png");
     });
 
@@ -53,11 +76,11 @@
         }
       }
 
-      $.each(trees, function() {
-        drawObject(this, treeTiles[3]);
+      $.each(treeIndex, function() {
+        drawObject(this, treeTiles.clampedGet(this.age));
       });
 
-      $.each(players, function() {
+      $.each(playerIndex, function() {
         drawObject(this, playerTile);
       });
 
