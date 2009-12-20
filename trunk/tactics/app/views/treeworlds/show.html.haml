@@ -7,6 +7,8 @@
 - data = object.world_data
 
 :javascript
+  var ageFactor = 1000;
+
   function sendChat(message) {
     $.post("chat", {
       message: message
@@ -24,7 +26,7 @@
     var turn = data.treeworld.age;
 
     function treeAge() {
-      return turn - Math.floor(this.planted_at/1000);
+      return Math.floor((turn - this.planted_at)/ageFactor);
     }
 
     console.log(turn);
