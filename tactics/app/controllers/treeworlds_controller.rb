@@ -30,7 +30,7 @@ class TreeworldsController < ResourceController::Base
 
   def ensure_player
     if player_id = session[:player_id]
-      if @player = Player.find(player_id)
+      if @player = Player.first(:conditions => {:id => player_id})
         @new_player = false
         return true
       end

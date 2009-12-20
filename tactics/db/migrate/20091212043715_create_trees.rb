@@ -4,7 +4,7 @@ class CreateTrees < ActiveRecord::Migration
       t.references :treeworld, :null => false
       t.integer :x, :null => false
       t.integer :y, :null => false
-      t.integer :age, :null => false, :default => 0
+      t.integer :planted_at, :null => false, :default => 0
 
       t.timestamps :null => false
     end

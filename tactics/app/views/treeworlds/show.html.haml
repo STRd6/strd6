@@ -21,10 +21,18 @@
     var tileWidth = #{tile_size};
     var tileHeight = #{tile_size};
     var data = #{data};
+    var turn = data.treeworld.age;
+
+    function treeAge() {
+      return turn - Math.floor(this.planted_at/1000);
+    }
+
+    console.log(turn);
 
     var treeIndex = {};
     $.each(data.treeworld.trees, function(i, tree) {
       treeIndex[tree.id] = tree;
+      tree.age = treeAge;
     });
 
     var playerIndex = {};
@@ -32,9 +40,13 @@
       playerIndex[player.id] = player;
     });
 
+    console.log(treeIndex);
+
     var commands = [];
 
     window["updateWorld"] = function(changedObjects) {
+      turn += 1;
+
       $.each(changedObjects, function(i, object) {
         console.log(this);
         $.each(object, function(type, data) {
@@ -46,12 +58,16 @@
           }
         });
       });
+
+      updateCanvas();
     };
 
     // Loading via proxy objects
     var treeTiles = $.map(['sprout', 'small', 'medium', 'large', 'dead'], function(name, i) {
       return loadImageTile("/images/treeworld/plants/tree_" + name + ".png");
     });
+
+    console.log(treeTiles);
 
     var playerTile = loadImageTile("/images/treeworld/creatures/farmer.png");
 
@@ -67,7 +83,7 @@
       tile.draw(powerCanvas, object.x * tileWidth, object.y * tileHeight);
     }
 
-    setInterval(function() {
+    function updateCanvas() {
       powerCanvas.fill("#000");
 
       for(var row = 0; row < 32; row++) {
@@ -77,7 +93,7 @@
       }
 
       $.each(treeIndex, function() {
-        drawObject(this, treeTiles.clampedGet(this.age));
+        drawObject(this, treeTiles.clampedGet(this.age()));
       });
 
       $.each(playerIndex, function() {
@@ -87,7 +103,9 @@
       $.each(commands, function() {
         drawObject(this, highlights[0]);
       });
-    }, 250);
+    }
+
+    setTimeout(updateCanvas, 3000);
 
     $("#treeworld").bind('click', function(e) {
       var x = Math.floor((e.pageX - this.offsetLeft) / tileWidth);

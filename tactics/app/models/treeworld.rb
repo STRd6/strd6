@@ -7,7 +7,7 @@ class Treeworld < ActiveRecord::Base
     world = new(:width => width, :height => height)
 
     trees.times do
-      world.trees.build(:x => rand(width), :y => rand(height), :treeworld => world)
+      world.trees.build(:x => rand(width), :y => rand(height), :treeworld => world, :planted_at => -rand(4200))
     end
 
     world.save!
@@ -20,11 +20,11 @@ class Treeworld < ActiveRecord::Base
   end
 
   def step
-    changed_trees = trees.select(&:step)
+    increment :age
 
     changed_players = players.select(&:step)
 
-    update_channel(changed_trees + changed_players)
+    update_channel(changed_players)
   end
 
   def channel

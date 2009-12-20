@@ -3,6 +3,7 @@ class CreateTreeworlds < ActiveRecord::Migration
     create_table :treeworlds do |t|
       t.integer :width, :null => false, :default => 32
       t.integer :height, :null => false, :default => 32
+      t.integer :age, :null => false, :default => 0
 
       t.timestamps :null => false
     end
