@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091213210741) do
+ActiveRecord::Schema.define(:version => 20091220213943) do
 
   create_table "commands", :force => true do |t|
     t.integer  "player_id",    :null => false
@@ -22,6 +22,17 @@ ActiveRecord::Schema.define(:version => 20091213210741) do
   end
 
   add_index "commands", ["player_id"], :name => "index_commands_on_player_id"
+
+  create_table "houses", :force => true do |t|
+    t.integer  "treeworld_id", :null => false
+    t.integer  "owner_id",     :null => false
+    t.integer  "x",            :null => false
+    t.integer  "y",            :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "houses", ["treeworld_id"], :name => "index_houses_on_treeworld_id"
 
   create_table "players", :force => true do |t|
     t.integer  "treeworld_id", :null => false
@@ -52,5 +63,17 @@ ActiveRecord::Schema.define(:version => 20091213210741) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
+
+  create_table "walls", :force => true do |t|
+    t.integer  "treeworld_id", :null => false
+    t.integer  "x1",           :null => false
+    t.integer  "y1",           :null => false
+    t.integer  "x2",           :null => false
+    t.integer  "y2",           :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "walls", ["treeworld_id"], :name => "index_walls_on_treeworld_id"
 
 end

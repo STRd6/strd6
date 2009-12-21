@@ -25,22 +25,31 @@
     var data = #{data};
     var turn = data.treeworld.age;
 
-    function treeAge() {
-      return Math.floor((turn - this.planted_at)/ageFactor);
-    }
-
     console.log(turn);
 
-    var treeIndex = {};
-    $.each(data.treeworld.trees, function(i, tree) {
-      treeIndex[tree.id] = tree;
-      tree.age = treeAge;
+    function buildIndex(collection, methods) {
+      var index = {};
+
+      $.each(collection, function(i, item) {
+        index[item.id] = item;
+
+        if(methods) {
+          $.extend(item, methods);
+        }
+      });
+
+      return index;
+    }
+
+    var treeIndex = buildIndex(data.treeworld.trees, {
+      age: function() {
+        return Math.floor((turn - this.planted_at)/ageFactor);
+      }
     });
 
-    var playerIndex = {};
-    $.each(data.treeworld.players, function(i, player) {
-      playerIndex[player.id] = player;
-    });
+    var playerIndex = buildIndex(data.treeworld.players);
+    var houseIndex = buildIndex(data.treeworld.houses);
+    var wallIndex = buildIndex(data.treeworld.walls);
 
     console.log(treeIndex);
 
@@ -72,6 +81,7 @@
     console.log(treeTiles);
 
     var playerTile = loadImageTile("/images/treeworld/creatures/farmer.png");
+    var houseTile = loadImageTile("/images/treeworld/items/gem/ruby.png");
 
     var groundTile = loadImageTile("/images/treeworld/terrain/ground1.png");
 
@@ -100,6 +110,14 @@
 
       $.each(playerIndex, function() {
         drawObject(this, playerTile);
+      });
+
+      $.each(houseIndex, function() {
+        drawObject(this, houseTile);
+      });
+
+      $.each(wallIndex, function() {
+        
       });
 
       $.each(commands, function() {
