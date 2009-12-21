@@ -6,14 +6,16 @@ namespace :game do
     world = Treeworld.first
     count = 0
 
-
-    #RubyProf.start
-
     while true
       start_time = Time.now
-      
-      world.reload
-      world.step
+      begin
+        Treeworld.transaction do
+          world.reload
+          world.step
+        end
+      rescue
+        puts $!
+      end
 
       total_time = Time.now - start_time
 
@@ -24,13 +26,9 @@ namespace :game do
 
       sleep(step_size - [step_size, total_time].min)
 
-      break if count == 100
+      break if count == 1000
 
       count += 1
     end
-
-    #result = RubyProf.stop
-    #printer = RubyProf::FlatPrinter.new(result)
-    #printer.print(STDOUT, 0)
   end
 end
