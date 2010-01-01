@@ -36,7 +36,8 @@ class TreeworldsController < ResourceController::Base
       end
     end
 
-    session[:player_id] = (@player = Player.create(:treeworld => object, :x => 2, :y => 2)).id
+    @player = Player.create :treeworld => object, :x => rand(object.width), :y => rand(object.height)
+    session[:player_id] = @player.id
     @new_player = true
   end
 end

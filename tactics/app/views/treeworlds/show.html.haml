@@ -82,6 +82,8 @@
 
     var playerTile = loadImageTile("/images/treeworld/creatures/farmer.png");
     var houseTile = loadImageTile("/images/treeworld/items/gem/ruby.png");
+    var horizontalWallTile = loadImageTile("/images/treeworld/terrain/walls/horizontal.png");
+    var verticalWallTile = loadImageTile("/images/treeworld/terrain/walls/vertical.png");
 
     var groundTile = loadImageTile("/images/treeworld/terrain/ground1.png");
 
@@ -117,7 +119,11 @@
       });
 
       $.each(wallIndex, function() {
-        
+        if(this.vertical) {
+          drawObject(this, verticalWallTile);
+        } else {
+          drawObject(this, horizontalWallTile);
+        }
       });
 
       $.each(commands, function() {
