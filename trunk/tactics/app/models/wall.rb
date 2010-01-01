@@ -2,27 +2,15 @@ class Wall < ActiveRecord::Base
   belongs_to :treeworld
 
   validates_presence_of :treeworld
-  validate :must_be_spatially_correct
+  validates_numericality_of :x, :greater_than_or_equal_to => 0
+  validates_numericality_of :y, :greater_than_or_equal_to => 0
+  validates_inclusion_of :vertical, :in => [true, false]
 
-  def must_be_spatially_correct
-    if x1 == x2
-      if (y2 - y1).abs != 1
-        errors.add_to_base("Wall location isn't contiguous")
-      end
-    elsif y1 == y2
-      if (x2 - x1).abs != 1
-        errors.add_to_base("Wall location isn't contiguous")
-      end
-    else
-      errors.add_to_base("Wall isn't aligned on either x or y")
-    end
+  def horizontal?
+    !vertical?
   end
 
   def orientation
-    if x1 == x2
-      :horizontal
-    else
-      :vertical
-    end
+    vertical? ? :vertical : :horizontal
   end
 end

@@ -66,10 +66,9 @@ ActiveRecord::Schema.define(:version => 20091220213943) do
 
   create_table "walls", :force => true do |t|
     t.integer  "treeworld_id", :null => false
-    t.integer  "x1",           :null => false
-    t.integer  "y1",           :null => false
-    t.integer  "x2",           :null => false
-    t.integer  "y2",           :null => false
+    t.integer  "x",            :null => false
+    t.integer  "y",            :null => false
+    t.boolean  "vertical",     :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

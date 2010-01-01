@@ -1,5 +1,3 @@
-require 'ruby-prof'
-
 namespace :game do
   task :run => :environment do
     step_size = 0.10
