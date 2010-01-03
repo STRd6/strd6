@@ -11,8 +11,8 @@
   };
 
   /**
-   * A method tha always returns one. Useful as the default cost to move through
-   * a node if no other cost function is given.
+   * A method that always returns one. Useful as the default cost to move
+   * through a node if no other cost function is given.
    * @private
    * @returns 1
    */
@@ -101,7 +101,7 @@
               tentativeIsBetter = true;
             }
 
-            if(tentativeIsBetter === true) {
+            if(tentativeIsBetter) {
               cameFrom[neighbor] = currentNode;
               gScore[neighbor] = gScoreTentative;
               fScore[neighbor] = gScore[neighbor] + hScore[neighbor];
