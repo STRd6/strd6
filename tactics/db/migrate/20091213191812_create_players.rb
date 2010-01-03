@@ -5,6 +5,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.string :name
       t.integer :x, :null => false
       t.integer :y, :null => false
+      t.text :path, :null => false
 
       t.timestamps :null => false
     end
