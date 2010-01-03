@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20091220213943) do
     t.string   "name"
     t.integer  "x",            :null => false
     t.integer  "y",            :null => false
+    t.text     "path",         :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end

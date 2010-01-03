@@ -3,6 +3,10 @@ class Player < ActiveRecord::Base
 
   has_many :commands
 
+  before_validation_on_create :initialize_path
+
+  serialize :path
+
   def display_name
     name || "Anonymous #{id}"
   end
@@ -38,5 +42,9 @@ class Player < ActiveRecord::Base
     end
 
     save!
+  end
+
+  def initialize_path
+    self.path ||= []
   end
 end
