@@ -4,6 +4,8 @@ module Treeworldly
       belongs_to :treeworld
 
       validates_presence_of :treeworld
+
+      delegate :width, :height, :wall_at, :to => :treeworld
     end
   end
 end
