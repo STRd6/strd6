@@ -27,6 +27,18 @@ class Treeworld < ActiveRecord::Base
     )
   end
 
+  def wall_at(x, y, vertical)
+    return walls.first(:conditions => {
+      :vertical => vertical,
+      :x => x,
+      :y => y
+    })
+  end
+
+  def node_at(x, y)
+    return TreeworldNode.new(x, y)
+  end
+
   def step
     increment :age
 
