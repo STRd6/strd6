@@ -66,6 +66,8 @@
             treeIndex[data.id] = data;
           } else if(type == "player") {
             playerIndex[data.id] = data;
+          } else if(type == "wall") {
+            wallIndex[data.id] = data;
           }
         });
       });
@@ -138,7 +140,7 @@
       var y = Math.floor((e.pageY - this.offsetTop) / tileHeight);
 
       $.post("command", {
-        "command[command_type]": "move",
+        "command[command_type]": "V_WALL",
         "command[x]": x,
         "command[y]": y
       });

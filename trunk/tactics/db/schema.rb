@@ -75,5 +75,6 @@ ActiveRecord::Schema.define(:version => 20091220213943) do
   end
 
   add_index "walls", ["treeworld_id"], :name => "index_walls_on_treeworld_id"
+  add_index "walls", ["x", "y", "vertical"], :name => "index_walls_on_x_and_y_and_vertical", :unique => true
 
 end

@@ -27,11 +27,18 @@ class Treeworld < ActiveRecord::Base
     )
   end
 
+  # Returns the new wall if it was created
+  def build_wall_at(x, y, vertical)
+    unless wall_at(x, y, vertical)
+      return walls.create(:x => x, :y => y, :vertical => vertical)
+    end
+  end
+
   def wall_at(x, y, vertical)
     return walls.first(:conditions => {
       :vertical => vertical,
-      :x => x,
-      :y => y
+      :x => x % width,
+      :y => y % height
     })
   end
 
@@ -42,9 +49,9 @@ class Treeworld < ActiveRecord::Base
   def step
     increment :age
 
-    changed_players = players.select(&:step)
+    changed = players.map(&:step).compact
 
-    update_channel(changed_players)
+    update_channel(changed)
   end
 
   def channel
