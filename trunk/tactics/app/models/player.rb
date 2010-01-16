@@ -35,7 +35,8 @@ class Player < ActiveRecord::Base
     delta_y = y - self.y
 
     # Make sure that the location is within range
-    return unless (delta_x.abs + delta_y.abs) == 1
+    #TODO: Torroidal distance check
+    # return unless (delta_x.abs + delta_y.abs) == 1
 
     if delta_x == -1
       return if wall_at(x, y, true)
