@@ -29,7 +29,7 @@ class TreeworldsController < ResourceController::Base
   end
 
   def ensure_player
-    if player_id = session[:player_id]
+    if player_id = cookies[:player_id]
       if @player = Player.first(:conditions => {:id => player_id})
         @new_player = false
         return true
@@ -37,7 +37,11 @@ class TreeworldsController < ResourceController::Base
     end
 
     @player = Player.create :treeworld => object, :x => rand(object.width), :y => rand(object.height)
-    session[:player_id] = @player.id
+    cookies[:player_id] = {
+      :value => @player.id,
+      :expires => 1.year.from_now
+    }
+
     @new_player = true
   end
 end
