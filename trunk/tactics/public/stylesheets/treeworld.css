@@ -1,0 +1,16 @@
+.tools .tool {
+  padding: 1px; }
+  .tools .tool.active {
+    border: 1px solid green;
+    padding: 0px; }
+
+.icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block; }
+  .icon.move {
+    background: transparent url(/images/treeworld/creatures/farmer.png) no-repeat; }
+  .icon.v_wall {
+    background: transparent url(/images/treeworld/terrain/walls/vertical.png) no-repeat; }
+  .icon.h_wall {
+    background: transparent url(/images/treeworld/terrain/walls/horizontal.png) no-repeat; }
