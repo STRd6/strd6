@@ -2,6 +2,23 @@
 
 = juggernaut(:channels => [object.channel])
 
+.tools
+  .icon.tool.move.active{:command => "MOVE"}
+  .icon.tool.v_wall{:command => "V_WALL"}
+  .icon.tool.h_wall{:command => "H_WALL"}
+
+:javascript
+  var currentCommand = "MOVE";
+
+  $(function() {
+    $(".tool").click(function() {
+      $(".tool").removeClass("active");
+
+      $(this).addClass("active");
+      currentCommand = $(this).attr("command");
+    });
+  });
+
 %canvas#treeworld{:width => object.width*tile_size, :height => object.height*tile_size}
 
 - data = object.world_data
@@ -140,7 +157,7 @@
       var y = Math.floor((e.pageY - this.offsetTop) / tileHeight);
 
       $.post("command", {
-        "command[command_type]": "V_WALL",
+        "command[command_type]": currentCommand,
         "command[x]": x,
         "command[y]": y
       });

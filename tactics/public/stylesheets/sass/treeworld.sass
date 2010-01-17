@@ -1,0 +1,20 @@
+.tools
+  .tool
+    padding: 1px
+    &.active
+      border: 1px solid green
+      padding: 0px
+
+=icon(!url)
+  :background transparent url(/images/treeworld/#{!url}.png) no-repeat
+
+.icon
+  :width 16px
+  :height 16px
+  :display inline-block
+  &.move
+    +icon("creatures/farmer")
+  &.v_wall
+    +icon("terrain/walls/vertical")
+  &.h_wall
+    +icon("terrain/walls/horizontal")
