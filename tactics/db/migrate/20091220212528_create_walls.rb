@@ -10,7 +10,7 @@ class CreateWalls < ActiveRecord::Migration
     end
 
     add_index :walls, :treeworld_id
-    add_index :walls, [:x, :y, :vertical], :unique => true
+    add_index :walls, [:x, :y, :vertical, :treeworld_id], :unique => true
   end
 
   def self.down

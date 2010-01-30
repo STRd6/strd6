@@ -3,6 +3,7 @@ class Treeworld < ActiveRecord::Base
   has_many :players
   has_many :walls
   has_many :houses
+  has_many :items, :as => :container
 
   def self.generate(width=32, height=32, trees=(width*height)/2)
     world = new(:width => width, :height => height)
@@ -22,7 +23,8 @@ class Treeworld < ActiveRecord::Base
         :trees => {},
         :players => {},
         :walls => {:methods => :orientation},
-        :houses => {}
+        :houses => {},
+        :items => {},
       }
     )
   end

@@ -4,6 +4,8 @@ class Player < ActiveRecord::Base
 
   has_many :commands
 
+  has_many :items, :as => :container
+
   before_validation_on_create :initialize_path
 
   serialize :path
