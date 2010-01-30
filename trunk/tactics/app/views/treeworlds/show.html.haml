@@ -67,6 +67,7 @@
     var playerIndex = buildIndex(data.treeworld.players);
     var houseIndex = buildIndex(data.treeworld.houses);
     var wallIndex = buildIndex(data.treeworld.walls);
+    var itemIndex = buildIndex(data.treeworld.items);
 
     console.log(treeIndex);
 
@@ -85,6 +86,8 @@
             playerIndex[data.id] = data;
           } else if(type == "wall") {
             wallIndex[data.id] = data;
+          } else if(type == "item") {
+            itemIndex[data.id] = data;
           }
         });
       });
@@ -95,6 +98,11 @@
     // Loading via proxy objects
     var treeTiles = $.map(['sprout', 'small', 'medium', 'large', 'dead'], function(name, i) {
       return loadImageTile("/images/treeworld/plants/tree_" + name + ".png");
+    });
+
+    var itemTiles = {};
+    $.each(['seed', 'fruit', 'gold'], function(i, name) {
+      itemTiles[name] = loadImageTile("/images/treeworld/items/" + name + ".png");
     });
 
     console.log(treeTiles);
@@ -124,6 +132,10 @@
           groundTile.draw(powerCanvas, col * tileWidth, row * tileHeight)
         }
       }
+
+      $.each(itemIndex, function() {
+        drawObject(this, itemTiles[this.item_type]);
+      });
 
       $.each(treeIndex, function() {
         drawObject(this, treeTiles.clampedGet(this.age()));

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091220213943) do
+ActiveRecord::Schema.define(:version => 20100130071838) do
 
   create_table "commands", :force => true do |t|
     t.integer  "player_id",    :null => false
@@ -33,6 +33,18 @@ ActiveRecord::Schema.define(:version => 20091220213943) do
   end
 
   add_index "houses", ["treeworld_id"], :name => "index_houses_on_treeworld_id"
+
+  create_table "items", :force => true do |t|
+    t.string   "item_type",      :null => false
+    t.integer  "x"
+    t.integer  "y"
+    t.integer  "container_id",   :null => false
+    t.string   "container_type", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "items", ["container_type", "container_id"], :name => "index_items_on_container_type_and_container_id"
 
   create_table "players", :force => true do |t|
     t.integer  "treeworld_id", :null => false
@@ -75,6 +87,6 @@ ActiveRecord::Schema.define(:version => 20091220213943) do
   end
 
   add_index "walls", ["treeworld_id"], :name => "index_walls_on_treeworld_id"
-  add_index "walls", ["x", "y", "vertical"], :name => "index_walls_on_x_and_y_and_vertical", :unique => true
+  add_index "walls", ["x", "y", "vertical", "treeworld_id"], :name => "index_walls_on_x_and_y_and_vertical_and_treeworld_id", :unique => true
 
 end

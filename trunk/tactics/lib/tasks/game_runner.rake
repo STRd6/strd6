@@ -1,7 +1,7 @@
 namespace :game do
   task :run => :environment do
     step_size = 0.10
-    world = Treeworld.first
+    world = Treeworld.last
     count = 0
 
     while true
