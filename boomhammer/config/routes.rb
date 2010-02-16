@@ -36,14 +36,18 @@ ActionController::Routing::Routes.draw do |map|
       :event_bases,
       :opportunities, :opportunity_bases,
       :intrinsic_bases,
-      :shops
+      :shops,
+      :except => :destroy
 
     creation.connect 'image_upload/:action', :controller => "image_upload"
 
     creation.root :controller => "creation"
   end
 
-  map.resources :areas, :characters, :recipes, :shops
+  map.resources :areas, :recipes, :only => [:index, :show]
+  map.resources :shops, :only => [:index, :show, :edit]
+  map.resources :characters, :except => :destroy
+
 
   map.connect 'actions/:action', :controller => "actions"
   map.connect 'meta/:action', :controller => "meta"
