@@ -3,6 +3,7 @@
 
   $(function() {
     $('#pixie').append('<input type="text" id="img_path"></input>');
+    $('#pixie').append('<div><p>Custom Tool:</p><textarea rows="20" cols="60" id="custom_tool"></textarea></div>');
     var gameObjects = [];
     var images = {};
     var action = 'path';
@@ -10,6 +11,8 @@
     digQueue = [];
 
     jQuery("#pixie-jq").pixie({
+      //width: 32,
+      //height: 32,
       initializer: function(canvas) {
         canvas.addAction({
           name: "Save to Creature",
@@ -18,6 +21,13 @@
             $.each(gameObjects, function() {
               $(this).trigger('changed');
             });
+          }
+        });
+
+        canvas.addAction({
+          name: "New Tool",
+          perform: function() {
+            canvas.addTool(eval('({' + $('#custom_tool').val() + '})'));
           }
         });
       }
@@ -131,6 +141,6 @@
 
     Clock(game);
 
-    game.start();
+    //game.start();
   });
 })(jQuery, STRd6.Fortress);
