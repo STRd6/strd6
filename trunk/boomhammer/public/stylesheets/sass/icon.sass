@@ -1,0 +1,29 @@
+=icon(!url)
+  :background transparent url(/images/icons/#{!url}.png) no-repeat
+  &.add
+    :background transparent url(/images/icons/#{!url}_add.png) no-repeat
+  &.subtract
+    :background transparent url(/images/icons/#{!url}_delete.png) no-repeat
+
+.icon
+  :width 16px
+  :height 16px
+  :display inline-block
+  &.energy
+    +icon("lightning")
+  &.money
+    +icon("coins")
+  &.cooldown
+    +icon("time")
+  &.armor
+    +icon("shield")
+  &.utility
+    +icon("wrench")
+  &.health
+    +icon("heart")
+  &.X_damage
+    +icon("bomb")
+  &.P_damage
+    +icon("pencil")
+  &.E_damage
+    +icon("ruby")
