@@ -12,8 +12,8 @@ xml.rss(:version=>"2.0"){
             xml.description(Maruku.new(quiz.description).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
-            xml.link(quiz_path(quiz))
-            xml.guid(quiz_path(quiz))
+            xml.link(quiz_url(quiz))
+            xml.guid(quiz_url(quiz))
           end
         else
           xml.item do
@@ -21,8 +21,8 @@ xml.rss(:version=>"2.0"){
             xml.description(Maruku.new(quiz.summary).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.summary_date.strftime("%a, %d %b %Y %H:%M:%S %z"))
-            xml.link(quiz_path(quiz),"#summary")
-            xml.guid(quiz_path(quiz),"#summary")
+            xml.link(quiz_url(quiz),"#summary")
+            xml.guid(quiz_url(quiz),"#summary")
           end
           
           xml.item do
@@ -30,8 +30,8 @@ xml.rss(:version=>"2.0"){
             xml.description(Maruku.new(quiz.description).to_html)
             xml.author(quiz.author)
             xml.pubDate(quiz.created_at.strftime("%a, %d %b %Y %H:%M:%S %z"))
-            xml.link(quiz_path(quiz))
-            xml.guid(quiz_path(quiz))
+            xml.link(quiz_url(quiz))
+            xml.guid(quiz_url(quiz))
           end
         end
       end
