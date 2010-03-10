@@ -5,7 +5,7 @@ xml.rss(:version=>"2.0"){
     xml.link("http://rubyquiz.strd6.com/")
     xml.description("Ruby Quiz is a weekly programming challenge for Ruby programmers in the spirit of the Perl Quiz of the Week. A new Ruby Quiz is sent to the Ruby Talk mailing list each Friday. (Watch for the [QUIZ] subject identifier.)")
     xml.language('en-us')
-      for quiz in @quizzes
+      for quiz in @quizzes[0..20]
         if quiz.summary.blank?
           xml.item do
             xml.title(quiz.title_with_id)
