@@ -6,6 +6,10 @@ class Quiz < ActiveRecord::Base
   
   before_save :set_summary_date
 
+  def to_param
+    "#{id}-#{title.downcase.gsub(/[^[:alnum:]]/,'-')}".gsub(/-{2,}/,'-').sub(/^-/,'').sub(/-$/,'')
+  end
+
   def title_with_id
     "#{title} (##{id})"
   end
