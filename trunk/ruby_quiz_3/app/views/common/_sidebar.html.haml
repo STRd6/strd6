@@ -15,7 +15,7 @@
 
   %h2 Archives
   %ol#archives
-    - Quiz.all_live.has_summary.each do |quiz|
+    - (Quiz.all_live - [@current_quiz]).each do |quiz|
       %li{:value => quiz.id}
         = link_to quiz.title, quiz
         %small= link_to "edit", edit_quiz_path(quiz) if false
