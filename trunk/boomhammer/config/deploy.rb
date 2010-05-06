@@ -1,5 +1,3 @@
-require 'mongrel_cluster/recipes'
-
 set :application, "boomhammer"
 set :repository,  "http://strd6.googlecode.com/svn/trunk/#{application}"
 set :deploy_via, :remote_cache
@@ -27,6 +25,8 @@ task :after_setup do
   run "mkdir #{shared_path}/production"
   run "mkdir #{shared_path}/db"
   run "mkdir #{shared_path}/backups"
+  run "touch #{shared_path}/log/nginx.log"
+  run "touch #{shared_path}/log/nginx.error.log"
 end
 
 task :after_symlink do
