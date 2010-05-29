@@ -3,8 +3,8 @@ function Missile(theta, I) {
 
   $.reverseMerge(I, {
     color: '#500',
-    width: 10,
-    height: 5,
+    width: 35,
+    height: 16,
     collideDamage: 20,
     sprite: loadImageTile("images/missile.png"),
     xVelocity: Math.cos(theta)*speed,
