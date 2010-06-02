@@ -11,9 +11,9 @@
   = preserve Maruku.new(@quiz.summary).to_html
 
 %hr
-%small 
-  posted
-  = @quiz.created_at.to_s(:article)
 
-.sharing
-  = render :partial => "share", :locals => {:page_name => @quiz.title, :page_url => quiz_url(@quiz)}
+.extras
+  .sharing.left
+    = render :partial => "share", :locals => {:page_name => @quiz.title, :page_url => quiz_url(@quiz)}
+  %small.right
+    = @quiz.created_at.to_s(:article)

@@ -14,8 +14,18 @@
         %small= link_to "edit", edit_quiz_path(@latest_quiz) if false #session[:user_id]
 
   %h2 Archives
-  %ol#archives
-    - (Quiz.all_live - [@current_quiz]).each do |quiz|
+  %h3 Recent
+  %ol.archives
+    - archived_quizzes = (Quiz.all_live - [@current_quiz])
+    - archived_quizzes[0..9].each do |quiz|
       %li{:value => quiz.id}
         = link_to quiz.title, quiz
-        %small= link_to "edit", edit_quiz_path(quiz) if false
+  .advert
+    Browse
+    = link_to "web hosting reviews", "http://www.web-hosting-top.com/"
+    to find the best in web hosting.
+  %h3 Older
+  %ol.archives
+    -archived_quizzes[9..-1].each do |quiz|
+      %li{:value => quiz.id}
+        = link_to quiz.title, quiz
