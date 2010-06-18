@@ -1,3 +1,5 @@
+default_run_options[:pty] = true
+
 set :application, "boomhammer"
 set :repository,  "http://strd6.googlecode.com/svn/trunk/#{application}"
 set :deploy_via, :remote_cache
