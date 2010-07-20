@@ -1,6 +1,9 @@
-function Bullet(theta, I) {
+function Bullet(I) {
+  I = I || {}
+
    $.reverseMerge(I, {
-     speed: 10
+     speed: 10,
+     theta: I.theta || 0
    });
 
   $.reverseMerge(I, {
@@ -11,8 +14,8 @@ function Bullet(theta, I) {
     effectCount: 1,
     radius: 2,
     sprite: Sprite.load("images/projectiles/playerbullet4.png"),
-    xVelocity: Math.cos(theta)*I.speed,
-    yVelocity: Math.sin(theta)*I.speed
+    xVelocity: Math.cos(I.theta)*I.speed,
+    yVelocity: Math.sin(I.theta)*I.speed
   });
 
   var self = GameObject(I).extend({
