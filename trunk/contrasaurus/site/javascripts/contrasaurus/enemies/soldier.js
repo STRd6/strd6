@@ -35,7 +35,7 @@ function Soldier(I) {
         shootModelCounter = 8;
       }
     },
-    sprite: runModel.animation, //composite,
+    sprite: runModel.animation,
     type: 'sandinista',
     x: rand(CANVAS_WIDTH),
     y: CANVAS_HEIGHT - Floor.LEVEL - 20,
