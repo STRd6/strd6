@@ -2,22 +2,28 @@
   "animation": {
     "delay": 3,
     "frames": 1,
-    "height": 68,
-    "width": 230,
+    "height": 286,
+    "width": 288,
     "url": "images/enemies/gunship/lob1.png"
   },
   "frames": [
     {
-      "attachmentPoints": {},
+      "attachmentPoints": {
+        "exit": {
+          "x": 31,
+          "y": -103,
+          "direction": 3.5342917352885173
+        }
+      },
       "circles": [
         {
-          "x": 79,
-          "y": 17,
+          "x": 48,
+          "y": -93,
           "radius": 17
         },
         {
-          "x": 94,
-          "y": 16,
+          "x": 66,
+          "y": -94,
           "radius": 18
         }
       ]
