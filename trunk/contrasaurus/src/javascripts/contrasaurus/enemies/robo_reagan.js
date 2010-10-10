@@ -137,7 +137,15 @@ function RoboReagan(I) {
 
   self.bind('destroy', function() {
     addGameObject(EffectGenerator($.extend(self.position(), {
+      duration: Infinity,
       radius: 50
+    })));
+
+    addGameObject(Effect($.extend(self.position(), {
+      duration: Infinity,
+      rotation: 0,
+      sprite: chargeModel.animation,
+      velocity: Point(0, 0)
     })));
   });
 
