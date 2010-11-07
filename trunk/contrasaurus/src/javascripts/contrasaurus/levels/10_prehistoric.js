@@ -90,7 +90,7 @@ $(function() {
       repeat: true
     },
     {
-      image: Sprite.load(imgPath + "volcano_grassy_foreground.png"),
+      image: Sprite.load(imgPath + "volcano_grassy_foreground_mobile.png"),
       parallaxRate: 1,
       position: {
         x: 0,
@@ -135,7 +135,7 @@ $(function() {
     at: 300,
     event: function() {
       level.dialog(DialogBox({
-        text: "Press space to CHOMP!"
+        text: (mobile) ? "Tap red button to CHOMP" : "Press space to CHOMP!"
       }), 200);
     }
   }, {

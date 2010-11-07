@@ -1,17 +1,19 @@
 var score = 0;
-var money = 1000;
 var canvas;
 var dino;
 var healthBar;
-var killCounter = {
-  'bomber': 0,
-  'boss': 0,
-  'parasoldier': 0,
-  'sandinista': 0,
-  'secret service': 0,
-  'tank': 0,
-  'utahraptor': 0
-};
+
+function detectIphoneOrIpod() {
+  var userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.search("iphone") !== -1 || userAgent.search("ipod") !== -1;
+}
+
+var mobile = detectIphoneOrIpod();
+
+if(mobile) {
+  $('img').show();
+}
+
 var pauseDisplay = {
   draw: function(canvas) {
     canvas.fill("rgba(0, 0, 0, 0.66)");
@@ -19,6 +21,7 @@ var pauseDisplay = {
     canvas.centerText("PAUSED", 180);
   }
 };
+
 var debugHalt = false;
 var currentLevel;
 var displayTexts = [];
@@ -49,8 +52,7 @@ var weaponMap = {
   "chainsaw": Chainsaw,
   "flamethrower": Flamethrower,
   "laserGun": LaserGun,
-  "machineGun": MachineGun,
-  "meat": Meat
+  "machineGun": MachineGun
 };
 
 $.each(weaponMap, function(name) {
@@ -72,6 +74,7 @@ function drawOverlay() {
   var activeTexts = [];
   $.each(displayTexts, function(i, displayText) {
     //TODO: Move update out of draw
+
     displayText.update();
 
     if(displayText.active()) {
@@ -83,13 +86,9 @@ function drawOverlay() {
 
   healthBar.value(dino.health());
 
-  if(showCrosshair) {
+  if(showCrosshair && !mobile) {
     crosshair.draw(canvas, target.x - crosshair.width/2, target.y - crosshair.height/2);
   }
-
-  // Score display
-  $("#score").text(score);
-  $("#money .amount").text(money);
 }
 
 function nextStage(choice) {
@@ -225,6 +224,8 @@ function addHighScore(score, player) {
 $(function() {
 
   dino = Dinosaur();
+  dino.addJetpack();
+
   healthBar = ProgressBar({
     colorMap: healthColorMap,
     max: dino.health(),
