@@ -179,52 +179,6 @@ function Dinosaur() {
   var lastDirection = 1;
   var healthMax = I.health;
 
-  function nextWeapon() {
-    var selectedIndex = weapons.indexOf(selectedWeapon);
-
-    var selectablesBefore = [];
-    var selectablesAfter = [];
-
-    $.each(weapons, function(index, weapon) {
-      if(weapon.selectable()) {
-        if(index < selectedIndex) {
-          selectablesBefore.push(index);
-        } else if(index > selectedIndex) {
-          selectablesAfter.push(index);
-        }
-      }
-    });
-
-    if(selectablesAfter.length > 0) {
-      selectedWeapon = weapons[Math.min.apply(null, selectablesAfter)];
-    } else if(selectablesBefore.length > 0) {
-      selectedWeapon = weapons[Math.min.apply(null, selectablesBefore)];
-    }
-  }
-
-  function prevWeapon() {
-    var selectedIndex = weapons.indexOf(selectedWeapon);
-
-    var selectablesBefore = [];
-    var selectablesAfter = [];
-
-    $.each(weapons, function(index, weapon) {
-      if(weapon.selectable()) {
-        if(index < selectedIndex) {
-          selectablesBefore.push(index);
-        } else if(index > selectedIndex) {
-          selectablesAfter.push(index);
-        }
-      }
-    });
-
-    if(selectablesBefore.length > 0) {
-      selectedWeapon = weapons[Math.max.apply(null, selectablesBefore)];
-    } else if(selectablesAfter.length > 0) {
-      selectedWeapon = weapons[Math.max.apply(null, selectablesAfter)];
-    }
-  }
-
   function heal(amount) {
     I.health = (I.health + amount).clamp(0, healthMax);
   }
@@ -270,10 +224,6 @@ function Dinosaur() {
 
         self.addWeapon(jetpack);
       }
-    },
-
-    addMoney: function(amount) {
-      money += amount;
     },
 
     addWeapon: function(weapon) {
@@ -394,6 +344,10 @@ function Dinosaur() {
       }
     },
 
+    keyDown: function() {
+      return keyDown;
+    },
+
     land: function(h) {
       if (airborne) {
         I.y = h - (I.radius + 1);
@@ -409,8 +363,6 @@ function Dinosaur() {
         }
       }
     },
-
-    nextWeapon: nextWeapon,
 
     parasailing: function(newValue) {
       if(newValue != undefined) {
@@ -444,8 +396,6 @@ function Dinosaur() {
     poison: function(amount) {
       self.transition(states.cry);
     },
-
-    prevWeapon: prevWeapon,
 
     states: function() {
       return states;
@@ -482,6 +432,8 @@ function Dinosaur() {
     },
     before: {
       update: function() {
+        dinoControl.update();
+
         if(timeTravelling) {
           timeTravel.update();
         }
@@ -530,10 +482,8 @@ function Dinosaur() {
         // Stay in screen
         if (I.x < levelPosition.x + I.radius) {
           I.x = levelPosition.x + I.radius;
-          I.xVelocity = Math.abs(I.xVelocity);
         } else if (I.x > levelPosition.x + CANVAS_WIDTH - I.radius) {
           I.x = levelPosition.x + CANVAS_WIDTH - I.radius;
-          I.xVelocity = -Math.abs(I.xVelocity);
         }
       }
     }
@@ -548,11 +498,10 @@ function Dinosaur() {
     self.addAccessory(tophat);
   }
 
-  Control(self, keyDown);
+  var dinoControl = Control(self, keyDown);
   self.extend(Stateful(I));
 
   self.draw = function(canvas) {
-
     canvas.withTransform(self.getTransform(), function() {
       if(parasailing) {
         parasailTile.draw(canvas, -150, -170);
